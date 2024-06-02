@@ -1,0 +1,20 @@
+<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 500">
+  <defs>
+    <linearGradient id="gradient1" x1="265.25" y1="261.96" x2="437.36" y2="261.96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#009caa"/>
+      <stop offset="1" stop-color="#009caa" stop-opacity=".6"/>
+    </linearGradient>
+    <linearGradient id="gradient2" x1="61.99" y1="261.96" x2="234.1" y2="261.96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3f81ff" stop-opacity=".6"/>
+      <stop offset=".57" stop-color="#3f81ff" stop-opacity=".82"/>
+      <stop offset="1" stop-color="#3f81ff"/>
+    </linearGradient>
+    <linearGradient id="gradient3" x1="214" y1="157" x2="286" y2="157" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3f81ff"/>
+      <stop offset="1" stop-color="#009caa"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#gradient1)" d="M437.23,213c0,14.34.34,28.69-.08,43.02-.7,24.06-11.74,42.6-32.25,54.85-27.53,16.44-55.44,32.25-83.3,48.15-9.82,5.6-19.3,11.86-29.63,16.54-14.19,6.42-25.38-.19-26.4-15.79-.5-7.57-.28-15.2-.29-22.8-.03-21.37.1-42.74-.03-64.11-.17-27.93,11.97-48.39,36.27-62.18,32.87-18.65,65.48-37.73,98.22-56.61,3.47-2,6.9-4.16,10.55-5.77,14.72-6.51,26.5.81,26.82,16.94.32,15.91.07,31.84.07,47.76h.05Z"/>
+  <path fill="url(#gradient2)" d="M62.12,213c0,14.34-.34,28.69.08,43.02.7,24.06,11.74,42.6,32.25,54.85,27.53,16.44,55.44,32.25,83.3,48.15,9.82,5.6,19.3,11.86,29.63,16.54,14.19,6.42,25.38-.19,26.4-15.79.5-7.57.28-15.2.29-22.8.03-21.37-.1-42.74.03-64.11.17-27.93-11.97-48.39-36.27-62.18-32.87-18.65-65.48-37.73-98.22-56.61-3.47-2-6.9-4.16-10.55-5.77-14.72-6.51-26.5.81-26.82,16.94-.32,15.91-.07,31.84-.07,47.76h-.05Z"/>
+  <circle fill="url(#gradient3)" cx="250" cy="157" r="36"/>
+</svg>

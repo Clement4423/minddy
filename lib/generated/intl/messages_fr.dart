@@ -1,0 +1,388 @@
+// DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
+// This is a library that provides messages for a fr locale. All the
+// messages from the main program should be duplicated here with the same
+// function name.
+
+// Ignore issues from commonly used lints in this file.
+// ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
+// ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
+// ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
+// ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
+
+import 'package:intl/intl.dart';
+import 'package:intl/message_lookup_by_library.dart';
+
+final messages = new MessageLookup();
+
+typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
+
+class MessageLookup extends MessageLookupByLibrary {
+  String get localeName => 'fr';
+
+  static String m0(count) =>
+      "${count} images trouvées. Voulez-vous les importer ?";
+
+  static String m1(actionName) =>
+      "Vous n\'avez aucune notes ! Cliquez sur \'${actionName}\' pour commencer à en prendre.";
+
+  static String m2(username) => "Bon après-midi ${username}";
+
+  static String m3(username) => "Bonsoir ${username}";
+
+  static String m4(username) => "Bonjour ${username}";
+
+  static String m5(element) => "Supprimer ${element} ?";
+
+  static String m6(user) => "Ravis de vous revoir ${user}";
+
+  static String m7(accountSettingName) =>
+      "Vous pourrez toujours saisir votre prénom dans paramètres / ${accountSettingName}";
+
+  final messages = _notInlinedMessages(_notInlinedMessages);
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "appbar_go_home":
+            MessageLookupByLibrary.simpleMessage("Retourner à l\'accueil"),
+        "articles_add_code_semantic_text":
+            MessageLookupByLibrary.simpleMessage("Ajouter un bloc de code"),
+        "articles_add_image_semantic_text":
+            MessageLookupByLibrary.simpleMessage("Ajouter une image"),
+        "articles_add_list_semantic_text":
+            MessageLookupByLibrary.simpleMessage("Ajouter une liste"),
+        "articles_add_source_button":
+            MessageLookupByLibrary.simpleMessage("Ajouter une source"),
+        "articles_add_source_hint":
+            MessageLookupByLibrary.simpleMessage("Indiquer une source..."),
+        "articles_add_subtitle_semantic_text":
+            MessageLookupByLibrary.simpleMessage("Ajouter un sous titre"),
+        "articles_add_text_semantic_text":
+            MessageLookupByLibrary.simpleMessage("Ajouter un bloc de texte"),
+        "articles_add_to_content":
+            MessageLookupByLibrary.simpleMessage("Ajouter à l\'article"),
+        "articles_bookmark_semantic_text":
+            MessageLookupByLibrary.simpleMessage("Enregister l\'article"),
+        "articles_bottom_menu_close_semantic_text":
+            MessageLookupByLibrary.simpleMessage("Fermer le menu"),
+        "articles_bottom_menu_content_button":
+            MessageLookupByLibrary.simpleMessage("Contenu"),
+        "articles_bottom_menu_notes_button":
+            MessageLookupByLibrary.simpleMessage("Notes"),
+        "articles_bottom_menu_open_semantic_text":
+            MessageLookupByLibrary.simpleMessage("Ouvrir le menu"),
+        "articles_bottom_menu_sources_button":
+            MessageLookupByLibrary.simpleMessage("Sources"),
+        "articles_calculate_reading_time": MessageLookupByLibrary.simpleMessage(
+            "Calculer le temps de lecture"),
+        "articles_card_delete_this_article":
+            MessageLookupByLibrary.simpleMessage("cet article"),
+        "articles_card_untitled":
+            MessageLookupByLibrary.simpleMessage("Sans titre"),
+        "articles_code_hint":
+            MessageLookupByLibrary.simpleMessage("Entrez du code..."),
+        "articles_copy_text": MessageLookupByLibrary.simpleMessage("Copier"),
+        "articles_copy_to_notes_text":
+            MessageLookupByLibrary.simpleMessage("Ajouter aux notes"),
+        "articles_corrupted_file":
+            MessageLookupByLibrary.simpleMessage("Cet article est corrompu"),
+        "articles_creativity_title":
+            MessageLookupByLibrary.simpleMessage("Créativité"),
+        "articles_daily_life_title":
+            MessageLookupByLibrary.simpleMessage("Quotidien"),
+        "articles_define_language":
+            MessageLookupByLibrary.simpleMessage("Définir le language"),
+        "articles_education_title":
+            MessageLookupByLibrary.simpleMessage("Éducation"),
+        "articles_empty_menu_page_text": MessageLookupByLibrary.simpleMessage(
+            "C\'est vide pour l\'instant. Importez des articles ou écrivez les vôtres pour remplir l\'espace !"),
+        "articles_environment_title":
+            MessageLookupByLibrary.simpleMessage("Nature"),
+        "articles_export_articles":
+            MessageLookupByLibrary.simpleMessage("Exporter cet article"),
+        "articles_export_articles_choose_category":
+            MessageLookupByLibrary.simpleMessage("Choisissez une catégorie"),
+        "articles_export_canceled": MessageLookupByLibrary.simpleMessage(
+            "L\'article n\'a pas été exporté"),
+        "articles_export_confirmed":
+            MessageLookupByLibrary.simpleMessage("L\'article a été exporté"),
+        "articles_export_confirmed_button":
+            MessageLookupByLibrary.simpleMessage("Voir l\'emplacement"),
+        "articles_finance_title":
+            MessageLookupByLibrary.simpleMessage("Finance"),
+        "articles_food_title":
+            MessageLookupByLibrary.simpleMessage("Alimentation"),
+        "articles_go_back_semantic_text":
+            MessageLookupByLibrary.simpleMessage("Retour"),
+        "articles_images_add_button":
+            MessageLookupByLibrary.simpleMessage("Ajouter une image"),
+        "articles_images_change_button":
+            MessageLookupByLibrary.simpleMessage("Changer l\'image"),
+        "articles_import_articles":
+            MessageLookupByLibrary.simpleMessage("Importer des articles"),
+        "articles_imported": MessageLookupByLibrary.simpleMessage(
+            "Les articles ont été importés"),
+        "articles_importer_dont_import_images_button":
+            MessageLookupByLibrary.simpleMessage("Ne pas importer"),
+        "articles_importer_image_found_single":
+            MessageLookupByLibrary.simpleMessage(
+                "1 image trouvée. Voulez-vous l\'importer ?"),
+        "articles_importer_images_found_many": m0,
+        "articles_importer_import_images_button":
+            MessageLookupByLibrary.simpleMessage("Importer"),
+        "articles_importer_import_images_title":
+            MessageLookupByLibrary.simpleMessage("Importer des images"),
+        "articles_impossible_to_load_content":
+            MessageLookupByLibrary.simpleMessage(
+                "Impossible de charger le contenu de l\'article"),
+        "articles_my_articles_title":
+            MessageLookupByLibrary.simpleMessage("Mes articles"),
+        "articles_new_article":
+            MessageLookupByLibrary.simpleMessage("Nouvel article"),
+        "articles_no_content": MessageLookupByLibrary.simpleMessage(
+            "Cet article est vide ! Ajoutez des éléments pour pouvoir les déplacer."),
+        "articles_no_notes": m1,
+        "articles_no_sources": MessageLookupByLibrary.simpleMessage(
+            "Aucune source n\'a été fournie pour le moment ! N\'oubliez pas d\'inclure des sources pour les futurs lecteurs."),
+        "articles_not_imported": MessageLookupByLibrary.simpleMessage(
+            "Les articles n\'ont pas été impotés"),
+        "articles_philosophy_title":
+            MessageLookupByLibrary.simpleMessage("Philosophie"),
+        "articles_politics_title":
+            MessageLookupByLibrary.simpleMessage("Politique"),
+        "articles_professional_title":
+            MessageLookupByLibrary.simpleMessage("Professionnel"),
+        "articles_read_button": MessageLookupByLibrary.simpleMessage("Lire"),
+        "articles_saved_title":
+            MessageLookupByLibrary.simpleMessage("Enregistrés"),
+        "articles_science_title":
+            MessageLookupByLibrary.simpleMessage("Science"),
+        "articles_search": MessageLookupByLibrary.simpleMessage("Rechercher"),
+        "articles_search_empty":
+            MessageLookupByLibrary.simpleMessage("Aucun résultat"),
+        "articles_search_explain":
+            MessageLookupByLibrary.simpleMessage("Recherchez un titre, auteur"),
+        "articles_sources_text":
+            MessageLookupByLibrary.simpleMessage("Sources"),
+        "articles_subtitle_hint":
+            MessageLookupByLibrary.simpleMessage("Entrez un sous titre..."),
+        "articles_technology_title":
+            MessageLookupByLibrary.simpleMessage("Technologie"),
+        "articles_text_hint":
+            MessageLookupByLibrary.simpleMessage("Entrez du texte..."),
+        "articles_title_hint":
+            MessageLookupByLibrary.simpleMessage("Entrez un titre..."),
+        "articles_travel_title": MessageLookupByLibrary.simpleMessage("Voyage"),
+        "articles_wellness_title":
+            MessageLookupByLibrary.simpleMessage("Bien-être"),
+        "center_menu_general": MessageLookupByLibrary.simpleMessage("Général"),
+        "center_menu_others": MessageLookupByLibrary.simpleMessage("Autre"),
+        "default_articles_articles_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Découvrir les articles dans minddy"),
+        "default_articles_articles_fifth_paragraph":
+            MessageLookupByLibrary.simpleMessage(
+                "Avec les articles, vous avez un outil puissant et convivial pour organiser, partager et retrouver vos connaissances en toute simplicité."),
+        "default_articles_articles_fifth_subtitle":
+            MessageLookupByLibrary.simpleMessage("Outil Puissant"),
+        "default_articles_articles_first_paragraph":
+            MessageLookupByLibrary.simpleMessage(
+                "Les articles sont une fonctionnalité clé de Minddy. Ils offrent une interface élégante et intuitive pour rédiger et partager vos connaissances. Grâce à cette fonctionnalité, vous pouvez facilement diffuser votre savoir et en faire profiter toute la communauté."),
+        "default_articles_articles_first_subtitle":
+            MessageLookupByLibrary.simpleMessage("Fonctionnalité Clé"),
+        "default_articles_articles_fourth_paragraph":
+            MessageLookupByLibrary.simpleMessage(
+                "Les boutons pour ajouter des éléments à votre article sont situés en haut de la page. Pour gérer ce contenu, utilisez le menu en bas."),
+        "default_articles_articles_fourth_subtitle":
+            MessageLookupByLibrary.simpleMessage("Ajouter et Gérer du Contenu"),
+        "default_articles_articles_second_paragraph":
+            MessageLookupByLibrary.simpleMessage(
+                "Vous pouvez également prendre des notes, idéal pour sauvegarder des textes ou tout autre contenu que vous souhaitez conserver pour plus tard. Cette fonctionnalité est parfaite pour capturer des idées ou des informations importantes à revisiter ultérieurement."),
+        "default_articles_articles_second_subtitle":
+            MessageLookupByLibrary.simpleMessage("Prise de Notes"),
+        "default_articles_articles_third_paragraph":
+            MessageLookupByLibrary.simpleMessage(
+                "Toutes vos sources sont accessibles via un menu situé en bas de la page, vous permettant ainsi de gérer et de retrouver facilement vos références."),
+        "default_articles_articles_third_subtitle":
+            MessageLookupByLibrary.simpleMessage("Gestion des Sources"),
+        "default_articles_articles_title":
+            MessageLookupByLibrary.simpleMessage("Articles"),
+        "greeting_afternoon": m2,
+        "greeting_evening": m3,
+        "greeting_morning": m4,
+        "home_appbar": MessageLookupByLibrary.simpleMessage("Accueil"),
+        "home_articles_card_open_hint":
+            MessageLookupByLibrary.simpleMessage("Ouvrir cet article"),
+        "home_discover":
+            MessageLookupByLibrary.simpleMessage("Découvrir minddy"),
+        "home_pick_up":
+            MessageLookupByLibrary.simpleMessage("Reprenez là où vous étiez"),
+        "project_card_delete":
+            MessageLookupByLibrary.simpleMessage("Supprimer"),
+        "project_card_duplicate":
+            MessageLookupByLibrary.simpleMessage("Dupiquer"),
+        "project_card_open_settings":
+            MessageLookupByLibrary.simpleMessage("Modifier"),
+        "settings_accessibility_title":
+            MessageLookupByLibrary.simpleMessage("Accessibilité"),
+        "settings_account_title":
+            MessageLookupByLibrary.simpleMessage("Mon compte"),
+        "settings_language_subtitle":
+            MessageLookupByLibrary.simpleMessage("Langue"),
+        "settings_personalize_black_and_white_title":
+            MessageLookupByLibrary.simpleMessage("Mode noir et blanc"),
+        "settings_personalize_title":
+            MessageLookupByLibrary.simpleMessage("Personnalisez"),
+        "settings_project_delete_button":
+            MessageLookupByLibrary.simpleMessage("Supprimer ce projet"),
+        "settings_project_delete_subtitle":
+            MessageLookupByLibrary.simpleMessage("Supprimer"),
+        "settings_project_rename_button":
+            MessageLookupByLibrary.simpleMessage("Renommer"),
+        "settings_project_rename_subtitle":
+            MessageLookupByLibrary.simpleMessage("Renommer"),
+        "settings_reset_button": MessageLookupByLibrary.simpleMessage(
+            "Réinitialiser les paramètres"),
+        "settings_reset_subtitle":
+            MessageLookupByLibrary.simpleMessage("Réinitialiser"),
+        "settings_security_title":
+            MessageLookupByLibrary.simpleMessage("Sécurité"),
+        "settings_theme_subtitle":
+            MessageLookupByLibrary.simpleMessage("Thème"),
+        "settings_title": MessageLookupByLibrary.simpleMessage("Paramètres"),
+        "settings_username_subtitle":
+            MessageLookupByLibrary.simpleMessage("Prénom"),
+        "settings_using_dark_mode":
+            MessageLookupByLibrary.simpleMessage("Mode sombre"),
+        "settings_using_light_mode":
+            MessageLookupByLibrary.simpleMessage("Mode clair"),
+        "settings_using_system_theme":
+            MessageLookupByLibrary.simpleMessage("Thème du système"),
+        "snacbar_close_button": MessageLookupByLibrary.simpleMessage("Fermer"),
+        "snackbar_articles_saved": MessageLookupByLibrary.simpleMessage(
+            "Cet article à été enregistré"),
+        "snackbar_articles_unsaved": MessageLookupByLibrary.simpleMessage(
+            "Cet article n\'est plus enregistré"),
+        "snackbar_cancel_button":
+            MessageLookupByLibrary.simpleMessage("Fermer"),
+        "snackbar_delete_button":
+            MessageLookupByLibrary.simpleMessage("Supprimer"),
+        "snackbar_delete_element_text": m5,
+        "snackbar_reset_button":
+            MessageLookupByLibrary.simpleMessage("Réinitialiser"),
+        "snackbar_reset_text": MessageLookupByLibrary.simpleMessage(
+            "Réinitialiser les paramètres ?"),
+        "snackbar_restart_button":
+            MessageLookupByLibrary.simpleMessage("Fermer l\'app"),
+        "snackbar_restart_needed_text": MessageLookupByLibrary.simpleMessage(
+            "Vous devrez redémarrer l\'application pour appliquer les modifications"),
+        "snackbar_welcome_back_button":
+            MessageLookupByLibrary.simpleMessage("Merci"),
+        "snackbar_welcome_back_text": m6,
+        "submenu_artilces_image_description_button":
+            MessageLookupByLibrary.simpleMessage("Valider"),
+        "submenu_artilces_image_description_hint":
+            MessageLookupByLibrary.simpleMessage("Décrivez l\'image..."),
+        "submenu_artilces_image_description_subtitle":
+            MessageLookupByLibrary.simpleMessage("Description de l\'image"),
+        "submenu_artilces_image_description_title":
+            MessageLookupByLibrary.simpleMessage("Description"),
+        "submenu_new_project_button":
+            MessageLookupByLibrary.simpleMessage("Créer"),
+        "submenu_new_project_errorMessage":
+            MessageLookupByLibrary.simpleMessage("Veuillez nommer le projet"),
+        "submenu_new_project_hint":
+            MessageLookupByLibrary.simpleMessage("Entrez le nom du projet..."),
+        "submenu_new_project_subtitle":
+            MessageLookupByLibrary.simpleMessage("Nom du projet"),
+        "submenu_new_project_title":
+            MessageLookupByLibrary.simpleMessage("Nouveau projet"),
+        "submenu_unlock_error_message_error_login":
+            MessageLookupByLibrary.simpleMessage(
+                "Impossible de vérifier le mot de passe."),
+        "submenu_unlock_error_message_incorrect_password":
+            MessageLookupByLibrary.simpleMessage("Mot de passe incorrect"),
+        "submenu_unlock_error_message_please_enter_password":
+            MessageLookupByLibrary.simpleMessage(
+                "Veuillez saisir votre mot de passe"),
+        "submenu_unlock_hide_mnemonic": MessageLookupByLibrary.simpleMessage(
+            "Masquer l\'indice de mot de passe"),
+        "submenu_unlock_show_mnemonic": MessageLookupByLibrary.simpleMessage(
+            "Afficher l\'indice de mot de passe"),
+        "submenu_unlock_subtitle_text":
+            MessageLookupByLibrary.simpleMessage("Entrez votre mot de passe"),
+        "submenu_welcome_password_mnemonic_sentence_hint":
+            MessageLookupByLibrary.simpleMessage(
+                "Entrez votre indice de mot de passe"),
+        "submenu_welcome_password_mnemonic_sentence_instructs":
+            MessageLookupByLibrary.simpleMessage(
+                "Cette fonctionnalité vous aide à vous rappeler de votre mot de passe en cas d\'oubli. Il est déconseillé d\'entrer directement votre mot de passe, veuillez plutôt fournir un indice."),
+        "submenu_welcome_password_mnemonic_sentence_subtitle":
+            MessageLookupByLibrary.simpleMessage(
+                "Ajouter un indice de mot de passe"),
+        "submenu_welcome_password_mnemonic_sentence_title":
+            MessageLookupByLibrary.simpleMessage("Indice de mot de passe"),
+        "system_files_copy_text": MessageLookupByLibrary.simpleMessage("Copie"),
+        "tool_pomodoro_break_duration": MessageLookupByLibrary.simpleMessage(
+            "Durée de la session de pause"),
+        "tool_pomodoro_break_session":
+            MessageLookupByLibrary.simpleMessage("Pause"),
+        "tool_pomodoro_focus_timer":
+            MessageLookupByLibrary.simpleMessage("Minuteur de concentration"),
+        "tool_pomodoro_repetition_count":
+            MessageLookupByLibrary.simpleMessage("Nombre de répétitions"),
+        "tool_pomodoro_start_button":
+            MessageLookupByLibrary.simpleMessage("Démarrer"),
+        "tool_pomodoro_stop_button":
+            MessageLookupByLibrary.simpleMessage("Arrêter"),
+        "tool_pomodoro_work_duration": MessageLookupByLibrary.simpleMessage(
+            "Durée de la session de travail"),
+        "tool_pomodoro_work_session":
+            MessageLookupByLibrary.simpleMessage("Travail"),
+        "welcome_appbar": MessageLookupByLibrary.simpleMessage("Bienvenue"),
+        "welcome_because": MessageLookupByLibrary.simpleMessage(
+            "Pour personnaliser votre expérience"),
+        "welcome_before_creating": MessageLookupByLibrary.simpleMessage(
+            "Pour commencer, entrez votre prénom"),
+        "welcome_enter_name":
+            MessageLookupByLibrary.simpleMessage("Entrez votre prénom"),
+        "welcome_error_save_username": MessageLookupByLibrary.simpleMessage(
+            "Une erreur s\'est produite lors de l\'enregistrement de votre prénom"),
+        "welcome_first_name_too_long": MessageLookupByLibrary.simpleMessage(
+            "Le prénom ne peut pas être plus long que 25 lettres"),
+        "welcome_next_page_semantic":
+            MessageLookupByLibrary.simpleMessage("Page suivante"),
+        "welcome_pass_default_username":
+            MessageLookupByLibrary.simpleMessage("Utilisateur"),
+        "welcome_pass_tooltip": m7,
+        "welcome_pass_username": MessageLookupByLibrary.simpleMessage("Passer"),
+        "welcome_password_creation_confirm_hint":
+            MessageLookupByLibrary.simpleMessage(
+                "Confirmez votre mot de passe"),
+        "welcome_password_creation_description":
+            MessageLookupByLibrary.simpleMessage("Pour sécuriser vos données"),
+        "welcome_password_creation_error_must_provide":
+            MessageLookupByLibrary.simpleMessage(
+                "Vous devez créer un mot de passe"),
+        "welcome_password_creation_error_not_match":
+            MessageLookupByLibrary.simpleMessage(
+                "Les mots de passe ne correspondent pas"),
+        "welcome_password_creation_error_password_save":
+            MessageLookupByLibrary.simpleMessage(
+                "Une erreur est survenue lors de l\'enregistrement de votre mot de passe"),
+        "welcome_password_creation_hide_semantic":
+            MessageLookupByLibrary.simpleMessage("Masquer le mot de passe"),
+        "welcome_password_creation_hint":
+            MessageLookupByLibrary.simpleMessage("Créez votre mot de passe"),
+        "welcome_password_creation_password_requirements":
+            MessageLookupByLibrary.simpleMessage(
+                "Le mot de passe doit contenir au moins 8 caractères et inclure au moins une lettre majuscule, une lettre minuscule et un chiffre."),
+        "welcome_password_creation_remember":
+            MessageLookupByLibrary.simpleMessage(
+                "Ajouter un indice de mot de passe (optionel)"),
+        "welcome_password_creation_show_semantic":
+            MessageLookupByLibrary.simpleMessage("Afficher le mot de passe"),
+        "welcome_password_creation_title": MessageLookupByLibrary.simpleMessage(
+            "Maintenant, créez un mot de passe"),
+        "welcome_should_provide": MessageLookupByLibrary.simpleMessage(
+            "Vous devez fournir votre prénom")
+      };
+}

@@ -1,0 +1,4 @@
+enum ProjectsModules {
+  tasks,
+  expenses
+}

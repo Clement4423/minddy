@@ -1,0 +1,55 @@
+name: minddy
+description: "Everything happens here."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  encrypt: ^5.0.3
+  crypto: ^3.0.3
+  pointycastle: ^3.9.1
+  audioplayers: ^6.0.0
+  flutter_svg: ^2.0.9
+  path_provider: ^2.1.2
+  flutter_secure_storage: ^9.2.2
+  intl: ^0.18.1
+  path: ^1.9.0
+  cupertino_icons: ^1.0.6
+  file_picker: ^8.0.1
+  window_size:
+    git:
+      url: https://github.com/google/flutter-desktop-embedding
+      path: plugins/window_size
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: fonts/Montserrat-Regular.ttf
+        - asset: fonts/Montserrat-SemiBold.ttf
+          weight: 600
+        - asset: fonts/Montserrat-Bold.ttf
+          weight: 700
+  uses-material-design: true
+
+  assets:
+    - assets/logo/articles/
+    - assets/logo/calendar/
+    - assets/logo/
+    - assets/background/
+    - assets/custom_icons/
+    - assets/audio/
+    
+flutter_intl:
+  enabled: true

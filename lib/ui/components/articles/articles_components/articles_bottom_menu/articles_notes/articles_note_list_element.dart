@@ -1,0 +1,141 @@
+import 'package:flutter/material.dart';
+import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/ui/components/articles/articles_components/articles_bottom_menu/articles_notes/articles_bottom_menu_notes_view.dart';
+import 'package:minddy/ui/theme/theme.dart';
+
+class ArticlesNoteListElement extends StatefulWidget {
+  const ArticlesNoteListElement({
+    super.key,
+    required this.note, 
+    required this.controller,
+  });
+
+  final List note;
+  final ArticlesBottomMenuNotesViewController controller;
+
+  @override
+  State<ArticlesNoteListElement> createState() => ArticlesNoteListElementState();
+}
+
+class ArticlesNoteListElementState extends State<ArticlesNoteListElement> {
+  bool _hasJustBeenCopied = false;
+
+  @override
+  Widget build(BuildContext context) {
+    StylesGetters theme = StylesGetters(context);
+    return Container(
+      margin: const EdgeInsets.only(right: 12, top: 10),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: theme.primary,
+              borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))
+            ),
+            child: SizedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Delete button
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () async {
+                        await widget.controller.deleteNote(widget.note);
+                        widget.controller.notesChanged();
+                      },
+                      child: Tooltip(
+                        message: S.current.snackbar_delete_button,
+                        child: Icon(Icons.delete_outline_rounded, color: theme.error)
+                      ),
+                    ),
+                  ),
+                  // Copy button
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () async {
+                        widget.controller.articleController.addListElement(initialContent: widget.note);
+                        setState(() {
+                          _hasJustBeenCopied = true;                          
+                        });
+                        Future.delayed(const Duration(milliseconds: 1500), () {
+                          if (context.mounted) {
+                            setState(() {
+                              _hasJustBeenCopied = false;
+                            });
+                          }
+                        });
+                      },
+                      child: Tooltip(
+                        message: S.current.articles_add_to_content,
+                        child: Icon(_hasJustBeenCopied ? Icons.check_rounded: Icons.add_rounded, color: theme.onPrimary)
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: theme.surface,
+              borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
+            ),
+            child: TextSelectionTheme(
+              data: TextSelectionThemeData(
+                selectionColor: theme.brightness == Brightness.light ? Colors.white : theme.secondary,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    ..._buildNotesListElements(widget.note, theme)
+                  ],
+                )
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+_buildNotesListElements(List textList, StylesGetters theme) {
+  List<Widget> notesListElementsList = [];
+  for (int i = 0; i < textList.length; i++) {
+    notesListElementsList.add(
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                width: 3,
+                height: 3,
+                decoration: BoxDecoration(
+                    color: theme.onPrimary,
+                    borderRadius: BorderRadius.circular(2)),
+              ),
+            ),
+          ),          
+          Expanded(
+            child: Text(
+              textList[i],
+              style: theme.bodyMedium.
+              copyWith(color: theme.onSurface),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  return notesListElementsList;
+}

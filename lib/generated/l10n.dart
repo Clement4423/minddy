@@ -1,0 +1,1800 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'intl/messages_all.dart';
+
+// **************************************************************************
+// Generator: Flutter Intl IDE plugin
+// Made by Localizely
+// **************************************************************************
+
+// ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
+// ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
+// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
+
+class S {
+  S();
+
+  static S? _current;
+
+  static S get current {
+    assert(_current != null,
+        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    return _current!;
+  }
+
+  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
+
+  static Future<S> load(Locale locale) {
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name);
+    return initializeMessages(localeName).then((_) {
+      Intl.defaultLocale = localeName;
+      final instance = S();
+      S._current = instance;
+
+      return instance;
+    });
+  }
+
+  static S of(BuildContext context) {
+    final instance = S.maybeOf(context);
+    assert(instance != null,
+        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    return instance!;
+  }
+
+  static S? maybeOf(BuildContext context) {
+    return Localizations.of<S>(context, S);
+  }
+
+  /// `Copy`
+  String get system_files_copy_text {
+    return Intl.message(
+      'Copy',
+      name: 'system_files_copy_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Go back home`
+  String get appbar_go_home {
+    return Intl.message(
+      'Go back home',
+      name: 'appbar_go_home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome`
+  String get welcome_appbar {
+    return Intl.message(
+      'Welcome',
+      name: 'welcome_appbar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First of all, please enter your first name`
+  String get welcome_before_creating {
+    return Intl.message(
+      'First of all, please enter your first name',
+      name: 'welcome_before_creating',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To personalize your experience`
+  String get welcome_because {
+    return Intl.message(
+      'To personalize your experience',
+      name: 'welcome_because',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Skip`
+  String get welcome_pass_username {
+    return Intl.message(
+      'Skip',
+      name: 'welcome_pass_username',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You will still be able to enter your first name in settings / {accountSettingName}`
+  String welcome_pass_tooltip(Object accountSettingName) {
+    return Intl.message(
+      'You will still be able to enter your first name in settings / $accountSettingName',
+      name: 'welcome_pass_tooltip',
+      desc: '',
+      args: [accountSettingName],
+    );
+  }
+
+  /// `User`
+  String get welcome_pass_default_username {
+    return Intl.message(
+      'User',
+      name: 'welcome_pass_default_username',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your first name`
+  String get welcome_enter_name {
+    return Intl.message(
+      'Enter your first name',
+      name: 'welcome_enter_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The first name cannot be longer than 25 letters`
+  String get welcome_first_name_too_long {
+    return Intl.message(
+      'The first name cannot be longer than 25 letters',
+      name: 'welcome_first_name_too_long',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, provide your first name`
+  String get welcome_should_provide {
+    return Intl.message(
+      'Please, provide your first name',
+      name: 'welcome_should_provide',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An error occured while saving your name. Please try again`
+  String get welcome_error_save_username {
+    return Intl.message(
+      'An error occured while saving your name. Please try again',
+      name: 'welcome_error_save_username',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next page`
+  String get welcome_next_page_semantic {
+    return Intl.message(
+      'Next page',
+      name: 'welcome_next_page_semantic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Now, create a password`
+  String get welcome_password_creation_title {
+    return Intl.message(
+      'Now, create a password',
+      name: 'welcome_password_creation_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To keep your data secured`
+  String get welcome_password_creation_description {
+    return Intl.message(
+      'To keep your data secured',
+      name: 'welcome_password_creation_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create your password`
+  String get welcome_password_creation_hint {
+    return Intl.message(
+      'Create your password',
+      name: 'welcome_password_creation_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm your password`
+  String get welcome_password_creation_confirm_hint {
+    return Intl.message(
+      'Confirm your password',
+      name: 'welcome_password_creation_confirm_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, create a password`
+  String get welcome_password_creation_error_must_provide {
+    return Intl.message(
+      'Please, create a password',
+      name: 'welcome_password_creation_error_must_provide',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords do not match`
+  String get welcome_password_creation_error_not_match {
+    return Intl.message(
+      'Passwords do not match',
+      name: 'welcome_password_creation_error_not_match',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show password`
+  String get welcome_password_creation_show_semantic {
+    return Intl.message(
+      'Show password',
+      name: 'welcome_password_creation_show_semantic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide password`
+  String get welcome_password_creation_hide_semantic {
+    return Intl.message(
+      'Hide password',
+      name: 'welcome_password_creation_hide_semantic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An error occured while saving your password`
+  String get welcome_password_creation_error_password_save {
+    return Intl.message(
+      'An error occured while saving your password',
+      name: 'welcome_password_creation_error_password_save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a password hint (optional)`
+  String get welcome_password_creation_remember {
+    return Intl.message(
+      'Add a password hint (optional)',
+      name: 'welcome_password_creation_remember',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one digit.`
+  String get welcome_password_creation_password_requirements {
+    return Intl.message(
+      'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one digit.',
+      name: 'welcome_password_creation_password_requirements',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `General`
+  String get center_menu_general {
+    return Intl.message(
+      'General',
+      name: 'center_menu_general',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Other`
+  String get center_menu_others {
+    return Intl.message(
+      'Other',
+      name: 'center_menu_others',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings_title {
+    return Intl.message(
+      'Settings',
+      name: 'settings_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Personalize`
+  String get settings_personalize_title {
+    return Intl.message(
+      'Personalize',
+      name: 'settings_personalize_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accessibility`
+  String get settings_accessibility_title {
+    return Intl.message(
+      'Accessibility',
+      name: 'settings_accessibility_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Security`
+  String get settings_security_title {
+    return Intl.message(
+      'Security',
+      name: 'settings_security_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My account`
+  String get settings_account_title {
+    return Intl.message(
+      'My account',
+      name: 'settings_account_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Theme`
+  String get settings_theme_subtitle {
+    return Intl.message(
+      'Theme',
+      name: 'settings_theme_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dark mode`
+  String get settings_using_dark_mode {
+    return Intl.message(
+      'Dark mode',
+      name: 'settings_using_dark_mode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Light mode`
+  String get settings_using_light_mode {
+    return Intl.message(
+      'Light mode',
+      name: 'settings_using_light_mode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device theme`
+  String get settings_using_system_theme {
+    return Intl.message(
+      'Device theme',
+      name: 'settings_using_system_theme',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Black and white mode`
+  String get settings_personalize_black_and_white_title {
+    return Intl.message(
+      'Black and white mode',
+      name: 'settings_personalize_black_and_white_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language`
+  String get settings_language_subtitle {
+    return Intl.message(
+      'Language',
+      name: 'settings_language_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First name`
+  String get settings_username_subtitle {
+    return Intl.message(
+      'First name',
+      name: 'settings_username_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset`
+  String get settings_reset_subtitle {
+    return Intl.message(
+      'Reset',
+      name: 'settings_reset_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset settings`
+  String get settings_reset_button {
+    return Intl.message(
+      'Reset settings',
+      name: 'settings_reset_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rename`
+  String get settings_project_rename_button {
+    return Intl.message(
+      'Rename',
+      name: 'settings_project_rename_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rename`
+  String get settings_project_rename_subtitle {
+    return Intl.message(
+      'Rename',
+      name: 'settings_project_rename_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get settings_project_delete_subtitle {
+    return Intl.message(
+      'Delete',
+      name: 'settings_project_delete_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete this project`
+  String get settings_project_delete_button {
+    return Intl.message(
+      'Delete this project',
+      name: 'settings_project_delete_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get articles_search {
+    return Intl.message(
+      'Search',
+      name: 'articles_search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search a title, author`
+  String get articles_search_explain {
+    return Intl.message(
+      'Search a title, author',
+      name: 'articles_search_explain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No result`
+  String get articles_search_empty {
+    return Intl.message(
+      'No result',
+      name: 'articles_search_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Impossible to load article content`
+  String get articles_impossible_to_load_content {
+    return Intl.message(
+      'Impossible to load article content',
+      name: 'articles_impossible_to_load_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This article is corrupted`
+  String get articles_corrupted_file {
+    return Intl.message(
+      'This article is corrupted',
+      name: 'articles_corrupted_file',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} images found. Do you want to import them ?`
+  String articles_importer_images_found_many(Object count) {
+    return Intl.message(
+      '$count images found. Do you want to import them ?',
+      name: 'articles_importer_images_found_many',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `1 image found. Do you want to import it ?`
+  String get articles_importer_image_found_single {
+    return Intl.message(
+      '1 image found. Do you want to import it ?',
+      name: 'articles_importer_image_found_single',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import images`
+  String get articles_importer_import_images_title {
+    return Intl.message(
+      'Import images',
+      name: 'articles_importer_import_images_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import`
+  String get articles_importer_import_images_button {
+    return Intl.message(
+      'Import',
+      name: 'articles_importer_import_images_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't import`
+  String get articles_importer_dont_import_images_button {
+    return Intl.message(
+      'Don\'t import',
+      name: 'articles_importer_dont_import_images_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It's empty now. Import articles or write your own to fill the space !`
+  String get articles_empty_menu_page_text {
+    return Intl.message(
+      'It\'s empty now. Import articles or write your own to fill the space !',
+      name: 'articles_empty_menu_page_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New article`
+  String get articles_new_article {
+    return Intl.message(
+      'New article',
+      name: 'articles_new_article',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import articles`
+  String get articles_import_articles {
+    return Intl.message(
+      'Import articles',
+      name: 'articles_import_articles',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Export this article`
+  String get articles_export_articles {
+    return Intl.message(
+      'Export this article',
+      name: 'articles_export_articles',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose a category`
+  String get articles_export_articles_choose_category {
+    return Intl.message(
+      'Choose a category',
+      name: 'articles_export_articles_choose_category',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Article has not been exported`
+  String get articles_export_canceled {
+    return Intl.message(
+      'Article has not been exported',
+      name: 'articles_export_canceled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Article has been exported`
+  String get articles_export_confirmed {
+    return Intl.message(
+      'Article has been exported',
+      name: 'articles_export_confirmed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `See the location`
+  String get articles_export_confirmed_button {
+    return Intl.message(
+      'See the location',
+      name: 'articles_export_confirmed_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Creativity`
+  String get articles_creativity_title {
+    return Intl.message(
+      'Creativity',
+      name: 'articles_creativity_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Daily life`
+  String get articles_daily_life_title {
+    return Intl.message(
+      'Daily life',
+      name: 'articles_daily_life_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Professional`
+  String get articles_professional_title {
+    return Intl.message(
+      'Professional',
+      name: 'articles_professional_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wellness`
+  String get articles_wellness_title {
+    return Intl.message(
+      'Wellness',
+      name: 'articles_wellness_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Technology`
+  String get articles_technology_title {
+    return Intl.message(
+      'Technology',
+      name: 'articles_technology_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Education`
+  String get articles_education_title {
+    return Intl.message(
+      'Education',
+      name: 'articles_education_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Science`
+  String get articles_science_title {
+    return Intl.message(
+      'Science',
+      name: 'articles_science_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Philosophy`
+  String get articles_philosophy_title {
+    return Intl.message(
+      'Philosophy',
+      name: 'articles_philosophy_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nature`
+  String get articles_environment_title {
+    return Intl.message(
+      'Nature',
+      name: 'articles_environment_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Travel`
+  String get articles_travel_title {
+    return Intl.message(
+      'Travel',
+      name: 'articles_travel_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Finance`
+  String get articles_finance_title {
+    return Intl.message(
+      'Finance',
+      name: 'articles_finance_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Politics`
+  String get articles_politics_title {
+    return Intl.message(
+      'Politics',
+      name: 'articles_politics_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Food`
+  String get articles_food_title {
+    return Intl.message(
+      'Food',
+      name: 'articles_food_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saved`
+  String get articles_saved_title {
+    return Intl.message(
+      'Saved',
+      name: 'articles_saved_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Articles`
+  String get articles_my_articles_title {
+    return Intl.message(
+      'My Articles',
+      name: 'articles_my_articles_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Read`
+  String get articles_read_button {
+    return Intl.message(
+      'Read',
+      name: 'articles_read_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sources`
+  String get articles_sources_text {
+    return Intl.message(
+      'Sources',
+      name: 'articles_sources_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bookmark article`
+  String get articles_bookmark_semantic_text {
+    return Intl.message(
+      'Bookmark article',
+      name: 'articles_bookmark_semantic_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a text bloc`
+  String get articles_add_text_semantic_text {
+    return Intl.message(
+      'Add a text bloc',
+      name: 'articles_add_text_semantic_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a subtitle`
+  String get articles_add_subtitle_semantic_text {
+    return Intl.message(
+      'Add a subtitle',
+      name: 'articles_add_subtitle_semantic_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add an image`
+  String get articles_add_image_semantic_text {
+    return Intl.message(
+      'Add an image',
+      name: 'articles_add_image_semantic_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Previous`
+  String get articles_go_back_semantic_text {
+    return Intl.message(
+      'Previous',
+      name: 'articles_go_back_semantic_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Untitled`
+  String get articles_card_untitled {
+    return Intl.message(
+      'Untitled',
+      name: 'articles_card_untitled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a title...`
+  String get articles_title_hint {
+    return Intl.message(
+      'Enter a title...',
+      name: 'articles_title_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a subtitle...`
+  String get articles_subtitle_hint {
+    return Intl.message(
+      'Enter a subtitle...',
+      name: 'articles_subtitle_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter some text...`
+  String get articles_text_hint {
+    return Intl.message(
+      'Enter some text...',
+      name: 'articles_text_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter some code...`
+  String get articles_code_hint {
+    return Intl.message(
+      'Enter some code...',
+      name: 'articles_code_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copy`
+  String get articles_copy_text {
+    return Intl.message(
+      'Copy',
+      name: 'articles_copy_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add to notes`
+  String get articles_copy_to_notes_text {
+    return Intl.message(
+      'Add to notes',
+      name: 'articles_copy_to_notes_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add to article`
+  String get articles_add_to_content {
+    return Intl.message(
+      'Add to article',
+      name: 'articles_add_to_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add an image`
+  String get articles_images_add_button {
+    return Intl.message(
+      'Add an image',
+      name: 'articles_images_add_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change image`
+  String get articles_images_change_button {
+    return Intl.message(
+      'Change image',
+      name: 'articles_images_change_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `this article`
+  String get articles_card_delete_this_article {
+    return Intl.message(
+      'this article',
+      name: 'articles_card_delete_this_article',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open menu`
+  String get articles_bottom_menu_open_semantic_text {
+    return Intl.message(
+      'Open menu',
+      name: 'articles_bottom_menu_open_semantic_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close menu`
+  String get articles_bottom_menu_close_semantic_text {
+    return Intl.message(
+      'Close menu',
+      name: 'articles_bottom_menu_close_semantic_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sources`
+  String get articles_bottom_menu_sources_button {
+    return Intl.message(
+      'Sources',
+      name: 'articles_bottom_menu_sources_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Content`
+  String get articles_bottom_menu_content_button {
+    return Intl.message(
+      'Content',
+      name: 'articles_bottom_menu_content_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notes`
+  String get articles_bottom_menu_notes_button {
+    return Intl.message(
+      'Notes',
+      name: 'articles_bottom_menu_notes_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Indicate a source...`
+  String get articles_add_source_hint {
+    return Intl.message(
+      'Indicate a source...',
+      name: 'articles_add_source_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a source`
+  String get articles_add_source_button {
+    return Intl.message(
+      'Add a source',
+      name: 'articles_add_source_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No notes yet ! Click '{actionName}' on any article element to start taking some.`
+  String articles_no_notes(Object actionName) {
+    return Intl.message(
+      'No notes yet ! Click \'$actionName\' on any article element to start taking some.',
+      name: 'articles_no_notes',
+      desc: '',
+      args: [actionName],
+    );
+  }
+
+  /// `No sources provided yet! Remember to include sources for future readers.`
+  String get articles_no_sources {
+    return Intl.message(
+      'No sources provided yet! Remember to include sources for future readers.',
+      name: 'articles_no_sources',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This article is empty ! Start adding elements to move them.`
+  String get articles_no_content {
+    return Intl.message(
+      'This article is empty ! Start adding elements to move them.',
+      name: 'articles_no_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calculate reading time`
+  String get articles_calculate_reading_time {
+    return Intl.message(
+      'Calculate reading time',
+      name: 'articles_calculate_reading_time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a list`
+  String get articles_add_list_semantic_text {
+    return Intl.message(
+      'Add a list',
+      name: 'articles_add_list_semantic_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a code block`
+  String get articles_add_code_semantic_text {
+    return Intl.message(
+      'Add a code block',
+      name: 'articles_add_code_semantic_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Define language`
+  String get articles_define_language {
+    return Intl.message(
+      'Define language',
+      name: 'articles_define_language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Articles have been imported`
+  String get articles_imported {
+    return Intl.message(
+      'Articles have been imported',
+      name: 'articles_imported',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Articles have not been imported`
+  String get articles_not_imported {
+    return Intl.message(
+      'Articles have not been imported',
+      name: 'articles_not_imported',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close`
+  String get snackbar_cancel_button {
+    return Intl.message(
+      'Close',
+      name: 'snackbar_cancel_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You will need to restart the app to apply changes`
+  String get snackbar_restart_needed_text {
+    return Intl.message(
+      'You will need to restart the app to apply changes',
+      name: 'snackbar_restart_needed_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close app`
+  String get snackbar_restart_button {
+    return Intl.message(
+      'Close app',
+      name: 'snackbar_restart_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset settings ?`
+  String get snackbar_reset_text {
+    return Intl.message(
+      'Reset settings ?',
+      name: 'snackbar_reset_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset`
+  String get snackbar_reset_button {
+    return Intl.message(
+      'Reset',
+      name: 'snackbar_reset_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete {element} ?`
+  String snackbar_delete_element_text(Object element) {
+    return Intl.message(
+      'Delete $element ?',
+      name: 'snackbar_delete_element_text',
+      desc: '',
+      args: [element],
+    );
+  }
+
+  /// `Delete`
+  String get snackbar_delete_button {
+    return Intl.message(
+      'Delete',
+      name: 'snackbar_delete_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This article has been save`
+  String get snackbar_articles_saved {
+    return Intl.message(
+      'This article has been save',
+      name: 'snackbar_articles_saved',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This article has been unsaved`
+  String get snackbar_articles_unsaved {
+    return Intl.message(
+      'This article has been unsaved',
+      name: 'snackbar_articles_unsaved',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close`
+  String get snacbar_close_button {
+    return Intl.message(
+      'Close',
+      name: 'snacbar_close_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome back {user}`
+  String snackbar_welcome_back_text(Object user) {
+    return Intl.message(
+      'Welcome back $user',
+      name: 'snackbar_welcome_back_text',
+      desc: '',
+      args: [user],
+    );
+  }
+
+  /// `Thank's`
+  String get snackbar_welcome_back_button {
+    return Intl.message(
+      'Thank\'s',
+      name: 'snackbar_welcome_back_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home`
+  String get home_appbar {
+    return Intl.message(
+      'Home',
+      name: 'home_appbar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Good morning {username}`
+  String greeting_morning(Object username) {
+    return Intl.message(
+      'Good morning $username',
+      name: 'greeting_morning',
+      desc: '',
+      args: [username],
+    );
+  }
+
+  /// `Good afternoon {username}`
+  String greeting_afternoon(Object username) {
+    return Intl.message(
+      'Good afternoon $username',
+      name: 'greeting_afternoon',
+      desc: '',
+      args: [username],
+    );
+  }
+
+  /// `Good evening {username}`
+  String greeting_evening(Object username) {
+    return Intl.message(
+      'Good evening $username',
+      name: 'greeting_evening',
+      desc: '',
+      args: [username],
+    );
+  }
+
+  /// `Pick up where you left off`
+  String get home_pick_up {
+    return Intl.message(
+      'Pick up where you left off',
+      name: 'home_pick_up',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discover minddy`
+  String get home_discover {
+    return Intl.message(
+      'Discover minddy',
+      name: 'home_discover',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open this article`
+  String get home_articles_card_open_hint {
+    return Intl.message(
+      'Open this article',
+      name: 'home_articles_card_open_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New project`
+  String get submenu_new_project_title {
+    return Intl.message(
+      'New project',
+      name: 'submenu_new_project_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Project's name`
+  String get submenu_new_project_subtitle {
+    return Intl.message(
+      'Project\'s name',
+      name: 'submenu_new_project_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the project's name...`
+  String get submenu_new_project_hint {
+    return Intl.message(
+      'Enter the project\'s name...',
+      name: 'submenu_new_project_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create`
+  String get submenu_new_project_button {
+    return Intl.message(
+      'Create',
+      name: 'submenu_new_project_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, provide a project name`
+  String get submenu_new_project_errorMessage {
+    return Intl.message(
+      'Please, provide a project name',
+      name: 'submenu_new_project_errorMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get submenu_artilces_image_description_title {
+    return Intl.message(
+      'Description',
+      name: 'submenu_artilces_image_description_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Image description`
+  String get submenu_artilces_image_description_subtitle {
+    return Intl.message(
+      'Image description',
+      name: 'submenu_artilces_image_description_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Write the image description...`
+  String get submenu_artilces_image_description_hint {
+    return Intl.message(
+      'Write the image description...',
+      name: 'submenu_artilces_image_description_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Validate`
+  String get submenu_artilces_image_description_button {
+    return Intl.message(
+      'Validate',
+      name: 'submenu_artilces_image_description_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password hint`
+  String get submenu_welcome_password_mnemonic_sentence_title {
+    return Intl.message(
+      'Password hint',
+      name: 'submenu_welcome_password_mnemonic_sentence_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a password hint`
+  String get submenu_welcome_password_mnemonic_sentence_subtitle {
+    return Intl.message(
+      'Add a password hint',
+      name: 'submenu_welcome_password_mnemonic_sentence_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your password hint`
+  String get submenu_welcome_password_mnemonic_sentence_hint {
+    return Intl.message(
+      'Enter your password hint',
+      name: 'submenu_welcome_password_mnemonic_sentence_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This feature assists you in recalling your password if you forget it. It is not recommended to enter your password directly; please provide a hint instead.`
+  String get submenu_welcome_password_mnemonic_sentence_instructs {
+    return Intl.message(
+      'This feature assists you in recalling your password if you forget it. It is not recommended to enter your password directly; please provide a hint instead.',
+      name: 'submenu_welcome_password_mnemonic_sentence_instructs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your password`
+  String get submenu_unlock_subtitle_text {
+    return Intl.message(
+      'Enter your password',
+      name: 'submenu_unlock_subtitle_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show the password hint`
+  String get submenu_unlock_show_mnemonic {
+    return Intl.message(
+      'Show the password hint',
+      name: 'submenu_unlock_show_mnemonic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide the password hint`
+  String get submenu_unlock_hide_mnemonic {
+    return Intl.message(
+      'Hide the password hint',
+      name: 'submenu_unlock_hide_mnemonic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incorect password`
+  String get submenu_unlock_error_message_incorrect_password {
+    return Intl.message(
+      'Incorect password',
+      name: 'submenu_unlock_error_message_incorrect_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, enter your password`
+  String get submenu_unlock_error_message_please_enter_password {
+    return Intl.message(
+      'Please, enter your password',
+      name: 'submenu_unlock_error_message_please_enter_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unable to verify password.`
+  String get submenu_unlock_error_message_error_login {
+    return Intl.message(
+      'Unable to verify password.',
+      name: 'submenu_unlock_error_message_error_login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modify`
+  String get project_card_open_settings {
+    return Intl.message(
+      'Modify',
+      name: 'project_card_open_settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Duplicate`
+  String get project_card_duplicate {
+    return Intl.message(
+      'Duplicate',
+      name: 'project_card_duplicate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get project_card_delete {
+    return Intl.message(
+      'Delete',
+      name: 'project_card_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Work session duration`
+  String get tool_pomodoro_work_duration {
+    return Intl.message(
+      'Work session duration',
+      name: 'tool_pomodoro_work_duration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Work`
+  String get tool_pomodoro_work_session {
+    return Intl.message(
+      'Work',
+      name: 'tool_pomodoro_work_session',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Break session duration`
+  String get tool_pomodoro_break_duration {
+    return Intl.message(
+      'Break session duration',
+      name: 'tool_pomodoro_break_duration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Break`
+  String get tool_pomodoro_break_session {
+    return Intl.message(
+      'Break',
+      name: 'tool_pomodoro_break_session',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Repetition count`
+  String get tool_pomodoro_repetition_count {
+    return Intl.message(
+      'Repetition count',
+      name: 'tool_pomodoro_repetition_count',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Focus timer`
+  String get tool_pomodoro_focus_timer {
+    return Intl.message(
+      'Focus timer',
+      name: 'tool_pomodoro_focus_timer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start`
+  String get tool_pomodoro_start_button {
+    return Intl.message(
+      'Start',
+      name: 'tool_pomodoro_start_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stop`
+  String get tool_pomodoro_stop_button {
+    return Intl.message(
+      'Stop',
+      name: 'tool_pomodoro_stop_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Articles`
+  String get default_articles_articles_title {
+    return Intl.message(
+      'Articles',
+      name: 'default_articles_articles_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discover articles in minddy`
+  String get default_articles_articles_description {
+    return Intl.message(
+      'Discover articles in minddy',
+      name: 'default_articles_articles_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Key Feature`
+  String get default_articles_articles_first_subtitle {
+    return Intl.message(
+      'Key Feature',
+      name: 'default_articles_articles_first_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Articles are a key feature of Minddy. They offer an elegant and intuitive interface for writing and sharing your knowledge. With this feature, you can easily disseminate your insights and benefit the entire community.`
+  String get default_articles_articles_first_paragraph {
+    return Intl.message(
+      'Articles are a key feature of Minddy. They offer an elegant and intuitive interface for writing and sharing your knowledge. With this feature, you can easily disseminate your insights and benefit the entire community.',
+      name: 'default_articles_articles_first_paragraph',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Note Taking`
+  String get default_articles_articles_second_subtitle {
+    return Intl.message(
+      'Note Taking',
+      name: 'default_articles_articles_second_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can also take notes, which is ideal for saving texts or any other content you want to keep for later. This feature is perfect for capturing ideas or important information to revisit later.`
+  String get default_articles_articles_second_paragraph {
+    return Intl.message(
+      'You can also take notes, which is ideal for saving texts or any other content you want to keep for later. This feature is perfect for capturing ideas or important information to revisit later.',
+      name: 'default_articles_articles_second_paragraph',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Source Management`
+  String get default_articles_articles_third_subtitle {
+    return Intl.message(
+      'Source Management',
+      name: 'default_articles_articles_third_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All your sources are accessible via a menu located at the bottom of the page, allowing you to easily manage and retrieve your references.`
+  String get default_articles_articles_third_paragraph {
+    return Intl.message(
+      'All your sources are accessible via a menu located at the bottom of the page, allowing you to easily manage and retrieve your references.',
+      name: 'default_articles_articles_third_paragraph',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Adding and Managing Content`
+  String get default_articles_articles_fourth_subtitle {
+    return Intl.message(
+      'Adding and Managing Content',
+      name: 'default_articles_articles_fourth_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The buttons for adding elements to your article are located at the top of the page. To manage this content, use the menu at the bottom.`
+  String get default_articles_articles_fourth_paragraph {
+    return Intl.message(
+      'The buttons for adding elements to your article are located at the top of the page. To manage this content, use the menu at the bottom.',
+      name: 'default_articles_articles_fourth_paragraph',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Powerful Tool`
+  String get default_articles_articles_fifth_subtitle {
+    return Intl.message(
+      'Powerful Tool',
+      name: 'default_articles_articles_fifth_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `With articles, you have a powerful and user-friendly tool to organize, share, and find your knowledge with ease.`
+  String get default_articles_articles_fifth_paragraph {
+    return Intl.message(
+      'With articles, you have a powerful and user-friendly tool to organize, share, and find your knowledge with ease.',
+      name: 'default_articles_articles_fifth_paragraph',
+      desc: '',
+      args: [],
+    );
+  }
+}
+
+class AppLocalizationDelegate extends LocalizationsDelegate<S> {
+  const AppLocalizationDelegate();
+
+  List<Locale> get supportedLocales {
+    return const <Locale>[
+      Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'es'),
+      Locale.fromSubtags(languageCode: 'fr'),
+    ];
+  }
+
+  @override
+  bool isSupported(Locale locale) => _isSupported(locale);
+  @override
+  Future<S> load(Locale locale) => S.load(locale);
+  @override
+  bool shouldReload(AppLocalizationDelegate old) => false;
+
+  bool _isSupported(Locale locale) {
+    for (var supportedLocale in supportedLocales) {
+      if (supportedLocale.languageCode == locale.languageCode) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
