@@ -38,8 +38,8 @@ class MainApp extends StatelessWidget {
   // TODO : Section notes apart ?
   // TODO : Revoir système création project card pour aller vers la bonne page
   // TODO : Commencer la page des projets
-  // TODO : Faire la partie content dans les infos d'un projet
-  // TODO : Faire le module des tâches
+  // TODO : Faire le module des tâches`
+  // TODO : Faire fonction de calcul du nombre de modules
 
   @override
   Widget build(BuildContext context) {
