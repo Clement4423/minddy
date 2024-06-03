@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/articles/article_categories.dart';
-import 'package:minddy/system/interface/rooter_interface.dart';
+import 'package:minddy/system/interface/router_interface.dart';
 import 'package:minddy/ui/components/articles/articles_menu_view/articles_menu_search_view.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_menu_search_view_controller.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_menu_view_controller.dart';

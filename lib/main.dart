@@ -35,11 +35,10 @@ class MainApp extends StatelessWidget {
   // TODO : Terminer les paramètres
   // TODO : Voir comment gérer les données des différents modules + Comment les dupliquer
   // TODO : Tools note rapide ?
-  // TODO : Section notes apart ?
-  // TODO : Revoir système création project card pour aller vers la bonne page
   // TODO : Commencer la page des projets
-  // TODO : Faire le module des tâches`
-  // TODO : Faire fonction de calcul du nombre de modules
+  // TODO : Faire le module des tâches
+  // TODO : Faire calcul du nombre de module dans chaque container
+  // TODO : Faire fonction de calcul du nombre de containers
 
   @override
   Widget build(BuildContext context) {

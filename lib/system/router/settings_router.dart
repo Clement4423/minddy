@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minddy/system/interface/rooter_interface.dart';
+import 'package:minddy/system/interface/router_interface.dart';
 import 'package:minddy/ui/components/settings/settings_pages_controllers/settings_account_controller.dart';
 import 'package:minddy/ui/components/settings/settings_pages_controllers/settings_personalize_controller.dart';
 import 'package:minddy/ui/components/settings/settings_pages_controllers/settings_project_controller.dart';

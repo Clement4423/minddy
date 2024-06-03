@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minddy/system/interface/rooter_interface.dart';
+import 'package:minddy/system/interface/router_interface.dart';
 
 class SidebarNavigationController extends ChangeNotifier{
 
