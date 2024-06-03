@@ -29,6 +29,7 @@ class MainApp extends StatelessWidget {
   final String routeName;
   const MainApp(this.routeName, this. currentLocale, this.currentThemeMode, {super.key});
   // TODO : Documenter tout le code
+  // TODO / Faire les tests
   // TODO : Ajouter tous les articles de base
   // TODO : Gérer les raccourcis clavier
   // TODO : Faire thème high contrast et l'ajouter au main
@@ -36,9 +37,14 @@ class MainApp extends StatelessWidget {
   // TODO : Voir comment gérer les données des différents modules + Comment les dupliquer
   // TODO : Tools note rapide ?
   // TODO : Commencer la page des projets
-  // TODO : Faire le module des tâches
   // TODO : Faire calcul du nombre de module dans chaque container
   // TODO : Faire fonction de calcul du nombre de containers
+  // TODO : Faire la logique de sauvegarde
+  // TODO : Faire la logique du module des tâches
+  // TODO : Faire le module des tâches
+  // TODO : Faire l'orga des données pour le module des tâches
+  // TODO : Faire les widgets task et subtask
+
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,4 @@
 abstract class IProjectsModules {
-  double width = 400;
-  double height = 400;
+  late final double width;
+  late final double height;
 }

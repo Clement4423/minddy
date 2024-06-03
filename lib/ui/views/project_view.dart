@@ -5,6 +5,7 @@ import 'package:minddy/ui/components/appbar/custom_appbar.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar_controller.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_buttons_components/articles_menu_button.dart';
 import 'package:minddy/ui/components/calendar/calendar_button.dart';
+import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view.dart';
 import 'package:minddy/ui/components/projects/toolbar/projects_toolbar.dart';
 import 'package:minddy/ui/components/settings/settings_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -51,13 +52,33 @@ class _ProjectViewState extends State<ProjectView> {
         body: AnimatedBuilder(
           animation: widget._viewmodel,
           builder: (context, child) {
-            return const Stack(
+            return Stack(
               children: [
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ProjectsToolbar()
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 25),
+                      child: SizedBox(),
+                    ),
+                    Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ProjectsTasksModule(),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 25),
+                      child: SizedBox(),
+                    )
                   ],
                 ),
+                const ProjectsToolbar(),
                 ArticlesMenuButton(),
                 CalendarButton(),
               ],

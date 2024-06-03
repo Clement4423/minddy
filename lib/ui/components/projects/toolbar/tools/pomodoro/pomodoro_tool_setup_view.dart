@@ -59,7 +59,7 @@ class PomodoroToolSetupView extends StatelessWidget {
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(10), 
                     bottomRight: Radius.circular(10)),
-                  defaultValue: 4
+                  defaultValue: PomodoroToolController.repetitionCount
                 ),
               ],
             ),
