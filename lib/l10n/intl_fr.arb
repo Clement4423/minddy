@@ -1,4 +1,5 @@
 {
+    "@@locale": "fr",
     "system_files_copy_text" : "Copie",
     "appbar_go_home": "Retourner à l'accueil",
     "welcome_appbar" : "Bienvenue",
@@ -159,6 +160,12 @@
     "tool_pomodoro_focus_timer" : "Minuteur de concentration",
     "tool_pomodoro_start_button" : "Démarrer",
     "tool_pomodoro_stop_button" : "Arrêter",
+    "projects_module_help_text" : "Aide",
+    "projects_module_tasks_title" : "Tâches",
+    "projects_module_tasks_completed": "{totalTasksCount, plural, =0 {Aucune tâche} one {{checkedTasks}/{totalTasksCount} tâche terminée} other {{checkedTasks}/{totalTasksCount} tâches terminées}}",
+    "projects_module_tasks_task_title_hint" : "Titre",
+    "projects_module_tasks_task_add_subtask_tooltip" : "Ajouter une sous-tâche",
+    "projects_module_tasks_add_task_tooltip" : "Ajouter une nouvelle tâche",
     "default_articles_articles_title": "Articles",
     "default_articles_articles_description": "Découvrir les articles dans minddy",
     "default_articles_articles_first_subtitle": "Fonctionnalité Clé",

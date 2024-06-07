@@ -32,11 +32,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(username) => "Bonjour ${username}";
 
-  static String m5(element) => "Supprimer ${element} ?";
+  static String m5(totalTasksCount, checkedTasks) =>
+      "${Intl.plural(totalTasksCount, zero: 'Aucune tâche', one: '${checkedTasks}/${totalTasksCount} tâche terminée', other: '${checkedTasks}/${totalTasksCount} tâches terminées')}";
 
-  static String m6(user) => "Ravis de vous revoir ${user}";
+  static String m6(element) => "Supprimer ${element} ?";
 
-  static String m7(accountSettingName) =>
+  static String m7(user) => "Ravis de vous revoir ${user}";
+
+  static String m8(accountSettingName) =>
       "Vous pourrez toujours saisir votre prénom dans paramètres / ${accountSettingName}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -221,6 +224,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Dupiquer"),
         "project_card_open_settings":
             MessageLookupByLibrary.simpleMessage("Modifier"),
+        "projects_module_help_text":
+            MessageLookupByLibrary.simpleMessage("Aide"),
+        "projects_module_tasks_add_task_tooltip":
+            MessageLookupByLibrary.simpleMessage("Ajouter une nouvelle tâche"),
+        "projects_module_tasks_completed": m5,
+        "projects_module_tasks_task_add_subtask_tooltip":
+            MessageLookupByLibrary.simpleMessage("Ajouter une sous-tâche"),
+        "projects_module_tasks_task_title_hint":
+            MessageLookupByLibrary.simpleMessage("Titre"),
+        "projects_module_tasks_title":
+            MessageLookupByLibrary.simpleMessage("Tâches"),
         "settings_accessibility_title":
             MessageLookupByLibrary.simpleMessage("Accessibilité"),
         "settings_account_title":
@@ -265,7 +279,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Fermer"),
         "snackbar_delete_button":
             MessageLookupByLibrary.simpleMessage("Supprimer"),
-        "snackbar_delete_element_text": m5,
+        "snackbar_delete_element_text": m6,
         "snackbar_reset_button":
             MessageLookupByLibrary.simpleMessage("Réinitialiser"),
         "snackbar_reset_text": MessageLookupByLibrary.simpleMessage(
@@ -276,7 +290,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Vous devrez redémarrer l\'application pour appliquer les modifications"),
         "snackbar_welcome_back_button":
             MessageLookupByLibrary.simpleMessage("Merci"),
-        "snackbar_welcome_back_text": m6,
+        "snackbar_welcome_back_text": m7,
         "submenu_artilces_image_description_button":
             MessageLookupByLibrary.simpleMessage("Valider"),
         "submenu_artilces_image_description_hint":
@@ -352,7 +366,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Page suivante"),
         "welcome_pass_default_username":
             MessageLookupByLibrary.simpleMessage("Utilisateur"),
-        "welcome_pass_tooltip": m7,
+        "welcome_pass_tooltip": m8,
         "welcome_pass_username": MessageLookupByLibrary.simpleMessage("Passer"),
         "welcome_password_creation_confirm_hint":
             MessageLookupByLibrary.simpleMessage(

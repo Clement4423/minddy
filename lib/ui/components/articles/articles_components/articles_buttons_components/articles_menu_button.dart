@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/ui/components/articles/articles_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -27,7 +28,7 @@ class ArticlesMenuButton extends StatelessWidget {
                 // ignore: deprecated_member_use
                 icon: SvgPicture.asset("assets/logo/articles/logo_articles.svg", width: 30, color: theme.onPrimary,), 
                 label: Text(
-                  "Articles", 
+                  S.of(context).default_articles_articles_title, 
                   style: theme.titleMedium.
                   copyWith(color: theme.onPrimary),
                 ),

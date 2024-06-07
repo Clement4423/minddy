@@ -1,6 +1,7 @@
 import 'dart:io';
 
 abstract class IDocumentsDirectory {
+  String documentDirectoryPath = "";
   Future<bool> writeJsonFile(String fileRelativePath, Map<String, dynamic> content, {bool encrypt = true});
   Future<Map<String, dynamic>?> readJsonFile(String fileRelativePath, {bool decrypt = true});
   Future<bool> createFile(String fileRelativePath);

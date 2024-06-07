@@ -5,12 +5,13 @@ class CustomTooltip extends StatelessWidget {
   final String message;
   final Widget child;
   final Duration? waitDuration;
-  const CustomTooltip({super.key, required this.message, required this.child, this.waitDuration});
+  final int lengthTreshold;
+  const CustomTooltip({super.key, required this.message, required this.child, this.waitDuration, this.lengthTreshold = 1});
 
   @override
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
-    return message.length > 1 
+    return message.length > lengthTreshold
     ? Tooltip(
       richMessage: WidgetSpan(
         alignment: PlaceholderAlignment.baseline,

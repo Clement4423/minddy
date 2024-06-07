@@ -83,8 +83,8 @@ class AppProject {
   }
 
   static Future<void> _createFolders(String projectFolderName, String folder) async {
-    final String path =  "projects/$projectFolderName/$folder/data.json";
-    await StaticVariables.fileSource.createFile(path);
+    final String path =  "projects/$projectFolderName/$folder";
+    await StaticVariables.fileSource.createFolder(path);
   }
 
   static Future<bool> _createInfoFile(String projectName, String projectFolderName) async {

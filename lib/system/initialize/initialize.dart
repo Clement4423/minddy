@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/system/files/config.dart';
 import 'package:minddy/system/files/app_logs.dart';
+import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 /// This method will initlalize all apps components, so that later on, they will work properly.
 Future<bool> initializeApp() async {
   bool isConfigFileLoaded = await AppConfig.loadConfigFile();
   if (isConfigFileLoaded) {
+    StaticVariables.fileSource.documentDirectoryPath = await StaticVariables.fileSource.getAppDirectoryPath();
     bool isThemeInitialized = await AppTheme.initializeTheme();
     if (isThemeInitialized) {
       return true;

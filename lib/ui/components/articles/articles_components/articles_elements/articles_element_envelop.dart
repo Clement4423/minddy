@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/articles/articles_notes.dart';
-import 'package:minddy/system/interface/articles_write_element_interface.dart';
+import 'package:minddy/system/interface/articles_element_interface.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class ArticlesElemementEnvelop extends StatefulWidget {

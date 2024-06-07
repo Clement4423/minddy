@@ -1,4 +1,5 @@
 {
+    "@@locale": "es",
     "system_files_copy_text": "Copiar",
     "appbar_go_home" : "Retorno al inicio",
     "welcome_appbar": "Bienvenido",
@@ -159,6 +160,12 @@
     "tool_pomodoro_focus_timer": "Temporizador de enfoque",
     "tool_pomodoro_start_button": "Iniciar",
     "tool_pomodoro_stop_button": "Detener",
+    "projects_module_help_text": "Ayuda",
+    "projects_module_tasks_title": "Tareas",
+    "projects_module_tasks_completed": "{totalTasksCount, plural, =0 {Sin tareas} una {{checkedTasks}/{totalTasksCount} tarea completada} otras {{checkedTasks}/{totalTasksCount} tareas completadas}}",
+    "projects_module_tasks_task_title_hint": "Título",
+    "projects_module_tasks_task_add_subtask_tooltip": "Agregar una subtarea",
+    "projects_module_tasks_add_task_tooltip": "Agregar una nueva tarea",
     "default_articles_articles_title": "Artículos",
     "default_articles_articles_description": "Descubre artículos en minddy",
     "default_articles_articles_first_subtitle": "Función Clave",

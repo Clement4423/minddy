@@ -1650,6 +1650,70 @@ class S {
     );
   }
 
+  /// `Help`
+  String get projects_module_help_text {
+    return Intl.message(
+      'Help',
+      name: 'projects_module_help_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tasks`
+  String get projects_module_tasks_title {
+    return Intl.message(
+      'Tasks',
+      name: 'projects_module_tasks_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{totalTasksCount, plural, =0 {No tasks} one {{checkedTasks}/{totalTasksCount} task completed} other {{checkedTasks}/{totalTasksCount} tasks completed}}`
+  String projects_module_tasks_completed(
+      num totalTasksCount, Object checkedTasks) {
+    return Intl.plural(
+      totalTasksCount,
+      zero: 'No tasks',
+      one: '$checkedTasks/$totalTasksCount task completed',
+      other: '$checkedTasks/$totalTasksCount tasks completed',
+      name: 'projects_module_tasks_completed',
+      desc: '',
+      args: [totalTasksCount, checkedTasks],
+    );
+  }
+
+  /// `Title`
+  String get projects_module_tasks_task_title_hint {
+    return Intl.message(
+      'Title',
+      name: 'projects_module_tasks_task_title_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a subtask`
+  String get projects_module_tasks_task_add_subtask_tooltip {
+    return Intl.message(
+      'Add a subtask',
+      name: 'projects_module_tasks_task_add_subtask_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a new task`
+  String get projects_module_tasks_add_task_tooltip {
+    return Intl.message(
+      'Add a new task',
+      name: 'projects_module_tasks_add_task_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Articles`
   String get default_articles_articles_title {
     return Intl.message(

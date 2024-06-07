@@ -1,4 +1,5 @@
 {
+    "@@locale": "en",
     "system_files_copy_text" : "Copy",
     "appbar_go_home": "Go back home",
     "welcome_appbar" : "Welcome",
@@ -159,6 +160,12 @@
     "tool_pomodoro_focus_timer" : "Focus timer",
     "tool_pomodoro_start_button" : "Start",
     "tool_pomodoro_stop_button" : "Stop",
+    "projects_module_help_text" : "Help",
+    "projects_module_tasks_title" : "Tasks",
+    "projects_module_tasks_completed": "{totalTasksCount, plural, =0 {No tasks} one {{checkedTasks}/{totalTasksCount} task completed} other {{checkedTasks}/{totalTasksCount} tasks completed}}",
+    "projects_module_tasks_task_title_hint" : "Title",
+    "projects_module_tasks_task_add_subtask_tooltip" : "Add a subtask",
+    "projects_module_tasks_add_task_tooltip" : "Add a new task",
     "default_articles_articles_title": "Articles",
     "default_articles_articles_description": "Discover articles in minddy",
     "default_articles_articles_first_subtitle": "Key Feature",

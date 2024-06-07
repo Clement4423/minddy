@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/files/app_images.dart';
-import 'package:minddy/system/interface/articles_write_element_interface.dart';
+import 'package:minddy/system/interface/articles_element_interface.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_image_fullview.dart';
 import 'package:minddy/ui/components/custom_elements/custom_text_button.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';

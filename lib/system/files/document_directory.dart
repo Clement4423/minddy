@@ -4,7 +4,6 @@ import 'package:minddy/system/articles/app_articles.dart';
 import 'package:minddy/system/files/encryption.dart';
 import 'package:minddy/system/interface/document_directory_interface.dart';
 import 'package:path/path.dart' as path;
-
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -234,4 +233,7 @@ class AppDocumentsDirectory implements IDocumentsDirectory{
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     return "${documentDirectory.path}/minddy";
   }
+  
+  @override
+  late String documentDirectoryPath;
 }

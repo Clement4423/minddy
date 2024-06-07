@@ -39,11 +39,11 @@ class MainApp extends StatelessWidget {
   // TODO : Commencer la page des projets
   // TODO : Faire calcul du nombre de module dans chaque container
   // TODO : Faire fonction de calcul du nombre de containers
-  // TODO : Faire la logique de sauvegarde
   // TODO : Faire la logique du module des tâches
   // TODO : Faire le module des tâches
-  // TODO : Faire l'orga des données pour le module des tâches
   // TODO : Faire les widgets task et subtask
+  // TODO : Faire l'orga des données pour le module des tâches
+  // TODO : Faire la logique de sauvegarde
 
 
   @override
