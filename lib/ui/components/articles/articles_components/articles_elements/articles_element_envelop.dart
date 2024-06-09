@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/articles/articles_notes.dart';
+import 'package:minddy/system/notes/notes.dart';
 import 'package:minddy/system/interface/articles_element_interface.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -90,9 +90,13 @@ class _ArticlesElemementEnvelopState extends State<ArticlesElemementEnvelop> {
                     // Copy (Notes)
                     PopupMenuItem(
                       onTap: () {
+                        if (widget.child.data is List) {
+                          AppNotes.addNote(widget.child.data);
+                          return;
+                        }
                         String dataAsString = widget.child.data as String;
                         if (dataAsString.isNotEmpty) {
-                          AppArticlesNotes.addNote(dataAsString);
+                          AppNotes.addNote(dataAsString);
                         }
                       },
                       child: Row(

@@ -1650,6 +1650,26 @@ class S {
     );
   }
 
+  /// `New module`
+  String get projects_add_module_tooltip {
+    return Intl.message(
+      'New module',
+      name: 'projects_add_module_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get projects_save_project_button_tooltip {
+    return Intl.message(
+      'Save',
+      name: 'projects_save_project_button_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Help`
   String get projects_module_help_text {
     return Intl.message(

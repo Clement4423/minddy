@@ -219,6 +219,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Duplicate"),
         "project_card_open_settings":
             MessageLookupByLibrary.simpleMessage("Modify"),
+        "projects_add_module_tooltip":
+            MessageLookupByLibrary.simpleMessage("New module"),
         "projects_module_help_text":
             MessageLookupByLibrary.simpleMessage("Help"),
         "projects_module_tasks_add_task_tooltip":
@@ -230,6 +232,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Title"),
         "projects_module_tasks_title":
             MessageLookupByLibrary.simpleMessage("Tasks"),
+        "projects_save_project_button_tooltip":
+            MessageLookupByLibrary.simpleMessage("Save"),
         "settings_accessibility_title":
             MessageLookupByLibrary.simpleMessage("Accessibility"),
         "settings_account_title":

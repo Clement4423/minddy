@@ -160,6 +160,8 @@
     "tool_pomodoro_focus_timer": "Temporizador de enfoque",
     "tool_pomodoro_start_button": "Iniciar",
     "tool_pomodoro_stop_button": "Detener",
+    "projects_add_module_tooltip": "Nuevo módulo",
+    "projects_save_project_button_tooltip": "Guardar",
     "projects_module_help_text": "Ayuda",
     "projects_module_tasks_title": "Tareas",
     "projects_module_tasks_completed": "{totalTasksCount, plural, =0 {Sin tareas} una {{checkedTasks}/{totalTasksCount} tarea completada} otras {{checkedTasks}/{totalTasksCount} tareas completadas}}",

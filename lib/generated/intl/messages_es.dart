@@ -224,6 +224,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Duplicar"),
         "project_card_open_settings":
             MessageLookupByLibrary.simpleMessage("Modificar"),
+        "projects_add_module_tooltip":
+            MessageLookupByLibrary.simpleMessage("Nuevo módulo"),
         "projects_module_help_text":
             MessageLookupByLibrary.simpleMessage("Ayuda"),
         "projects_module_tasks_add_task_tooltip":
@@ -235,6 +237,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Título"),
         "projects_module_tasks_title":
             MessageLookupByLibrary.simpleMessage("Tareas"),
+        "projects_save_project_button_tooltip":
+            MessageLookupByLibrary.simpleMessage("Guardar"),
         "settings_accessibility_title":
             MessageLookupByLibrary.simpleMessage("Accesibilidad"),
         "settings_account_title":

@@ -43,7 +43,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 8),
                           child: IconButton(
-                            onPressed: () {_controller.goToHomePage(context);},
+                            onPressed: () async {
+                              if (_controller.onHomeButtonPressed != null) {
+                                await _controller.onHomeButtonPressed!();
+                              }
+                              if (context.mounted) {
+                                _controller.goToHomePage(context);
+                              }
+                            },
                             style: ButtonThemes.secondaryButtonStyle(context),
                             // ignore: deprecated_member_use
                             icon: SvgPicture.asset("assets/custom_icons/home_icon.svg", width: 20, height: 20, color: theme.onPrimary),

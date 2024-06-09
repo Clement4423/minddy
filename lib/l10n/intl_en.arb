@@ -160,6 +160,8 @@
     "tool_pomodoro_focus_timer" : "Focus timer",
     "tool_pomodoro_start_button" : "Start",
     "tool_pomodoro_stop_button" : "Stop",
+    "projects_add_module_tooltip": "New module",
+    "projects_save_project_button_tooltip" : "Save",
     "projects_module_help_text" : "Help",
     "projects_module_tasks_title" : "Tasks",
     "projects_module_tasks_completed": "{totalTasksCount, plural, =0 {No tasks} one {{checkedTasks}/{totalTasksCount} task completed} other {{checkedTasks}/{totalTasksCount} tasks completed}}",

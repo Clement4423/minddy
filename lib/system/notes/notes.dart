@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 
-class AppArticlesNotes {
+class AppNotes {
 
-  static const String _articlesNotesFilePath = "ressources/articles_notes/articles_notes.json";
+  static const String _notesFilePath = "ressources/notes/notes.json";
 
   static const Map<String, dynamic> _defaultNotesFileContent = {
     "notes" : [], 
@@ -74,7 +74,7 @@ static Future<bool> deleteNote(dynamic noteToRemove) async {
   }
 
   static Future<Map<String, dynamic>> _openNotesFile() async {
-    Map<String, dynamic>? allNotes = await StaticVariables.fileSource.readJsonFile(_articlesNotesFilePath);
+    Map<String, dynamic>? allNotes = await StaticVariables.fileSource.readJsonFile(_notesFilePath);
     if (allNotes != null) {
       return allNotes;
     }
@@ -85,11 +85,11 @@ static Future<bool> deleteNote(dynamic noteToRemove) async {
   }
 
   static Future<void> _createNotesFile() async {
-    await StaticVariables.fileSource.createFile(_articlesNotesFilePath);
-    await StaticVariables.fileSource.writeJsonFile(_articlesNotesFilePath, _defaultNotesFileContent);
+    await StaticVariables.fileSource.createFile(_notesFilePath);
+    await StaticVariables.fileSource.writeJsonFile(_notesFilePath, _defaultNotesFileContent);
   }
   
   static Future<bool> _saveNotesFile(Map<String, dynamic> newContent) async {
-    return await StaticVariables.fileSource.writeJsonFile(_articlesNotesFilePath, newContent);
+    return await StaticVariables.fileSource.writeJsonFile(_notesFilePath, newContent);
   }
 }

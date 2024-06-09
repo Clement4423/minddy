@@ -26,14 +26,17 @@ class ProjectsTasksModuleController extends ChangeNotifier implements IProjectMo
 
   late final File _dataFile;
 
-
   List<ProjectsTasksModuleTaskModel> tasks = [];
-
   List<ProjectTaskElement> tasksWidgets = [];
 
   ProjectsTasksModuleController({required this.projectPath, required this.id}) {
     _dataFile = File("${StaticVariables.fileSource.documentDirectoryPath}/$projectPath/${ProjectsModules.tasks.name}/$id.json");
-    getTasks().then((value) => notifyListeners());
+    initialize();
+  }
+
+  Future<void> initialize() async {
+    await getTasks();
+    notifyListeners();
   }
 
   Future<void> newTask() async {
@@ -53,7 +56,7 @@ class ProjectsTasksModuleController extends ChangeNotifier implements IProjectMo
       Map<String, dynamic>? data = await getModuleData(id.toString(), ProjectsModules.tasks, projectPath);
       if (data != null) {
         for (Map task in data['tasks']) {
-          ProjectsTasksModuleTaskModel? taskModel = _converMapToTaskModel(task);
+          ProjectsTasksModuleTaskModel? taskModel = await _converMapToTaskModel(task);
           if (taskModel != null) {
             tasksWidgets.add(ProjectTaskElement(data: taskModel, key: UniqueKey(), controller: this));
             tasks.add(taskModel);
@@ -62,10 +65,10 @@ class ProjectsTasksModuleController extends ChangeNotifier implements IProjectMo
         return;
       }
       return;
-    } catch(e) {
+    } catch (e) {
       await AppLogs.writeError(e, "projects_modules_tasks_view_controller.dart - getTasks");
       return;
-    } 
+    }
   }
 
   Future<void> completedOneTask() async {
@@ -81,7 +84,7 @@ class ProjectsTasksModuleController extends ChangeNotifier implements IProjectMo
 
   Future<void> deleteSubtask(Key parentTaskKey, Key subtaskKey) async {
     tasksWidgets.firstWhere((element) => element.key == parentTaskKey).data.subtasks.removeWhere((element) => element.key == subtaskKey);
-    savingMethod();
+    await savingMethod();
     notifyListeners();
   }
 
@@ -94,12 +97,15 @@ class ProjectsTasksModuleController extends ChangeNotifier implements IProjectMo
 
   Future<void> newSubtask(Key key) async {
     tasksWidgets.firstWhere((element) => element.key == key).data.subtasks.add(ProjectsTasksModuleSubTaskModel(title: '', isChecked: false, key: UniqueKey()));
-    savingMethod();
+    await savingMethod();
+    notifyListeners();
   }
 
   List<Widget> buildSubtasks(Key key) {
     List<Widget> subtasksList = [];
-    for (ProjectsTasksModuleSubTaskModel subtask in tasksWidgets.firstWhere((element) => element.key == key, orElse: () {return ProjectTaskElement(data: ProjectsTasksModuleTaskModel(title: "", isChecked: false, subtasks: []), controller: this);}).data.subtasks) {
+    for (ProjectsTasksModuleSubTaskModel subtask in tasksWidgets.firstWhere((element) => element.key == key, orElse: () {
+      return ProjectTaskElement(data: ProjectsTasksModuleTaskModel(title: "", isChecked: false, subtasks: []), controller: this);
+    }).data.subtasks) {
       subtasksList.add(ProjectSubTaskElement(data: subtask, controller: this, key: subtask.key, parentTaskKey: key));
     }
     return subtasksList;
@@ -109,49 +115,55 @@ class ProjectsTasksModuleController extends ChangeNotifier implements IProjectMo
     try {
       List<Map> allTasks = [];
       for (ProjectTaskElement task in tasksWidgets) {
-        allTasks.add({'title': task.data.title, 'isChecked': task.data.isChecked, 'subtasks': _convertSubTaskModelToMap(task.data.subtasks)});
+        allTasks.add({
+          'title': task.data.title,
+          'isChecked': task.data.isChecked,
+          'subtasks': await _convertSubTaskModelToMap(task.data.subtasks),
+        });
       }
-
       Map<String, dynamic> map = {'tasks': allTasks};
       return map;
-    } catch(e) {
+    } catch (e) {
       await AppLogs.writeError(e, "projects_modules_tasks_view_controller.dart - _convertTaskModelToMap");
       return {'tasks': []};
     }
   }
 
-  List<Map> _convertSubTaskModelToMap(List<ProjectsTasksModuleSubTaskModel> subtasks) {
+  Future<List<Map>> _convertSubTaskModelToMap(List<ProjectsTasksModuleSubTaskModel> subtasks) async {
     try {
       List<Map> list = [];
       for (ProjectsTasksModuleSubTaskModel subtask in subtasks) {
         list.add({'title': subtask.title, 'isChecked': subtask.isChecked});
       }
-    return list;
-    } catch(e) {
+      return list;
+    } catch (e) {
+      await AppLogs.writeError(e, "projects_modules_tasks_view_controller.dart - _convertSubTaskModelToMap");
       return [];
     }
   }
 
-  ProjectsTasksModuleTaskModel? _converMapToTaskModel(Map task) {
+  Future<ProjectsTasksModuleTaskModel?> _converMapToTaskModel(Map task) async {
     try {
       return ProjectsTasksModuleTaskModel(
-        title: task['title'], 
-        isChecked: task['isChecked'], 
-        subtasks: _convertMapToSubTaskModel(task['subtasks'])
+        title: task['title'],
+        isChecked: task['isChecked'],
+        subtasks: await _convertMapToSubTaskModel(task['subtasks']),
       );
-    } catch(e) {
+    } catch (e) {
+      await AppLogs.writeError(e, "projects_modules_tasks_view_controller.dart - _converMapToTaskModel");
       return null;
     }
   }
 
-  List<ProjectsTasksModuleSubTaskModel> _convertMapToSubTaskModel(List subtasks) {
+  Future<List<ProjectsTasksModuleSubTaskModel>> _convertMapToSubTaskModel(List subtasks) async {
     try {
       List<ProjectsTasksModuleSubTaskModel> list = [];
       for (Map subtask in subtasks) {
         list.add(ProjectsTasksModuleSubTaskModel(title: subtask['title'], isChecked: subtask['isChecked'], key: UniqueKey()));
       }
-    return list;
-    } catch(e) {
+      return list;
+    } catch (e) {
+      await AppLogs.writeError(e, "projects_modules_tasks_view_controller.dart - _convertMapToSubTaskModel");
       return [];
     }
   }

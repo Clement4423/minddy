@@ -224,6 +224,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Dupiquer"),
         "project_card_open_settings":
             MessageLookupByLibrary.simpleMessage("Modifier"),
+        "projects_add_module_tooltip":
+            MessageLookupByLibrary.simpleMessage("Nouveau module"),
         "projects_module_help_text":
             MessageLookupByLibrary.simpleMessage("Aide"),
         "projects_module_tasks_add_task_tooltip":
@@ -235,6 +237,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Titre"),
         "projects_module_tasks_title":
             MessageLookupByLibrary.simpleMessage("Tâches"),
+        "projects_save_project_button_tooltip":
+            MessageLookupByLibrary.simpleMessage("Sauvegarder"),
         "settings_accessibility_title":
             MessageLookupByLibrary.simpleMessage("Accessibilité"),
         "settings_account_title":
@@ -244,7 +248,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings_personalize_black_and_white_title":
             MessageLookupByLibrary.simpleMessage("Mode noir et blanc"),
         "settings_personalize_title":
-            MessageLookupByLibrary.simpleMessage("Personnalisez"),
+            MessageLookupByLibrary.simpleMessage("Personnaliser"),
         "settings_project_delete_button":
             MessageLookupByLibrary.simpleMessage("Supprimer ce projet"),
         "settings_project_delete_subtitle":

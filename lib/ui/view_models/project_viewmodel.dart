@@ -43,9 +43,9 @@ class ProjectViewModel extends ChangeNotifier {
         projectPath: projectInfo.path
       )
     );
-    notifyListeners();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await saveProject();
+    await saveProject();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
     });
   }
 
@@ -85,9 +85,9 @@ class ProjectViewModel extends ChangeNotifier {
       modulesModels.add(ProjectModuleModel(type: moduleToDuplicate.type, id: newId, projectPath: moduleToDuplicate.projectPath));
 
       await _duplicateModuleData(id, moduleToDuplicate.projectPath, moduleToDuplicate.type, newId);
-      notifyListeners();
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await saveProject();
+      await saveProject();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
       });
     } catch(e) {
       await AppLogs.writeError(e, "project_viewmodel.dart - _duplicateModuleData");
@@ -119,9 +119,9 @@ class ProjectViewModel extends ChangeNotifier {
       if (isRemoved) {
         await _deleteModuleData(id, moduleToRemove.projectPath, moduleToRemove.type);
       }
-      notifyListeners();
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await saveProject();
+      await saveProject();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
       });
     } catch(e) {
       await AppLogs.writeError(e, "project_viewmodel.dart - deleteModule");

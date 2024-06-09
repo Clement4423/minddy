@@ -7,7 +7,8 @@ Future<Map<String, dynamic>?> getModuleData(String moduleId, ProjectsModules mod
   if (moduleData != null) {
     return moduleData;
   } else {
-    await AppLogs.writeError("Impossible to read the module data, path was $projectPath/${moduleType.name}/$moduleId.json", "get_module_data.dart - getModuleData");
+    String errorMessage = "Impossible to read the module data, path was $projectPath/${moduleType.name}/$moduleId.json";
+    await AppLogs.writeError(errorMessage, "get_module_data.dart - getModuleData");
     return null;
   }
 }

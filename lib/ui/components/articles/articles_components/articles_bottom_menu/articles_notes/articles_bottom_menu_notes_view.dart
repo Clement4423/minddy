@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/articles/articles_notes.dart';
+import 'package:minddy/system/notes/notes.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_bottom_menu/articles_notes/articles_note_element.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_bottom_menu/articles_notes/articles_note_image_element.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_bottom_menu/articles_notes/articles_note_list_element.dart';
@@ -17,11 +17,11 @@ class ArticlesBottomMenuNotesViewController extends ChangeNotifier {
 
   
   Future<List> getNotes() async {
-    return await AppArticlesNotes.getNotes();
+    return await AppNotes.getNotes();
   }
 
   deleteNote(dynamic note) async {
-    await AppArticlesNotes.deleteNote(note);
+    await AppNotes.deleteNote(note);
   }
 
   notesChanged() async {

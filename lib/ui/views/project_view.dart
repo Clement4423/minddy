@@ -5,6 +5,7 @@ import 'package:minddy/system/model/projects_modules.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar_controller.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_buttons_components/articles_menu_button.dart';
+import 'package:minddy/ui/components/articles/articles_view/articles_view.dart';
 import 'package:minddy/ui/components/calendar/calendar_button.dart';
 import 'package:minddy/ui/components/projects/toolbar/projects_toolbar.dart';
 import 'package:minddy/ui/components/settings/settings_menu.dart';
@@ -34,9 +35,15 @@ class _ProjectViewState extends State<ProjectView> {
     return Container(
       decoration: BoxDecoration(
         color: theme.background,
-        image: const DecorationImage(
+        image: DecorationImage(
          image: AssetImage(
-          "assets/background/backround_project.PNG"
+          AppTheme.isUsingBWMode 
+            ? theme.brightness == Brightness.light 
+              ? "assets/background/background_project_blue.PNG"
+              : "assets/background/background_project_dark.PNG"
+            : theme.brightness == Brightness.light 
+              ? "assets/background/background_project_blue.PNG"
+              : "assets/background/background_project_dark.PNG"
          ),
          fit: BoxFit.cover,
         )
@@ -44,6 +51,7 @@ class _ProjectViewState extends State<ProjectView> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: CustomAppBar(CustomAppBarController(
+          onHomeButtonPressed: widget._viewmodel.saveProject,
           widget._viewmodel.projectInfo.name,
           true,
               [
@@ -55,60 +63,67 @@ class _ProjectViewState extends State<ProjectView> {
                 ),
                 CustomAppBarButtonModel(
                   icon: Icons.add_box_outlined, 
-                  semanticText: "New module",
+                  semanticText: S.of(context).projects_add_module_tooltip,
                   isPrimary: true, 
                   action: () async {await _showAddModuleMenu(context, widget._viewmodel);}
                 ),
                 CustomAppBarButtonModel(
                   icon: Icons.save_rounded, 
-                  semanticText: "Save",
+                  semanticText: S.of(context).projects_save_project_button_tooltip,
                   isPrimary: true, 
                   action: () async {await widget._viewmodel.saveProject();}
                 ),              ] 
           )),
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            return AnimatedBuilder(
-              animation: widget._viewmodel,
-              builder: (context, child) {
-                widget._viewmodel.buildContainers(constraints.biggest);
-                return Stack(
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(bottom: 25),
-                          child: SizedBox(),
-                        ),
-                        Expanded(
-                          child: PageView.builder(
-                            itemCount: widget._viewmodel.modulesContainer.length,
-                            itemBuilder: (context, index) {
-                              return Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  ...widget._viewmodel.modulesContainer[index].modules,
-                                ],
-                              );
-                            },
+        body: CallbackShortcuts(
+          bindings: {
+            saveActivator:() async {
+              await widget._viewmodel.saveProject();
+            }
+          },
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return AnimatedBuilder(
+                animation: widget._viewmodel,
+                builder: (context, child) {
+                  widget._viewmodel.buildContainers(constraints.biggest);
+                  return Stack(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(bottom: 25),
+                            child: SizedBox(),
                           ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(bottom: 25),
-                          child: SizedBox(),
-                        )
-                      ],
-                    ),
-                    const ProjectsToolbar(),
-                    const ArticlesMenuButton(),
-                    const CalendarButton(),
-                  ],
-                );
-              }
-            );
-          }
+                          Expanded(
+                            child: PageView.builder(
+                              itemCount: widget._viewmodel.modulesContainer.length,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ...widget._viewmodel.modulesContainer[index].modules,
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(bottom: 25),
+                            child: SizedBox(),
+                          )
+                        ],
+                      ),
+                      const ProjectsToolbar(),
+                      const ArticlesMenuButton(),
+                      const CalendarButton(),
+                    ],
+                  );
+                }
+              );
+            }
+          ),
         ),
       ),
     );
@@ -125,6 +140,9 @@ Future<dynamic> _showAddModuleMenu(BuildContext context, ProjectViewModel viewMo
   showMenu(
     context: context,
     color: theme.primary,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(13)
+    ),
     position: RelativeRect.fromLTRB(
       double.infinity,
       offset.dy + menuHeight - iconSize, // top

@@ -14,12 +14,12 @@ import 'package:minddy/ui/components/articles/articles_components/articles_botto
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-ShortcutActivator saveArticleActivator = SingleActivator(
+ShortcutActivator saveActivator = SingleActivator(
   LogicalKeyboardKey.keyS, 
   meta: Platform.isMacOS 
     ? true 
     : false,
-  control: Platform.isWindows 
+  control: Platform.isWindows || Platform.isLinux
     ? true
     : false
   );
@@ -41,7 +41,6 @@ Future<dynamic> showArticle(ArticlesViewController controller, BuildContext cont
     return showDialog(
       barrierDismissible: false,
       context: context,
-
       builder: (BuildContext context) {
         return Dismissible(
           key: UniqueKey(),
@@ -84,7 +83,7 @@ Future<dynamic> showArticle(ArticlesViewController controller, BuildContext cont
                           // Top bar with actions and title;
                           CallbackShortcuts(
                             bindings: <ShortcutActivator, VoidCallback>{
-                              saveArticleActivator:() {
+                              saveActivator:() {
                                 controller.saveArticle();
                               }
                             },

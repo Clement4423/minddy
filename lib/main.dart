@@ -34,16 +34,11 @@ class MainApp extends StatelessWidget {
   // TODO : Gérer les raccourcis clavier
   // TODO : Faire thème high contrast et l'ajouter au main
   // TODO : Terminer les paramètres
-  // TODO : Voir comment gérer les données des différents modules + Comment les dupliquer
   // TODO : Tools note rapide ?
-  // TODO : Commencer la page des projets
-  // TODO : Faire calcul du nombre de module dans chaque container
-  // TODO : Faire fonction de calcul du nombre de containers
-  // TODO : Faire la logique du module des tâches
-  // TODO : Faire le module des tâches
-  // TODO : Faire les widgets task et subtask
-  // TODO : Faire l'orga des données pour le module des tâches
-  // TODO : Faire la logique de sauvegarde
+  // TODO : Terminer la page des projets
+  // TODO : Faire les fonds de projets pour le mode noir et blanc
+  // TODO : Faire le module des notes (code)
+  // TODO : Faire le module des notes (design)
 
 
   @override
