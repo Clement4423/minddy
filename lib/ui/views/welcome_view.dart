@@ -3,7 +3,7 @@ import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/custom_appbar_button_model.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar_controller.dart';
-import 'package:minddy/ui/components/custom_elements/custom_underlined_text_button.dart';
+import 'package:minddy/ui/components/custom_components/custom_underlined_text_button.dart';
 import 'package:minddy/ui/components/settings/settings_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:minddy/ui/view_models/welcome_viewmodel.dart';

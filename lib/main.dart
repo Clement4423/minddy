@@ -37,8 +37,12 @@ class MainApp extends StatelessWidget {
   // TODO : Tools note rapide ?
   // TODO : Terminer la page des projets
   // TODO : Faire les fonds de projets pour le mode noir et blanc
+  // TODO : Modifier les notes dans les articles pour selectionner les notes selon les catégories
+  // TODO ; Ajouter fonctionnalitée pour lire l'article juste en cliquant sur entrée lors de la recherche
   // TODO : Faire le module des notes (code)
-  // TODO : Faire le module des notes (design)
+  // TODO : Modifier les notes pour avoir plusieurs catégories de notes
+  // TODO : Modifier le format de sauvegarde des notes pour avoir plus d'infos
+  // TODO : Revoir système notes pour plus de puissance
 
 
   @override

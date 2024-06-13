@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/files/app_images.dart';
-import 'package:minddy/ui/components/custom_elements/custom_text_button.dart';
+import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class ArticlesImporterImagesImportSubMenu extends StatefulWidget {

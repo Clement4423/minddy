@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/articles/app_articles.dart';
+import 'package:minddy/system/model/note_model.dart';
 import 'package:minddy/system/notes/notes.dart';
 import 'package:minddy/system/interface/articles_element_interface.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -90,14 +92,17 @@ class _ArticlesElemementEnvelopState extends State<ArticlesElemementEnvelop> {
                     // Copy (Notes)
                     PopupMenuItem(
                       onTap: () {
-                        if (widget.child.data is List) {
-                          AppNotes.addNote(widget.child.data);
-                          return;
-                        }
-                        String dataAsString = widget.child.data as String;
-                        if (dataAsString.isNotEmpty) {
-                          AppNotes.addNote(dataAsString);
-                        }
+                        AppNotes.addNote(
+                          NoteModel(
+                            title: S.current.articles_card_untitled,
+                            id: int.parse(AppArticles.createFileName("hello world")),
+                            category: 'for_later', 
+                            content: [
+                              AppNotes.createNoteContentMap(widget.child.data)
+                              ]
+                            ),
+                            "for_later"
+                          );
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

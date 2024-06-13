@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/ui/components/custom_elements/custom_dropdown_button.dart';
-import 'package:minddy/ui/components/custom_elements/switch_tile.dart';
+import 'package:minddy/ui/components/custom_components/custom_dropdown_button.dart';
+import 'package:minddy/ui/components/custom_components/switch_tile.dart';
 import 'package:minddy/ui/components/settings/settings_components/settings_page_top_bar.dart';
 import 'package:minddy/ui/components/settings/settings_pages_controllers/settings_personalize_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';

@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/model/note_model.dart';
 import 'package:minddy/system/notes/notes.dart';
-import 'package:minddy/ui/components/articles/articles_components/articles_bottom_menu/articles_notes/articles_note_element.dart';
-import 'package:minddy/ui/components/articles/articles_components/articles_bottom_menu/articles_notes/articles_note_image_element.dart';
-import 'package:minddy/ui/components/articles/articles_components/articles_bottom_menu/articles_notes/articles_note_list_element.dart';
+import 'package:minddy/ui/components/custom_components/note_widget.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_view_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-// Tout séparer dans différents fichiers
-
 class ArticlesBottomMenuNotesViewController extends ChangeNotifier {
 
-  List<dynamic> notesList = [];
+  List<NoteModel> notesList = [];
 
   late ArticlesViewController articleController;
 
   
-  Future<List> getNotes() async {
-    return await AppNotes.getNotes();
+  Future<List<NoteModel>> getNotes() async {
+    return await AppNotes.getNotes("for_later");
   }
 
-  deleteNote(dynamic note) async {
-    await AppNotes.deleteNote(note);
+  deleteNote(NoteModel note) async {
+    await AppNotes.deleteNote(note, "for_later");
   }
 
   notesChanged() async {
@@ -106,30 +103,10 @@ class _ArticlesBottomMenuNotesViewState extends State<ArticlesBottomMenuNotesVie
   }
 }
 
-List<Widget> _buildArticlesNotesElements(List<dynamic> notesList, StylesGetters theme, ArticlesBottomMenuNotesViewController controller) {
+List<Widget> _buildArticlesNotesElements(List<NoteModel> notesList, StylesGetters theme, ArticlesBottomMenuNotesViewController controller) {
   List<Widget> notesElements = [];
-  for (dynamic note in notesList) {
-    if (note is String) {
-      notesElements.add(
-        ArticlesNoteElement(note: note, controller: controller)
-      );
-    } else if (note is Map) {
-      if (note.keys.contains('code')) {
-        notesElements.add(
-          ArticlesNoteElement(note: note['code'], isCode: true, language: note['language'], controller: controller)
-        );
-      } else {
-        ArticlesNoteImageModel noteModel = ArticlesNoteImageModel(url: note['url'], description: note['description']);
-        notesElements.add(
-          ArticlesNoteImageElement(note: noteModel, controller: controller)
-        );
-      }
-    } else if (note is List) {
-      notesElements.add(
-        ArticlesNoteListElement(note: note, controller: controller)
-      );
-    }
-
+  for (NoteModel note in notesList) {
+    notesElements.add(NoteWidget(noteModel: note, controller: controller, category: note.category, action: () {}));
   }
   return notesElements;
 }

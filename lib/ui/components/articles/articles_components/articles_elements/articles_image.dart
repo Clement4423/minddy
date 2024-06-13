@@ -3,7 +3,7 @@ import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/files/app_images.dart';
 import 'package:minddy/system/interface/articles_element_interface.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_image_fullview.dart';
-import 'package:minddy/ui/components/custom_elements/custom_text_button.dart';
+import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/components/menus/sub_menus/sub_menu_articles_image_description.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_element_envelop.dart';

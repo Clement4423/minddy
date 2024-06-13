@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/ui/components/custom_elements/switch_tile.dart';
+import 'package:minddy/ui/components/custom_components/switch_tile.dart';
 import 'package:minddy/ui/components/snackbar/snackbar.dart';
 import 'package:minddy/ui/theme/theme.dart';
 

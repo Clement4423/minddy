@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/projects/tools/countdown_timer.dart';
-import 'package:minddy/ui/components/custom_elements/switch_tile.dart';
+import 'package:minddy/ui/components/custom_components/switch_tile.dart';
 import 'package:minddy/ui/components/projects/toolbar/tools/pomodoro/pomodoro_tool_controller.dart';
 import 'package:minddy/ui/components/projects/toolbar/tools/pomodoro/pomodoro_tool_timer_view.dart';
 import 'package:minddy/ui/theme/theme.dart';

@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/files/app_images.dart';
+import 'package:minddy/system/model/note_model.dart';
+import 'package:minddy/system/notes/notes.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_bottom_menu/articles_notes/articles_bottom_menu_notes_view.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-class ArticlesNoteListElement extends StatefulWidget {
-  const ArticlesNoteListElement({
+class NoteWidget extends StatefulWidget {
+  const NoteWidget({
     super.key,
-    required this.note, 
+    required this.noteModel,
     required this.controller,
+    required this.category,
+    required this.action
   });
 
-  final List note;
+  final NoteModel noteModel;
+  final String category;
   final ArticlesBottomMenuNotesViewController controller;
+  final Function action;
 
   @override
-  State<ArticlesNoteListElement> createState() => ArticlesNoteListElementState();
+  State<NoteWidget> createState() => NoteWidgetState();
 }
 
-class ArticlesNoteListElementState extends State<ArticlesNoteListElement> {
+class NoteWidgetState extends State<NoteWidget> {
   bool _hasJustBeenCopied = false;
 
   @override
@@ -42,7 +49,7 @@ class ArticlesNoteListElementState extends State<ArticlesNoteListElement> {
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
                       onTap: () async {
-                        await widget.controller.deleteNote(widget.note);
+                        await AppNotes.deleteNote(widget.noteModel, widget.category);
                         widget.controller.notesChanged();
                       },
                       child: Tooltip(
@@ -51,14 +58,20 @@ class ArticlesNoteListElementState extends State<ArticlesNoteListElement> {
                       ),
                     ),
                   ),
-                  // Copy button
+                  // Note title
+                  Text(
+                    widget.noteModel.title.substring(0, widget.noteModel.title.length > 14 ? 14 : widget.noteModel.title.length),
+                    style: theme.titleMedium.copyWith(color: theme.onPrimary, fontWeight: FontWeight.w600),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  // Action button
                   MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
                       onTap: () async {
-                        widget.controller.articleController.addListElement(initialContent: widget.note);
+                        await widget.action();
                         setState(() {
-                          _hasJustBeenCopied = true;                          
+                          _hasJustBeenCopied = true;            
                         });
                         Future.delayed(const Duration(milliseconds: 1500), () {
                           if (context.mounted) {
@@ -84,18 +97,13 @@ class ArticlesNoteListElementState extends State<ArticlesNoteListElement> {
               color: theme.surface,
               borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
             ),
-            child: TextSelectionTheme(
-              data: TextSelectionThemeData(
-                selectionColor: theme.brightness == Brightness.light ? Colors.white : theme.secondary,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    ..._buildNotesListElements(widget.note, theme)
-                  ],
-                )
-              ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  ..._buildNoteContent(widget.noteModel.content, theme)
+                ],
+              )
             ),
           )
         ],
@@ -104,7 +112,80 @@ class ArticlesNoteListElementState extends State<ArticlesNoteListElement> {
   }
 }
 
-_buildNotesListElements(List textList, StylesGetters theme) {
+List<Widget> _buildNoteContent(List<NoteContentModel> content, StylesGetters theme) {
+  List<Widget> contentWidgets = [];
+  for (NoteContentModel model in content) {
+    switch (model.type) {
+      case NoteElementContentType.code:
+        contentWidgets.add(
+          Text(model.data as String, style: theme.bodyMedium.copyWith(color: theme.onSurface))
+        );
+        break;
+      case NoteElementContentType.image:
+        _getNoteImageBuilder(model.data['url'], theme);
+        break;
+      case NoteElementContentType.text:
+        contentWidgets.add(
+          Text(model.data as String, style: theme.bodyMedium.copyWith(color: theme.onSurface))
+        );
+        break;
+      case NoteElementContentType.list:
+        contentWidgets.add(
+          _buildNotesListElements(model.data, theme)
+        );
+        break;
+    }
+
+  }
+  return contentWidgets;
+}
+
+FutureBuilder _getNoteImageBuilder(String imageUrl, StylesGetters theme) {
+  return FutureBuilder(
+    future: AppImages.getImage(imageUrl),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Container(
+          constraints: const BoxConstraints(maxWidth: 330),
+          height: 220,
+          color: theme.primaryContainer,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      } else if (snapshot.hasError) {
+        return Container(
+          constraints: const BoxConstraints(maxWidth: 330),
+          height: 220,
+          color: Colors.red,
+          child: const Center(
+            child: Text('Failed to load image'),
+          ),
+        );
+      } else {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 330),
+            child: snapshot.data
+            ??Center(
+              child: Container(
+                width: 330,
+                height: 220,
+                color: theme.primaryContainer,
+                child: Center(
+                  child: Icon(Icons.error_outline_rounded, color: theme.onPrimary)
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+    },
+  );
+}
+
+Widget _buildNotesListElements(List textList, StylesGetters theme) {
   List<Widget> notesListElementsList = [];
   for (int i = 0; i < textList.length; i++) {
     notesListElementsList.add(
@@ -137,5 +218,9 @@ _buildNotesListElements(List textList, StylesGetters theme) {
       ),
     );
   }
-  return notesListElementsList;
+  return SingleChildScrollView(
+    child: Column(
+      children: notesListElementsList,
+    ),
+  );
 }

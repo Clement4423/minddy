@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/ui/components/custom_elements/custom_text_button.dart';
+import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/components/menus/sub_menus_controllers/new_project_submenu_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 

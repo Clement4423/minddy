@@ -1,95 +1,171 @@
-import 'package:flutter/foundation.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
+import 'package:minddy/system/model/note_model.dart';
 
 class AppNotes {
 
-  static const String _notesFilePath = "ressources/notes/notes.json";
+  static NoteContentModel createNoteContentMap(dynamic element) {
+    dynamic data = "";
+    NoteElementContentType type = NoteElementContentType.text;
 
-  static const Map<String, dynamic> _defaultNotesFileContent = {
-    "notes" : [], 
-  };
-
-  static Future<bool> addNote(dynamic noteToAdd) async {
-    try {
-      Map<String, dynamic> fileContent = await _openNotesFile();
-      List<dynamic> notes = fileContent["notes"];
-
-      if (noteToAdd is String || noteToAdd is List) {
-        notes.add(noteToAdd);
-      } else if (noteToAdd is Map) {
-        if (noteToAdd.keys.contains('code')) {
-          notes.add({'code' : noteToAdd['code'], 'language': noteToAdd['language']});
-        } else {
-          notes.add({'url': noteToAdd['url'], "description": noteToAdd['description']});
-        }
+    if (element is String) {
+      data = element;
+      type = NoteElementContentType.text;
+    } else if (element is List) {
+      data = element;
+      type = NoteElementContentType.list;
+    } else if (element is Map) {
+      if (element.containsKey('url') && element.containsKey('description')) {
+        type = NoteElementContentType.image;
+        data = {'url': element['url'], 'description': element['description']};
+      } else if (element.containsKey('code') && element.containsKey('language')) {
+        type = NoteElementContentType.code;
+        data = {'code': element['code'], 'language': element['language']};
       }
+    }
 
-      bool savedFile = await _saveNotesFile(fileContent);
+    return NoteContentModel(type: type, data: data);
+  }
+
+  static Future<bool> addNote(NoteModel noteToAdd, String category) async {
+    try {
+      Map<String, dynamic> fileContent = await _openNotesFile(category);
+      List<dynamic> notes = fileContent["notes"] ?? [];
+
+      notes.add(_convertModelToJson(noteToAdd));
+
+      bool savedFile = await _saveNotesFile(fileContent, category);
       return savedFile;
     } catch(e) {
       await AppLogs.writeError(e, "articles_notes.dart - addNote");
       return false;
     }
-
   }
 
-static Future<bool> deleteNote(dynamic noteToRemove) async {
-  Map<String, dynamic> fileContent = await _openNotesFile();
-  List<dynamic> notes = fileContent["notes"];
+  static Future<bool> modifyNote(int id, List<NoteContentModel> content, String title, String category) async {
+    try {
+      Map<String, dynamic> fileContent = await _openNotesFile(category);
+      List<dynamic> notes = fileContent["notes"] ?? [];
 
-  if (noteToRemove is String) {
-    notes.remove(noteToRemove);
-  } else if (noteToRemove is List) {
-    notes.removeWhere((element) => element is List && listEquals(element, noteToRemove));
-  } else if (noteToRemove is Map) {
-    if (noteToRemove.containsKey('code')) {
-      notes.removeWhere((element) {
-        if (element is Map && element.containsKey('code') && element['code'] == noteToRemove['code']) {
-          return true;
-        }
+      int noteIndex = notes.indexWhere((element) => element['id'] == id);
+
+      if (noteIndex != -1) {
+        notes[noteIndex] = {
+          'id': id,
+          'content': content,
+          'title': title,
+        };
+
+        bool savedFile = await _saveNotesFile(fileContent, category);
+        return savedFile;
+      } else {
         return false;
-      });
-    } else {
-      notes.removeWhere((element) {
-        if (element is Map && element.containsKey('url') && element['url'] == noteToRemove['url']) {
-          return true;
-        }
-        return false;
-      });
+      }
+    } catch(e) {
+      await AppLogs.writeError(e, "articles_notes.dart - modifyNote");
+      return false;
     }
-
   }
 
-  bool savedFile = await _saveNotesFile(fileContent);
-  return savedFile;
-}
+  static Future<bool> deleteNote(NoteModel noteToRemove, String category) async {
+    try {
+      Map<String, dynamic> fileContent = await _openNotesFile(category);
+      List<dynamic> notes = fileContent["notes"] ?? [];
 
+      notes.removeWhere((element) => element['id'] == noteToRemove.id);
 
+      bool savedFile = await _saveNotesFile(fileContent, category);
+      return savedFile;
+    } catch(e) {
+      await AppLogs.writeError(e, "articles_notes.dart - deleteNote");
+      return false;
+    }
+  }
 
-  static Future<List<dynamic>> getNotes() async {
-    Map<String, dynamic> fileContent = await _openNotesFile();
+  static Map _convertModelToJson(NoteModel noteModel) {
+    return {'title': noteModel.title, 'id': noteModel.id, 'content': _convertNoteContentModelToJson(noteModel.content)};
+  }
+
+  static List<Map> _convertNoteContentModelToJson(List<NoteContentModel> content) {
+    try {
+      List<Map> contentAsMap = [];
+      for (NoteContentModel model in content) {
+        contentAsMap.add(
+          {'type': model.type.index, 'data': model.data}
+        );
+      }
+      return contentAsMap; 
+    } catch (e) {
+      return [];
+    }
+  }
+
+  static List<NoteModel> _convertJsonToModels(List notes, String category) {
+    try {
+      List<NoteModel> models = [];
+      for (Map note in notes) {
+        models.add(NoteModel(
+          title: note['title'] ?? "",
+          id: note['id'] ?? 0,
+          category: category,
+          content: _getContentModels(note['content']),
+        ));
+      }
+      return models;
+    } catch(e) {
+      return [];
+    }
+  }
+
+  static List<NoteContentModel> _getContentModels(List content) {
+    try {
+      List<NoteContentModel> models = [];
+      for (Map element in content) {
+        models.add(
+          NoteContentModel(type: NoteElementContentType.values[element['type']], data: element['data'])
+        );
+      }
+      return models;
+    } catch(e) {
+      return [];
+    }
+  }
+
+  static Future<List<NoteModel>> getNotes(String category) async {
+    Map<String, dynamic> fileContent = await _openNotesFile(category);
     List<dynamic> notes = fileContent["notes"];
-    return notes;
+    List<NoteModel> models = _convertJsonToModels(notes, category);
+    return models;
   }
 
-  static Future<Map<String, dynamic>> _openNotesFile() async {
-    Map<String, dynamic>? allNotes = await StaticVariables.fileSource.readJsonFile(_notesFilePath);
-    if (allNotes != null) {
-      return allNotes;
+  static Future<Map<String, dynamic>> _openNotesFile(String category) async {
+    try {
+      Map<String, dynamic>? allNotes = await StaticVariables.fileSource.readJsonFile('ressources/notes/$category/notes.json');
+      if (allNotes != null) {
+        return allNotes;
+      } else {
+        await _createNotesFile(category);
+        return await _openNotesFile(category);
+      }
+    } catch(e) {
+      await AppLogs.writeError(e, "notes.dart - _openNoteFile");
+      return {};
     }
-    else {
-      await _createNotesFile();
-      return _defaultNotesFileContent;
-    }
+
   }
 
-  static Future<void> _createNotesFile() async {
-    await StaticVariables.fileSource.createFile(_notesFilePath);
-    await StaticVariables.fileSource.writeJsonFile(_notesFilePath, _defaultNotesFileContent);
+  static Future<void> _createNotesFile(String category) async {
+    await StaticVariables.fileSource.createFile('ressources/notes/$category/notes.json');
+    await StaticVariables.fileSource.writeJsonFile(
+      'ressources/notes/$category/notes.json', 
+      {
+        'category': category,
+        'notes': []
+      }
+    );
   }
   
-  static Future<bool> _saveNotesFile(Map<String, dynamic> newContent) async {
-    return await StaticVariables.fileSource.writeJsonFile(_notesFilePath, newContent);
+  static Future<bool> _saveNotesFile(Map<String, dynamic> newContent, String category) async {
+    return await StaticVariables.fileSource.writeJsonFile('ressources/notes/$category/notes.json', newContent);
   }
 }
