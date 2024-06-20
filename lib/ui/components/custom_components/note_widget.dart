@@ -2,23 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/files/app_images.dart';
 import 'package:minddy/system/model/note_model.dart';
-import 'package:minddy/system/notes/notes.dart';
-import 'package:minddy/ui/components/articles/articles_components/articles_bottom_menu/articles_notes/articles_bottom_menu_notes_view.dart';
+import 'package:minddy/system/notes/app_notes.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class NoteWidget extends StatefulWidget {
   const NoteWidget({
     super.key,
     required this.noteModel,
-    required this.controller,
     required this.category,
-    required this.action
+    required this.action,
+    required this.actionIcon,
+    required this.actionTooltip,
+    required this.onDelete,
+    this.deleteMethod
   });
 
   final NoteModel noteModel;
   final String category;
-  final ArticlesBottomMenuNotesViewController controller;
   final Function action;
+  final IconData actionIcon;
+  final String actionTooltip;
+  final Function onDelete;
+  final Function? deleteMethod;
 
   @override
   State<NoteWidget> createState() => NoteWidgetState();
@@ -49,8 +54,12 @@ class NoteWidgetState extends State<NoteWidget> {
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
                       onTap: () async {
-                        await AppNotes.deleteNote(widget.noteModel, widget.category);
-                        widget.controller.notesChanged();
+                        widget.deleteMethod != null 
+                        ? await widget.deleteMethod!()
+                        : await AppNotes.deleteNote(widget.noteModel, widget.category);
+                        if (context.mounted) {
+                          await widget.onDelete();
+                        }
                       },
                       child: Tooltip(
                         message: S.current.snackbar_delete_button,
@@ -60,7 +69,9 @@ class NoteWidgetState extends State<NoteWidget> {
                   ),
                   // Note title
                   Text(
-                    widget.noteModel.title.substring(0, widget.noteModel.title.length > 14 ? 14 : widget.noteModel.title.length),
+                    widget.noteModel.title.isEmpty 
+                      ? S.of(context).articles_card_untitled 
+                      : widget.noteModel.title.substring(0, widget.noteModel.title.length > 14 ? 14 : widget.noteModel.title.length),
                     style: theme.titleMedium.copyWith(color: theme.onPrimary, fontWeight: FontWeight.w600),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -82,8 +93,8 @@ class NoteWidgetState extends State<NoteWidget> {
                         });
                       },
                       child: Tooltip(
-                        message: S.current.articles_add_to_content,
-                        child: Icon(_hasJustBeenCopied ? Icons.check_rounded: Icons.add_rounded, color: theme.onPrimary)
+                        message: widget.actionTooltip,
+                        child: Icon(widget.actionIcon == Icons.add_rounded ? _hasJustBeenCopied ? Icons.check_rounded: Icons.add_rounded : widget.actionIcon, color: theme.onPrimary)
                       ),
                     ),
                   ),
@@ -114,28 +125,47 @@ class NoteWidgetState extends State<NoteWidget> {
 
 List<Widget> _buildNoteContent(List<NoteContentModel> content, StylesGetters theme) {
   List<Widget> contentWidgets = [];
-  for (NoteContentModel model in content) {
-    switch (model.type) {
+  int lengthLimit = content.length > 2 ? 2 : content.length;
+  for (int i = 0; i < lengthLimit; i++) {
+    switch (content[i].type) {
       case NoteElementContentType.code:
+        Map dataAsMap = content[i].data as Map;
         contentWidgets.add(
-          Text(model.data as String, style: theme.bodyMedium.copyWith(color: theme.onSurface))
+          Align(
+            alignment: Alignment.centerLeft, 
+            child:Text(
+              dataAsMap.entries.first.value as String, 
+              style: theme.bodyMedium.
+              copyWith(color: theme.onSurface),
+              maxLines: 2,
+            )
+          )
         );
         break;
       case NoteElementContentType.image:
-        _getNoteImageBuilder(model.data['url'], theme);
+        contentWidgets.add(
+          _getNoteImageBuilder(content[i].data['url'], theme)
+        );
         break;
       case NoteElementContentType.text:
         contentWidgets.add(
-          Text(model.data as String, style: theme.bodyMedium.copyWith(color: theme.onSurface))
+          Align(
+            alignment: Alignment.centerLeft, 
+            child:Text(
+              content[i].data as String, 
+              style: theme.bodyMedium.
+              copyWith(color: theme.onSurface),
+              maxLines: 2,
+            )
+          )
         );
         break;
       case NoteElementContentType.list:
         contentWidgets.add(
-          _buildNotesListElements(model.data, theme)
+          _buildNotesListElements(content[i].data, theme)
         );
         break;
     }
-
   }
   return contentWidgets;
 }

@@ -149,6 +149,7 @@
     "submenu_unlock_error_message_incorrect_password": "Incorect password",
     "submenu_unlock_error_message_please_enter_password": "Please, enter your password",
     "submenu_unlock_error_message_error_login": "Unable to verify password.",
+    "submenu_unlock_content_title" : "Unlock",
     "project_card_open_settings": "Modify",
     "project_card_duplicate": "Duplicate",
     "project_card_delete": "Delete",

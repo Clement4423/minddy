@@ -312,6 +312,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nombre del proyecto"),
         "submenu_new_project_title":
             MessageLookupByLibrary.simpleMessage("Nuevo proyecto"),
+        "submenu_unlock_content_title":
+            MessageLookupByLibrary.simpleMessage("Desbloquear"),
         "submenu_unlock_error_message_error_login":
             MessageLookupByLibrary.simpleMessage(
                 "No se puede verificar la contraseña."),

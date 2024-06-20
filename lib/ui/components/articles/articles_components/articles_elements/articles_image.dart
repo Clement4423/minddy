@@ -76,7 +76,7 @@ class _ArticlesImageElementState extends State<ArticlesImageElement> {
     final StylesGetters theme = StylesGetters(context);
     return Padding(
       padding: const EdgeInsets.only(top: 25, bottom: 25, right: 10, left: 10),
-      child: ArticlesElemementEnvelop(
+      child: ArticlesElementEnvelop(
         removeFunction: widget.removeFunction,
         keyToRemove: widget.key ?? UniqueKey(),
         sideMenuIconOffsetOnYAxis: 2,

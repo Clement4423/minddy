@@ -24,7 +24,7 @@ class ProjectsTasksModule extends StatefulWidget implements IProjectsModules {
   final Function(int) deleteFunction;
 
   @override
-  final Function(int p1) duplicateFunction;
+  final Function(int) duplicateFunction;
 
   @override
   State<ProjectsTasksModule> createState() => _ProjectsTasksModuleState();

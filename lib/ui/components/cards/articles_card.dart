@@ -9,18 +9,25 @@ import 'package:minddy/ui/components/menus/popup_menu/popup_menu_item_model.dart
 import 'package:minddy/ui/components/snackbar/snackbar.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-class ArticleCardWrite extends StatefulWidget {
+class ArticleCard extends StatefulWidget {
   final Function refreshMethod;
-  final ArticleCardWriteController _controller;
+  final ArticleCardController _controller;
   final IconData icon;
+  final BuildContext context;
 
-  const ArticleCardWrite(this.icon, this._controller, {super.key, required this.refreshMethod});
+  late final Function readFunction;
+
+  ArticleCard(this.icon, this._controller, {super.key, required this.refreshMethod, required this.context}) {
+    readFunction = () {
+      showArticle(ArticlesViewController(_controller.infos, refreshMethod), context);
+    };
+  }
 
   @override
-  State<ArticleCardWrite> createState() => _ArticleCardWriteState();
+  State<ArticleCard> createState() => _ArticleCardState();
 }
 
-class _ArticleCardWriteState extends State<ArticleCardWrite> {
+class _ArticleCardState extends State<ArticleCard> {
   @override
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);

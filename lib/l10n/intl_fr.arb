@@ -149,6 +149,7 @@
     "submenu_unlock_error_message_incorrect_password": "Mot de passe incorrect",
     "submenu_unlock_error_message_please_enter_password": "Veuillez saisir votre mot de passe",
     "submenu_unlock_error_message_error_login": "Impossible de vérifier le mot de passe.",
+    "submenu_unlock_content_title" : "Déverouiller",
     "project_card_open_settings": "Modifier",
     "project_card_duplicate": "Dupiquer",
     "project_card_delete": "Supprimer",

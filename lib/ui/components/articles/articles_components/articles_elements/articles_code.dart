@@ -38,7 +38,7 @@ class _ArticlesCodeElementState extends State<ArticlesCodeElement> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 25, bottom: 25),
-      child: ArticlesElemementEnvelop(
+      child: ArticlesElementEnvelop(
         sideMenuIconOffsetOnYAxis: 5.5,
         removeFunction: widget.removeFunction, 
         keyToRemove: widget.key ?? UniqueKey(), 

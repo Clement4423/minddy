@@ -22,7 +22,9 @@ class _PomodoroToolFocusTimerViewState extends State<PomodoroToolFocusTimerView>
           child: Center(
             child: StreamBuilder<int>(
                stream: PomodoroToolController.timerStream,
-               initialData: PomodoroToolController.focusTimerDuration,
+               initialData: PomodoroToolController.timer != null 
+                ? PomodoroToolController.timer!.remainingTime 
+                : PomodoroToolController.focusTimerDuration,
                builder: (context, snapshot) {
                  if (snapshot.data == 0) {
                     PomodoroToolController.timer = CountdownTimer(durationInSeconds: PomodoroToolController.workingDuration);

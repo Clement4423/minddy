@@ -53,7 +53,7 @@ class ProjectsTasksModuleController extends ChangeNotifier implements IProjectMo
         _dataFile.createSync(recursive: true);
         return;
       }
-      Map<String, dynamic>? data = await getModuleData(id.toString(), ProjectsModules.tasks, projectPath);
+      Map<String, dynamic>? data = await getModuleData(id, ProjectsModules.tasks, projectPath);
       if (data != null) {
         for (Map task in data['tasks']) {
           ProjectsTasksModuleTaskModel? taskModel = await _converMapToTaskModel(task);

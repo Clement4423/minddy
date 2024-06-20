@@ -35,7 +35,7 @@ class ArticleMenuView extends StatelessWidget {
                 itemCount: _controller.articlesCardsList.length,
                 itemBuilder: (context, index) {
                  final article = _controller.articlesCardsList[index];
-                 return ArticleCardWrite(article.icon, refreshMethod: _controller.initalize, key: UniqueKey(), ArticleCardWriteController(article))
+                 return ArticleCard(article.icon, context: context, refreshMethod: _controller.initalize, key: UniqueKey(), ArticleCardController(article))
                  ;
                 }
               );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_menu_search_view_controller.dart';
 import 'package:minddy/ui/components/cards/articles_card.dart';
@@ -48,25 +49,34 @@ class _ArticleMenuSearchViewState extends State<ArticleMenuSearchView> {
                       data: TextSelectionThemeData(
                         selectionColor: Colors.blue.withAlpha(120)
                       ),
-                      child: TextField(
-                        onChanged: (value) {
-                          widget._controller.lastInput = value;
-                          _searchTextFieldOptionController.inputChanged(value);
-                          if (value.isEmpty) {
-                            widget._controller.isSearchEmpty = false;
-                            widget._controller.clearArticlesCards();
-                            return;
+                      child: CallbackShortcuts(
+                        bindings: {
+                          const SingleActivator(LogicalKeyboardKey.enter): () async {
+                            if (widget._controller.allArticlesWidgets.isNotEmpty) {
+                              widget._controller.readFirstArticle(widget._controller.allArticlesWidgets.first);
+                            }
                           }
-                          widget._controller.searchArticles(value);
                         },
-                        controller: TextEditingController(text: widget._controller.lastInput),
-                        cursorColor: theme.onPrimary,
-                        autofocus: true,
-                        style: theme.bodyMedium.copyWith(color: theme.onPrimary),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                          border: InputBorder.none,
-                          hintText: "${S.of(context).articles_search}..."
+                        child: TextField(
+                          onChanged: (value) {
+                            widget._controller.lastInput = value;
+                            _searchTextFieldOptionController.inputChanged(value);
+                            if (value.isEmpty) {
+                              widget._controller.isSearchEmpty = false;
+                              widget._controller.clearArticlesCards();
+                              return;
+                            }
+                            widget._controller.searchArticles(value);
+                          },
+                          controller: TextEditingController(text: widget._controller.lastInput),
+                          cursorColor: theme.onPrimary,
+                          autofocus: true,
+                          style: theme.bodyMedium.copyWith(color: theme.onPrimary),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            border: InputBorder.none,
+                            hintText: "${S.of(context).articles_search}..."
+                          ),
                         ),
                       ),
                     ),
@@ -112,12 +122,14 @@ class _ArticleMenuSearchViewState extends State<ArticleMenuSearchView> {
                 if (widget._controller.articlesCardsList.isEmpty) {
                   return EmptyArticleSearchMenuPage(isSearchEmpty: widget._controller.isSearchEmpty);
                 }
+                widget._controller.allArticlesWidgets.clear();
                 return ListView.builder(
                   itemCount: widget._controller.articlesCardsList.length,
                   itemBuilder: (context, index) {
                    final article = widget._controller.articlesCardsList[index];
-                   return ArticleCardWrite(article.icon, refreshMethod: widget._controller.initalize, key: UniqueKey(), ArticleCardWriteController(article))
-                   ;
+                   final ArticleCard articleCard = ArticleCard(article.icon, context: context, refreshMethod: widget._controller.initalize, key: UniqueKey(), ArticleCardController(article));
+                   widget._controller.allArticlesWidgets.add(articleCard);
+                   return articleCard;
                   }
                 );
               }

@@ -29,8 +29,11 @@ class MainApp extends StatelessWidget {
   final String routeName;
   const MainApp(this.routeName, this. currentLocale, this.currentThemeMode, {super.key});
   // TODO : Documenter tout le code
-  // TODO / Faire les tests
+  // TODO : Faire les tests
+  // TODO ; Implémenter une fonctionnalitée de recherche à l'interieur d'un article pour chercher un mot clé
+  // TODO : Revoir la reinitialisation des paramètres pour ne pas recréer un mot de passe si il y en à déja un
   // TODO : Ajouter tous les articles de base
+  // TODO : Faire les articles 'aide' pour les modules
   // TODO : Gérer les raccourcis clavier
   // TODO : Faire thème high contrast et l'ajouter au main
   // TODO : Terminer les paramètres
@@ -38,11 +41,10 @@ class MainApp extends StatelessWidget {
   // TODO : Terminer la page des projets
   // TODO : Faire les fonds de projets pour le mode noir et blanc
   // TODO : Modifier les notes dans les articles pour selectionner les notes selon les catégories
-  // TODO ; Ajouter fonctionnalitée pour lire l'article juste en cliquant sur entrée lors de la recherche
   // TODO : Faire le module des notes (code)
-  // TODO : Modifier les notes pour avoir plusieurs catégories de notes
-  // TODO : Modifier le format de sauvegarde des notes pour avoir plus d'infos
-  // TODO : Revoir système notes pour plus de puissance
+  // TODO : Faire le menu d'édition de note
+  // TODO : Ajouter la date de création et de modification des notes
+  // TODO : Remplacer les éléments dans les articles elements avec les custom elements
 
 
   @override

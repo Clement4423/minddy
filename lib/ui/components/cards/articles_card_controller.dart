@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:minddy/system/articles/app_articles.dart';
 import 'package:minddy/system/model/article_info.dart';
 
-class ArticleCardWriteController extends ChangeNotifier {
+class ArticleCardController extends ChangeNotifier {
   final ArticleInfo infos;
   bool isBookmarked = false;
   bool hasJustBeenSave = false;
 
-  ArticleCardWriteController(this.infos) {
+  ArticleCardController(this.infos) {
     isBookmarked = infos.isBookmarked;
   }
 

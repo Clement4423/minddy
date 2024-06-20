@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:minddy/system/articles/article_categories.dart';
 import 'package:minddy/system/articles/get_articles.dart';
 import 'package:minddy/system/model/article_info.dart';
+import 'package:minddy/ui/components/cards/articles_card.dart';
 
 class ArticleMenuSearchViewController extends ChangeNotifier {
   final String category;
@@ -10,6 +11,8 @@ class ArticleMenuSearchViewController extends ChangeNotifier {
   String lastInput = "";
 
   List<ArticleInfo> allArticles = [];
+
+  List<ArticleCard> allArticlesWidgets = [];
 
   bool isSearchEmpty = false;
 
@@ -23,6 +26,10 @@ class ArticleMenuSearchViewController extends ChangeNotifier {
       allArticles = value;
       notifyListeners();
     });
+  }
+
+  Future<void> readFirstArticle(ArticleCard firstCard) async {
+    await firstCard.readFunction();
   }
 
   Future<List<ArticleInfo>> listAllArticles() async {

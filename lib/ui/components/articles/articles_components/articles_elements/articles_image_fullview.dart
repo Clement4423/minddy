@@ -2,6 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+// TODO : Faire en sorte de pouvoir 'zoomer' sur l'image pour l'agrandir et
+//  dézoomer pour sortir de la vue, ou glisser vers le bas pour sortir 
+
 Future<dynamic> showFullImage(Image image, BuildContext context) async {
   double screenWidth = MediaQuery.of(context).size.width;
   double screenHeight = MediaQuery.of(context).size.height;

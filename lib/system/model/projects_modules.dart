@@ -2,5 +2,6 @@
 
 enum ProjectsModules {
   tasks,
-  expenses
+  expenses,
+  notes
 }

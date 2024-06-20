@@ -90,7 +90,7 @@ class ArticlesListElement extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 25, bottom: 25),
-      child: ArticlesElemementEnvelop(
+      child: ArticlesElementEnvelop(
         removeFunction: removeFunction, 
         keyToRemove: key ?? UniqueKey(), 
         sideMenuIconOffsetOnYAxis: 5, 

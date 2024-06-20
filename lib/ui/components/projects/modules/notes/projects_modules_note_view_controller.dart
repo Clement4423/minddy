@@ -1,0 +1,210 @@
+import 'package:flutter/material.dart';
+import 'package:minddy/system/articles/app_articles.dart';
+import 'package:minddy/system/files/app_logs.dart';
+import 'package:minddy/system/initialize/static_variables.dart';
+import 'package:minddy/system/interface/projects_modules_controller_interface.dart';
+import 'package:minddy/system/model/note_model.dart';
+import 'package:minddy/system/model/project_note_module_category_model.dart';
+import 'package:minddy/system/model/projects_modules.dart';
+import 'package:minddy/system/notes/app_notes.dart';
+import 'package:minddy/system/projects/get_module_data.dart';
+
+class ProjectsNotesModuleController extends ChangeNotifier implements IProjectModuleController {
+  @override
+  int id;
+
+  @override
+  String projectPath;
+
+
+  double width = 0;
+  double height = 0;
+
+  List<NoteModel> _projectNotes = [];
+
+  List<NoteModel> get projectNotes => _projectNotes;
+ 
+  Function(int) deleteFunction = (int i) {};
+
+  Function(int) duplicateFunction = (int i) {};
+
+  Widget actualView = Container();
+
+  List<ProjectNoteModuleCategoryModel> categories = [];
+
+  ProjectsNotesModuleController({required this.id, required this.projectPath}) {
+    getCategories().then((value) => notifyListeners());
+    getProjectNotes();
+  }
+
+  @override
+  Future<bool> savingMethod() async {
+    try {
+      Map<String, dynamic> notesMap = _convertModelToJson(_projectNotes, 'PROJECT');
+      bool isSaved = await StaticVariables.fileSource.writeJsonFile(
+        '$projectPath/${ProjectsModules.notes.name}/$id.json',
+        notesMap
+      );
+      return isSaved;
+    } catch(e) {
+      await AppLogs.writeError(e, 'projects_modules_note_view_controller.dart - savingMethod');
+      return false;
+    }
+  }
+
+  void viewChanged() {
+    notifyListeners();
+  }
+
+  Future<void> getCategories() async {
+    categories = await AppNotes.getCategories();
+    categories.insert(
+      0, 
+      ProjectNoteModuleCategoryModel(
+        title: "Project notes", 
+        categoryName: "PROJECT", 
+        isPrivate: false,
+        icon: Icons.chair_outlined, 
+        noteCount: await getProjectNotes().then((value) => value.length)
+      )
+    );
+  }
+
+  Future<bool> modifyProjectNote(NoteModel updatedNote) async {
+  try {
+    Map<String, dynamic>? fileContent = await getModuleData(id, ProjectsModules.notes, projectPath);
+    if (fileContent != null) {
+      List<dynamic> notes = fileContent["notes"] ?? [];
+
+      int noteIndex = notes.indexWhere((element) => element['id'] == updatedNote.id);
+      if (noteIndex != -1) {
+        notes[noteIndex] = AppNotes.convertModelToJson(updatedNote);
+
+        bool savedFile = await StaticVariables.fileSource.writeJsonFile(
+          "$projectPath/${ProjectsModules.notes.name}/$id.json",
+          {
+            'category' : 'PROJECT',
+            'notes': notes
+          }
+        );
+        return savedFile;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  } catch (e) {
+    await AppLogs.writeError(e, "projects_modules_note_view_controller.dart - modifyProjectNote");
+    return false;
+  }
+}
+  
+  Future<List<NoteModel>> getProjectNotes() async {
+    Map<String, dynamic>? moduleData = await getModuleData(id, ProjectsModules.notes, projectPath);
+    if (moduleData != null) {
+      List<dynamic> projectNotes = moduleData['notes'] ?? [];
+
+      List<NoteModel> projectNotesModels = AppNotes.convertJsonToModels(projectNotes, "PROJECT");
+      _projectNotes = projectNotesModels;
+      return projectNotesModels;
+    } else {
+      await StaticVariables.fileSource.createFile("$projectPath/${ProjectsModules.notes.name}/$id.json");
+      await StaticVariables.fileSource.writeJsonFile(
+        "$projectPath/${ProjectsModules.notes.name}/$id.json", 
+        {
+          'category' : 'PROJECT',
+          'notes': []
+        }
+      );
+      return [];
+    }
+  }
+
+  Future<bool> deleteProjectNote(NoteModel noteToRemove) async {
+    try {
+      Map<String, dynamic>? fileContent = await getModuleData(id, ProjectsModules.notes, projectPath);
+      if (fileContent != null) {
+        List<dynamic> notes = fileContent["notes"] ?? [];
+
+        notes.removeWhere((element) => element['id'] == noteToRemove.id);
+
+        bool savedFile = await StaticVariables.fileSource.writeJsonFile(
+          "$projectPath/${ProjectsModules.notes.name}/$id.json",
+          {
+            'category' : 'PROJECT',
+            'notes': notes
+          }
+        );
+        return savedFile;
+      }
+      return false;
+    } catch(e) {
+      await AppLogs.writeError(e, "articles_notes.dart - deleteNote");
+      return false;
+    }
+  }
+
+  Future<bool> addProjectNote(NoteModel noteToAdd) async {
+    try {
+      Map<String, dynamic>? fileContent = await getModuleData(id, ProjectsModules.notes, projectPath);
+      if (fileContent != null) {
+        List<dynamic> notes = fileContent["notes"] ?? [];
+
+        notes.add(AppNotes.convertModelToJson(noteToAdd));
+
+        bool savedFile = await StaticVariables.fileSource.writeJsonFile(
+          "$projectPath/${ProjectsModules.notes.name}/$id.json",
+          {
+            'category' : 'PROJECT',
+            'notes': notes
+          }
+        );
+        return savedFile;
+      }
+      return false;
+    } catch(e) {
+      await AppLogs.writeError(e, "projects_modules_note_view_controller.dart - addNote");
+      return false;
+    }
+  }
+
+    Future<bool> moveProjectNote(NoteModel noteModel, String destinationCategory) async {
+    try {
+      bool added = await AppNotes.addNote(noteModel, destinationCategory);
+      if (added) {
+        bool deleted = await deleteProjectNote(noteModel);
+        return deleted;
+      }
+      return false;
+    } catch (e) {
+      await AppLogs.writeError(e, "projects_modules_note_view_controller.dart - moveProjectNote");
+      return false;
+    }
+  }
+
+  Future<bool> duplicateProjectNote(NoteModel noteModel) async {
+    try {
+      String newId = AppArticles.createFileName(noteModel.title);
+
+      NoteModel duplicateNote = NoteModel(
+        title: noteModel.title,
+        id: int.parse(newId),
+        category: noteModel.category,
+        content: noteModel.content,
+      );
+
+      return await addProjectNote(duplicateNote);
+    } catch (e) {
+      await AppLogs.writeError(e, "projects_modules_note_view_controller.dart - duplicateProjectNote");
+      return false;
+    }
+  }
+
+  Map<String, dynamic> _convertModelToJson(List<NoteModel> models, String category) {
+    List<Map> allNotesMap = [];
+    for (NoteModel model in models) {
+      allNotesMap.add(AppNotes.convertModelToJson(model));
+    }
+    return {'category': category, 'notes': allNotesMap};
+  }
+}

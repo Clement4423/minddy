@@ -1540,6 +1540,16 @@ class S {
     );
   }
 
+  /// `Unlock`
+  String get submenu_unlock_content_title {
+    return Intl.message(
+      'Unlock',
+      name: 'submenu_unlock_content_title',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Modify`
   String get project_card_open_settings {
     return Intl.message(

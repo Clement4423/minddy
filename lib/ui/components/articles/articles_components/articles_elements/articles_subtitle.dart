@@ -35,7 +35,7 @@ class _ArticlesSubtitleViewState extends State<ArticlesSubtitleElement> {
     StylesGetters theme = StylesGetters(context);
     return Padding(
       padding: const EdgeInsets.only(top: 60),
-      child: ArticlesElemementEnvelop(
+      child: ArticlesElementEnvelop(
         sideMenuIconOffsetOnYAxis: 2.8,
         removeFunction: widget.removeFunction, 
         keyToRemove: widget.key ?? UniqueKey(),

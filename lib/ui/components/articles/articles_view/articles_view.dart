@@ -22,7 +22,9 @@ ShortcutActivator saveActivator = SingleActivator(
   control: Platform.isWindows || Platform.isLinux
     ? true
     : false
-  );
+);
+
+ShortcutActivator _closeArticle = const SingleActivator(LogicalKeyboardKey.escape);
 
 // Width before the article content is shifted on the left
 double _widthTreshold = 1000;
@@ -83,8 +85,14 @@ Future<dynamic> showArticle(ArticlesViewController controller, BuildContext cont
                           // Top bar with actions and title;
                           CallbackShortcuts(
                             bindings: <ShortcutActivator, VoidCallback>{
-                              saveActivator:() {
-                                controller.saveArticle();
+                              saveActivator:() async {
+                                await controller.saveArticle();
+                              },
+                              _closeArticle:() async {
+                                await controller.saveArticle();
+                                if (context.mounted) {
+                                  Navigator.pop(context);
+                                }
                               }
                             },
                             child: Column(

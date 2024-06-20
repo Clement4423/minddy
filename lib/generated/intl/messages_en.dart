@@ -308,6 +308,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Project\'s name"),
         "submenu_new_project_title":
             MessageLookupByLibrary.simpleMessage("New project"),
+        "submenu_unlock_content_title":
+            MessageLookupByLibrary.simpleMessage("Unlock"),
         "submenu_unlock_error_message_error_login":
             MessageLookupByLibrary.simpleMessage("Unable to verify password."),
         "submenu_unlock_error_message_incorrect_password":

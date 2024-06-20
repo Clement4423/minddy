@@ -85,7 +85,7 @@ class _ProjectViewState extends State<ProjectView> {
               return AnimatedBuilder(
                 animation: widget._viewmodel,
                 builder: (context, child) {
-                  widget._viewmodel.buildContainers(constraints.biggest);
+                  widget._viewmodel.buildContainers(MediaQuery.of(context).size);
                   return Stack(
                     children: [
                       Column(
@@ -155,6 +155,12 @@ Future<dynamic> _showAddModuleMenu(BuildContext context, ProjectViewModel viewMo
             viewModel.newModule(ProjectsModules.tasks);
           },
           child: Text(S.current.projects_module_tasks_title)
+        ),
+        PopupMenuItem(
+          onTap: () {
+            viewModel.newModule(ProjectsModules.notes);
+          },
+          child: const Text("Notes")
         ),
       ]
   );

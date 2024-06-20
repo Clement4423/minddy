@@ -32,9 +32,9 @@ class _ArticlesTextViewState extends State<ArticlesTextElement> {
     StylesGetters theme = StylesGetters(context);
     return Padding(
       padding: const EdgeInsets.only(top: 15, bottom: 25),
-      child: ArticlesElemementEnvelop(
+      child: ArticlesElementEnvelop(
         sideMenuIconOffsetOnYAxis: 5.5,
-        removeFunction: widget.removeFunction, 
+        removeFunction: widget.removeFunction,
         keyToRemove: widget.key ?? UniqueKey(), 
         child: _ArticlesTextViewContent(theme: theme, controller: widget.controller),
         ),

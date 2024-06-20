@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/note_model.dart';
-import 'package:minddy/system/notes/notes.dart';
+import 'package:minddy/system/notes/app_notes.dart';
 import 'package:minddy/ui/components/custom_components/note_widget.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_view_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -103,13 +103,45 @@ class _ArticlesBottomMenuNotesViewState extends State<ArticlesBottomMenuNotesVie
   }
 }
 
+
 List<Widget> _buildArticlesNotesElements(List<NoteModel> notesList, StylesGetters theme, ArticlesBottomMenuNotesViewController controller) {
   List<Widget> notesElements = [];
   for (NoteModel note in notesList) {
-    notesElements.add(NoteWidget(noteModel: note, controller: controller, category: note.category, action: () {}));
+    notesElements.add(
+      NoteWidget(
+        noteModel: note, 
+        category: note.category,
+        actionTooltip: S.current.articles_add_to_content,
+        actionIcon: Icons.add_rounded,
+        onDelete: () async {
+          await controller.notesChanged();
+        },
+        action: () async {
+          await _addElementsToArticle(note, controller);
+        }
+      )
+    );
   }
   return notesElements;
 }
 
+Future<void> _addElementsToArticle(NoteModel noteModel, ArticlesBottomMenuNotesViewController controller) async {
+  for (NoteContentModel element in noteModel.content) {
+    switch (element.type) {
+      case NoteElementContentType.code:
+        controller.articleController.addCodeElement(initialContent: element.data['code'], language: element.data['language']);
+        break;
+      case NoteElementContentType.text:
+        controller.articleController.addTextElement(initialText: element.data);
+        break;
+      case NoteElementContentType.image:
+        controller.articleController.addImageElement(initialUrl: element.data['url'], initialDescription: element.data['description']);
+        break;
+      case NoteElementContentType.list:
+        controller.articleController.addListElement(initialContent: element.data);
+        break;
+    }
+  }
+}
 
 

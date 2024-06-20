@@ -66,7 +66,7 @@ class HomeViewModel extends ChangeNotifier {
     if (!isUnlockMenuShown) {
       isUnlockMenuShown = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        showSubMenu(context, UnlockSubMenu(controller: UnlockSubMenuController(function: function)),isDisbissible: false);
+        showSubMenu(context, UnlockSubMenu(controller: UnlockSubMenuController(function: function)),isDismissible: false);
       });
     }
   }

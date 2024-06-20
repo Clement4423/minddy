@@ -149,6 +149,7 @@
     "submenu_unlock_error_message_incorrect_password": "Contraseña incorrecta",
     "submenu_unlock_error_message_please_enter_password": "Por favor ingresa tu contraseña",
     "submenu_unlock_error_message_error_login": "No se puede verificar la contraseña.",
+    "submenu_unlock_content_title": "Desbloquear",
     "project_card_open_settings": "Modificar",
     "project_card_duplicate": "Duplicar",
     "project_card_delete": "Eliminar",

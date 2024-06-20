@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/articles/app_articles.dart';
-import 'package:minddy/system/model/note_model.dart';
-import 'package:minddy/system/notes/app_notes.dart';
 import 'package:minddy/system/interface/articles_element_interface.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-class ArticlesElementEnvelop extends StatefulWidget {
+class CustomElementEditorEnvelop extends StatefulWidget {
   final IArticlesWriteElement child;
   final Function removeFunction;
-  final Key keyToRemove;
   final double sideMenuIconOffsetOnYAxis;
 
-  const ArticlesElementEnvelop({
-    required this.child,
+  const CustomElementEditorEnvelop({
     required this.removeFunction,
-    required this.keyToRemove,
     required this.sideMenuIconOffsetOnYAxis,
+    required this.child,
     super.key
   });
 
   @override
-  State<ArticlesElementEnvelop> createState() => _ArticlesElementEnvelopState();
+  State<CustomElementEditorEnvelop> createState() => _CustomElementEditorEnvelopState();
 }
 
-class _ArticlesElementEnvelopState extends State<ArticlesElementEnvelop> {  
+class _CustomElementEditorEnvelopState extends State<CustomElementEditorEnvelop> {  
   bool _hovering = false;
 
   @override
@@ -93,36 +88,9 @@ class _ArticlesElementEnvelopState extends State<ArticlesElementEnvelop> {
                         ],
                       )
                     ),
-                    // Copy (Notes)
-                    PopupMenuItem(
-                      onTap: () {
-                        AppNotes.addNote(
-                          NoteModel(
-                            title: '',
-                            id: int.parse(AppArticles.createFileName("hello world")),
-                            category: 'for_later', 
-                            content: [
-                              AppNotes.createNoteContentMap(widget.child.data)
-                              ]
-                            ),
-                            "for_later"
-                          );
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            S.of(context).articles_copy_to_notes_text,
-                            style: theme.bodyMedium.copyWith(color: theme.onPrimary),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Icon(Icons.notes_rounded, color: theme.onPrimary),
-                        ],
-                      )
-                    ),
                     // Delete element
                     PopupMenuItem(
-                      onTap: () => widget.removeFunction(widget.keyToRemove),
+                      onTap: () => widget.removeFunction(),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -151,7 +119,9 @@ class _ArticlesElementEnvelopState extends State<ArticlesElementEnvelop> {
                 ),
               ),
             ),
-            widget.child,
+            Expanded(
+              child: widget.child
+            ),
           ],
         ),
       ),

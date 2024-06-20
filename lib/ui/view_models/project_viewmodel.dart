@@ -9,6 +9,8 @@ import 'package:minddy/system/model/project_info.dart';
 import 'package:minddy/system/model/project_module_model.dart';
 import 'package:minddy/system/model/projects_modules.dart';
 import 'package:minddy/system/projects/app_project.dart';
+import 'package:minddy/ui/components/projects/modules/notes/projects_modules_note_view_controller.dart';
+import 'package:minddy/ui/components/projects/modules/notes/projetcs_modules_notes_view.dart';
 import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view.dart';
 import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view_controller.dart';
 
@@ -57,7 +59,7 @@ class ProjectViewModel extends ChangeNotifier {
   }
 
   buildContainers(Size screenSize) {
-    double padding = screenSize.width / 4.5;
+    double padding = screenSize.width / 4.2;
     _getModules();
 
     double modulesWidth = 0;
@@ -74,6 +76,7 @@ class ProjectViewModel extends ChangeNotifier {
       modulesContainer.last.modules.add(module);
       modulesWidth += module.width;
     }
+    notifyListeners();
   }
 
   Future<void> duplicateModule(int id) async {
@@ -185,6 +188,8 @@ class ProjectViewModel extends ChangeNotifier {
         return ProjectsTasksModule(key: UniqueKey(), duplicateFunction: duplicateModule, deleteFunction: deleteModule, controller: ProjectsTasksModuleController(id: module.id, projectPath: module.projectPath));
       case ProjectsModules.expenses:
         return ProjectsTasksModule(key: UniqueKey(), duplicateFunction: duplicateModule, deleteFunction: deleteModule, controller: ProjectsTasksModuleController(id: module.id, projectPath: module.projectPath));
+      case ProjectsModules.notes:
+        return ProjectsNotesModule(key: UniqueKey(), duplicateFunction: duplicateModule, deleteFunction: deleteModule, controller: ProjectsNotesModuleController(id: module.id, projectPath: module.projectPath));
     }
   }
 }
