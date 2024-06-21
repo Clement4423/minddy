@@ -5,9 +5,6 @@ import 'package:minddy/ui/components/projects/modules/notes/project_notes_module
 import 'package:minddy/ui/components/projects/modules/notes/projects_modules_note_view_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-
-// TODO : Traduire le module
-
 class ProjectsNotesModule extends StatefulWidget implements IProjectsModules{
   ProjectsNotesModule({super.key, required this.deleteFunction ,required this.controller, required this.duplicateFunction}) {
     controller.width = width;

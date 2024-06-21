@@ -135,7 +135,7 @@ class _NoteEditingSubMenuState extends State<NoteEditingSubMenu> {
                             items: [
                               CustomPopupItemModel(
                                 text: Text(
-                                  "Move", 
+                                  S.of(context).projects_module_notes_editing_note_sub_menu_move_tooltip, 
                                   style: theme.bodyMedium.
                                   copyWith(color: theme.onPrimary)
                                 ), 
@@ -183,6 +183,7 @@ class _NoteEditingSubMenuState extends State<NoteEditingSubMenu> {
                             width: 42,
                             height: 42,
                             child: IconButton(
+                              tooltip: S.of(context).projects_module_notes_editing_note_sub_menu_save_tooltip,
                               onPressed: () async {
                                 bool isSaved = await widget.controller.closeNote();
                                 if (widget.controller.onClosed != null) {

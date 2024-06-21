@@ -17,33 +17,35 @@ Future<bool> showUnlockContentSubMenu(BuildContext context) async {
 
   showSubMenu(
     context, 
-    UnlockContentSubmenu(
+    _UnlockContentSubmenu(
       controller: UnlockSubMenuController(), 
       isUnlockedFunction: (bool value) {
-        completer.complete(value);
-        if (value == false) {
-          Navigator.pop(context);
+        if (value == true) {
+          completer.complete(value);
         }
       }
-    )
+    ),
+    onMenuDismissed: () {
+      completer.complete(false);
+    }
   );
 
   return completer.future;
 }
 
 
-class UnlockContentSubmenu extends StatefulWidget {
-  const UnlockContentSubmenu({super.key, required this.controller, required this.isUnlockedFunction});
+class _UnlockContentSubmenu extends StatefulWidget {
+  const _UnlockContentSubmenu({required this.controller, required this.isUnlockedFunction});
 
   final UnlockSubMenuController controller;
 
   final Function(bool) isUnlockedFunction;
 
   @override
-  State<UnlockContentSubmenu> createState() => _UnlockContentSubmenuState();
+  State<_UnlockContentSubmenu> createState() => _UnlockContentSubmenuState();
 }
 
-class _UnlockContentSubmenuState extends State<UnlockContentSubmenu> {
+class _UnlockContentSubmenuState extends State<_UnlockContentSubmenu> {
 
   String _mnemonicSentence = "";
   bool _showMnemonic = false;

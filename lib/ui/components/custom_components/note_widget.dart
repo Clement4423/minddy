@@ -217,7 +217,8 @@ FutureBuilder _getNoteImageBuilder(String imageUrl, StylesGetters theme) {
 
 Widget _buildNotesListElements(List textList, StylesGetters theme) {
   List<Widget> notesListElementsList = [];
-  for (int i = 0; i < textList.length; i++) {
+  int lengthLimit = textList.length > 2 ? 2 : textList.length;
+  for (int i = 0; i < lengthLimit; i++) {
     notesListElementsList.add(
       Row(
         crossAxisAlignment: CrossAxisAlignment.baseline,

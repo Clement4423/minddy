@@ -109,7 +109,7 @@ class _ProjectNotesModuleNoteCategoriesViewState extends State<ProjectNotesModul
                   height: 38,
                   width: widget.width,
                   child: IconButton(
-                    tooltip: "New category",
+                    tooltip: S.of(context).projects_module_notes_new_category_tooltip,
                     onPressed: () async {
                       await showSubMenu(context, NewNoteCategorySubMenu(onCompleted: () async {
                         setState(() {});
@@ -134,7 +134,7 @@ class _ProjectNotesModuleNoteCategoriesViewState extends State<ProjectNotesModul
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Text("Loading");
                   } else if (snapshot.hasError) {
-                    return const Text("An error occurred while getting the data");
+                    return const Text("ERROR");
                   } else if (snapshot.hasData && snapshot.data == true) {
                     return GridView.builder(
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -171,7 +171,7 @@ class _ProjectNotesModuleNoteCategoriesViewState extends State<ProjectNotesModul
                       },
                     );
                   } else {
-                    return const Text("An error occurred while getting the data");
+                    return const Text("ERROR");
                   }
                 }
               ),

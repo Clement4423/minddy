@@ -1744,6 +1744,189 @@ class S {
     );
   }
 
+  /// `New category`
+  String get projects_module_notes_new_category_tooltip {
+    return Intl.message(
+      'New category',
+      name: 'projects_module_notes_new_category_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New note`
+  String get projects_module_notes_new_note_tooltip {
+    return Intl.message(
+      'New note',
+      name: 'projects_module_notes_new_note_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modify`
+  String get projects_module_notes_modify_category {
+    return Intl.message(
+      'Modify',
+      name: 'projects_module_notes_modify_category',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modify this note`
+  String get projects_module_notes_modify_note_tooltip {
+    return Intl.message(
+      'Modify this note',
+      name: 'projects_module_notes_modify_note_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New category`
+  String get projects_module_notes_new_category_sub_menu_title {
+    return Intl.message(
+      'New category',
+      name: 'projects_module_notes_new_category_sub_menu_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category name`
+  String get projects_module_notes_new_category_sub_menu_subtitle {
+    return Intl.message(
+      'Category name',
+      name: 'projects_module_notes_new_category_sub_menu_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the category name`
+  String get projects_module_notes_new_category_sub_menu_name_hint {
+    return Intl.message(
+      'Enter the category name',
+      name: 'projects_module_notes_new_category_sub_menu_name_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private note`
+  String get projects_module_notes_new_category_sub_menu_is_private {
+    return Intl.message(
+      'Private note',
+      name: 'projects_module_notes_new_category_sub_menu_is_private',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, name the category`
+  String get projects_module_notes_new_category_sub_menu_error_message {
+    return Intl.message(
+      'Please, name the category',
+      name: 'projects_module_notes_new_category_sub_menu_error_message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `By enabling this option, your password will be required to open this category.`
+  String get projects_module_notes_new_category_sub_menu_is_private_tooltip {
+    return Intl.message(
+      'By enabling this option, your password will be required to open this category.',
+      name: 'projects_module_notes_new_category_sub_menu_is_private_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modify category`
+  String get projects_module_notes_modify_category_sub_menu_title {
+    return Intl.message(
+      'Modify category',
+      name: 'projects_module_notes_modify_category_sub_menu_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save note`
+  String get projects_module_notes_editing_note_sub_menu_save_tooltip {
+    return Intl.message(
+      'Save note',
+      name: 'projects_module_notes_editing_note_sub_menu_save_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Move`
+  String get projects_module_notes_editing_note_sub_menu_move_tooltip {
+    return Intl.message(
+      'Move',
+      name: 'projects_module_notes_editing_note_sub_menu_move_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notes for later`
+  String get projects_module_notes_for_later_title {
+    return Intl.message(
+      'Notes for later',
+      name: 'projects_module_notes_for_later_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Important notes`
+  String get projects_module_notes_important_notes_title {
+    return Intl.message(
+      'Important notes',
+      name: 'projects_module_notes_important_notes_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private notes`
+  String get projects_module_notes_private_notes_title {
+    return Intl.message(
+      'Private notes',
+      name: 'projects_module_notes_private_notes_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Project notes`
+  String get projects_module_notes_project_notes_title {
+    return Intl.message(
+      'Project notes',
+      name: 'projects_module_notes_project_notes_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{totalNotesCount, plural, =0 {No note} one {1 note} other {{totalNotesCount} notes}}`
+  String projects_module_notes_category_note_count(num totalNotesCount) {
+    return Intl.plural(
+      totalNotesCount,
+      zero: 'No note',
+      one: '1 note',
+      other: '$totalNotesCount notes',
+      name: 'projects_module_notes_category_note_count',
+      desc: '',
+      args: [totalNotesCount],
+    );
+  }
+
   /// `Articles`
   String get default_articles_articles_title {
     return Intl.message(

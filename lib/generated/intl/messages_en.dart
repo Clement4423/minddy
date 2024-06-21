@@ -32,14 +32,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(username) => "Good morning ${username}";
 
-  static String m5(totalTasksCount, checkedTasks) =>
+  static String m5(totalNotesCount) =>
+      "${Intl.plural(totalNotesCount, zero: 'No note', one: '1 note', other: '${totalNotesCount} notes')}";
+
+  static String m6(totalTasksCount, checkedTasks) =>
       "${Intl.plural(totalTasksCount, zero: 'No tasks', one: '${checkedTasks}/${totalTasksCount} task completed', other: '${checkedTasks}/${totalTasksCount} tasks completed')}";
 
-  static String m6(element) => "Delete ${element} ?";
+  static String m7(element) => "Delete ${element} ?";
 
-  static String m7(user) => "Welcome back ${user}";
+  static String m8(user) => "Welcome back ${user}";
 
-  static String m8(accountSettingName) =>
+  static String m9(accountSettingName) =>
       "You will still be able to enter your first name in settings / ${accountSettingName}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -223,9 +226,45 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("New module"),
         "projects_module_help_text":
             MessageLookupByLibrary.simpleMessage("Help"),
+        "projects_module_notes_category_note_count": m5,
+        "projects_module_notes_editing_note_sub_menu_move_tooltip":
+            MessageLookupByLibrary.simpleMessage("Move"),
+        "projects_module_notes_editing_note_sub_menu_save_tooltip":
+            MessageLookupByLibrary.simpleMessage("Save note"),
+        "projects_module_notes_for_later_title":
+            MessageLookupByLibrary.simpleMessage("Notes for later"),
+        "projects_module_notes_important_notes_title":
+            MessageLookupByLibrary.simpleMessage("Important notes"),
+        "projects_module_notes_modify_category":
+            MessageLookupByLibrary.simpleMessage("Modify"),
+        "projects_module_notes_modify_category_sub_menu_title":
+            MessageLookupByLibrary.simpleMessage("Modify category"),
+        "projects_module_notes_modify_note_tooltip":
+            MessageLookupByLibrary.simpleMessage("Modify this note"),
+        "projects_module_notes_new_category_sub_menu_error_message":
+            MessageLookupByLibrary.simpleMessage("Please, name the category"),
+        "projects_module_notes_new_category_sub_menu_is_private":
+            MessageLookupByLibrary.simpleMessage("Private note"),
+        "projects_module_notes_new_category_sub_menu_is_private_tooltip":
+            MessageLookupByLibrary.simpleMessage(
+                "By enabling this option, your password will be required to open this category."),
+        "projects_module_notes_new_category_sub_menu_name_hint":
+            MessageLookupByLibrary.simpleMessage("Enter the category name"),
+        "projects_module_notes_new_category_sub_menu_subtitle":
+            MessageLookupByLibrary.simpleMessage("Category name"),
+        "projects_module_notes_new_category_sub_menu_title":
+            MessageLookupByLibrary.simpleMessage("New category"),
+        "projects_module_notes_new_category_tooltip":
+            MessageLookupByLibrary.simpleMessage("New category"),
+        "projects_module_notes_new_note_tooltip":
+            MessageLookupByLibrary.simpleMessage("New note"),
+        "projects_module_notes_private_notes_title":
+            MessageLookupByLibrary.simpleMessage("Private notes"),
+        "projects_module_notes_project_notes_title":
+            MessageLookupByLibrary.simpleMessage("Project notes"),
         "projects_module_tasks_add_task_tooltip":
             MessageLookupByLibrary.simpleMessage("Add a new task"),
-        "projects_module_tasks_completed": m5,
+        "projects_module_tasks_completed": m6,
         "projects_module_tasks_task_add_subtask_tooltip":
             MessageLookupByLibrary.simpleMessage("Add a subtask"),
         "projects_module_tasks_task_title_hint":
@@ -277,7 +316,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "snackbar_cancel_button": MessageLookupByLibrary.simpleMessage("Close"),
         "snackbar_delete_button":
             MessageLookupByLibrary.simpleMessage("Delete"),
-        "snackbar_delete_element_text": m6,
+        "snackbar_delete_element_text": m7,
         "snackbar_reset_button": MessageLookupByLibrary.simpleMessage("Reset"),
         "snackbar_reset_text":
             MessageLookupByLibrary.simpleMessage("Reset settings ?"),
@@ -287,7 +326,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "You will need to restart the app to apply changes"),
         "snackbar_welcome_back_button":
             MessageLookupByLibrary.simpleMessage("Thank\'s"),
-        "snackbar_welcome_back_text": m7,
+        "snackbar_welcome_back_text": m8,
         "submenu_artilces_image_description_button":
             MessageLookupByLibrary.simpleMessage("Validate"),
         "submenu_artilces_image_description_hint":
@@ -363,7 +402,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Next page"),
         "welcome_pass_default_username":
             MessageLookupByLibrary.simpleMessage("User"),
-        "welcome_pass_tooltip": m8,
+        "welcome_pass_tooltip": m9,
         "welcome_pass_username": MessageLookupByLibrary.simpleMessage("Skip"),
         "welcome_password_creation_confirm_hint":
             MessageLookupByLibrary.simpleMessage("Confirm your password"),

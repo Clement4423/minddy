@@ -36,6 +36,7 @@ class MainApp extends StatelessWidget {
   // TODO : Faire les articles 'aide' pour les modules
   // TODO : Gérer les raccourcis clavier
   // TODO : Faire thème high contrast et l'ajouter au main
+  // TODO : Faire en sorte de pouvoir mettre un projet en privé, pour nécessiter le mot de passe pour l'ouvrir
   // TODO : Terminer les paramètres
   // TODO : Tools note rapide ?
   // TODO : Terminer la page des projets

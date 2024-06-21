@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/articles/app_articles.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
@@ -9,10 +10,10 @@ import 'package:minddy/system/model/project_note_module_category_model.dart';
 
 class AppNotes {
 
-  static const Map<String, List> defaultNotesCategories = {
-    "for_later": ["Notes for later", Icons.timer_outlined],
-    "important": ["Important notes", Icons.error_outline_rounded],
-    "private": ["Private notes", Icons.lock_outline_rounded]
+  static final Map<String, List> defaultNotesCategories = {
+    "for_later": [S.current.projects_module_notes_for_later_title, Icons.timer_outlined],
+    "important": [S.current.projects_module_notes_important_notes_title, Icons.error_outline_rounded],
+    "private": [S.current.projects_module_notes_private_notes_title, Icons.lock_outline_rounded]
   };
 
   static Future<void> ensureDefaultCategoriesExist() async {
@@ -106,22 +107,28 @@ class AppNotes {
     if (newCategoryName.isNotEmpty && newCategoryName.length <= 12) {
 
       Map<String, dynamic> fileContent = await _openNotesFile(actualCategoryName);
-      List<dynamic> notes = fileContent["notes"] ?? [];
 
       bool isFolderRenamed = await StaticVariables.fileSource.renameFolder('ressources/notes/$actualCategoryName', newCategoryName);
       if (isFolderRenamed) {
-        bool isFileWritten = await StaticVariables.fileSource.writeJsonFile(
-          'ressources/notes/$newCategoryName/notes.json', 
-          {
-            'category': newCategoryName,
-            'private': fileContent['private'],
-            'notes': notes
-          }
-        );
-        return isFileWritten;
+        fileContent['category'] = newCategoryName;
+        
+        bool isFileSaved = await _saveNotesFile(fileContent, newCategoryName);
+        if (isFileSaved) {
+          bool isLastFolderRemoved = await StaticVariables.fileSource.removeFolder('ressources/notes/$actualCategoryName');
+          return isLastFolderRemoved;
+        }
+        return false;
       }
     }
     return false;
+  }
+
+  static Future<bool> switchIsPrivate(String category, bool newValue) async {
+    Map<String, dynamic> fileContent = await _openNotesFile(category);
+    fileContent['private'] = newValue;
+
+    bool isSaved = await _saveNotesFile(fileContent, category);
+    return isSaved;
   }
 
   static Future<bool> moveNote(NoteModel noteModel, String destinationCategory) async {

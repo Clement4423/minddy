@@ -32,14 +32,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(username) => "Buenos días ${username}";
 
-  static String m5(totalTasksCount, checkedTasks) =>
+  static String m5(totalNotesCount) =>
+      "${Intl.plural(totalNotesCount, zero: 'Sin notas', one: '1 nota', other: '${totalNotesCount} notas')}";
+
+  static String m6(totalTasksCount, checkedTasks) =>
       "{totalTasksCount, plural, =0 {Sin tareas} una {${checkedTasks}/${totalTasksCount} tarea completada} otras {${checkedTasks}/${totalTasksCount} tareas completadas}}";
 
-  static String m6(element) => "¿Eliminar ${element}?";
+  static String m7(element) => "¿Eliminar ${element}?";
 
-  static String m7(user) => "Encantado de verte de nuevo ${user}";
+  static String m8(user) => "Encantado de verte de nuevo ${user}";
 
-  static String m8(accountSettingName) =>
+  static String m9(accountSettingName) =>
       "Aún podrás ingresar tu nombre en la configuración - ${accountSettingName}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -228,9 +231,47 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nuevo módulo"),
         "projects_module_help_text":
             MessageLookupByLibrary.simpleMessage("Ayuda"),
+        "projects_module_notes_category_note_count": m5,
+        "projects_module_notes_editing_note_sub_menu_move_tooltip":
+            MessageLookupByLibrary.simpleMessage("Mover"),
+        "projects_module_notes_editing_note_sub_menu_save_tooltip":
+            MessageLookupByLibrary.simpleMessage("Guardar nota"),
+        "projects_module_notes_for_later_title":
+            MessageLookupByLibrary.simpleMessage("Notas para más adelante"),
+        "projects_module_notes_important_notes_title":
+            MessageLookupByLibrary.simpleMessage("Notas importantes"),
+        "projects_module_notes_modify_category":
+            MessageLookupByLibrary.simpleMessage("Modificar"),
+        "projects_module_notes_modify_category_sub_menu_title":
+            MessageLookupByLibrary.simpleMessage("Editar categoría"),
+        "projects_module_notes_modify_note_tooltip":
+            MessageLookupByLibrary.simpleMessage("Editar esta nota"),
+        "projects_module_notes_new_category_sub_menu_error_message":
+            MessageLookupByLibrary.simpleMessage(
+                "Por favor, nombre la categoría"),
+        "projects_module_notes_new_category_sub_menu_is_private":
+            MessageLookupByLibrary.simpleMessage("Nota privada"),
+        "projects_module_notes_new_category_sub_menu_is_private_tooltip":
+            MessageLookupByLibrary.simpleMessage(
+                "Habilitar esta opción requerirá su contraseña para abrir esta categoría."),
+        "projects_module_notes_new_category_sub_menu_name_hint":
+            MessageLookupByLibrary.simpleMessage(
+                "Ingrese el nombre de la categoría"),
+        "projects_module_notes_new_category_sub_menu_subtitle":
+            MessageLookupByLibrary.simpleMessage("Nombre de categoría"),
+        "projects_module_notes_new_category_sub_menu_title":
+            MessageLookupByLibrary.simpleMessage("Nueva categoría"),
+        "projects_module_notes_new_category_tooltip":
+            MessageLookupByLibrary.simpleMessage("Nueva categoría"),
+        "projects_module_notes_new_note_tooltip":
+            MessageLookupByLibrary.simpleMessage("Nueva nota"),
+        "projects_module_notes_private_notes_title":
+            MessageLookupByLibrary.simpleMessage("Notas Privadas"),
+        "projects_module_notes_project_notes_title":
+            MessageLookupByLibrary.simpleMessage("Notas del proyecto"),
         "projects_module_tasks_add_task_tooltip":
             MessageLookupByLibrary.simpleMessage("Agregar una nueva tarea"),
-        "projects_module_tasks_completed": m5,
+        "projects_module_tasks_completed": m6,
         "projects_module_tasks_task_add_subtask_tooltip":
             MessageLookupByLibrary.simpleMessage("Agregar una subtarea"),
         "projects_module_tasks_task_title_hint":
@@ -281,7 +322,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Cerrar"),
         "snackbar_delete_button":
             MessageLookupByLibrary.simpleMessage("Eliminar"),
-        "snackbar_delete_element_text": m6,
+        "snackbar_delete_element_text": m7,
         "snackbar_reset_button":
             MessageLookupByLibrary.simpleMessage("Restablecer"),
         "snackbar_reset_text":
@@ -292,7 +333,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Debes reiniciar la aplicación para aplicar los cambios"),
         "snackbar_welcome_back_button":
             MessageLookupByLibrary.simpleMessage("Gracias"),
-        "snackbar_welcome_back_text": m7,
+        "snackbar_welcome_back_text": m8,
         "submenu_artilces_image_description_button":
             MessageLookupByLibrary.simpleMessage("Validar"),
         "submenu_artilces_image_description_hint":
@@ -373,7 +414,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Siguiente página"),
         "welcome_pass_default_username":
             MessageLookupByLibrary.simpleMessage("Usuario"),
-        "welcome_pass_tooltip": m8,
+        "welcome_pass_tooltip": m9,
         "welcome_pass_username": MessageLookupByLibrary.simpleMessage("Pasar"),
         "welcome_password_creation_confirm_hint":
             MessageLookupByLibrary.simpleMessage("Confirma tu contraseña"),

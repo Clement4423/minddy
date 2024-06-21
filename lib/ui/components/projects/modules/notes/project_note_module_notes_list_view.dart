@@ -133,7 +133,7 @@ class _ProjectNoteModuleNotesListViewState extends State<ProjectNoteModuleNotesL
                       height: 38,
                       width: widget.width / 2.15,
                       child: IconButton(
-                        tooltip: "Go back",
+                        tooltip: S.of(context).articles_go_back_semantic_text,
                         onPressed: () async {
                           widget.controller.actualView = ProjectNotesModuleNoteCategoriesView(
                             width: widget.width, 
@@ -152,7 +152,7 @@ class _ProjectNoteModuleNotesListViewState extends State<ProjectNoteModuleNotesL
                       height: 38,
                       width: widget.width / 2.15,
                       child: IconButton(
-                        tooltip: "New note",
+                        tooltip: S.of(context).projects_module_notes_new_note_tooltip,
                         onPressed: () async {
                           NoteModel model = NoteModel(
                                 title: '',
@@ -223,7 +223,7 @@ Future<List<NoteWidget>> _getNotesWidgets(String category, BuildContext context,
       NoteWidget(
         noteModel: model, 
         category: category,
-        actionTooltip: "Modify this note",
+        actionTooltip: S.of(context).projects_module_notes_modify_note_tooltip,
         action: () {
           NoteEditingSubMenuController noteController = NoteEditingSubMenuController(
             noteModel: model, 

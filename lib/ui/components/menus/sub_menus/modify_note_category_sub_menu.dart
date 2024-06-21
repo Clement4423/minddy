@@ -3,20 +3,27 @@ import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/notes/app_notes.dart';
 import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/components/custom_components/switch_tile.dart';
+import 'package:minddy/ui/components/menus/sub_menus/unlock_content_submenu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-class NewNoteCategorySubMenu extends StatefulWidget {
-  const NewNoteCategorySubMenu({super.key, required this.onCompleted});
+class ModifyNoteCategorySubMenu extends StatefulWidget {
+  const ModifyNoteCategorySubMenu({super.key, required this.onCompleted, required this.categoryTitle, required this.categoryName, required this.isPrivate});
 
   final Function onCompleted;
+  final String categoryTitle;
+  final String categoryName;
+  final bool isPrivate;
+
 
   @override
-  State<NewNoteCategorySubMenu> createState() => _NewNoteCategorySubMenuState();
+  State<ModifyNoteCategorySubMenu> createState() => _ModifyNoteCategorySubMenuState();
 }
 
-class _NewNoteCategorySubMenuState extends State<NewNoteCategorySubMenu> {
+class _ModifyNoteCategorySubMenuState extends State<ModifyNoteCategorySubMenu> {
   String _name = '';
   bool isPrivate = false;
+
+  bool isPrivateOriginalValue = false;
 
   String _errorMessage = '';
 
@@ -29,6 +36,14 @@ class _NewNoteCategorySubMenuState extends State<NewNoteCategorySubMenu> {
     } else {
       return true;
     }
+  }
+
+  @override
+  void initState() {
+    _name = widget.categoryTitle;
+    isPrivate = widget.isPrivate;
+    isPrivateOriginalValue = isPrivate;
+    super.initState();
   }
 
   @override
@@ -46,7 +61,7 @@ class _NewNoteCategorySubMenuState extends State<NewNoteCategorySubMenu> {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 25, bottom: 25),
-            child: Text(S.of(context).projects_module_notes_new_category_sub_menu_title, style: theme.titleLarge),
+            child: Text(S.of(context).projects_module_notes_modify_category_sub_menu_title, style: theme.titleLarge),
           ),
           Expanded(
             child: Padding(
@@ -69,6 +84,7 @@ class _NewNoteCategorySubMenuState extends State<NewNoteCategorySubMenu> {
                     padding: const EdgeInsets.only(bottom: 10),
                     child: TextField(
                       onChanged: (value) => {_name = value},
+                      controller: TextEditingController(text: _name),
                       maxLength: 15,
                       style: theme.bodyMedium.copyWith(color: theme.onSurface),
                       cursorColor: theme.onSurface,
@@ -87,7 +103,7 @@ class _NewNoteCategorySubMenuState extends State<NewNoteCategorySubMenu> {
                   Tooltip(
                     message: S.of(context).projects_module_notes_new_category_sub_menu_is_private_tooltip,
                     child: SwitchTile(
-                      false, 
+                      isPrivate, 
                       S.of(context).projects_module_notes_new_category_sub_menu_is_private, 
                       (value) {
                         isPrivate = value;
@@ -105,12 +121,24 @@ class _NewNoteCategorySubMenuState extends State<NewNoteCategorySubMenu> {
               width: 350,
               height: 60,
               child: CustomTextButton(
-                S.of(context).submenu_new_project_button,
+                S.of(context).projects_module_notes_modify_category,
                 () async {
                   bool isNameOk = _verifyName();
                   if (isNameOk) {
-                    await AppNotes.newCategory(_name, isPrivate);
+
+                    await AppNotes.renameCategory(widget.categoryName, _name);
+
+                    if (isPrivateOriginalValue == true && isPrivate == false && context.mounted) {
+                      bool isUnlocked = await showUnlockContentSubMenu(context);
+                      if (isUnlocked) {
+                        await AppNotes.switchIsPrivate(_name, isPrivate);
+                      }
+                    } else {
+                      await AppNotes.switchIsPrivate(_name, isPrivate);
+                    }
+
                     await widget.onCompleted();
+
                     if (context.mounted) {
                       Navigator.pop(context);
                     }

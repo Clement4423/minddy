@@ -4,6 +4,8 @@ import 'package:minddy/system/notes/app_notes.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/components/menus/popup_menu/popup_menu_button.dart';
 import 'package:minddy/ui/components/menus/popup_menu/popup_menu_item_model.dart';
+import 'package:minddy/ui/components/menus/sub_menus/modify_note_category_sub_menu.dart';
+import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
 import 'package:minddy/ui/components/menus/sub_menus/unlock_content_submenu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -76,7 +78,7 @@ class ProjectNoteModuleCategoryCard extends StatelessWidget {
                         Text(
                           isPrivate 
                             ? '' 
-                            : "$itemCount notes", 
+                            : S.of(context).projects_module_notes_category_note_count(itemCount), 
                           style: theme.bodySmall.
                           copyWith(color: theme.onSurface)
                         ),
@@ -86,10 +88,18 @@ class ProjectNoteModuleCategoryCard extends StatelessWidget {
                   if (isManageable)
                     CustomPopupMenuButton(items: [
                       CustomPopupItemModel(
-                        text: Text("Modify", style: theme.bodyMedium.copyWith(color: theme.onPrimary)), 
+                        text: Text(S.of(context).projects_module_notes_modify_category, style: theme.bodyMedium.copyWith(color: theme.onPrimary)), 
                         icon: Icon(Icons.brush_rounded, color: theme.onPrimary),
                         action: () async {
-                          // TODO : Ajouter le menu pour modifier la catégorie
+                          await showSubMenu(
+                            context, 
+                            ModifyNoteCategorySubMenu(
+                              onCompleted: onDelete, 
+                              categoryTitle: title, 
+                              categoryName: categoryName, 
+                              isPrivate: isPrivate
+                            )
+                          );
                         }
                       ),
                       CustomPopupItemModel(
