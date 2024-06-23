@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:minddy/system/articles/article_categories.dart';
 import 'package:minddy/system/articles/get_article_content_elements.dart';
 import 'package:minddy/system/articles/get_dart_maps_from_articles_elements.dart';
-import 'package:minddy/system/files/config.dart';
+import 'package:minddy/system/create_unique_id.dart';
+import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/model/article_info.dart';
@@ -10,7 +11,6 @@ import 'package:minddy/system/model/articles_elements.dart';
 
 /// A utility class for managing articles.
 class AppArticles {
-  /// A map containing category names and their associated icons.
   /// A map containing category names and their associated icons.
   static const Map<ArticleCategory, IconData> _categoryIcons = {
     ArticleCategory.creativity: Icons.brush_rounded,
@@ -76,7 +76,7 @@ class AppArticles {
       };
 
       String fileRelativePath = "";
-      String fileName = createFileName(title);
+      String fileName = createUniqueId().toString();
 
       if (isMultiLanguage) {
         fileRelativePath = "$relativeFolderPath/${getCategoryString(category)}/$fileName/$languageCode.json";
@@ -105,13 +105,6 @@ class AppArticles {
       return null;
     }
   }
-
-  /// Creates a unique file name based on the provided title.
-  static String createFileName(String title) {
-    double hashDividedTitle = title.hashCode / (DateTime.now().microsecond + 1);
-    return hashDividedTitle.hashCode.toString().substring(1, 10).padRight(10, '0');
-  }
-
 
   /// This function will delete article file as well as ressources used like images.
   static Future<bool> deleteArticle(String articleRelativePath) async {

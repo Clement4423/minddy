@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/files/config.dart';
+import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/initialize/login_state.dart';
 import 'package:minddy/system/model/project_info.dart';
 import 'package:minddy/system/projects/get_projects.dart';

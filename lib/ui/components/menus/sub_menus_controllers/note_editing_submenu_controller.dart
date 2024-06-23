@@ -116,6 +116,24 @@ class NoteEditingSubMenuController extends ChangeNotifier {
     }  
   }
 
+  String formatDate(String lastModified) {
+    String date = lastModified.split(' ').first;
+    String hour = lastModified.split(' ').last;
+
+    String year = date.split('/').last;
+
+    int? yearAsInt = int.tryParse(year);
+
+    if(yearAsInt != null) {
+      int currentYear = DateTime.now().year;
+      if (yearAsInt == currentYear) {
+        String dateWithoutYear = "${date.substring(0, 5)} $hour";
+        return dateWithoutYear;
+      } 
+    }
+    return lastModified;
+  }
+
   Future<bool> closeNote() async {
     if (_getAllNoteText().replaceAll(' ', '').isEmpty) {
       await deleteNote();

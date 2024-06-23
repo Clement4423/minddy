@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/articles/app_articles.dart';
+import 'package:minddy/system/create_unique_id.dart';
+import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/model/note_model.dart';
@@ -147,12 +149,13 @@ class AppNotes {
 
   static Future<bool> duplicateNote(NoteModel noteModel) async {
     try {
-      String newId = AppArticles.createFileName(noteModel.category);
+      String newId = createUniqueId().toString();
 
       NoteModel duplicateNote = NoteModel(
-        title: noteModel.title,
+        title: "${noteModel.title} ${S.current.system_files_copy_text}",
         id: int.parse(newId),
         category: noteModel.category,
+        lastModified: await getCurrentTime(),
         content: noteModel.content,
       );
 
@@ -204,7 +207,7 @@ class AppNotes {
       Map<String, dynamic> fileContent = await _openNotesFile(category);
       List<dynamic> notes = fileContent["notes"] ?? [];
 
-      notes.add(convertModelToJson(noteToAdd));
+      notes.add(await convertModelToJson(noteToAdd));
 
       bool savedFile = await _saveNotesFile(fileContent, category);
       return savedFile;
@@ -222,7 +225,7 @@ class AppNotes {
       int noteIndex = notes.indexWhere((element) => element['id'] == note.id);
 
       if (noteIndex != -1) {
-        notes[noteIndex] = AppNotes.convertModelToJson(note);
+        notes[noteIndex] = await convertModelToJson(note);
 
         bool savedFile = await _saveNotesFile(fileContent, note.category);
         return savedFile;
@@ -250,8 +253,14 @@ class AppNotes {
     }
   }
 
-  static Map convertModelToJson(NoteModel noteModel) {
-    return {'title': noteModel.title, 'id': noteModel.id, 'content': _convertNoteContentModelToJson(noteModel.content)};
+  static Future<Map> convertModelToJson(NoteModel noteModel) async {
+
+    return {
+      'title': noteModel.title, 
+      'id': noteModel.id, 
+      'last_modified': await getCurrentTime(),
+      'content': _convertNoteContentModelToJson(noteModel.content)
+    };
   }
 
   static List<Map> _convertNoteContentModelToJson(List<NoteContentModel> content) {
@@ -276,6 +285,7 @@ class AppNotes {
           title: note['title'] ?? "",
           id: note['id'] ?? 0,
           category: category,
+          lastModified: note['last_modified'],
           content: getContentModels(note['content']),
         ));
       }
@@ -327,6 +337,9 @@ class AppNotes {
   }
 
   static Future<bool> _createNotesFile(String category) async {
+    if (category == 'PROJECT') {
+      return true;
+    }
     await StaticVariables.fileSource.createFile('ressources/notes/$category/notes.json');
     bool isWritten = await StaticVariables.fileSource.writeJsonFile(
       'ressources/notes/$category/notes.json', 
@@ -341,5 +354,19 @@ class AppNotes {
   
   static Future<bool> _saveNotesFile(Map<String, dynamic> newContent, String category) async {
     return await StaticVariables.fileSource.writeJsonFile('ressources/notes/$category/notes.json', newContent);
+  }
+
+  static Future<String> getCurrentTime() async {
+    DateTime now = DateTime.now();
+
+    bool preferUsFormat = await AppConfig.getConfigValue("prefer_us_date_format");
+
+    String dateFormat = preferUsFormat ? "MM/dd/yyyy" : "dd/MM/yyyy";
+
+    String formattedDate = DateFormat(dateFormat).format(now);
+    
+    String formattedTime = DateFormat('HH:mm').format(now);  
+
+    return "$formattedDate $formattedTime";
   }
 }

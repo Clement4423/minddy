@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/model/custom_appbar_button_model.dart';
 
 
@@ -47,6 +48,7 @@ class CustomAppBarController extends ChangeNotifier {
   }
 
   void goToHomePage(BuildContext context) {
+    StaticVariables.currentProjectInfo = null;
     Navigator.of(context).pop();
   }
 

@@ -38,11 +38,14 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m6(totalTasksCount, checkedTasks) =>
       "{totalTasksCount, plural, =0 {Sin tareas} una {${checkedTasks}/${totalTasksCount} tarea completada} otras {${checkedTasks}/${totalTasksCount} tareas completadas}}";
 
-  static String m7(element) => "¿Eliminar ${element}?";
+  static String m7(actualMonth, actualDay) =>
+      "Esta opción pondrá el mes antes del día. Así: ${actualMonth}/${actualDay}";
 
-  static String m8(user) => "Encantado de verte de nuevo ${user}";
+  static String m8(element) => "¿Eliminar ${element}?";
 
-  static String m9(accountSettingName) =>
+  static String m9(user) => "Encantado de verte de nuevo ${user}";
+
+  static String m10(accountSettingName) =>
       "Aún podrás ingresar tu nombre en la configuración - ${accountSettingName}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -269,6 +272,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Notas Privadas"),
         "projects_module_notes_project_notes_title":
             MessageLookupByLibrary.simpleMessage("Notas del proyecto"),
+        "projects_module_notes_title":
+            MessageLookupByLibrary.simpleMessage("Notas"),
         "projects_module_tasks_add_task_tooltip":
             MessageLookupByLibrary.simpleMessage("Agregar una nueva tarea"),
         "projects_module_tasks_completed": m6,
@@ -284,6 +289,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Accesibilidad"),
         "settings_account_title":
             MessageLookupByLibrary.simpleMessage("Mi cuenta"),
+        "settings_date_format": MessageLookupByLibrary.simpleMessage(
+            "Prefiero el formato de fecha MM/dd"),
+        "settings_date_format_subtitle":
+            MessageLookupByLibrary.simpleMessage("Formato de fecha"),
+        "settings_date_format_tooltip": m7,
         "settings_language_subtitle":
             MessageLookupByLibrary.simpleMessage("Idioma"),
         "settings_personalize_black_and_white_title":
@@ -322,7 +332,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Cerrar"),
         "snackbar_delete_button":
             MessageLookupByLibrary.simpleMessage("Eliminar"),
-        "snackbar_delete_element_text": m7,
+        "snackbar_delete_element_text": m8,
         "snackbar_reset_button":
             MessageLookupByLibrary.simpleMessage("Restablecer"),
         "snackbar_reset_text":
@@ -333,7 +343,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Debes reiniciar la aplicación para aplicar los cambios"),
         "snackbar_welcome_back_button":
             MessageLookupByLibrary.simpleMessage("Gracias"),
-        "snackbar_welcome_back_text": m8,
+        "snackbar_welcome_back_text": m9,
         "submenu_artilces_image_description_button":
             MessageLookupByLibrary.simpleMessage("Validar"),
         "submenu_artilces_image_description_hint":
@@ -414,7 +424,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Siguiente página"),
         "welcome_pass_default_username":
             MessageLookupByLibrary.simpleMessage("Usuario"),
-        "welcome_pass_tooltip": m9,
+        "welcome_pass_tooltip": m10,
         "welcome_pass_username": MessageLookupByLibrary.simpleMessage("Pasar"),
         "welcome_password_creation_confirm_hint":
             MessageLookupByLibrary.simpleMessage("Confirma tu contraseña"),

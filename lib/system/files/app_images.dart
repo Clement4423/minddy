@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:minddy/system/articles/app_articles.dart';
+import 'package:minddy/system/create_unique_id.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 
@@ -26,7 +26,7 @@ class AppImages {
     if (result != null && result.first is String) {
       File file = File(result.first ?? "");
 
-      final String generatedFileName = AppArticles.createFileName(file.path.split(r'/').last);
+      final String generatedFileName = createUniqueId().toString();
       final String finalFileName = "$generatedFileName.${file.path.split(r'/').last.split(r'.').last}";
 
       

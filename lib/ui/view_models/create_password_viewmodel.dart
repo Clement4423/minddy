@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/files/config.dart';
+import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/files/encryption.dart';
 import 'package:minddy/system/files/secure_storage.dart';
 import 'package:minddy/system/initialize/login_state.dart';

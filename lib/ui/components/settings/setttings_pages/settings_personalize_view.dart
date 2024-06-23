@@ -26,6 +26,7 @@ class PersonalizeView extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 10, top: 20, bottom: 10, right: 10),
                 child: ListView(
                   children: [
+                    // Theme
                     Align(
                       alignment: AlignmentDirectional.centerStart,
                       child: Text(
@@ -33,6 +34,7 @@ class PersonalizeView extends StatelessWidget {
                         style: theme.bodySmall.copyWith(color: Colors.grey),
                       ),
                     ),
+                    // Theme value
                     CustomDropdownButton(
                       menuTitle: controller.menuThemeTitle,
                       action: controller.treatThemeValue,
@@ -40,6 +42,7 @@ class PersonalizeView extends StatelessWidget {
                       items: controller.getThemeItems(context),
                       needToRestart: true,
                     ),
+                    // Use black and white
                     SwitchTile(
                       controller.isUsingBWMode, 
                       S.of(context).settings_personalize_black_and_white_title,
@@ -48,6 +51,33 @@ class PersonalizeView extends StatelessWidget {
                       },
                       true
                     ),
+                    // Date format
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: Text(
+                          S.of(context).settings_date_format_subtitle,
+                          style: theme.bodySmall.copyWith(color: Colors.grey),
+                        ),
+                      ),
+                    ),
+                    Tooltip(
+                      message: S.of(context).settings_date_format_tooltip(
+                        DateTime.now().month < 10 ? "0${DateTime.now().month}" : "${DateTime.now().month}", 
+                        DateTime.now().day < 10 ? "0${DateTime.now().day}" : "${DateTime.now().day}"
+                      ),
+                      child: SwitchTile(
+                        controller.prefetUsDateFormat, 
+                        // TODO : Traduire les textes + Faire un tooltip pour donner un exemple
+                        S.of(context).settings_date_format,
+                        (value) async {
+                          await controller.setDateFormat(value);
+                        }, 
+                        false
+                      ),
+                    ),
+                    // Language
                     Padding(
                       padding: const EdgeInsets.only(top: 30),
                       child: Align(

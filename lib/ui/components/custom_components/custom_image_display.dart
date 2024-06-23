@@ -163,8 +163,8 @@ class _CustomImageDisplayState extends State<CustomImageDisplay> {
                   child: MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
-                      onTap: () {
-                        // TODO: Revoir l'édition de la description des images dans les notes;
+                      onTap: () async {
+                        // TODO: Revoir l'édition de la description des images dans les notes
                       },
                       child: const Icon(Icons.more_horiz),
                     ),

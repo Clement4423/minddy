@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/model/project_info.dart';
 import 'package:minddy/ui/view_models/create_password_viewmodel.dart';
 import 'package:minddy/ui/view_models/home_viewmodel.dart';
@@ -34,7 +35,8 @@ class AppRouter {
     return navigatorKey.currentState!.pushNamed(routeName);
   }
 
-  Future<dynamic> showProject(BuildContext context ,ProjectInfo projectInfo) {
+  Future<dynamic> showProject(BuildContext context, ProjectInfo projectInfo) {
+    StaticVariables.currentProjectInfo = projectInfo;
     return Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => ProjectView(ProjectViewModel(projectInfo: projectInfo)),

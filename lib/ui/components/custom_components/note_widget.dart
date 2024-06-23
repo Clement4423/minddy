@@ -14,7 +14,8 @@ class NoteWidget extends StatefulWidget {
     required this.actionIcon,
     required this.actionTooltip,
     required this.onDelete,
-    this.deleteMethod
+    this.deleteMethod,
+    this.isDeletable = true
   });
 
   final NoteModel noteModel;
@@ -22,6 +23,7 @@ class NoteWidget extends StatefulWidget {
   final Function action;
   final IconData actionIcon;
   final String actionTooltip;
+  final bool isDeletable;
   final Function onDelete;
   final Function? deleteMethod;
 
@@ -50,23 +52,25 @@ class NoteWidgetState extends State<NoteWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Delete button
-                  MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: GestureDetector(
-                      onTap: () async {
-                        widget.deleteMethod != null 
-                        ? await widget.deleteMethod!()
-                        : await AppNotes.deleteNote(widget.noteModel, widget.category);
-                        if (context.mounted) {
-                          await widget.onDelete();
-                        }
-                      },
-                      child: Tooltip(
-                        message: S.current.snackbar_delete_button,
-                        child: Icon(Icons.delete_outline_rounded, color: theme.error)
+                  widget.isDeletable 
+                    ? MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: () async {
+                          widget.deleteMethod != null 
+                          ? await widget.deleteMethod!()
+                          : await AppNotes.deleteNote(widget.noteModel, widget.category);
+                          if (context.mounted) {
+                            await widget.onDelete();
+                          }
+                        },
+                        child: Tooltip(
+                          message: S.current.snackbar_delete_button,
+                          child: Icon(Icons.delete_outline_rounded, color: theme.error)
+                        ),
                       ),
-                    ),
-                  ),
+                    )
+                    : const SizedBox(),
                   // Note title
                   Text(
                     widget.noteModel.title.isEmpty 

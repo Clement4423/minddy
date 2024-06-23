@@ -47,26 +47,37 @@ class _NoteEditingSubMenuState extends State<NoteEditingSubMenu> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10, left: 25),
-                      child: TextField(
-                        onChanged: (value) {
-                          widget.controller.noteModel.title = value;
-                        },
-                        controller: TextEditingController(
-                          text: widget.controller.noteModel.title == S.of(context).articles_card_untitled
-                            ? ''
-                            : widget.controller.noteModel.title
-                        ),
-                        style: theme.titleLarge.copyWith(color: theme.onPrimary),
-                        cursorColor: theme.onPrimary,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: S.of(context).articles_card_untitled
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextField(
+                            onChanged: (value) {
+                              widget.controller.noteModel.title = value;
+                            },
+                            controller: TextEditingController(
+                              text: widget.controller.noteModel.title == S.of(context).articles_card_untitled
+                                ? ''
+                                : widget.controller.noteModel.title
+                            ),
+                            style: theme.titleLarge.copyWith(color: theme.onPrimary),
+                            cursorColor: theme.onPrimary,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: S.of(context).articles_card_untitled
+                            ),
+                          ),
+                          // Last modified
+                          Text(
+                            widget.controller.formatDate(widget.controller.noteModel.lastModified),
+                            style: theme.bodySmall,
+                          )
+                        ],
                       ),
                     ),
                   ),
+                  // Actions row
                   Padding(
-                    padding: const EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 10, right: 8),
                     child: Row(
                       children: [
                         Padding(

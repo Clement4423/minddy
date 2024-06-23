@@ -34,18 +34,14 @@ class MainApp extends StatelessWidget {
   // TODO : Revoir la reinitialisation des paramètres pour ne pas recréer un mot de passe si il y en à déja un
   // TODO : Ajouter tous les articles de base
   // TODO : Faire les articles 'aide' pour les modules
-  // TODO : Gérer les raccourcis clavier
   // TODO : Faire thème high contrast et l'ajouter au main
   // TODO : Faire en sorte de pouvoir mettre un projet en privé, pour nécessiter le mot de passe pour l'ouvrir
   // TODO : Terminer les paramètres
   // TODO : Tools note rapide ?
   // TODO : Terminer la page des projets
   // TODO : Faire les fonds de projets pour le mode noir et blanc
-  // TODO : Modifier les notes dans les articles pour selectionner les notes selon les catégories
   // TODO : Faire le module des notes (code)
-  // TODO : Faire le menu d'édition de note
   // TODO : Ajouter la date de création et de modification des notes
-  // TODO : Remplacer les éléments dans les articles elements avec les custom elements
 
 
   @override

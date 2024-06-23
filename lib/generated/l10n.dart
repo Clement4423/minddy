@@ -410,6 +410,36 @@ class S {
     );
   }
 
+  /// `Date format`
+  String get settings_date_format_subtitle {
+    return Intl.message(
+      'Date format',
+      name: 'settings_date_format_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prefer MM/dd date format`
+  String get settings_date_format {
+    return Intl.message(
+      'Prefer MM/dd date format',
+      name: 'settings_date_format',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This option will put the month before the day. Like this : {actualMonth}/{actualDay}`
+  String settings_date_format_tooltip(Object actualMonth, Object actualDay) {
+    return Intl.message(
+      'This option will put the month before the day. Like this : $actualMonth/$actualDay',
+      name: 'settings_date_format_tooltip',
+      desc: '',
+      args: [actualMonth, actualDay],
+    );
+  }
+
   /// `Language`
   String get settings_language_subtitle {
     return Intl.message(
@@ -1924,6 +1954,16 @@ class S {
       name: 'projects_module_notes_category_note_count',
       desc: '',
       args: [totalNotesCount],
+    );
+  }
+
+  /// `Notes`
+  String get projects_module_notes_title {
+    return Intl.message(
+      'Notes',
+      name: 'projects_module_notes_title',
+      desc: '',
+      args: [],
     );
   }
 

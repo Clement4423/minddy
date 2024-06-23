@@ -3,7 +3,7 @@ import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/articles/app_articles.dart';
 import 'package:minddy/system/articles/article_categories.dart';
 import 'package:minddy/system/articles/articles_importer/articles_importer.dart';
-import 'package:minddy/system/files/config.dart';
+import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/model/article_info.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_view_controller.dart';
 import 'package:minddy/ui/components/articles/articles_view/articles_view.dart';

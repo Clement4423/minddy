@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/articles/app_articles.dart';
+import 'package:minddy/system/create_unique_id.dart';
 import 'package:minddy/system/model/note_model.dart';
 import 'package:minddy/system/notes/app_notes.dart';
 import 'package:minddy/ui/components/custom_components/note_widget.dart';
@@ -156,7 +156,8 @@ class _ProjectNoteModuleNotesListViewState extends State<ProjectNoteModuleNotesL
                         onPressed: () async {
                           NoteModel model = NoteModel(
                                 title: '',
-                                id: int.parse(AppArticles.createFileName(widget.category)), 
+                                id: createUniqueId(),
+                                lastModified: await AppNotes.getCurrentTime(),
                                 category: widget.category, 
                                 content: []
                               );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minddy/system/files/config.dart';
+import 'package:minddy/system/files/app_config.dart';
 
 enum UsableThemes {
   light,

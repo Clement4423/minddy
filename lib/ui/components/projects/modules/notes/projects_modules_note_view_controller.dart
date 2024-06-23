@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:minddy/system/articles/app_articles.dart';
+import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/create_unique_id.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/interface/projects_modules_controller_interface.dart';
@@ -47,7 +48,7 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
   @override
   Future<bool> savingMethod() async {
     try {
-      Map<String, dynamic> notesMap = _convertModelToJson(_projectNotes, 'PROJECT');
+      Map<String, dynamic> notesMap = await _convertModelToJson(_projectNotes, 'PROJECT');
       bool isSaved = await StaticVariables.fileSource.writeJsonFile(
         '$projectPath/${ProjectsModules.notes.name}/$_globalId.json',
         notesMap
@@ -68,7 +69,7 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
     categories.insert(
       0, 
       ProjectNoteModuleCategoryModel(
-        title: "Project notes", 
+        title: S.current.projects_module_notes_project_notes_title, 
         categoryName: "PROJECT", 
         isPrivate: false,
         icon: Icons.chair_outlined, 
@@ -85,7 +86,7 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
 
       int noteIndex = notes.indexWhere((element) => element['id'] == updatedNote.id);
       if (noteIndex != -1) {
-        notes[noteIndex] = AppNotes.convertModelToJson(updatedNote);
+        notes[noteIndex] = await AppNotes.convertModelToJson(updatedNote);
 
         bool savedFile = await StaticVariables.fileSource.writeJsonFile(
           "$projectPath/${ProjectsModules.notes.name}/$_globalId.json",
@@ -160,7 +161,7 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
       if (fileContent != null) {
         List<dynamic> notes = fileContent["notes"] ?? [];
 
-        notes.add(AppNotes.convertModelToJson(noteToAdd));
+        notes.add(await AppNotes.convertModelToJson(noteToAdd));
 
         bool savedFile = await StaticVariables.fileSource.writeJsonFile(
           "$projectPath/${ProjectsModules.notes.name}/$_globalId.json",
@@ -195,12 +196,11 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
 
   Future<bool> duplicateProjectNote(NoteModel noteModel) async {
     try {
-      String newId = AppArticles.createFileName(noteModel.title);
-
       NoteModel duplicateNote = NoteModel(
-        title: noteModel.title,
-        id: int.parse(newId),
+        title: "${noteModel.title} ${S.current.system_files_copy_text}",
+        id: createUniqueId(),
         category: noteModel.category,
+        lastModified: noteModel.lastModified,
         content: noteModel.content,
       );
 
@@ -211,10 +211,10 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
     }
   }
 
-  Map<String, dynamic> _convertModelToJson(List<NoteModel> models, String category) {
+  Future<Map<String, dynamic>> _convertModelToJson(List<NoteModel> models, String category) async {
     List<Map> allNotesMap = [];
     for (NoteModel model in models) {
-      allNotesMap.add(AppNotes.convertModelToJson(model));
+      allNotesMap.add(await AppNotes.convertModelToJson(model));
     }
     return {'category': category, 'private': false, 'notes': allNotesMap};
   }

@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:minddy/system/articles/app_articles.dart';
 import 'package:minddy/system/articles/article_categories.dart';
+import 'package:minddy/system/create_unique_id.dart';
 import 'package:minddy/ui/components/menus/sub_menus/articles_importer_add_images_sub_menu.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
@@ -73,7 +73,7 @@ class ArticlesImporter {
     Map<String, dynamic>? decodedContent = await jsonDecode(fileContent);
 
     if (decodedContent != null) {
-      final String newFilePath = "/shared/articles/${category.name}/${AppArticles.createFileName(category.name)}.json";
+      final String newFilePath = "/shared/articles/${category.name}/${createUniqueId().toString()}.json";
 
       await StaticVariables.fileSource.createFile(newFilePath);
 

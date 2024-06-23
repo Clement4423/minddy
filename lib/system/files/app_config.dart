@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
@@ -11,10 +12,11 @@ class AppConfig {
 
   static late Map<String, dynamic> _configFileContent;
   static const String _configFilePath = "config/config.json";
-  static const Map<String, dynamic> _defaultConfigData = {
+  static final Map<String, dynamic> _defaultConfigData = {
     "username": "",
     "language": null,
     "using_bw_mode": false,
+    "prefer_us_date_format": Intl.systemLocale.toLowerCase().contains('us') ? true : false,
     "using_system_theme": true,
     "dark_mode": false,
     "is_first_start": true

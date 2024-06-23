@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/articles/app_articles.dart';
+import 'package:minddy/system/create_unique_id.dart';
 import 'package:minddy/system/model/note_model.dart';
 import 'package:minddy/system/notes/app_notes.dart';
 import 'package:minddy/system/interface/articles_element_interface.dart';
@@ -95,12 +95,13 @@ class _ArticlesElementEnvelopState extends State<ArticlesElementEnvelop> {
                     ),
                     // Copy (Notes)
                     PopupMenuItem(
-                      onTap: () {
+                      onTap: () async {
                         AppNotes.addNote(
                           NoteModel(
                             title: '',
-                            id: int.parse(AppArticles.createFileName("hello world")),
+                            id: createUniqueId(),
                             category: 'for_later', 
+                            lastModified: await AppNotes.getCurrentTime(),
                             content: [
                               AppNotes.createNoteContentMap(widget.child.data)
                               ]

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:minddy/system/articles/app_articles.dart';
+import 'package:minddy/system/create_unique_id.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:path/path.dart' as path;
@@ -44,7 +44,7 @@ class FilesPicker extends IFilesPicker {
         : finalFileName = newFileName;
         
       } else {
-        final String randomName = AppArticles.createFileName(actualFilePath);
+        final String randomName = createUniqueId().toString();
         finalFileName = "$randomName$fileExtension";
       }
 

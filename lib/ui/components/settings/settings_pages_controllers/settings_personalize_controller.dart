@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/files/config.dart';
+import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/files/app_logs.dart';
 
 
@@ -16,6 +16,7 @@ class PersonalizeViewController extends ChangeNotifier {
 
   PersonalizeViewController() {
     _initializeThemeTitle();
+    _initializeDateFormatValue();
     _initializeLanguageTitle();
   }
 
@@ -112,6 +113,24 @@ class PersonalizeViewController extends ChangeNotifier {
         child: Text(S.of(context).settings_using_light_mode),
       ),
     ];
+  }
+
+  // Date format setting
+
+  bool get prefetUsDateFormat => _prefetUsDateFormat;
+  bool _prefetUsDateFormat = false;
+
+  Future<bool> _getDateFormatPreference() async {
+    return await AppConfig.getConfigValue("prefer_us_date_format") ?? false;
+  }
+
+  _initializeDateFormatValue() async {
+    await _getDateFormatPreference().then((value) => _prefetUsDateFormat = value);
+    notifyListeners();
+  }
+
+  setDateFormat(bool value) async {
+    await AppConfig.modifyConfigValue('prefer_us_date_format', value);
   }
 
 

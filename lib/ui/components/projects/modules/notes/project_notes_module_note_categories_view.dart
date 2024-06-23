@@ -73,7 +73,7 @@ class _ProjectNotesModuleNoteCategoriesViewState extends State<ProjectNotesModul
                     child: Icon(Icons.notes_rounded, color: theme.onSurface),
                   ),
                   Text(
-                    "Notes",
+                    S.of(context).projects_module_notes_title,
                     style: theme.titleMedium.copyWith(color: theme.onSurface),
                   ),
                   // Module options

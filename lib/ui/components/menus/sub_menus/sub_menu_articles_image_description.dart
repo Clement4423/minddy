@@ -12,6 +12,8 @@ class ArticlesWriteViewImageDescriptionMenu extends StatelessWidget {
     description = controller.description;
   }
 
+  // TODO : Retirer le controller et changer en fonction pour retourner un completer
+
   @override
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);

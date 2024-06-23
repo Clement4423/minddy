@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/files/config.dart';
+import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/router/app_router.dart';
 
 class WelcomeViewModel extends ChangeNotifier {

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:minddy/system/articles/app_articles.dart';
+import 'package:minddy/system/create_unique_id.dart';
 import 'package:minddy/system/files/encryption.dart';
 import 'package:minddy/system/interface/document_directory_interface.dart';
 import 'package:path/path.dart' as path;
@@ -147,9 +147,8 @@ class AppDocumentsDirectory implements IDocumentsDirectory{
       String documentDirectoryPath = await getAppDirectoryPath();
       Directory originalFolder = Directory("$documentDirectoryPath/$folderToDuplicatePath");
       if (await originalFolder.exists()) {
-        String originalFolderName = originalFolder.path.split('/').last;
 
-        String newFolderName = AppArticles.createFileName(originalFolderName);
+        String newFolderName = createUniqueId().toString();
 
         Directory copyFolder = Directory("$documentDirectoryPath/$destinationPath/$newFolderName");
         await copyFolder.create();

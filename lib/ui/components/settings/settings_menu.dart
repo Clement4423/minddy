@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/model/navigation_list_tile_model.dart';
 import 'package:minddy/system/router/settings_router.dart';
 import 'package:minddy/ui/components/menus/center_menu/center_menu.dart';
@@ -34,8 +35,24 @@ List<NavigationListTileModel> bottomListTiles = [
   ),
 ];
 
-Future<dynamic> showSettings(BuildContext context, {String? pageRouteName, dynamic argument}) {
-  if (pageRouteName != null) {
+Future<dynamic> showSettings(BuildContext context, {String? pageRouteName, dynamic argument}) async {
+    if (StaticVariables.currentProjectInfo != null) {
+      if (generalListTiles.length == 3) {
+        generalListTiles.insert(
+          0, 
+          NavigationListTileModel(
+            title: StaticVariables.currentProjectInfo!.name, 
+            icon: const Icon(Icons.account_circle_outlined), 
+            index: 5, 
+            routeName: "/project"
+          )
+        );
+      }
+    } else {
+      if (generalListTiles.length == 4) {
+        generalListTiles.removeAt(0); // Remove the project settings tile.
+      }
+    }
     return showCenterMenu(
       context, 
       const Icon(Icons.settings_rounded, size: 40,), 
@@ -45,13 +62,4 @@ Future<dynamic> showSettings(BuildContext context, {String? pageRouteName, dynam
       pageRouteName: pageRouteName,
       argument: argument
     );
-  } else {
-    return showCenterMenu(
-      context, 
-      const Icon(Icons.settings_rounded, size: 40,),
-      SettingsRouter(), 
-      generalListTiles, 
-      bottomListTiles
-    );
-  }
 }

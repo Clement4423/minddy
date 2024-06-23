@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:minddy/system/articles/app_articles.dart';
+import 'package:minddy/system/create_unique_id.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/interface/projects_modules_interface.dart';
@@ -41,7 +41,7 @@ class ProjectViewModel extends ChangeNotifier {
     modulesModels.add(
       ProjectModuleModel(
         type: moduleType, 
-        id: int.parse(AppArticles.createFileName(moduleType.name)),
+        id: createUniqueId(),
         projectPath: projectInfo.path
       )
     );
@@ -83,7 +83,7 @@ class ProjectViewModel extends ChangeNotifier {
     try {
       ProjectModuleModel moduleToDuplicate = modulesModels.firstWhere((element) => element.id == id);
 
-      int newId = int.parse(AppArticles.createFileName(id.toString()));
+      int newId = createUniqueId();
 
       modulesModels.add(ProjectModuleModel(type: moduleToDuplicate.type, id: newId, projectPath: moduleToDuplicate.projectPath));
 

@@ -2,18 +2,18 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:minddy/system/articles/app_articles.dart';
+import 'package:minddy/system/create_unique_id.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 
-/// THIS IS NOT THE CLASS TO USE TO CREATE ARTICLES, PLEASE UES [`AppArticles`] INSTEAD. THIS CLASS IS MADE TO CREATE ARTICLES FILES FOR DEBUGGING
+/// THIS IS NOT THE CLASS TO USE TO CREATE ARTICLES, PLEASE USE [`AppArticles`] INSTEAD. THIS CLASS IS MADE TO CREATE ARTICLES FILES FOR DEBUGGING
 class ArticleMaker {
   static Future<bool> createArticle(String json) async {
     try {
       Map<String, dynamic> decodedContent = jsonDecode(json);
       String encodedJson = jsonEncode(decodedContent);
       
-      String createdFileName = AppArticles.createFileName(json.substring(0, 15));
+      String createdFileName = createUniqueId().toString();
 
       String relativePath = "ressources/debug/articles_creator/$createdFileName.json";
 

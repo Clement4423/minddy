@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/articles/app_articles.dart';
-import 'package:minddy/system/files/config.dart';
+import 'package:minddy/system/create_unique_id.dart';
+import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/model/projects_modules.dart';
@@ -12,7 +12,7 @@ class AppProject {
 
   static Future<bool> createProject(String projectName) async {
 
-    String projectFolderName = AppArticles.createFileName(projectName);
+    String projectFolderName = createUniqueId().toString();
 
     bool isProjectGenerated = await _generateProjectFiles(projectFolderName);
     bool isInfoFileGenerated = await _createInfoFile(projectName, projectFolderName);
