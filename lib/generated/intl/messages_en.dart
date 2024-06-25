@@ -289,6 +289,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings_date_format_tooltip": m7,
         "settings_language_subtitle":
             MessageLookupByLibrary.simpleMessage("Language"),
+        "settings_need_to_quit_project_to_change_theme":
+            MessageLookupByLibrary.simpleMessage(
+                "To change theme settings, please go back at home"),
         "settings_personalize_black_and_white_title":
             MessageLookupByLibrary.simpleMessage("Black and white mode"),
         "settings_personalize_title":

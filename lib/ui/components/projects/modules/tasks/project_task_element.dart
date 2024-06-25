@@ -28,7 +28,7 @@ class _ProjectTaskElementState extends State<ProjectTaskElement> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(15),
             child: Dismissible(
               key: UniqueKey(),
               onDismissed: (direction) {
@@ -51,7 +51,6 @@ class _ProjectTaskElementState extends State<ProjectTaskElement> {
                 width: 330,
                 decoration: BoxDecoration(
                   color: theme.surface,
-                  borderRadius: BorderRadius.circular(15)
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,

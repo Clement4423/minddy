@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/ui/components/custom_components/custom_dropdown_button.dart';
 import 'package:minddy/ui/components/custom_components/switch_tile.dart';
 import 'package:minddy/ui/components/settings/settings_components/settings_page_top_bar.dart';
@@ -35,21 +36,31 @@ class PersonalizeView extends StatelessWidget {
                       ),
                     ),
                     // Theme value
-                    CustomDropdownButton(
-                      menuTitle: controller.menuThemeTitle,
-                      action: controller.treatThemeValue,
-                      controller: controller,
-                      items: controller.getThemeItems(context),
-                      needToRestart: true,
+                    Tooltip(
+                      message: StaticVariables.currentProjectInfo == null ? '' : S.of(context).settings_need_to_quit_project_to_change_theme,
+                      child: CustomDropdownButton(
+                        menuTitle: controller.menuThemeTitle,
+                        action: controller.treatThemeValue,
+                        controller: controller,
+                        items: controller.getThemeItems(context),
+                        needToRestart: false,
+                        enabled: StaticVariables.currentProjectInfo != null ? false : true,
+                         // Not enabled if in a project, this is done because the change of ui causes the modules to 
+                         // duplicate and create problems 
+                      ),
                     ),
                     // Use black and white
-                    SwitchTile(
-                      controller.isUsingBWMode, 
-                      S.of(context).settings_personalize_black_and_white_title,
-                      (value) {
-                        controller.setBWMode(value);
-                      },
-                      true
+                    Tooltip(
+                      message: StaticVariables.currentProjectInfo == null ? '' : S.of(context).settings_need_to_quit_project_to_change_theme,
+                      child: SwitchTile(
+                        controller.isUsingBWMode, 
+                        S.of(context).settings_personalize_black_and_white_title,
+                        (value) {
+                          controller.setBWMode(value);
+                        },
+                        enabled: StaticVariables.currentProjectInfo != null ? false : true,
+                        false
+                      ),
                     ),
                     // Date format
                     Padding(
@@ -87,12 +98,16 @@ class PersonalizeView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    CustomDropdownButton(
-                      menuTitle: controller.menuLanguageTitle,
-                      action: controller.treatLanguageValue,
-                      controller: controller,
-                      items: controller.getLanguageItems(context),
-                      needToRestart: true,
+                    Tooltip(
+                      message: "",
+                      child: CustomDropdownButton(
+                        menuTitle: controller.menuLanguageTitle,
+                        action: controller.treatLanguageValue,
+                        controller: controller,
+                        items: controller.getLanguageItems(context),
+                        needToRestart: true,
+                        enabled: StaticVariables.currentProjectInfo != null ? false : true,
+                      ),
                     ),
                   ],
                 ),

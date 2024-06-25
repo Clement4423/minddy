@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/files/app_logs.dart';
+import 'package:minddy/system/initialize/app_state.dart';
 
 
 class PersonalizeViewController extends ChangeNotifier {
@@ -60,14 +61,17 @@ class PersonalizeViewController extends ChangeNotifier {
 
   _setThemeMode(newValue) async {
     await AppConfig.modifyConfigValue("using_system_theme", newValue);
+    AppState.stateChanged();
   }
 
   _setDarkMode(newValue) async {
     await AppConfig.modifyConfigValue("dark_mode", newValue);
+    AppState.stateChanged();
   }
 
   setBWMode(bool newValue) async {
     await AppConfig.modifyConfigValue("using_bw_mode", newValue);
+    AppState.stateChanged();
   }
 
   Future<bool> _getThemeMode() async {
@@ -154,6 +158,7 @@ class PersonalizeViewController extends ChangeNotifier {
 
   _setLanguage(newValue) async {
     await AppConfig.modifyConfigValue("language", newValue);
+    AppState.stateChanged();
   }
 
   Future<String> _getLanguage() async {

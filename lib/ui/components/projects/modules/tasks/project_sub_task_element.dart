@@ -29,7 +29,7 @@ class _ProjectSubTaskElementState extends State<ProjectSubTaskElement> {
         Padding(
           padding: const EdgeInsets.only(top: 8),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(15),
             child: Dismissible(
               key: UniqueKey(),
               onDismissed: (direction) {
@@ -52,7 +52,6 @@ class _ProjectSubTaskElementState extends State<ProjectSubTaskElement> {
                 width: 250,
                 decoration: BoxDecoration(
                   color: theme.surface,
-                  borderRadius: BorderRadius.circular(15)
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,

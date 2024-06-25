@@ -9,6 +9,7 @@ class CustomDropdownButton extends StatelessWidget {
   final dynamic controller;
   final Function action;
   final List<DropdownMenuItem<dynamic>> items;
+  final bool enabled;
   final bool needToRestart;
 
   const CustomDropdownButton({
@@ -17,6 +18,7 @@ class CustomDropdownButton extends StatelessWidget {
     required this.controller,
     required this.items,
     required this.needToRestart,
+    this.enabled = true,
     super.key
   });
 
@@ -30,23 +32,23 @@ class CustomDropdownButton extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: theme.surface,
+          color: enabled ? theme.surface : Colors.grey,
         ),
         padding: const EdgeInsets.only(left: 15, right: 12),
         child: DropdownButton(
-          icon: const Icon(Icons.arrow_drop_down_rounded),
+          icon: Icon(Icons.arrow_drop_down_rounded, color: enabled ? theme.onSurface : const Color.fromARGB(255, 130, 130, 130)),
           iconSize: 25,
           hint: Text(
             menuTitle, 
             style: theme.bodyMedium.
-            copyWith(color: theme.onSurface)
+            copyWith(color: enabled ? theme.onSurface : const Color.fromARGB(255, 130, 130, 130))
           ),
           elevation: 12,
           style: theme.bodyMedium,
           borderRadius: BorderRadius.circular(10),
           underline: const SizedBox(),
           isExpanded: true,
-          items: items,
+          items: enabled ? items : [],
           onChanged: (value) async {
             await action(value);
             if (needToRestart && context.mounted) {

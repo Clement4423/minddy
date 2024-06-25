@@ -14,13 +14,13 @@ class AppNotes {
 
   static final Map<String, List> defaultNotesCategories = {
     "for_later": [S.current.projects_module_notes_for_later_title, Icons.timer_outlined],
-    "important": [S.current.projects_module_notes_important_notes_title, Icons.error_outline_rounded],
+    "important": [S.current.projects_module_notes_important_notes_title, Icons.star_border_rounded],
     "private": [S.current.projects_module_notes_private_notes_title, Icons.lock_outline_rounded]
   };
 
   static Future<void> ensureDefaultCategoriesExist() async {
     try {
-      Directory categoriesDirectory = Directory("${StaticVariables.fileSource.documentDirectoryPath}/ressources/notes");
+      Directory categoriesDirectory = Directory("${StaticVariables.fileSource.documentDirectoryPath}/shared/notes");
 
       if (!categoriesDirectory.existsSync()) {
         categoriesDirectory.createSync(recursive: true);
@@ -51,7 +51,7 @@ class AppNotes {
 
   static Future<List<ProjectNoteModuleCategoryModel>> getCategories() async {
     try {
-      Directory categoriesDirectory = Directory("${StaticVariables.fileSource.documentDirectoryPath}/ressources/notes");
+      Directory categoriesDirectory = Directory("${StaticVariables.fileSource.documentDirectoryPath}/shared/notes");
 
       if (!categoriesDirectory.existsSync()) {
         categoriesDirectory.createSync(recursive: true);
@@ -67,14 +67,16 @@ class AppNotes {
         if (entity is Directory && !entity.path.split('/').last.startsWith('.')) {
           List? element = defaultNotesCategories[entity.path.split('/').last];
 
-          Map<String, dynamic> fileContent = await _openNotesFile(entity.path.split('/').last);
+          String categoryName = entity.path.split('/').last;
+
+          Map<String, dynamic> fileContent = await _openNotesFile(categoryName);
           models.add(
             ProjectNoteModuleCategoryModel(
-              title: element != null ? element.first : entity.path.split('/').last,
-              noteCount: await _openCategoryAndCountNotes(entity.path.split('/').last),
+              title: element != null ? element.first : categoryName,
+              noteCount: await _openCategoryAndCountNotes(categoryName),
               isPrivate: fileContent['private'],
               icon: element != null ? element.last : Icons.account_circle_outlined,
-              categoryName:  entity.path.split('/').last
+              categoryName: categoryName
             )
           );
         }
@@ -87,16 +89,16 @@ class AppNotes {
   }
 
   static Future<bool> deleteCategory(String categoryName) async {
-    bool isFileDeleted = await StaticVariables.fileSource.removeFolder('ressources/notes/$categoryName');
+    bool isFileDeleted = await StaticVariables.fileSource.removeFolder('shared/notes/$categoryName');
     return isFileDeleted;
   }
 
   static Future<bool> newCategory(String categoryName, bool isPrivate) async {
     if (categoryName.isNotEmpty) {
-      bool isFileCreated = await StaticVariables.fileSource.createFile('ressources/notes/$categoryName/notes.json');
+      bool isFileCreated = await StaticVariables.fileSource.createFile('shared/notes/$categoryName/notes.json');
       if (isFileCreated) {
         bool isFileWritten = await StaticVariables.fileSource.writeJsonFile(
-          'ressources/notes/$categoryName/notes.json', 
+          'shared/notes/$categoryName/notes.json', 
           {'category': categoryName, 'private': isPrivate, 'notes': []}
         );
         return isFileWritten;
@@ -110,13 +112,13 @@ class AppNotes {
 
       Map<String, dynamic> fileContent = await _openNotesFile(actualCategoryName);
 
-      bool isFolderRenamed = await StaticVariables.fileSource.renameFolder('ressources/notes/$actualCategoryName', newCategoryName);
+      bool isFolderRenamed = await StaticVariables.fileSource.renameFolder('shared/notes/$actualCategoryName', newCategoryName);
       if (isFolderRenamed) {
         fileContent['category'] = newCategoryName;
         
         bool isFileSaved = await _saveNotesFile(fileContent, newCategoryName);
         if (isFileSaved) {
-          bool isLastFolderRemoved = await StaticVariables.fileSource.removeFolder('ressources/notes/$actualCategoryName');
+          bool isLastFolderRemoved = await StaticVariables.fileSource.removeFolder('shared/notes/$actualCategoryName');
           return isLastFolderRemoved;
         }
         return false;
@@ -318,7 +320,7 @@ class AppNotes {
 
   static Future<Map<String, dynamic>> _openNotesFile(String category) async {
     try {
-      Map<String, dynamic>? allNotes = await StaticVariables.fileSource.readJsonFile('ressources/notes/$category/notes.json');
+      Map<String, dynamic>? allNotes = await StaticVariables.fileSource.readJsonFile('shared/notes/$category/notes.json');
       if (allNotes != null) {
         return allNotes;
       } else {
@@ -340,9 +342,9 @@ class AppNotes {
     if (category == 'PROJECT') {
       return true;
     }
-    await StaticVariables.fileSource.createFile('ressources/notes/$category/notes.json');
+    await StaticVariables.fileSource.createFile('shared/notes/$category/notes.json');
     bool isWritten = await StaticVariables.fileSource.writeJsonFile(
-      'ressources/notes/$category/notes.json', 
+      'shared/notes/$category/notes.json', 
       {
         'category': category,
         'private': category == 'private' ? true : false,
@@ -353,7 +355,7 @@ class AppNotes {
   }
   
   static Future<bool> _saveNotesFile(Map<String, dynamic> newContent, String category) async {
-    return await StaticVariables.fileSource.writeJsonFile('ressources/notes/$category/notes.json', newContent);
+    return await StaticVariables.fileSource.writeJsonFile('shared/notes/$category/notes.json', newContent);
   }
 
   static Future<String> getCurrentTime() async {

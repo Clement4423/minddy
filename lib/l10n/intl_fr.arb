@@ -34,6 +34,7 @@
     "settings_theme_subtitle" : "Thème",
     "settings_using_dark_mode" : "Mode sombre",
     "settings_using_light_mode" : "Mode clair",
+    "settings_need_to_quit_project_to_change_theme": "Pour changer les paramètres de thème, veuillez revenir à l'accueil", 
     "settings_using_system_theme": "Thème du système",
     "settings_personalize_black_and_white_title" : "Mode noir et blanc",
     "settings_date_format_subtitle": "Format de date",

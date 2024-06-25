@@ -8,13 +8,16 @@ class SwitchTile extends StatefulWidget {
   final bool value;
   final String title;
   final bool needToRestart;
+  final bool enabled;
   final Function(bool value) action;
   const SwitchTile(
     this.value,
     this.title,
     this.action,
-    this.needToRestart,
-    {super.key}
+    this.needToRestart, {
+      super.key, 
+      this.enabled = true
+    }
   );
 
   @override
@@ -25,7 +28,7 @@ class _SwitchTileState extends State<SwitchTile> {
 
   bool _isSwitched = false;
 
-  Future<void>  triggerSwitch() async {
+  Future<void> triggerSwitch() async {
     setState(() {
       _isSwitched = !_isSwitched;                
     });
@@ -53,14 +56,16 @@ class _SwitchTileState extends State<SwitchTile> {
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 5),
       child: MouseRegion(
-        cursor: SystemMouseCursors.click,
+        cursor: widget.enabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
         child: GestureDetector(
           onTap: () async {
-            triggerSwitch();
+            widget.enabled 
+            ? await triggerSwitch()
+            : () {};
           },
           child: Container(
             decoration: BoxDecoration(
-              color: theme.surface,
+              color: widget.enabled ? theme.surface : Colors.grey,
               borderRadius: BorderRadius.circular(10)
             ),
             padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 8),
@@ -69,21 +74,23 @@ class _SwitchTileState extends State<SwitchTile> {
                 Expanded(
                   child: Text(
                     widget.title,
-                    style: theme.bodyMedium.copyWith(color: theme.onSurface),
+                    style: theme.bodyMedium.copyWith(color: widget.enabled ? theme.onSurface : const Color.fromARGB(255, 120, 120, 120)),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Switch(
-                  activeColor: theme.primary,
-                  thumbColor: MaterialStatePropertyAll(theme.secondary),
-                  trackColor: MaterialStatePropertyAll(theme.primary),
-                  trackOutlineColor: MaterialStatePropertyAll(theme.secondary),
+                  activeColor: widget.enabled ? theme.primary : Colors.grey,
+                  thumbColor: MaterialStatePropertyAll(widget.enabled ? theme.secondary : const Color.fromARGB(255, 120, 120, 120)),
+                  trackColor: MaterialStatePropertyAll(widget.enabled ? theme.primary : Colors.grey),
+                  trackOutlineColor: MaterialStatePropertyAll(widget.enabled ? theme.secondary : const Color.fromARGB(255, 120, 120, 120)),
                   overlayColor: const MaterialStatePropertyAll(Colors.transparent),
-                  activeTrackColor: theme.secondary,
+                  activeTrackColor: widget.enabled ? theme.secondary : const Color.fromARGB(255, 120, 120, 120),
                   value: _isSwitched,
                   onChanged: (value) async {
-                    await triggerSwitch();
+                    widget.enabled 
+                    ? await triggerSwitch()
+                    : () {};
                   }
                 )
               ],

@@ -21,124 +21,139 @@ class ProjectView extends StatefulWidget {
   State<ProjectView> createState() => _ProjectViewState();
 }
 
-class _ProjectViewState extends State<ProjectView> {
+class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClientMixin {
 
-  @override
-  void initState() {
-    widget._viewmodel.initialize();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     StylesGetters theme = StylesGetters(context);
+
     return Container(
       decoration: BoxDecoration(
         color: theme.background,
         image: DecorationImage(
-         image: AssetImage(
-          AppTheme.isUsingBWMode 
-            ? theme.brightness == Brightness.light 
-              ? "assets/background/background_project_blue.PNG"
-              : "assets/background/background_project_dark.PNG"
-            : theme.brightness == Brightness.light 
-              ? "assets/background/background_project_blue.PNG"
-              : "assets/background/background_project_dark.PNG"
-         ),
-         fit: BoxFit.cover,
-        )
+          image: AssetImage(
+            AppTheme.isUsingBWMode
+              ? theme.brightness == Brightness.light
+                ? "assets/background/background_project_blue.PNG"
+                : "assets/background/background_project_dark.PNG"
+              : theme.brightness == Brightness.light
+                ? "assets/background/background_project_blue.PNG"
+                : "assets/background/background_project_dark.PNG"
+          ),
+          fit: BoxFit.cover,
+        ),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: CustomAppBar(CustomAppBarController(
-          onHomeButtonPressed: widget._viewmodel.saveProject,
-          widget._viewmodel.projectInfo.name,
-          true,
-              [
-                CustomAppBarButtonModel(
-                  icon: Icons.settings_rounded, 
-                  semanticText: S.of(context).settings_title,
-                  isPrimary: false, 
-                  action: () async {await showSettings(context);}
-                ),
-                CustomAppBarButtonModel(
-                  icon: Icons.add_box_outlined, 
-                  semanticText: S.of(context).projects_add_module_tooltip,
-                  isPrimary: true, 
-                  action: () async {await _showAddModuleMenu(context, widget._viewmodel);}
-                ),
-                CustomAppBarButtonModel(
-                  icon: Icons.save_rounded, 
-                  semanticText: S.of(context).projects_save_project_button_tooltip,
-                  isPrimary: true, 
-                  action: () async {await widget._viewmodel.saveProject();}
-                ),              ] 
-          )),
+        appBar: CustomAppBar(
+          CustomAppBarController(
+            onHomeButtonPressed: widget._viewmodel.saveProject,
+            widget._viewmodel.projectInfo.name,
+            true,
+            [
+              CustomAppBarButtonModel(
+                icon: Icons.settings_rounded,
+                semanticText: S.of(context).settings_title,
+                isPrimary: false,
+                action: () async {await showSettings(context);}
+              ),
+              CustomAppBarButtonModel(
+                icon: Icons.add_box_outlined,
+                semanticText: S.of(context).projects_add_module_tooltip,
+                isPrimary: true,
+                action: () async {await _showAddModuleMenu(context, widget._viewmodel);}
+              ),
+              CustomAppBarButtonModel(
+                icon: Icons.save_rounded,
+                semanticText: S.of(context).projects_save_project_button_tooltip,
+                isPrimary: true,
+                action: () async {await widget._viewmodel.saveProject();}
+              ),
+            ],
+          ),
+        ),
         body: CallbackShortcuts(
           bindings: {
-            saveActivator:() async {
+            saveActivator: () async {
               await widget._viewmodel.saveProject();
             }
           },
           child: LayoutBuilder(
             builder: (context, constraints) {
-              return AnimatedBuilder(
-                animation: widget._viewmodel,
-                builder: (context, child) {
-                  widget._viewmodel.buildContainers(MediaQuery.of(context).size);
-                  return Stack(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(bottom: 25),
-                            child: SizedBox(),
-                          ),
-                          Expanded(
-                            child: PageView.builder(
-                              itemCount: widget._viewmodel.modulesContainer.length,
-                              itemBuilder: (context, index) {
-                                return Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    ...widget._viewmodel.modulesContainer[index].modules,
-                                  ],
-                                );
-                              },
+              return FutureBuilder<void>(
+                future: widget._viewmodel.initialize(),
+                builder: (context, snapshot) {
+                  widget._viewmodel.allModulesWidget.clear();
+                  widget._viewmodel.modulesContainer.clear();
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else {
+                    return AnimatedBuilder(
+                      animation: widget._viewmodel,
+                      builder: (context, child) {
+                        widget._viewmodel.buildContainers(constraints.biggest);
+                        return Stack(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 25),
+                                  child: SizedBox(),
+                                ),
+                                Expanded(
+                                  child: PageView.builder(
+                                    itemCount: widget._viewmodel.modulesContainer.length,
+                                    itemBuilder: (context, index) {
+                                      return Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          ...widget._viewmodel.modulesContainer[index].modules,
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 25),
+                                  child: SizedBox(),
+                                ),
+                              ],
                             ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(bottom: 25),
-                            child: SizedBox(),
-                          )
-                        ],
-                      ),
-                      const ProjectsToolbar(),
-                      const Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: CalendarButton()
-                      ),
-                      const Positioned(
-                        bottom: 0,
-                        right: 0,
-                        left: 0,
-                        child: ArticlesMenuButton()
-                      ),
-                    ],
-                  );
-                }
+                            const ProjectsToolbar(),
+                            const Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: CalendarButton(),
+                            ),
+                            const Positioned(
+                              bottom: 0,
+                              right: 0,
+                              left: 0,
+                              child: ArticlesMenuButton(),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
               );
-            }
+            },
           ),
         ),
       ),
     );
   }
-}
 
+  @override
+  bool get wantKeepAlive => true;
+}
 
 Future<dynamic> _showAddModuleMenu(BuildContext context, ProjectViewModel viewModel) async {
   RenderBox renderBox = context.findRenderObject() as RenderBox;
@@ -150,7 +165,7 @@ Future<dynamic> _showAddModuleMenu(BuildContext context, ProjectViewModel viewMo
     context: context,
     color: theme.primary,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(13)
+      borderRadius: BorderRadius.circular(13),
     ),
     position: RelativeRect.fromLTRB(
       double.infinity,
@@ -158,19 +173,19 @@ Future<dynamic> _showAddModuleMenu(BuildContext context, ProjectViewModel viewMo
       75,
       offset.dy, // bottom
     ),
-      items: [
-        PopupMenuItem(
-          onTap: () {
-            viewModel.newModule(ProjectsModules.tasks);
-          },
-          child: Text(S.current.projects_module_tasks_title)
-        ),
-        PopupMenuItem(
-          onTap: () {
-            viewModel.newModule(ProjectsModules.notes);
-          },
-          child: const Text("Notes")
-        ),
-      ]
+    items: [
+      PopupMenuItem(
+        onTap: () {
+          viewModel.newModule(ProjectsModules.tasks);
+        },
+        child: Text(S.current.projects_module_tasks_title),
+      ),
+      PopupMenuItem(
+        onTap: () {
+          viewModel.newModule(ProjectsModules.notes);
+        },
+        child: const Text("Notes"),
+      ),
+    ],
   );
 }

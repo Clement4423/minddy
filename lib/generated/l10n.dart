@@ -390,6 +390,16 @@ class S {
     );
   }
 
+  /// `To change theme settings, please go back at home`
+  String get settings_need_to_quit_project_to_change_theme {
+    return Intl.message(
+      'To change theme settings, please go back at home',
+      name: 'settings_need_to_quit_project_to_change_theme',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Device theme`
   String get settings_using_system_theme {
     return Intl.message(

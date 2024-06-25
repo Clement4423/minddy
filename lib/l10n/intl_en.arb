@@ -34,6 +34,7 @@
     "settings_theme_subtitle" : "Theme",
     "settings_using_dark_mode" : "Dark mode",
     "settings_using_light_mode" : "Light mode",
+    "settings_need_to_quit_project_to_change_theme": "To change theme settings, please go back at home",
     "settings_using_system_theme": "Device theme",
     "settings_personalize_black_and_white_title" : "Black and white mode",
     "settings_date_format_subtitle": "Date format",

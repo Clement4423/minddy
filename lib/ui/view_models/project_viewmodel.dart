@@ -5,6 +5,7 @@ import 'package:minddy/system/create_unique_id.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/interface/projects_modules_interface.dart';
+import 'package:minddy/system/model/module_container_model.dart';
 import 'package:minddy/system/model/project_info.dart';
 import 'package:minddy/system/model/project_module_model.dart';
 import 'package:minddy/system/model/projects_modules.dart';
@@ -13,13 +14,6 @@ import 'package:minddy/ui/components/projects/modules/notes/projects_modules_not
 import 'package:minddy/ui/components/projects/modules/notes/projetcs_modules_notes_view.dart';
 import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view.dart';
 import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view_controller.dart';
-
-class ModuleContainerModel {
-  List<IProjectsModules> modules;
-
-  ModuleContainerModel({required this.modules});
-}
-
 
 class ProjectViewModel extends ChangeNotifier {
   final ProjectInfo projectInfo;
@@ -32,9 +26,8 @@ class ProjectViewModel extends ChangeNotifier {
 
   List<IProjectsModules> allModulesWidget = [];
 
-  initialize() async {
+  Future<void> initialize() async {
     await _getProjectModulesModels();
-    notifyListeners();
   }
 
   Future<void> newModule(ProjectsModules moduleType) async {
@@ -76,7 +69,6 @@ class ProjectViewModel extends ChangeNotifier {
       modulesContainer.last.modules.add(module);
       modulesWidth += module.width;
     }
-    notifyListeners();
   }
 
   Future<void> duplicateModule(int id) async {

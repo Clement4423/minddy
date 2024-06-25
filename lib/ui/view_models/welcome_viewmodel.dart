@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/files/app_config.dart';
+import 'package:minddy/system/files/secure_storage.dart';
 import 'package:minddy/system/router/app_router.dart';
 
 class WelcomeViewModel extends ChangeNotifier {
@@ -61,7 +62,11 @@ class WelcomeViewModel extends ChangeNotifier {
     }
   }
 
-  goToPasswordPage() {
+  goToPasswordPage() async {
+    String? isPassowrdAlreadyExist = await SecuredStorage.read('minddy_password');
+    if (isPassowrdAlreadyExist != null) {
+      AppRouter.router.navigateTo('/home');
+    }
     AppRouter.router.navigateTo('/create_password');
   }
 }

@@ -21,7 +21,6 @@ class ArticlesMenuButton extends StatelessWidget {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: SizedBox(
-              width: 145,
               height: 35,
               child: ElevatedButton.icon(
                 onPressed: () {showArticles(context);}, 
@@ -29,6 +28,8 @@ class ArticlesMenuButton extends StatelessWidget {
                 icon: SvgPicture.asset("assets/logo/articles/logo_articles.svg", width: 30, color: theme.onPrimary,), 
                 label: Text(
                   S.of(context).default_articles_articles_title, 
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: theme.titleMedium.
                   copyWith(color: theme.onPrimary),
                 ),

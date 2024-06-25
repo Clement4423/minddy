@@ -216,7 +216,7 @@ class _NoteEditingSubMenuState extends State<NoteEditingSubMenu> {
               // Note content
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
                   child: AnimatedBuilder(
                     animation: widget.controller,
                     builder: (context, child) {
