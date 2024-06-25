@@ -90,7 +90,9 @@ class _CustomElementEditorEnvelopState extends State<CustomElementEditorEnvelop>
                     ),
                     // Delete element
                     PopupMenuItem(
-                      onTap: () => widget.removeFunction(),
+                      onTap: () async {
+                        await widget.removeFunction();
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

@@ -152,7 +152,7 @@ class AppNotes {
       String newId = createUniqueId().toString();
 
       NoteModel duplicateNote = NoteModel(
-        title: "${noteModel.title} ${S.current.system_files_copy_text}",
+        title: "${noteModel.title} (${S.current.system_files_copy_text})",
         id: int.parse(newId),
         category: noteModel.category,
         lastModified: await getCurrentTime(),

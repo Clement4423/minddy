@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/files/app_images.dart';
 import 'package:minddy/system/model/note_model.dart';
 import 'package:minddy/system/notes/app_notes.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -148,14 +147,32 @@ List<Widget> _buildNoteContent(List<NoteContentModel> content, StylesGetters the
         break;
       case NoteElementContentType.image:
         contentWidgets.add(
-          _getNoteImageBuilder(content[i].data['url'], theme)
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              width: 120,
+              height: 40,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: theme.primaryContainer,
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: Center(
+                child: Text(
+                  'Image',
+                  style: theme.titleMedium.
+                  copyWith(color: theme.onSurface),
+                ),
+              ),
+            ),
+          )
         );
         break;
       case NoteElementContentType.text:
         contentWidgets.add(
           Align(
             alignment: Alignment.centerLeft, 
-            child:Text(
+            child: Text(
               content[i].data as String, 
               style: theme.bodyMedium.
               copyWith(color: theme.onSurface),
@@ -172,51 +189,6 @@ List<Widget> _buildNoteContent(List<NoteContentModel> content, StylesGetters the
     }
   }
   return contentWidgets;
-}
-
-FutureBuilder _getNoteImageBuilder(String imageUrl, StylesGetters theme) {
-  return FutureBuilder(
-    future: AppImages.getImage(imageUrl),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Container(
-          constraints: const BoxConstraints(maxWidth: 330),
-          height: 220,
-          color: theme.primaryContainer,
-          child: const Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-      } else if (snapshot.hasError) {
-        return Container(
-          constraints: const BoxConstraints(maxWidth: 330),
-          height: 220,
-          color: Colors.red,
-          child: const Center(
-            child: Text('Failed to load image'),
-          ),
-        );
-      } else {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(5),
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 330),
-            child: snapshot.data
-            ??Center(
-              child: Container(
-                width: 330,
-                height: 220,
-                color: theme.primaryContainer,
-                child: Center(
-                  child: Icon(Icons.error_outline_rounded, color: theme.onPrimary)
-                ),
-              ),
-            ),
-          ),
-        );
-      }
-    },
-  );
 }
 
 Widget _buildNotesListElements(List textList, StylesGetters theme) {

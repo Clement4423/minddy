@@ -7,7 +7,6 @@ import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/components/menus/sub_menus/sub_menu_articles_image_description.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_element_envelop.dart';
-import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class ArticlesImageElementController extends ChangeNotifier{
@@ -110,6 +109,8 @@ class _ArticlesImageElementContent extends StatefulWidget implements IArticlesWr
 }
 
 class _ArticlesImageElementContentState extends State<_ArticlesImageElementContent> {
+  double _scale = 1.0;
+
   @override
   Widget build(BuildContext context) {
     widget.controller.contentWidth = MediaQuery.of(context).size.width > 1000 ? MediaQuery.of(context).size.width / 2.6 : MediaQuery.of(context).size.width / 2;
@@ -148,6 +149,15 @@ class _ArticlesImageElementContentState extends State<_ArticlesImageElementConte
                     onTap: () async {
                       if (widget.controller.imageWidget is Image) {
                         showFullImage(widget.controller.imageWidget as Image, context);
+                      }
+                    },
+                    onScaleUpdate: (details) {
+                      _scale = details.scale;
+                    },
+                    onScaleEnd: (details) {
+                      if (_scale > 1.0 && widget.controller.imageWidget is Image) {
+                        showFullImage(widget.controller.imageWidget as Image, context);
+                        _scale = 1.0;
                       }
                     },
                     child: ClipRRect(
@@ -213,8 +223,9 @@ class _ArticlesImageElementContentState extends State<_ArticlesImageElementConte
                       child: MouseRegion(
                         cursor: SystemMouseCursors.click,
                         child: GestureDetector(
-                          onTap: () {
-                            showSubMenu(context, ArticlesWriteViewImageDescriptionMenu(controller: widget.controller));
+                          onTap: () async {
+                            widget.controller.description = await showDescriptionEditingMenu(context, widget.controller.description);
+                            setState(() {});
                           },
                           child: const Icon(Icons.more_horiz),
                         ),

@@ -205,7 +205,17 @@ class _ProjectNoteModuleNotesListViewState extends State<ProjectNoteModuleNotesL
               borderRadius: const BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15)),
               child: ListView(
                 padding: const EdgeInsets.only(right: 12),
-                children: notesWidgets,
+                children: [
+                  if (notesWidgets.isNotEmpty)
+                    ...notesWidgets
+                  else 
+                    Center(
+                      child: Text(
+                        S.of(context).projects_module_notes_category_note_count(0),
+                        style: theme.titleMedium,
+                      ),
+                    ),
+                ],
               ),
             ),
           )

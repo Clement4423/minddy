@@ -61,11 +61,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ],
                 ),
                 // Actions
-                  Row(
-                    children: _controller.actionsElements.map((button) {
-                      return buildButton(button.icon, button.isPrimary, button.action, button.semanticText, context);
-                      }).toList(),
-                  )
+                Row(
+                  children: _controller.actionsElements.map((button) {
+                    return buildButton(button.icon, button.isPrimary, button.action, button.semanticText, context);
+                    }).toList(),
+                )
               ],
             );
           }

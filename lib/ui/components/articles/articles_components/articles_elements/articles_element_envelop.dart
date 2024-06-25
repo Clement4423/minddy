@@ -96,7 +96,7 @@ class _ArticlesElementEnvelopState extends State<ArticlesElementEnvelop> {
                     // Copy (Notes)
                     PopupMenuItem(
                       onTap: () async {
-                        AppNotes.addNote(
+                        await AppNotes.addNote(
                           NoteModel(
                             title: '',
                             id: createUniqueId(),
@@ -123,7 +123,9 @@ class _ArticlesElementEnvelopState extends State<ArticlesElementEnvelop> {
                     ),
                     // Delete element
                     PopupMenuItem(
-                      onTap: () => widget.removeFunction(widget.keyToRemove),
+                      onTap: () {
+                        widget.removeFunction(widget.keyToRemove);
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

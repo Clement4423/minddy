@@ -253,7 +253,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Por favor, nombre la categoría"),
         "projects_module_notes_new_category_sub_menu_is_private":
-            MessageLookupByLibrary.simpleMessage("Nota privada"),
+            MessageLookupByLibrary.simpleMessage("Categoria privada"),
         "projects_module_notes_new_category_sub_menu_is_private_tooltip":
             MessageLookupByLibrary.simpleMessage(
                 "Habilitar esta opción requerirá su contraseña para abrir esta categoría."),

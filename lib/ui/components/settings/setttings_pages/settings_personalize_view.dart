@@ -69,7 +69,6 @@ class PersonalizeView extends StatelessWidget {
                       ),
                       child: SwitchTile(
                         controller.prefetUsDateFormat, 
-                        // TODO : Traduire les textes + Faire un tooltip pour donner un exemple
                         S.of(context).settings_date_format,
                         (value) async {
                           await controller.setDateFormat(value);

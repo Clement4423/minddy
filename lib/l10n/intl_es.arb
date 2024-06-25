@@ -179,7 +179,7 @@
     "projects_module_notes_new_category_sub_menu_title": "Nueva categoría",
     "projects_module_notes_new_category_sub_menu_subtitle": "Nombre de categoría",
     "projects_module_notes_new_category_sub_menu_name_hint": "Ingrese el nombre de la categoría",
-    "projects_module_notes_new_category_sub_menu_is_private": "Nota privada",
+    "projects_module_notes_new_category_sub_menu_is_private": "Categoria privada",
     "projects_module_notes_new_category_sub_menu_error_message": "Por favor, nombre la categoría",
     "projects_module_notes_new_category_sub_menu_is_private_tooltip": "Habilitar esta opción requerirá su contraseña para abrir esta categoría.",
     "projects_module_notes_modify_category_sub_menu_title": "Editar categoría",

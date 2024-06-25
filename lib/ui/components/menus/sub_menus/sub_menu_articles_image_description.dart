@@ -1,18 +1,41 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_image.dart';
 import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
+import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
 import 'package:minddy/ui/theme/theme.dart';
+
+Future<String> showDescriptionEditingMenu(BuildContext context, String initialDescription) async {
+  Completer<String> completer = Completer();
+
+  String description = initialDescription;
+  showSubMenu(
+    context, 
+    ArticlesWriteViewImageDescriptionMenu(
+      initialDescription: initialDescription,
+      onChanged: (String value) {
+        description = value;
+      },
+      completer: completer,
+    ),
+    onMenuDismissed: () {
+      completer.complete(description);
+    }
+  );
+
+  return completer.future;
+}
 
 // ignore: must_be_immutable
 class ArticlesWriteViewImageDescriptionMenu extends StatelessWidget {
-  final ArticlesImageElementController controller;
   late String description;
-  ArticlesWriteViewImageDescriptionMenu({super.key, required this.controller}) {
-    description = controller.description;
+  final String initialDescription;
+  final Completer<String> completer;
+  final Function(String)? onChanged;
+  ArticlesWriteViewImageDescriptionMenu({super.key, required this.initialDescription, required this.completer, this.onChanged}) {
+    description = initialDescription;
   }
-
-  // TODO : Retirer le controller et changer en fonction pour retourner un completer
 
   @override
   Widget build(BuildContext context) {
@@ -60,24 +83,24 @@ class ArticlesWriteViewImageDescriptionMenu extends StatelessWidget {
                       ),
                       margin: const EdgeInsets.only(top: 10, bottom: 10),
                       padding: const EdgeInsets.only(bottom: 10),
-                      child: TextSelectionTheme(
-                        data: TextSelectionThemeData(
-                          selectionColor: theme.brightness == Brightness.light ? Colors.white : theme.secondary,
-                        ),
-                        child: TextField (
-                          onChanged: (value) => description = value,
-                          controller: TextEditingController(text: description),
-                          style: theme.bodyMedium.
-                          copyWith(color: theme.onSurface),
-                          cursorColor: theme.onSurface,
-                          minLines: 1,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(10),
-                            hintText: S.of(context).submenu_artilces_image_description_hint,
-                            hintStyle: theme.bodyMedium.copyWith(color: Colors.grey),
-                            border: InputBorder.none
-                          ),
+                      child: TextField (
+                        onChanged: (value) {
+                          description = value;
+                          if (onChanged != null) {
+                            onChanged!(value);
+                          }
+                        },
+                        controller: TextEditingController(text: description),
+                        style: theme.bodyMedium.
+                        copyWith(color: theme.onSurface),
+                        cursorColor: theme.onSurface,
+                        minLines: 1,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(10),
+                          hintText: S.of(context).submenu_artilces_image_description_hint,
+                          hintStyle: theme.bodyMedium.copyWith(color: Colors.grey),
+                          border: InputBorder.none
                         ),
                       ),
                     ),
@@ -93,7 +116,7 @@ class ArticlesWriteViewImageDescriptionMenu extends StatelessWidget {
                 child: CustomTextButton(
                   S.of(context).submenu_artilces_image_description_button, 
                   () {
-                    controller.setDescription(description);
+                    completer.complete(description);
                     Navigator.pop(context);
                   }, 
                   false, 

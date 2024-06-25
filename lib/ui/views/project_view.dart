@@ -116,8 +116,17 @@ class _ProjectViewState extends State<ProjectView> {
                         ],
                       ),
                       const ProjectsToolbar(),
-                      const ArticlesMenuButton(),
-                      const CalendarButton(),
+                      const Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: CalendarButton()
+                      ),
+                      const Positioned(
+                        bottom: 0,
+                        right: 0,
+                        left: 0,
+                        child: ArticlesMenuButton()
+                      ),
                     ],
                   );
                 }

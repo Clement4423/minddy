@@ -1844,10 +1844,10 @@ class S {
     );
   }
 
-  /// `Private note`
+  /// `Private category`
   String get projects_module_notes_new_category_sub_menu_is_private {
     return Intl.message(
-      'Private note',
+      'Private category',
       name: 'projects_module_notes_new_category_sub_menu_is_private',
       desc: '',
       args: [],
@@ -1924,10 +1924,10 @@ class S {
     );
   }
 
-  /// `Private notes`
+  /// `Privates notes`
   String get projects_module_notes_private_notes_title {
     return Intl.message(
-      'Private notes',
+      'Privates notes',
       name: 'projects_module_notes_private_notes_title',
       desc: '',
       args: [],

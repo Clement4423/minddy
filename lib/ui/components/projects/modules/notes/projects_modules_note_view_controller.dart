@@ -197,7 +197,7 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
   Future<bool> duplicateProjectNote(NoteModel noteModel) async {
     try {
       NoteModel duplicateNote = NoteModel(
-        title: "${noteModel.title} ${S.current.system_files_copy_text}",
+        title: "${noteModel.title} (${S.current.system_files_copy_text})",
         id: createUniqueId(),
         category: noteModel.category,
         lastModified: noteModel.lastModified,

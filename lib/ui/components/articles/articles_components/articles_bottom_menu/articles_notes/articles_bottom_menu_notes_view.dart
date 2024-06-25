@@ -144,9 +144,20 @@ class _NotesViewState extends State<_NotesView> {
               icon: Icon(Icons.arrow_back_rounded, color: theme.onPrimary),
             ),
           ),
-          ..._buildArticlesNotesElements(widget.notesList, () {
-            setState(() {});
-          }, theme, widget.controller),
+          if (widget.notesList.isNotEmpty)
+            ..._buildArticlesNotesElements(widget.notesList, () {
+              setState(() {});
+            }, theme, widget.controller)
+          else 
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  S.of(context).projects_module_notes_category_note_count(0),
+                  style: theme.titleMedium,
+                ),
+              ),
+            )
         ],
       ),
     );

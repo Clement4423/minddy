@@ -30,7 +30,7 @@ class MainApp extends StatelessWidget {
   const MainApp(this.routeName, this. currentLocale, this.currentThemeMode, {super.key});
   // TODO : Documenter tout le code
   // TODO : Faire les tests
-  // TODO ; Implémenter une fonctionnalitée de recherche à l'interieur d'un article pour chercher un mot clé
+  // TODO : Implémenter une fonctionnalitée de recherche à l'interieur d'un article pour chercher un mot clé
   // TODO : Revoir la reinitialisation des paramètres pour ne pas recréer un mot de passe si il y en à déja un
   // TODO : Ajouter tous les articles de base
   // TODO : Faire les articles 'aide' pour les modules
@@ -40,8 +40,6 @@ class MainApp extends StatelessWidget {
   // TODO : Tools note rapide ?
   // TODO : Terminer la page des projets
   // TODO : Faire les fonds de projets pour le mode noir et blanc
-  // TODO : Faire le module des notes (code)
-  // TODO : Ajouter la date de création et de modification des notes
 
 
   @override

@@ -32,6 +32,7 @@ class NoteEditingSubMenuController extends ChangeNotifier {
 
     noteModel.content = noteContentModelList;
 
+
     if (noteModel.category == 'PROJECT') {
       bool isSaved = await notesModuleController.modifyProjectNote(noteModel);
       return isSaved;
@@ -46,7 +47,7 @@ class NoteEditingSubMenuController extends ChangeNotifier {
     return model;
   }
 
-  addNoteElement(NoteElementContentType elementType) async {
+  Future<void> addNoteElement(NoteElementContentType elementType) async {
     await saveNote();
     switch (elementType) {
       case NoteElementContentType.code:
@@ -65,13 +66,13 @@ class NoteEditingSubMenuController extends ChangeNotifier {
     notifyListeners();
   }
 
-  deleteNoteElement(Key key) async {
+  Future<void> deleteNoteElement(Key key) async {
     noteContentWidgets.removeWhere((element) => element.key == key);
     await saveNote();
     notifyListeners();
   }
 
-  Future<bool> moveProjectNote(String destinationCategory) async {
+  Future<bool> moveNote(String destinationCategory) async {
     try {
       if (noteModel.category == 'PROJECT') {
         bool isProjectNoteMoved = await notesModuleController.moveProjectNote(noteModel, destinationCategory);
@@ -80,7 +81,7 @@ class NoteEditingSubMenuController extends ChangeNotifier {
         bool isNoteMoved = await AppNotes.moveNote(noteModel, destinationCategory);
         return isNoteMoved;
       }
-    } catch(e) {
+    } catch (e) {
       await AppLogs.writeError(e, 'note_editing_submenu_controller.dart - moveNote');
       return false;
     }
@@ -95,7 +96,7 @@ class NoteEditingSubMenuController extends ChangeNotifier {
         bool isNoteDuplicated = await AppNotes.duplicateNote(noteModel);
         return isNoteDuplicated;
       }
-    } catch(e) {
+    } catch (e) {
       await AppLogs.writeError(e, 'note_editing_submenu_controller.dart - duplicateNote');
       return false;
     }
@@ -110,10 +111,10 @@ class NoteEditingSubMenuController extends ChangeNotifier {
         bool isNoteDeleted = await AppNotes.deleteNote(noteModel, noteModel.category);
         return isNoteDeleted;
       }
-    } catch(e) {
+    } catch (e) {
       await AppLogs.writeError(e, 'note_editing_submenu_controller.dart - deleteNote');
       return false;
-    }  
+    }
   }
 
   String formatDate(String lastModified) {
@@ -124,12 +125,12 @@ class NoteEditingSubMenuController extends ChangeNotifier {
 
     int? yearAsInt = int.tryParse(year);
 
-    if(yearAsInt != null) {
+    if (yearAsInt != null) {
       int currentYear = DateTime.now().year;
       if (yearAsInt == currentYear) {
         String dateWithoutYear = "${date.substring(0, 5)} $hour";
         return dateWithoutYear;
-      } 
+      }
     }
     return lastModified;
   }
@@ -148,10 +149,10 @@ class NoteEditingSubMenuController extends ChangeNotifier {
     String totalText = "";
     for (Widget element in noteContentWidgets) {
       if (element is CustomTextArea) {
-          totalText += "${element.data} ";
+        totalText += "${element.data} ";
       }
       if (element is CustomCodeDisplay) {
-          totalText += "${element.data['code'] ?? ''} ";
+        totalText += "${element.data['code'] ?? ''} ";
       }
       if (element is CustomImageDisplay) {
         totalText += "${element.data['description'] ?? ''} ";

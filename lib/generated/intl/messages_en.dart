@@ -247,7 +247,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "projects_module_notes_new_category_sub_menu_error_message":
             MessageLookupByLibrary.simpleMessage("Please, name the category"),
         "projects_module_notes_new_category_sub_menu_is_private":
-            MessageLookupByLibrary.simpleMessage("Private note"),
+            MessageLookupByLibrary.simpleMessage("Private category"),
         "projects_module_notes_new_category_sub_menu_is_private_tooltip":
             MessageLookupByLibrary.simpleMessage(
                 "By enabling this option, your password will be required to open this category."),
@@ -262,7 +262,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "projects_module_notes_new_note_tooltip":
             MessageLookupByLibrary.simpleMessage("New note"),
         "projects_module_notes_private_notes_title":
-            MessageLookupByLibrary.simpleMessage("Private notes"),
+            MessageLookupByLibrary.simpleMessage("Privates notes"),
         "projects_module_notes_project_notes_title":
             MessageLookupByLibrary.simpleMessage("Project notes"),
         "projects_module_notes_title":

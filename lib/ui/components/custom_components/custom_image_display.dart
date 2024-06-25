@@ -5,6 +5,7 @@ import 'package:minddy/system/interface/articles_element_interface.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_image_fullview.dart';
 import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
+import 'package:minddy/ui/components/menus/sub_menus/sub_menu_articles_image_description.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 // ignore: must_be_immutable
@@ -31,6 +32,8 @@ class _CustomImageDisplayState extends State<CustomImageDisplay> {
 
   String url = '';
   String description = '';
+
+  double _scale = 1.0;
 
   Future<void> _setImageWidget() async {
     try {
@@ -71,6 +74,7 @@ class _CustomImageDisplayState extends State<CustomImageDisplay> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Icon(Icons.abc, size: 0),
             FutureBuilder(
               future: _imageFuture,
               builder: (context, snapshot) {
@@ -97,6 +101,15 @@ class _CustomImageDisplayState extends State<CustomImageDisplay> {
                     onTap: () async {
                       if (_imageWidget is Image) {
                         showFullImage(_imageWidget as Image, context);
+                      }
+                    },
+                    onScaleUpdate: (details) {
+                      _scale = details.scale;
+                    },
+                    onScaleEnd: (details) {
+                      if (_scale > 1.0 && _imageWidget is Image) {
+                        showFullImage(_imageWidget as Image, context);
+                        _scale = 1.0;
                       }
                     },
                     child: ClipRRect(
@@ -164,7 +177,8 @@ class _CustomImageDisplayState extends State<CustomImageDisplay> {
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
                       onTap: () async {
-                        // TODO: Revoir l'édition de la description des images dans les notes
+                        widget.data['description'] = await showDescriptionEditingMenu(context, widget.data['description']);
+                        setState(() {});
                       },
                       child: const Icon(Icons.more_horiz),
                     ),
