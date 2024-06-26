@@ -36,7 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "${Intl.plural(totalNotesCount, zero: 'Sin notas', one: '1 nota', other: '${totalNotesCount} notas')}";
 
   static String m6(totalTasksCount, checkedTasks) =>
-      "{totalTasksCount, plural, =0 {Sin tareas} una {${checkedTasks}/${totalTasksCount} tarea completada} otras {${checkedTasks}/${totalTasksCount} tareas completadas}}";
+      "${Intl.plural(totalTasksCount, zero: 'Sin tareas', one: '${checkedTasks}/${totalTasksCount} tarea completada', other: '${checkedTasks}/${totalTasksCount} tareas completadas')}";
 
   static String m7(actualMonth, actualDay) =>
       "Esta opción pondrá el mes antes del día. Así: ${actualMonth}/${actualDay}";
@@ -283,6 +283,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Título"),
         "projects_module_tasks_title":
             MessageLookupByLibrary.simpleMessage("Tareas"),
+        "projects_next_page_shortcut_tooltip":
+            MessageLookupByLibrary.simpleMessage("Página siguiente ctrl + ⭢"),
+        "projects_next_page_shortcut_tooltip_mac":
+            MessageLookupByLibrary.simpleMessage("Página siguiente ⌘ + ⭢"),
+        "projects_previous_page_shortcut_tooltip":
+            MessageLookupByLibrary.simpleMessage("Página anterior ctrl + ⭠"),
+        "projects_previous_page_shortcut_tooltip_mac":
+            MessageLookupByLibrary.simpleMessage("Página anterior ⌘ + ⭠"),
         "projects_save_project_button_tooltip":
             MessageLookupByLibrary.simpleMessage("Guardar"),
         "settings_accessibility_title":
@@ -296,6 +304,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings_date_format_tooltip": m7,
         "settings_language_subtitle":
             MessageLookupByLibrary.simpleMessage("Idioma"),
+        "settings_need_to_quit_project_to_change_language":
+            MessageLookupByLibrary.simpleMessage(
+                "Para cambiar el idioma, regrese a inicio"),
         "settings_need_to_quit_project_to_change_theme":
             MessageLookupByLibrary.simpleMessage(
                 "Para cambiar la configuración del tema, regrese a inicio"),

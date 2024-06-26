@@ -1,4 +1,4 @@
-  /// Creates a unique file name based on the provided title.
+  /// Creates a unique id.
   int createUniqueId() {
     return DateTime.now().millisecondsSinceEpoch;
   }

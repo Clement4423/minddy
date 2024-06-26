@@ -99,7 +99,7 @@ class PersonalizeView extends StatelessWidget {
                       ),
                     ),
                     Tooltip(
-                      message: "",
+                      message: S.of(context).settings_need_to_quit_project_to_change_language,
                       child: CustomDropdownButton(
                         menuTitle: controller.menuLanguageTitle,
                         action: controller.treatLanguageValue,

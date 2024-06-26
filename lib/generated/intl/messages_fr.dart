@@ -283,6 +283,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Titre"),
         "projects_module_tasks_title":
             MessageLookupByLibrary.simpleMessage("Tâches"),
+        "projects_next_page_shortcut_tooltip":
+            MessageLookupByLibrary.simpleMessage("Page suivante ctrl + ⭢"),
+        "projects_next_page_shortcut_tooltip_mac":
+            MessageLookupByLibrary.simpleMessage("Page suivante ⌘ + ⭢"),
+        "projects_previous_page_shortcut_tooltip":
+            MessageLookupByLibrary.simpleMessage("Page précédente ctrl + ⭠"),
+        "projects_previous_page_shortcut_tooltip_mac":
+            MessageLookupByLibrary.simpleMessage("Page précédente ⌘ + ⭠"),
         "projects_save_project_button_tooltip":
             MessageLookupByLibrary.simpleMessage("Sauvegarder"),
         "settings_accessibility_title":
@@ -296,6 +304,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings_date_format_tooltip": m7,
         "settings_language_subtitle":
             MessageLookupByLibrary.simpleMessage("Langue"),
+        "settings_need_to_quit_project_to_change_language":
+            MessageLookupByLibrary.simpleMessage(
+                "Pour changer de langue, veuillez revenir à l\'accueil"),
         "settings_need_to_quit_project_to_change_theme":
             MessageLookupByLibrary.simpleMessage(
                 "Pour changer les paramètres de thème, veuillez revenir à l\'accueil"),

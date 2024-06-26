@@ -12,7 +12,7 @@ import 'package:minddy/ui/theme/theme.dart';
 class ProjectCard extends StatelessWidget {
   final ProjectInfo projectInfo;
   final Function function;
-  final Color background;
+  final Color? background;
   const ProjectCard({super.key, required this.projectInfo, required this.function, required this.background});
 
   @override
@@ -32,7 +32,7 @@ class ProjectCard extends StatelessWidget {
                   width: 185,
                   height: 185,
                   decoration: BoxDecoration(
-                    color: background,
+                    color: background ?? theme.secondary,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(

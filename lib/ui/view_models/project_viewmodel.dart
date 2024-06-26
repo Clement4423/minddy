@@ -10,6 +10,7 @@ import 'package:minddy/system/model/project_info.dart';
 import 'package:minddy/system/model/project_module_model.dart';
 import 'package:minddy/system/model/projects_modules.dart';
 import 'package:minddy/system/projects/app_project.dart';
+import 'package:minddy/ui/components/custom_components/current_page_indicator_view.dart';
 import 'package:minddy/ui/components/projects/modules/notes/projects_modules_note_view_controller.dart';
 import 'package:minddy/ui/components/projects/modules/notes/projetcs_modules_notes_view.dart';
 import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view.dart';
@@ -20,14 +21,29 @@ class ProjectViewModel extends ChangeNotifier {
 
   ProjectViewModel({required this.projectInfo});
 
+  CurrentPageIndicatorController pageIndicatorController = CurrentPageIndicatorController();
+
   List<ModuleContainerModel> modulesContainer = [];
 
   List<ProjectModuleModel> modulesModels = [];
 
   List<IProjectsModules> allModulesWidget = [];
 
+  int lastPage = 0;
+
+  bool isInitialized = false;
+
   Future<void> initialize() async {
-    await _getProjectModulesModels();
+    if (!isInitialized) {
+      isInitialized = true;
+      await _getProjectModulesModels();
+      await getLastPage();
+    }
+  }
+
+  Future<void> getLastPage() async {
+    lastPage = await AppProject.getProperty(projectInfo.path, 'page') ?? 0;
+    pageIndicatorController.currentPageIndex = lastPage;
   }
 
   Future<void> newModule(ProjectsModules moduleType) async {
@@ -56,6 +72,8 @@ class ProjectViewModel extends ChangeNotifier {
     _getModules();
 
     double modulesWidth = 0;
+    
+    pageIndicatorController.totalPages = 0;
 
     modulesContainer.clear();
 
@@ -69,6 +87,8 @@ class ProjectViewModel extends ChangeNotifier {
       modulesContainer.last.modules.add(module);
       modulesWidth += module.width;
     }
+
+    pageIndicatorController.totalPages = modulesContainer.length;
   }
 
   Future<void> duplicateModule(int id) async {
@@ -142,8 +162,12 @@ class ProjectViewModel extends ChangeNotifier {
         return false;
       }
     }
-    bool isPropertyChanged = await AppProject.modifyProperty(projectInfo.path, 'content', _convertMapToJson());
-    return isPropertyChanged;
+    bool isContentSaved = await AppProject.modifyProperty(projectInfo.path, 'content', _convertMapToJson());
+    if (isContentSaved) {
+      bool isCurrentPageSaved = await AppProject.modifyProperty(projectInfo.path, 'page', pageIndicatorController.currentPageIndex);
+      return isCurrentPageSaved;
+    }
+    return isContentSaved;
   }
 
   _createNewContainer() {
@@ -152,6 +176,7 @@ class ProjectViewModel extends ChangeNotifier {
 
   Future<void> _getProjectModulesModels() async {
     try {
+      modulesModels.clear();
       List<dynamic> projectContent = await AppProject.getProperty(projectInfo.path, 'content');
 
       for (Map module in projectContent) {

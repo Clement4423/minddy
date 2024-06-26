@@ -49,7 +49,7 @@ class MainApp extends StatelessWidget {
   // TODO : Tools note rapide ?
   // TODO : Terminer la page des projets
   // TODO : Faire les fonds de projets pour le mode noir et blanc
-
+  
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<void>(

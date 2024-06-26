@@ -88,7 +88,7 @@ class HomeViewModel extends ChangeNotifier {
     for (var project in _projectsList) {
       Widget card = ProjectCard(
         projectInfo: project,
-        background: Colors.blue,
+        background: null,
         function: initializeProjectCards,
       );
       cards.add(card);

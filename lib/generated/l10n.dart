@@ -400,6 +400,16 @@ class S {
     );
   }
 
+  /// `To change language, please go back at home`
+  String get settings_need_to_quit_project_to_change_language {
+    return Intl.message(
+      'To change language, please go back at home',
+      name: 'settings_need_to_quit_project_to_change_language',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Device theme`
   String get settings_using_system_theme {
     return Intl.message(
@@ -1695,6 +1705,46 @@ class S {
     return Intl.message(
       'Stop',
       name: 'tool_pomodoro_stop_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next page ⌘ + ⭢`
+  String get projects_next_page_shortcut_tooltip_mac {
+    return Intl.message(
+      'Next page ⌘ + ⭢',
+      name: 'projects_next_page_shortcut_tooltip_mac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Previous page ⌘ + ⭠`
+  String get projects_previous_page_shortcut_tooltip_mac {
+    return Intl.message(
+      'Previous page ⌘ + ⭠',
+      name: 'projects_previous_page_shortcut_tooltip_mac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next page ctrl + ⭢`
+  String get projects_next_page_shortcut_tooltip {
+    return Intl.message(
+      'Next page ctrl + ⭢',
+      name: 'projects_next_page_shortcut_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Previous page ctrl + ⭠`
+  String get projects_previous_page_shortcut_tooltip {
+    return Intl.message(
+      'Previous page ctrl + ⭠',
+      name: 'projects_previous_page_shortcut_tooltip',
       desc: '',
       args: [],
     );

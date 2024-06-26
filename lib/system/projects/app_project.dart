@@ -97,6 +97,7 @@ class AppProject {
         "creator": username,
         "creation_date": date,
         "last_change": date,
+        "page": null,
         "content": []
       };
 

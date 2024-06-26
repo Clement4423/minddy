@@ -276,6 +276,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Title"),
         "projects_module_tasks_title":
             MessageLookupByLibrary.simpleMessage("Tasks"),
+        "projects_next_page_shortcut_tooltip":
+            MessageLookupByLibrary.simpleMessage("Next page ctrl + ⭢"),
+        "projects_next_page_shortcut_tooltip_mac":
+            MessageLookupByLibrary.simpleMessage("Next page ⌘ + ⭢"),
+        "projects_previous_page_shortcut_tooltip":
+            MessageLookupByLibrary.simpleMessage("Previous page ctrl + ⭠"),
+        "projects_previous_page_shortcut_tooltip_mac":
+            MessageLookupByLibrary.simpleMessage("Previous page ⌘ + ⭠"),
         "projects_save_project_button_tooltip":
             MessageLookupByLibrary.simpleMessage("Save"),
         "settings_accessibility_title":
@@ -289,6 +297,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings_date_format_tooltip": m7,
         "settings_language_subtitle":
             MessageLookupByLibrary.simpleMessage("Language"),
+        "settings_need_to_quit_project_to_change_language":
+            MessageLookupByLibrary.simpleMessage(
+                "To change language, please go back at home"),
         "settings_need_to_quit_project_to_change_theme":
             MessageLookupByLibrary.simpleMessage(
                 "To change theme settings, please go back at home"),
