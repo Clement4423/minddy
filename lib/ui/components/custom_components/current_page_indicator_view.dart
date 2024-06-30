@@ -73,7 +73,8 @@ class _IndicatorState extends State<_Indicator> {
           );
         },
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.fastEaseInToSlowEaseOut,
           width: widget.index == widget.currentPageIndex ? 30 : 10,
           height: 10,
           decoration: BoxDecoration(

@@ -24,7 +24,7 @@ Future<bool> initializeState() async {
   if (appIsInitialized) {
     if (Platform.isWindows || Platform.isLinux) {
       setWindowTitle('minddy');
-      setWindowMinSize(const Size(900, 600));
+      setWindowMinSize(const Size(900, 630));
     }
     _currentThemeMode = await AppTheme.getCurrentThemeMode();
     _routeName = await getFirstPageRouteName();
@@ -39,16 +39,19 @@ class MainApp extends StatelessWidget {
   // TODO : Documenter tout le code
   // TODO : Faire les tests
   // TODO : Implémenter une fonctionnalitée de recherche à l'interieur d'un article pour chercher un mot clé
-  // TODO : Revoir la reinitialisation des paramètres pour ne pas recréer un mot de passe si il y en à déja un
   // TODO : Ajouter tous les articles de base
   // TODO : Faire les articles 'aide' pour les modules
-  // TODO : Faire l'écran d'erreur
+  // TODO : Faire l'écran d'erreur au lancement
   // TODO : Faire thème high contrast et l'ajouter au main
   // TODO : Faire en sorte de pouvoir mettre un projet en privé, pour nécessiter le mot de passe pour l'ouvrir
   // TODO : Terminer les paramètres
   // TODO : Tools note rapide ?
   // TODO : Terminer la page des projets
-  // TODO : Faire les fonds de projets pour le mode noir et blanc
+  // TODO : Ajouter une fonction pour sauvagarder le projet avant de fermer l'app
+  // TODO : Ajouter le déplacement des pages, ainsi que le déplacement des modules
+  // TODO : Faire le menu d'ajout de module
+  // TODO : Faire le système d'addons
+  // TODO : Faire le module tableau(Code)
   
   @override
   Widget build(BuildContext context) {

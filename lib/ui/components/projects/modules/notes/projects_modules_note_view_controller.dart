@@ -41,6 +41,9 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
   List<ProjectNoteModuleCategoryModel> categories = [];
 
   ProjectsNotesModuleController({required this.id, required this.projectPath}) {
+    if (projectPath == '') {
+      return;
+    }
     getCategories().then((value) => notifyListeners());
     getProjectNotes();
   }

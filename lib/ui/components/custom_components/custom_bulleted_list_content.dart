@@ -28,8 +28,7 @@ class _ElementContentState extends State<CustomBulletedListContent> {
 
 
 void _buildListElements(CustomBulletedListController controller, List<CustomBulletedListElementModel> list, BuildContext context) {
-  double screenWidth = MediaQuery.of(context).size.width;
-  double maxWidth = screenWidth > 1000 ? screenWidth / 3 : screenWidth / 2.5;
+  double maxWidth = 500;
   List<CustomBulletedListElementWidget> listElementsList = [];
   for (int i = 0; i < list.length; i++) {
     listElementsList.add(

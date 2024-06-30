@@ -104,17 +104,18 @@ Future<dynamic> showCenterMenu(BuildContext context, Widget icon, IRouter router
                                       ),
                                     ),
                                     // Bottom list tiles section
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Align(
-                                        alignment: AlignmentDirectional.centerStart,
-                                        child: Text(
-                                          S.of(context).center_menu_others,
-                                          style: theme.bodySmall.
-                                          copyWith(color: Colors.grey)
-                                        )
+                                    if (bottomListTiles.isNotEmpty)
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Align(
+                                          alignment: AlignmentDirectional.centerStart,
+                                          child: Text(
+                                            S.of(context).center_menu_others,
+                                            style: theme.bodySmall.
+                                            copyWith(color: Colors.grey)
+                                          )
+                                        ),
                                       ),
-                                    ),
                                     ...buildNavigationListTiles(theme, bottomListTiles, controller)
                                   ],
                                 );

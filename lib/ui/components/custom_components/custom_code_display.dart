@@ -108,7 +108,7 @@ class _CustomCodeDisplay extends State<CustomCodeDisplay> {
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
                     onTap: () {
-                      Clipboard.setData(ClipboardData(text: widget.initialCode));
+                      Clipboard.setData(ClipboardData(text: widget.data['code']));
                       setState(() {
                         _hasJustBeenCopied = true;
                       });
@@ -154,7 +154,7 @@ class _CustomCodeDisplay extends State<CustomCodeDisplay> {
                     onChanged: (value) {
                       widget.data['code'] = value;
                     },
-                    controller: TextEditingController(text: widget.initialCode),
+                    controller: TextEditingController(text: widget.data['code']),
                     style: theme.bodyMedium.copyWith(color: Colors.white, fontFamily: 'Menlo', fontSize: 15),
                     cursorColor: Colors.white,
                     minLines: 1,

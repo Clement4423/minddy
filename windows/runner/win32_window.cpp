@@ -217,14 +217,6 @@ Win32Window::MessageHandler(HWND hwnd,
       UpdateTheme(hwnd);
       return 0;
   }
-  // This has been added and is not orininaly here, 
-  // It serves as a window minimum size setter
-  case WM_GETMINMAXINFO: {
-    MINMAXINFO* mmi = (MINMAXINFO*)lParam;
-    mmi->ptMinTrackSize.x = 900; // minimum width
-    mmi->ptMinTrackSize.y = 600; // minimum height
-    return 0;
-  }
 
   return DefWindowProc(window_handle_, message, wparam, lparam);
 }

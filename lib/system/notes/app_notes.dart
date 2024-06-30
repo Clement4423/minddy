@@ -29,7 +29,7 @@ class AppNotes {
       List<FileSystemEntity> content = categoriesDirectory.listSync();
 
       for (String key in defaultNotesCategories.keys) {
-        bool categoryExists = content.any((element) => element is Directory && element.path.split('/').last == key);
+        bool categoryExists = content.any((element) => element is Directory && element.path.split(Platform.isWindows ? '\\' : "/").last == key);
         if (!categoryExists) {
           Directory newCategoryDir = Directory("${categoriesDirectory.path}/$key");
           newCategoryDir.createSync();
@@ -65,9 +65,9 @@ class AppNotes {
       
       for (FileSystemEntity entity in content) {
         if (entity is Directory && !entity.path.split('/').last.startsWith('.')) {
-          List? element = defaultNotesCategories[entity.path.split('/').last];
+          List? element = defaultNotesCategories[entity.path.split(Platform.isWindows ? '\\' : "/").last];
 
-          String categoryName = entity.path.split('/').last;
+          String categoryName = entity.path.split(Platform.isWindows ? '\\' : "/").last;
 
           Map<String, dynamic> fileContent = await _openNotesFile(categoryName);
           models.add(
