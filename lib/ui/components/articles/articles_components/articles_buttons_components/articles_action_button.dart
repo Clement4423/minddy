@@ -12,7 +12,7 @@ class ArticlesActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
     return Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.only(top: 2, bottom: 0, right: 0, left: 8),
       child: IconButton(
         onPressed: () {
           action();

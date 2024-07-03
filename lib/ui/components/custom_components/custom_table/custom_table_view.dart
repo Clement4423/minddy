@@ -3,10 +3,18 @@ import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interface/i_custom_table_cell_data.dart';
 import 'package:minddy/system/model/custom_table_cell_position.dart';
 import 'package:minddy/system/model/custom_table_type.dart';
+import 'package:minddy/ui/components/custom_components/custom_table/calculation_viewer.dart';
+import 'package:minddy/ui/components/custom_components/custom_table/column_type_selector.dart';
+import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_date_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_number_cell.dart';
+import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_copyable_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_text_cell.dart';
+import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_url_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_controller.dart';
+import 'package:minddy/ui/components/custom_components/custom_table/custom_table_row_header.dart';
+import 'package:minddy/ui/components/custom_components/custom_table/function_selector.dart';
+import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class CustomTable extends StatefulWidget {
@@ -16,7 +24,7 @@ class CustomTable extends StatefulWidget {
 
   const CustomTable({
     super.key,
-    this.cellWidth = 100,
+    this.cellWidth = 170,
     this.cellHeight = 40,
     required this.controller,
   });
@@ -26,19 +34,17 @@ class CustomTable extends StatefulWidget {
 }
 
 class _CustomTableState extends State<CustomTable> {
-
   @override
   void initState() {
     super.initState();
   }
 
   Widget _buildTitleCell(BuildContext context, StylesGetters theme) {
-    StylesGetters theme = StylesGetters(context);
     return Container(
       height: widget.cellHeight,
       decoration: BoxDecoration(
         color: theme.surface,
-        border: Border.all(color: theme.onSurface, width: 0.25)
+        border: Border.all(color: theme.onSurface, width: 0.25),
       ),
       child: Center(
         child: TextField(
@@ -51,7 +57,7 @@ class _CustomTableState extends State<CustomTable> {
           decoration: InputDecoration(
             border: InputBorder.none,
             contentPadding: const EdgeInsets.only(left: 8, right: 2),
-            hintText: S.of(context).articles_card_untitled
+            hintText: S.of(context).articles_card_untitled,
           ),
         ),
       ),
@@ -66,117 +72,49 @@ class _CustomTableState extends State<CustomTable> {
 
     Icon icon = customTableIcons[widget.controller.getColumnType(colIndex)] ?? const Icon(Icons.error);
 
-    return Container(
-      height: widget.cellHeight,
-      padding: const EdgeInsets.only(left: 5, right: 5),
-      decoration: BoxDecoration(
-        color: theme.surface,
-        border: Border.all(color: theme.onSurface, width: 0.25),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          icon,
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 12),
-              child: TextField(
-                controller: TextEditingController(text: widget.controller.columnNames[colIndex]),
-                onChanged: (value) {
-                  widget.controller.setColumnName(colIndex, value);
-                },
-                style: theme.titleMedium.copyWith(fontWeight: FontWeight.w600),
-                cursorColor: theme.onSurface,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Unnamed',
-                ),
-              ),
-            ),
-          ),
-          PopupMenuButton(
-            icon: Icon(Icons.arrow_drop_down_rounded, color: theme.onSurface),
-            onSelected: (value) {
-              widget.controller.setColumnType(colIndex, value);
-            },
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(13)
-            ),
-            color: theme.primary,
-            itemBuilder: (context) {
-              return CustomTableType.values.map((value) {
-                return PopupMenuItem(
-                  value: value,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(customTableNames[value] ?? ''),
-                      customTableIcons[value] ?? const Icon(Icons.error)
-                    ],
-                  )
-                );
-              }).toList();
-            }
-          )
-        ],
-      ),
+    return ColumnTypeSelector(
+      widget: widget, 
+      icon: icon, 
+      colIndex: colIndex, 
+      theme: theme, 
+      deleteColumnMethod: widget.controller.deleteColumn
     );
   }
 
   Widget _buildRowHeader(int rowIndex, StylesGetters theme) {
-    return Container(
-      height: widget.cellHeight,
-      decoration: BoxDecoration(
-        color: theme.surface,
-        border: Border.all(color: theme.onSurface, width: 0.25)
-      ),
-      child: TextField(
-        onChanged: (newValue) {
-          widget.controller.setRowName(rowIndex, newValue);
-        },
-        style: theme.titleMedium.copyWith(fontWeight: FontWeight.w600, overflow: TextOverflow.ellipsis),
-        cursorColor: theme.onSurface,
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Unnamed',
-          contentPadding: EdgeInsets.only(left: 8, right: 2),
-        ),
-      ),
-    );
+    return CustomTableRowHeader(widget: widget, theme: theme, rowIndex: rowIndex, deleteRowMethod: widget.controller.deleteRow);
   }
 
   ICustomTableCellData _getCellChildBasedOnType(int columnIndex, dynamic initialValue, StylesGetters theme) {
-
     CustomTableType type = widget.controller.getColumnType(columnIndex) ?? CustomTableType.text;
 
     switch (type) {
       case CustomTableType.date:
-        return CustomTableTextCell(theme: theme, initialText: initialValue ?? '');
+        return CustomTableDateCell(initialValue: initialValue, cellHeight: widget.cellHeight, cellWidth: widget.cellWidth, theme: theme);
       case CustomTableType.text:
         return CustomTableTextCell(theme: theme, initialText: initialValue ?? '');
       case CustomTableType.number:
-        return CustomTableNumberCell(theme: theme, initialValue: initialValue);
+        return CustomTableNumberCell(theme: theme, controller: widget.controller, initialValue: initialValue);
       case CustomTableType.phoneNumber:
-        return CustomTableNumberCell(theme: theme, initialValue: initialValue);
+        return CustomTableCopyableCell(theme: theme, initialValue: initialValue ?? '');
       case CustomTableType.email:
-        return CustomTableTextCell(theme: theme, initialText: initialValue ?? '');
+        return CustomTableCopyableCell(theme: theme, initialValue: initialValue ?? '');
       case CustomTableType.url:
-        return CustomTableTextCell(theme: theme, initialText: initialValue ?? '');
+        return CustomTableUrlCell(theme: theme, initialValue: initialValue ?? '');
       case CustomTableType.selection:
         return CustomTableTextCell(theme: theme, initialText: initialValue ?? '');
     }
   }
+  // TODO : Faire tous les types de données (Selection, date)
 
   List<TableRow> buildCells(StylesGetters theme) {
-
     List<TableRow> list = List.generate(widget.controller.rows, (rowIndex) {
       return TableRow(
-        decoration: BoxDecoration(
-          border: Border.all(color: theme.onSurface),
-        ),
-        children: List.generate(widget.controller.columns + 1, (colIndex) {
+        children: List.generate(widget.controller.columns + 2, (colIndex) {
           if (colIndex == 0) {
             return _buildRowHeader(rowIndex + 1, theme);
+          } else if (colIndex == widget.controller.columns + 1) {
+            return const SizedBox();
           } else {
             CustomTableCellPosition position = CustomTableCellPosition(row: rowIndex + 1, column: colIndex);
             return CustomTableCell(
@@ -184,7 +122,7 @@ class _CustomTableState extends State<CustomTable> {
               theme: theme,
               position: position,
               height: widget.cellHeight,
-              child: _getCellChildBasedOnType(colIndex, widget.controller.getCellData(position), theme)
+              child: _getCellChildBasedOnType(colIndex, widget.controller.getCellData(position), theme),
             );
           }
         }),
@@ -207,28 +145,142 @@ class _CustomTableState extends State<CustomTable> {
             List.generate(widget.controller.columns + 1, (index) => index),
             List.generate(widget.controller.columns + 1, (index) => FixedColumnWidth(widget.cellWidth)),
           ),
+          defaultColumnWidth: FixedColumnWidth(widget.cellWidth),
           children: [
-            // First row: Column type selectors
+            // First Row
             TableRow(
-              decoration: BoxDecoration(
-                border: Border.all(color: theme.onSurface),
-              ),
-              children: List.generate(widget.controller.columns + 1, (colIndex) {
+              children: List.generate(widget.controller.columns + 2, (colIndex) {
                 if (colIndex == 0) {
                   return _buildTitleCell(context, theme);
+                } else if (colIndex == widget.controller.columns + 1) {
+                  return SizedBox(
+                    height: widget.cellHeight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: CustomTextButton(
+                        S.of(context).projects_module_spreadsheet_new_column, 
+                        () {
+                          widget.controller.newColumn();
+                        },
+                        isSecondary: true, 
+                        false, 
+                        false
+                      ),
+                    ),
+                  );
                 } else {
                   return _buildColumnTypeSelector(colIndex, theme);
                 }
               }),
             ),
-            // Remaining rows
-            ...buildCells(theme)
+            // Content
+            ...buildCells(theme),
+            // Last row
+            TableRow(
+              children: [
+                ...List.generate(widget.controller.columns + 2, (colIndex) {
+                  if (colIndex == 0) {
+                    return Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: CustomTextButton(
+                        S.of(context).projects_module_spreadsheet_new_row,
+                        () {
+                          widget.controller.newRow();
+                        }, 
+                        false, 
+                        isSecondary: true,
+                        false
+                      ),
+                    );
+                  } else if (widget.controller.getColumnType(colIndex) == CustomTableType.number) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: widget.controller.getColumnCalculation(colIndex) != null 
+                        ? AnimatedBuilder(
+                          animation: widget.controller.numbersChangeNotifier,
+                          builder: (context, animation) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: CalculationViewer(
+                                key: UniqueKey(), // Keep it or it will not refresh
+                                calculationName: widget.controller.getColumnCalculation(colIndex) ?? 'sum', 
+                                numbers: widget.controller.getAllNumbersFromColumn(colIndex),
+                                onFunctionSelected: (name) {
+                                  widget.controller.setColumnCalculation(colIndex, name);
+                                },
+                                theme: theme,
+                              ),
+                            );
+                          }
+                        )
+                        : Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: FunctionSelector(
+                              theme: theme,
+                              onFunctionSelected: (name) {
+                                widget.controller.setColumnCalculation(colIndex, name);
+                              }, 
+                            ),
+                        ),
+                    );
+                  } 
+                  else {
+                    return const SizedBox();
+                  }
+                })
+              ]
+            )
           ],
         );
-      }
+      },
     );
   }
 }
 
-// TODO : Faire le dernier rang avec les options de calculs, et le bouton d'ajout de rang
-// TODO : Faire la dernière collone avec le bouton d'ajout de collone
+List<PopupMenuItem<String>> calculationsMenuItems = [
+  PopupMenuItem(
+    value: 'Null',
+    child: Text(calculationsOperationsTitles['Null'] ?? 'None')
+  ),
+  PopupMenuItem(
+    value: 'sum',
+    child: Text(calculationsOperationsTitles['sum'] ?? 'Sum')
+  ),
+  PopupMenuItem(
+    value: 'average',
+    child: Text(calculationsOperationsTitles['average'] ?? 'Average')
+  ),
+  PopupMenuItem(
+    value: 'maximum',
+    child: Text(calculationsOperationsTitles['maximum'] ?? 'Maximum')
+  ),
+  PopupMenuItem(
+    value: 'minimum',
+    child: Text(calculationsOperationsTitles['minimum'] ?? 'Minimum')
+  ),
+  PopupMenuItem(
+    value: 'interval',
+    child: Text(calculationsOperationsTitles['interval'] ?? 'Interval')
+  ),
+  PopupMenuItem(
+    value: 'median',
+    child: Text(calculationsOperationsTitles['median'] ?? 'Median')
+  ),
+  PopupMenuItem(
+    value: 'standardDeviation',
+    child: Text(calculationsOperationsTitles['standardDeviation'] ?? 'Standard Deviation')
+  )
+];
+
+// TODO : Faire des tooltips pour expliquer à quoi chaque opération sert
+
+Map<String, String> calculationsOperationsTitles = {
+  'Null': S.current.projects_module_spreadsheet_number_operation_none,
+  'sum': S.current.projects_module_spreadsheet_number_operation_sum,
+  'average': S.current.projects_module_spreadsheet_number_operation_average,
+  'maximum': S.current.projects_module_spreadsheet_number_operation_maximum,
+  'minimum': S.current.projects_module_spreadsheet_number_operation_minimum,
+  'interval': S.current.projects_module_spreadsheet_number_operation_interval,
+  'median': S.current.projects_module_spreadsheet_number_operation_median,
+  'standardDeviation': S.current.projects_module_spreadsheet_number_operation_standard_deviation
+};

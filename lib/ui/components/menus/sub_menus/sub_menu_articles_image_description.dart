@@ -113,14 +113,17 @@ class ArticlesWriteViewImageDescriptionMenu extends StatelessWidget {
               child: SizedBox(
                 width: 350,
                 height: 60,
-                child: CustomTextButton(
-                  S.of(context).submenu_artilces_image_description_button, 
-                  () {
-                    completer.complete(description);
-                    Navigator.pop(context);
-                  }, 
-                  false, 
-                  false
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: CustomTextButton(
+                    S.of(context).submenu_artilces_image_description_button, 
+                    () {
+                      completer.complete(description);
+                      Navigator.pop(context);
+                    }, 
+                    false, 
+                    false
+                  ),
                 ),
               ),
             )

@@ -38,14 +38,16 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m6(totalTasksCount, checkedTasks) =>
       "${Intl.plural(totalTasksCount, zero: 'Sin tareas', one: '${checkedTasks}/${totalTasksCount} tarea completada', other: '${checkedTasks}/${totalTasksCount} tareas completadas')}";
 
-  static String m7(actualMonth, actualDay) =>
+  static String m7(websiteName) => "Abrir ${websiteName}";
+
+  static String m8(actualMonth, actualDay) =>
       "Esta opción pondrá el mes antes del día. Así: ${actualMonth}/${actualDay}";
 
-  static String m8(element) => "¿Eliminar ${element}?";
+  static String m9(element) => "¿Eliminar ${element}?";
 
-  static String m9(user) => "Encantado de verte de nuevo ${user}";
+  static String m10(user) => "Encantado de verte de nuevo ${user}";
 
-  static String m10(accountSettingName) =>
+  static String m11(accountSettingName) =>
       "Aún podrás ingresar tu nombre en la configuración - ${accountSettingName}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -184,6 +186,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Bienestar"),
         "center_menu_general": MessageLookupByLibrary.simpleMessage("General"),
         "center_menu_others": MessageLookupByLibrary.simpleMessage("Otros"),
+        "custom_date_picker_end": MessageLookupByLibrary.simpleMessage("Fin"),
+        "custom_date_picker_invalid_date":
+            MessageLookupByLibrary.simpleMessage("Fecha no válida"),
+        "custom_date_picker_select_multiples_date_title":
+            MessageLookupByLibrary.simpleMessage("Seleccionar fechas"),
+        "custom_date_picker_select_single_date_title":
+            MessageLookupByLibrary.simpleMessage("Selecciona una fecha"),
+        "custom_date_picker_start":
+            MessageLookupByLibrary.simpleMessage("Inicio"),
         "default_articles_articles_description":
             MessageLookupByLibrary.simpleMessage(
                 "Descubre artículos en minddy"),
@@ -274,6 +285,48 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Notas del proyecto"),
         "projects_module_notes_title":
             MessageLookupByLibrary.simpleMessage("Notas"),
+        "projects_module_spreadsheet_data_type_date":
+            MessageLookupByLibrary.simpleMessage("Fecha"),
+        "projects_module_spreadsheet_data_type_email":
+            MessageLookupByLibrary.simpleMessage("Correo electrónico"),
+        "projects_module_spreadsheet_data_type_number":
+            MessageLookupByLibrary.simpleMessage("Número"),
+        "projects_module_spreadsheet_data_type_phone_number":
+            MessageLookupByLibrary.simpleMessage("Número de teléfono"),
+        "projects_module_spreadsheet_data_type_selection":
+            MessageLookupByLibrary.simpleMessage("Selección"),
+        "projects_module_spreadsheet_data_type_text":
+            MessageLookupByLibrary.simpleMessage("Texto"),
+        "projects_module_spreadsheet_data_type_url":
+            MessageLookupByLibrary.simpleMessage("URL"),
+        "projects_module_spreadsheet_delete_column":
+            MessageLookupByLibrary.simpleMessage("Eliminar esta columna"),
+        "projects_module_spreadsheet_delete_row":
+            MessageLookupByLibrary.simpleMessage("Eliminar esta fila"),
+        "projects_module_spreadsheet_new_column":
+            MessageLookupByLibrary.simpleMessage("Nueva columna"),
+        "projects_module_spreadsheet_new_row":
+            MessageLookupByLibrary.simpleMessage("Nueva fila"),
+        "projects_module_spreadsheet_number_operation_average":
+            MessageLookupByLibrary.simpleMessage("Promedio"),
+        "projects_module_spreadsheet_number_operation_interval":
+            MessageLookupByLibrary.simpleMessage("Intervalo"),
+        "projects_module_spreadsheet_number_operation_maximum":
+            MessageLookupByLibrary.simpleMessage("Máximo"),
+        "projects_module_spreadsheet_number_operation_median":
+            MessageLookupByLibrary.simpleMessage("Mediana"),
+        "projects_module_spreadsheet_number_operation_minimum":
+            MessageLookupByLibrary.simpleMessage("Mínimo"),
+        "projects_module_spreadsheet_number_operation_none":
+            MessageLookupByLibrary.simpleMessage("Ninguno"),
+        "projects_module_spreadsheet_number_operation_standard_deviation":
+            MessageLookupByLibrary.simpleMessage("Desviación estándar"),
+        "projects_module_spreadsheet_number_operation_sum":
+            MessageLookupByLibrary.simpleMessage("Suma"),
+        "projects_module_spreadsheet_title":
+            MessageLookupByLibrary.simpleMessage("Hoja de cálculo"),
+        "projects_module_spreadsheet_value_unnamed":
+            MessageLookupByLibrary.simpleMessage("Sin nombre"),
         "projects_module_tasks_add_task_tooltip":
             MessageLookupByLibrary.simpleMessage("Agregar una nueva tarea"),
         "projects_module_tasks_completed": m6,
@@ -293,6 +346,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Página anterior ⌘ + ⭠"),
         "projects_save_project_button_tooltip":
             MessageLookupByLibrary.simpleMessage("Guardar"),
+        "projetcs_module_spreadsheet_open_website": m7,
         "settings_accessibility_title":
             MessageLookupByLibrary.simpleMessage("Accesibilidad"),
         "settings_account_title":
@@ -301,7 +355,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Prefiero el formato de fecha MM/dd"),
         "settings_date_format_subtitle":
             MessageLookupByLibrary.simpleMessage("Formato de fecha"),
-        "settings_date_format_tooltip": m7,
+        "settings_date_format_tooltip": m8,
         "settings_language_subtitle":
             MessageLookupByLibrary.simpleMessage("Idioma"),
         "settings_need_to_quit_project_to_change_language":
@@ -346,7 +400,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Cerrar"),
         "snackbar_delete_button":
             MessageLookupByLibrary.simpleMessage("Eliminar"),
-        "snackbar_delete_element_text": m8,
+        "snackbar_delete_element_text": m9,
         "snackbar_reset_button":
             MessageLookupByLibrary.simpleMessage("Restablecer"),
         "snackbar_reset_text":
@@ -357,7 +411,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Debes reiniciar la aplicación para aplicar los cambios"),
         "snackbar_welcome_back_button":
             MessageLookupByLibrary.simpleMessage("Gracias"),
-        "snackbar_welcome_back_text": m9,
+        "snackbar_welcome_back_text": m10,
         "submenu_artilces_image_description_button":
             MessageLookupByLibrary.simpleMessage("Validar"),
         "submenu_artilces_image_description_hint":
@@ -438,7 +492,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Siguiente página"),
         "welcome_pass_default_username":
             MessageLookupByLibrary.simpleMessage("Usuario"),
-        "welcome_pass_tooltip": m10,
+        "welcome_pass_tooltip": m11,
         "welcome_pass_username": MessageLookupByLibrary.simpleMessage("Pasar"),
         "welcome_password_creation_confirm_hint":
             MessageLookupByLibrary.simpleMessage("Confirma tu contraseña"),

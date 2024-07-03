@@ -6,7 +6,9 @@ class CustomTooltip extends StatelessWidget {
   final Widget child;
   final Duration? waitDuration;
   final int lengthTreshold;
-  const CustomTooltip({super.key, required this.message, required this.child, this.waitDuration, this.lengthTreshold = 1});
+  final Color? background;
+  final Color? textColor;
+  const CustomTooltip({super.key, required this.message, required this.child, this.waitDuration, this.lengthTreshold = 1, this.background, this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +25,13 @@ class CustomTooltip extends StatelessWidget {
           child: Text(
             message,
             style: theme.bodyMedium
-            .copyWith(color: theme.onSecondary)
+            .copyWith(color: textColor ?? theme.onSecondary)
           ),
         )
       ),
       waitDuration: waitDuration,
       decoration: BoxDecoration(
-        color: theme.secondary,
+        color: background ?? theme.secondary,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(

@@ -82,11 +82,14 @@ class NewProjectSubMenu extends StatelessWidget {
                 child: SizedBox(
                   width: 350,
                   height: 60,
-                  child: CustomTextButton(
-                    S.of(context).submenu_new_project_button, 
-                    _controller.validateName, 
-                    true, 
-                    false
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: CustomTextButton(
+                      S.of(context).submenu_new_project_button, 
+                      _controller.validateName, 
+                      true, 
+                      false
+                    ),
                   ),
                 ),
               )

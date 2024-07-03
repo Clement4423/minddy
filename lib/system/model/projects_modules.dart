@@ -3,5 +3,6 @@
 enum ProjectsModules {
   tasks,
   expenses,
-  notes
+  notes,
+  spreadsheet
 }

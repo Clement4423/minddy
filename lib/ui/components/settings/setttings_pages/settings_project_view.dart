@@ -68,11 +68,14 @@ class ProjectSettingsView extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 55,
-                  child: CustomTextButton(
-                    S.of(context).settings_project_rename_button, 
-                    _controller.modifyProjectName, 
-                    true, 
-                    false, 
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: CustomTextButton(
+                      S.of(context).settings_project_rename_button, 
+                      _controller.modifyProjectName, 
+                      true, 
+                      false, 
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -87,12 +90,15 @@ class ProjectSettingsView extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 55,
-                  child: CustomTextButton(
-                    S.of(context).settings_project_delete_button, 
-                    _controller.deleteProject, 
-                    true, 
-                    false,
-                    isCritic: true,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: CustomTextButton(
+                      S.of(context).settings_project_delete_button, 
+                      _controller.deleteProject, 
+                      true, 
+                      false,
+                      isCritic: true,
+                    ),
                   ),
                 )
               ],

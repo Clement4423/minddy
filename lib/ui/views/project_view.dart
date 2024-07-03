@@ -13,12 +13,11 @@ import 'package:minddy/ui/components/articles/articles_components/articles_butto
 import 'package:minddy/ui/components/articles/articles_view/articles_view.dart';
 import 'package:minddy/ui/components/calendar/calendar_button.dart';
 import 'package:minddy/ui/components/custom_components/current_page_indicator_view.dart';
-import 'package:minddy/ui/components/custom_components/custom_table/custom_table_controller.dart';
-import 'package:minddy/ui/components/custom_components/custom_table/custom_table_view.dart';
 import 'package:minddy/ui/components/projects/toolbar/projects_toolbar.dart';
 import 'package:minddy/ui/components/settings/settings_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:minddy/ui/view_models/project_viewmodel.dart';
+
 
 ShortcutActivator nextPageActivator = SingleActivator(
   LogicalKeyboardKey.arrowRight, 
@@ -195,16 +194,7 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children: [
-                                                ...widget._viewmodel.modulesContainer[index].modules,
-                                                Container(
-                                                  width: 700,
-                                                  height: 420,
-                                                  decoration: BoxDecoration(
-                                                    color: theme.primaryContainer,
-                                                    borderRadius: BorderRadius.circular(20)
-                                                  ),
-                                                  child: SingleChildScrollView(child: CustomTable(cellHeight: 50, controller: CustomTableController(2, 1)))
-                                                )
+                                                ...widget._viewmodel.modulesContainer[index].modules
                                               ]
                                             );
                                           },
@@ -316,7 +306,13 @@ Future<dynamic> _showAddModuleMenu(BuildContext context, ProjectViewModel viewMo
         onTap: () {
           viewModel.newModule(ProjectsModules.notes);
         },
-        child: const Text("Notes"),
+        child: Text(S.of(context).projects_module_notes_title),
+      ),
+      PopupMenuItem(
+        onTap: () {
+          viewModel.newModule(ProjectsModules.spreadsheet);
+        },
+        child: const Text("Spreadsheet"),
       ),
     ],
   );

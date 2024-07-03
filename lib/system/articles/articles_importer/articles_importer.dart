@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:minddy/system/articles/article_categories.dart';
-import 'package:minddy/system/create_unique_id.dart';
+import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/ui/components/menus/sub_menus/articles_importer_add_images_sub_menu.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';

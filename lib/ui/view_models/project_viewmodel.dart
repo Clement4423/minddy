@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:minddy/system/create_unique_id.dart';
+import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/interface/projects_modules_interface.dart';
@@ -13,6 +13,8 @@ import 'package:minddy/system/projects/app_project.dart';
 import 'package:minddy/ui/components/custom_components/current_page_indicator_view.dart';
 import 'package:minddy/ui/components/projects/modules/notes/projects_modules_note_view_controller.dart';
 import 'package:minddy/ui/components/projects/modules/notes/projetcs_modules_notes_view.dart';
+import 'package:minddy/ui/components/projects/modules/spreadsheet/project_spreadsheet_module_view.dart';
+import 'package:minddy/ui/components/projects/modules/spreadsheet/project_spreadsheet_module_view_controller.dart';
 import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view.dart';
 import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view_controller.dart';
 
@@ -207,6 +209,8 @@ class ProjectViewModel extends ChangeNotifier {
         return ProjectsTasksModule(key: UniqueKey(), duplicateFunction: duplicateModule, deleteFunction: deleteModule, controller: ProjectsTasksModuleController(id: module.id, projectPath: module.projectPath));
       case ProjectsModules.notes:
         return ProjectsNotesModule(key: UniqueKey(), duplicateFunction: duplicateModule, deleteFunction: deleteModule, controller: ProjectsNotesModuleController(id: module.id, projectPath: module.projectPath));
+      case ProjectsModules.spreadsheet:
+        return ProjectsSpreadsheetModule(key: UniqueKey(), duplicateFunction: duplicateModule, deleteFunction: deleteModule, controller: ProjectsSpreadsheetModuleController(id: module.id, projectPath: module.projectPath));
     }
   }
 }

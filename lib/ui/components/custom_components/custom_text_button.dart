@@ -19,28 +19,25 @@ class CustomTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: TextButton(
-        onPressed: () async {
-          needsContext ? await action(context) : await action();
-          if (needToRestart && context.mounted) {
-            showBottomSnackBar(
-              context, 
-              S.of(context).snackbar_restart_needed_text, 
-              S.of(context).snackbar_restart_button, 
-              closeApp,
-              7
-            );
-          }
-        },
-        style: isCritic ? ButtonThemes.crititcButtonTheme(context) : isSecondary ? ButtonThemes.secondaryButtonStyle(context) : ButtonThemes.primaryButtonStyle(context),
-        child: Text(
-          title, 
-          style: theme.titleSmall
-          .copyWith(color: isCritic ? theme.onError : isSecondary ? theme.onPrimary : theme.onSecondary)
-        )
-      ),
+    return TextButton(
+      onPressed: () async {
+        needsContext ? await action(context) : await action();
+        if (needToRestart && context.mounted) {
+          showBottomSnackBar(
+            context, 
+            S.of(context).snackbar_restart_needed_text, 
+            S.of(context).snackbar_restart_button, 
+            closeApp,
+            7
+          );
+        }
+      },
+      style: isCritic ? ButtonThemes.crititcButtonTheme(context) : isSecondary ? ButtonThemes.secondaryButtonStyle(context) : ButtonThemes.primaryButtonStyle(context),
+      child: Text(
+        title, 
+        style: theme.titleSmall
+        .copyWith(color: isCritic ? theme.onError : isSecondary ? theme.onPrimary : theme.onSecondary)
+      )
     );
   }
 }

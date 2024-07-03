@@ -1600,6 +1600,56 @@ class S {
     );
   }
 
+  /// `Start`
+  String get custom_date_picker_start {
+    return Intl.message(
+      'Start',
+      name: 'custom_date_picker_start',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End`
+  String get custom_date_picker_end {
+    return Intl.message(
+      'End',
+      name: 'custom_date_picker_end',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid date`
+  String get custom_date_picker_invalid_date {
+    return Intl.message(
+      'Invalid date',
+      name: 'custom_date_picker_invalid_date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select a date`
+  String get custom_date_picker_select_single_date_title {
+    return Intl.message(
+      'Select a date',
+      name: 'custom_date_picker_select_single_date_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select dates`
+  String get custom_date_picker_select_multiples_date_title {
+    return Intl.message(
+      'Select dates',
+      name: 'custom_date_picker_select_multiples_date_title',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Modify`
   String get project_card_open_settings {
     return Intl.message(
@@ -2022,6 +2072,226 @@ class S {
     return Intl.message(
       'Notes',
       name: 'projects_module_notes_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Spreadsheet`
+  String get projects_module_spreadsheet_title {
+    return Intl.message(
+      'Spreadsheet',
+      name: 'projects_module_spreadsheet_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unnamed`
+  String get projects_module_spreadsheet_value_unnamed {
+    return Intl.message(
+      'Unnamed',
+      name: 'projects_module_spreadsheet_value_unnamed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New row`
+  String get projects_module_spreadsheet_new_row {
+    return Intl.message(
+      'New row',
+      name: 'projects_module_spreadsheet_new_row',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New column`
+  String get projects_module_spreadsheet_new_column {
+    return Intl.message(
+      'New column',
+      name: 'projects_module_spreadsheet_new_column',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete this row`
+  String get projects_module_spreadsheet_delete_row {
+    return Intl.message(
+      'Delete this row',
+      name: 'projects_module_spreadsheet_delete_row',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete this column`
+  String get projects_module_spreadsheet_delete_column {
+    return Intl.message(
+      'Delete this column',
+      name: 'projects_module_spreadsheet_delete_column',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Text`
+  String get projects_module_spreadsheet_data_type_text {
+    return Intl.message(
+      'Text',
+      name: 'projects_module_spreadsheet_data_type_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number`
+  String get projects_module_spreadsheet_data_type_number {
+    return Intl.message(
+      'Number',
+      name: 'projects_module_spreadsheet_data_type_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number`
+  String get projects_module_spreadsheet_data_type_phone_number {
+    return Intl.message(
+      'Phone number',
+      name: 'projects_module_spreadsheet_data_type_phone_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `E-mail`
+  String get projects_module_spreadsheet_data_type_email {
+    return Intl.message(
+      'E-mail',
+      name: 'projects_module_spreadsheet_data_type_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `URL`
+  String get projects_module_spreadsheet_data_type_url {
+    return Intl.message(
+      'URL',
+      name: 'projects_module_spreadsheet_data_type_url',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date`
+  String get projects_module_spreadsheet_data_type_date {
+    return Intl.message(
+      'Date',
+      name: 'projects_module_spreadsheet_data_type_date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selection`
+  String get projects_module_spreadsheet_data_type_selection {
+    return Intl.message(
+      'Selection',
+      name: 'projects_module_spreadsheet_data_type_selection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open {websiteName}`
+  String projetcs_module_spreadsheet_open_website(Object websiteName) {
+    return Intl.message(
+      'Open $websiteName',
+      name: 'projetcs_module_spreadsheet_open_website',
+      desc: '',
+      args: [websiteName],
+    );
+  }
+
+  /// `None`
+  String get projects_module_spreadsheet_number_operation_none {
+    return Intl.message(
+      'None',
+      name: 'projects_module_spreadsheet_number_operation_none',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sum`
+  String get projects_module_spreadsheet_number_operation_sum {
+    return Intl.message(
+      'Sum',
+      name: 'projects_module_spreadsheet_number_operation_sum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Average`
+  String get projects_module_spreadsheet_number_operation_average {
+    return Intl.message(
+      'Average',
+      name: 'projects_module_spreadsheet_number_operation_average',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Maximum`
+  String get projects_module_spreadsheet_number_operation_maximum {
+    return Intl.message(
+      'Maximum',
+      name: 'projects_module_spreadsheet_number_operation_maximum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minimum`
+  String get projects_module_spreadsheet_number_operation_minimum {
+    return Intl.message(
+      'Minimum',
+      name: 'projects_module_spreadsheet_number_operation_minimum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Interval`
+  String get projects_module_spreadsheet_number_operation_interval {
+    return Intl.message(
+      'Interval',
+      name: 'projects_module_spreadsheet_number_operation_interval',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Median`
+  String get projects_module_spreadsheet_number_operation_median {
+    return Intl.message(
+      'Median',
+      name: 'projects_module_spreadsheet_number_operation_median',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Standard deviation`
+  String get projects_module_spreadsheet_number_operation_standard_deviation {
+    return Intl.message(
+      'Standard deviation',
+      name: 'projects_module_spreadsheet_number_operation_standard_deviation',
       desc: '',
       args: [],
     );

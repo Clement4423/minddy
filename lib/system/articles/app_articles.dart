@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minddy/system/articles/article_categories.dart';
 import 'package:minddy/system/articles/get_article_content_elements.dart';
 import 'package:minddy/system/articles/get_dart_maps_from_articles_elements.dart';
-import 'package:minddy/system/create_unique_id.dart';
+import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';

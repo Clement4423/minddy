@@ -200,13 +200,16 @@ class _UnlockSubMenuState extends State<UnlockSubMenu> {
             child: SizedBox(
               width: 150,
               height: 60,
-              child: CustomTextButton(
-                S.of(context).submenu_artilces_image_description_button, 
-                () async {
-                  await _checkUnlockState(context);
-                }, 
-                false, 
-                false
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: CustomTextButton(
+                  S.of(context).submenu_artilces_image_description_button, 
+                  () async {
+                    await _checkUnlockState(context);
+                  }, 
+                  false, 
+                  false
+                ),
               ),
             ),
           )

@@ -68,12 +68,15 @@ class AccountView extends StatelessWidget {
                     ),
                     SizedBox(
                       height: 55,
-                      child: CustomTextButton(
-                        S.of(context).settings_reset_button, 
-                        _controller.resetSettings, 
-                        true, 
-                        false,
-                        isCritic: true,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: CustomTextButton(
+                          S.of(context).settings_reset_button, 
+                          _controller.resetSettings, 
+                          true, 
+                          false,
+                          isCritic: true,
+                        ),
                       ),
                     )
                   ],

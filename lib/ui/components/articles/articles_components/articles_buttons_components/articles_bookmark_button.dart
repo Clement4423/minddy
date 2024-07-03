@@ -47,7 +47,7 @@ class _ArticlesBookmarkButtonState extends State<ArticlesBookmarkButton> {
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
     return Padding(
-      padding: const EdgeInsets.only(right: 8, left: 2),
+      padding: const EdgeInsets.only(right: 8, left: 8),
       child: IconButton(
         onPressed: () async {
           await AppArticles.bookmarkArticle(widget.articlePath);
