@@ -1,5 +1,5 @@
 {
-    "@@locale": "en",
+    "@@locale": "en_US",
     "system_files_copy_text" : "Copy",
     "appbar_go_home": "Go back home",
     "welcome_appbar" : "Welcome",
@@ -208,6 +208,7 @@
     "projects_module_spreadsheet_new_column": "New column",
     "projects_module_spreadsheet_delete_row": "Delete this row",
     "projects_module_spreadsheet_delete_column": "Delete this column",
+    "projects_module_spreadsheet_data_column_type": "Column type",
     "projects_module_spreadsheet_data_type_text": "Text",
     "projects_module_spreadsheet_data_type_number": "Number",
     "projects_module_spreadsheet_data_type_phone_number": "Phone number",
@@ -224,6 +225,7 @@
     "projects_module_spreadsheet_number_operation_interval": "Interval",
     "projects_module_spreadsheet_number_operation_median": "Median",
     "projects_module_spreadsheet_number_operation_standard_deviation": "Standard deviation",
+    "projects_module_spreadsheet_number_operation_calculate": "Calculate",
     "default_articles_articles_title": "Articles",
     "default_articles_articles_description": "Discover articles in minddy",
     "default_articles_articles_first_subtitle": "Key Feature",

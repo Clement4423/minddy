@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
@@ -47,6 +48,10 @@ class PreviousPageIntent extends Intent {
   const PreviousPageIntent();
 }
 
+class SaveProjectIntent extends Intent {
+  const SaveProjectIntent();
+}
+
 class ProjectView extends StatefulWidget {
   const ProjectView(this._viewmodel, {super.key});
 
@@ -59,9 +64,11 @@ class ProjectView extends StatefulWidget {
 class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClientMixin {
   Size? _lastSize;
 
-  late Size currentSize;
+  Size? currentSize;
 
   late PageController _pageController;
+
+  final ProjectViewResizeFinishedNotifier _resizeFinishedNotifier = ProjectViewResizeFinishedNotifier();
 
   Future<void> initialize() async {
     if (_lastSize == null || _lastSize != currentSize) {
@@ -79,7 +86,8 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
     return Shortcuts(
       shortcuts: <ShortcutActivator, Intent>{
         nextPageActivator: const NextPageIntent(),
-        previousPageActivator: const PreviousPageIntent()
+        previousPageActivator: const PreviousPageIntent(),
+        saveActivator: const SaveProjectIntent()
       },
       child: Actions(
         actions: {
@@ -102,6 +110,11 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
                 )
               }
             },
+          ),
+          SaveProjectIntent: CallbackAction<SaveProjectIntent>(
+            onInvoke: (intent) async => {
+              await widget._viewmodel.saveProject()
+            }
           )
         },
         child: Focus(
@@ -151,120 +164,136 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
                   ],
                 ),
               ),
-              body: CallbackShortcuts(
-                bindings: {
-                  saveActivator: () async {
-                    await widget._viewmodel.saveProject();
-                  }
-                },
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    currentSize = constraints.biggest;
-          
-                    return FutureBuilder<void>(
-                      future: initialize(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(child: Text('Error: ${snapshot.error}'));
-                        } else {
-                          return AnimatedBuilder(
-                            animation: widget._viewmodel,
-                            builder: (context, child) {
-                              widget._viewmodel.buildContainers(currentSize);
-                              return Stack(
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Padding(
-                                        padding: EdgeInsets.only(bottom: 25),
-                                        child: SizedBox(),
-                                      ),
-                                      Expanded(
-                                        child: PageView.builder(
-                                          itemCount: widget._viewmodel.modulesContainer.length,
-                                          onPageChanged: (index) {
-                                            widget._viewmodel.pageIndicatorController.pageChanged(index);
-                                          },
-                                          controller: _pageController,
-                                          itemBuilder: (context, index) {
-                                            return Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                ...widget._viewmodel.modulesContainer[index].modules
-                                              ]
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      const Padding(
-                                        padding: EdgeInsets.only(bottom: 25),
-                                        child: SizedBox(),
-                                      ),
-                                    ],
-                                  ),
-                                  // Page navigation buttons
-                                  AnimatedBuilder(
-                                    animation: widget._viewmodel.pageIndicatorController, 
-                                    builder: ((context, child) {
-                                      return Stack(
-                                        children: [
-                                          Positioned(
-                                            top: currentSize.height / 2 - 50,
-                                            left: 8,
-                                            child: SwitchPageButton(
-                                              pageController: _pageController, 
-                                              icon: Icons.arrow_back_rounded, 
-                                              isNextButton: false, 
-                                              pageIndicatorController: widget._viewmodel.pageIndicatorController
-                                            )
-                                          ),
-                                          Positioned(
-                                            top: currentSize.height / 2 - 50,
-                                            right: 8,
-                                            child: SwitchPageButton(
-                                              pageController: _pageController, 
-                                              icon: Icons.arrow_forward_rounded, 
-                                              isNextButton: true, 
-                                              pageIndicatorController: widget._viewmodel.pageIndicatorController
-                                            )
-                                          ),
-                                        ],
-                                      );
-                                    })
-                                  ),
-                                  const ProjectsToolbar(),
-                                  Positioned(
-                                    bottom: 8,
-                                    left: 8,
-                                    child: CurrentPageIndicatorView(
-                                      controller: widget._viewmodel.pageIndicatorController,
-                                      pageController: _pageController,
-                                    )
-                                  ),
-                                  const Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    child: CalendarButton(),
-                                  ),
-                                  const Positioned(
-                                    bottom: 0,
-                                    right: 0,
-                                    left: 0,
-                                    child: ArticlesMenuButton(),
-                                  ),
-                                ],
-                              );
-                            },
+              body: AnimatedBuilder(
+                animation: _resizeFinishedNotifier,
+                builder: (context, child) {
+                  return LayoutBuilder(
+                    builder: (context, constraints) {
+                  
+                      _lastSize = currentSize;
+                  
+                      currentSize = constraints.biggest;
+                  
+                      if (widget._viewmodel.isInitialized) {
+                        if (_lastSize != currentSize) {
+                          EasyDebounce.debounce(
+                            'wait_for_resize',
+                            const Duration(milliseconds: 300), 
+                            () {
+                              _resizeFinishedNotifier.notify();
+                            }
                           );
+                          return const SizedBox();
                         }
-                      },
-                    );
-                  },
-                ),
+                      }
+                  
+                      return FutureBuilder<void>(
+                        future: initialize(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(child: Text('Error: ${snapshot.error}'));
+                          } else {
+                            return AnimatedBuilder(
+                              animation: widget._viewmodel,
+                              builder: (context, child) {
+                                widget._viewmodel.buildContainers(currentSize ?? constraints.biggest);
+                                return Stack(
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.only(bottom: 25),
+                                          child: SizedBox(),
+                                        ),
+                                        Expanded(
+                                          child: PageView.builder(
+                                            itemCount: widget._viewmodel.modulesContainer.length,
+                                            onPageChanged: (index) async {
+                                              widget._viewmodel.pageIndicatorController.pageChanged(index);
+                                              await widget._viewmodel.saveProject();
+                                            },
+                                            controller: _pageController,
+                                            itemBuilder: (context, index) {
+                                              widget._viewmodel.pageIndicatorController.totalPages = widget._viewmodel.modulesContainer.length;
+                                              return Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  ...widget._viewmodel.modulesContainer[index].modules
+                                                ]
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.only(bottom: 25),
+                                          child: SizedBox(),
+                                        ),
+                                      ],
+                                    ),
+                                    // Page navigation buttons
+                                    AnimatedBuilder(
+                                      animation: widget._viewmodel.pageIndicatorController, 
+                                      builder: ((context, child) {
+                                        return Stack(
+                                          children: [
+                                            Positioned(
+                                              top: currentSize!.height / 2 - 50,
+                                              left: 8,
+                                              child: SwitchPageButton(
+                                                pageController: _pageController, 
+                                                icon: Icons.arrow_back_rounded, 
+                                                isNextButton: false, 
+                                                pageIndicatorController: widget._viewmodel.pageIndicatorController
+                                              )
+                                            ),
+                                            Positioned(
+                                              top: currentSize!.height / 2 - 50,
+                                              right: 8,
+                                              child: SwitchPageButton(
+                                                pageController: _pageController, 
+                                                icon: Icons.arrow_forward_rounded, 
+                                                isNextButton: true, 
+                                                pageIndicatorController: widget._viewmodel.pageIndicatorController
+                                              )
+                                            ),
+                                          ],
+                                        );
+                                      })
+                                    ),
+                                    const ProjectsToolbar(),
+                                    Positioned(
+                                      bottom: 8,
+                                      left: 8,
+                                      child: CurrentPageIndicatorView(
+                                        controller: widget._viewmodel.pageIndicatorController,
+                                        pageController: _pageController,
+                                      )
+                                    ),
+                                    const Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: CalendarButton(),
+                                    ),
+                                    const Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      left: 0,
+                                      child: ArticlesMenuButton(),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                      );
+                    },
+                  );
+                }
               ),
             ),
           ),
@@ -312,7 +341,7 @@ Future<dynamic> _showAddModuleMenu(BuildContext context, ProjectViewModel viewMo
         onTap: () {
           viewModel.newModule(ProjectsModules.spreadsheet);
         },
-        child: const Text("Spreadsheet"),
+        child: Text(S.of(context).projects_module_spreadsheet_title),
       ),
     ],
   );

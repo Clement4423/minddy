@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a es locale. All the
+// This is a library that provides messages for a es_ES locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -18,7 +18,7 @@ final messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'es';
+  String get localeName => 'es_ES';
 
   static String m0(count) =>
       "${count} imágenes encontradas. ¿Quieres importarlas?";
@@ -285,6 +285,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Notas del proyecto"),
         "projects_module_notes_title":
             MessageLookupByLibrary.simpleMessage("Notas"),
+        "projects_module_spreadsheet_data_column_type":
+            MessageLookupByLibrary.simpleMessage("Tipo de columna"),
         "projects_module_spreadsheet_data_type_date":
             MessageLookupByLibrary.simpleMessage("Fecha"),
         "projects_module_spreadsheet_data_type_email":
@@ -309,6 +311,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nueva fila"),
         "projects_module_spreadsheet_number_operation_average":
             MessageLookupByLibrary.simpleMessage("Promedio"),
+        "projects_module_spreadsheet_number_operation_calculate":
+            MessageLookupByLibrary.simpleMessage("Calcular"),
         "projects_module_spreadsheet_number_operation_interval":
             MessageLookupByLibrary.simpleMessage("Intervalo"),
         "projects_module_spreadsheet_number_operation_maximum":

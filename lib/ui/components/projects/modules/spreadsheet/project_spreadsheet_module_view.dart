@@ -8,8 +8,6 @@ import 'package:minddy/ui/components/menus/popup_menu/popup_menu_item_model.dart
 import 'package:minddy/ui/components/projects/modules/spreadsheet/project_spreadsheet_module_view_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-// TODO : Traduire le module
-
 class ProjectsSpreadsheetModule extends StatefulWidget implements IProjectsModules {
   const ProjectsSpreadsheetModule({super.key, required this.controller, required this.deleteFunction, required this.duplicateFunction});
 
@@ -55,6 +53,8 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
     return Container(
       width: widget.width,
       height: widget.height,
+      margin: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         color: theme.primaryContainer,
         borderRadius: BorderRadius.circular(20)
@@ -64,7 +64,6 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
           Container(
             width: 690,
             height: 50,
-            margin: const EdgeInsets.only(top: 5),
             decoration: BoxDecoration(
               color: theme.surface,
               borderRadius: BorderRadius.circular(15)
@@ -115,18 +114,24 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(10),
               child: FutureBuilder(
                 future: widget.controller.initialize(),
                 builder: (context, snapshot) {
-                  return ListView(
-                    children: [
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: CustomTable(cellHeight: 50, cellWidth: 200, controller: widget.controller.customTableController)
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  }
+                  if (snapshot.hasData && snapshot.data == true) {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: CustomTable(
+                        cellHeight: 50, 
+                        cellWidth: 200, 
+                        controller: widget.controller.customTableController,
                       ),
-                    ],
-                  );
+                    );
+                  }
+                  return const SizedBox();
                 }
               ),
             ),

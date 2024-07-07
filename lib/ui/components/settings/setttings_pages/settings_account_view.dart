@@ -47,6 +47,9 @@ class AccountView extends StatelessWidget {
                               onChanged: (newValue) {
                                 _controller.usernameChanged(newValue);
                               },
+                              onEditingComplete: () {
+                                _controller.saveUsername();
+                              },
                               controller: TextEditingController(text: _controller.username),
                               cursorColor: theme.onPrimary,
                               textAlign: TextAlign.start,

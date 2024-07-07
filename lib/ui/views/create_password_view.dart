@@ -124,7 +124,8 @@ class CreatePasswordView extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () async {
                       await SecuredStorage.deleteDataEncryptionKeys(context);
-                    }, 
+                    },
+                    style: ButtonThemes.crititcButtonTheme(context),
                     child: const Text("DELETE OLD ENCRYPTION KEYS")
                   )
                 ],

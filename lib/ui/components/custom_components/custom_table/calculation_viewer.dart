@@ -5,10 +5,11 @@ import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class CalculationViewer extends StatefulWidget {
-  const CalculationViewer({super.key, required this.calculationName, required this.numbers, required this.theme, required this.onFunctionSelected});
+  const CalculationViewer({super.key, required this.calculationName, required this.numbers, required this.theme, required this.onFunctionSelected, required this.isFromLastCell});
 
   final String calculationName;
   final List<num> numbers;
+  final bool isFromLastCell;
 
   final Function(String) onFunctionSelected;
 
@@ -69,37 +70,42 @@ class _CalculationViewerState extends State<CalculationViewer> {
       ),
       color: widget.theme.primary,
       itemBuilder: (context) {
-        return calculationsMenuItems;
+        return getCalculationsMenuItems(widget.theme, widget.calculationName);
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Tooltip(
-            message: calculationOpetationTitle.length > 7 ? calculationOpetationTitle : '',
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: Text(calculationOpetationTitle.length > 7 ? calculationOpetationTitle.substring(0, 4).padRight(7, '.') : calculationOpetationTitle, style: widget.theme.bodyMedium
-                .copyWith(color: widget.theme.onPrimary)
+      child: Container(
+        decoration: BoxDecoration(
+          border: widget.isFromLastCell ? null : Border.symmetric(vertical: BorderSide(color: widget.theme.onPrimary, width: 0.25))
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Tooltip(
+              message: calculationOpetationTitle.length > 7 ? calculationOpetationTitle : '',
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Text(calculationOpetationTitle.length > 7 ? calculationOpetationTitle.substring(0, 4).padRight(7, '.') : calculationOpetationTitle, style: widget.theme.bodyMedium
+                  .copyWith(color: widget.theme.onPrimary)
+                ),
               ),
             ),
-          ),
-          CustomTooltip(
-            message: performCalculation().toString().replaceAll('.', ','),
-            lengthTreshold: 9,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: Text(
-                result.replaceAll('.', ','),
-                style: widget.theme.titleMedium
-                .copyWith(
-                  color: widget.theme.onPrimary,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w600
-                )
+            CustomTooltip(
+              message: performCalculation().toString().replaceAll('.', ','),
+              lengthTreshold: 9,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 13),
+                child: Text(
+                  result.replaceAll(',', '.').replaceFirst('.', ','),
+                  style: widget.theme.titleMedium
+                  .copyWith(
+                    color: widget.theme.onPrimary,
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.w600
+                  )
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

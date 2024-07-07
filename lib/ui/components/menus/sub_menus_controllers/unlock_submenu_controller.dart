@@ -43,7 +43,7 @@ class UnlockSubMenuController extends ChangeNotifier {
       return false;
     }
 
-    String hashedPassword = AppEncrypter.hashPassword(password);
+    String hashedPassword = await AppEncrypter.hashPassword(password);
     bool? isUnlocled = await LoginState.tryUnlock(hashedPassword);
 
     if (isUnlocled == null) {

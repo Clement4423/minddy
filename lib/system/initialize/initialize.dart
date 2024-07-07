@@ -18,27 +18,31 @@ Future<bool> initializeApp() async {
 }
 
 const List<String> supportedLocales = [
-  "fr",
+  "fr_FR",
   "en",
-  "es"
+  "es_ES"
 ];
 
 // Language initialization
 Future<Locale> getCurrentLocale() async {
   String? actualLanguage = await _getActualLanguage();
-  Locale locale;
+  String locale;
   if (actualLanguage == null) {
     String systemLocale = getSystemLocale();
     if (supportedLocales.contains(systemLocale)) {
       AppConfig.modifyConfigValue("language", systemLocale);
-      locale = Locale(systemLocale);
+      locale = systemLocale;
     } else {
       AppConfig.modifyConfigValue("language", "en");
-      locale = const Locale("en");
+      locale = "en";
     }
-    return locale;
+    String languageCode = locale.substring(0, 2);
+    String? countryCode = locale.length > 2 ? locale.split('_').last : null;
+    return Locale(languageCode, countryCode);
   } else {
-    return Locale(actualLanguage);
+    String languageCode = actualLanguage.substring(0, 2);
+    String? countryCode = actualLanguage.length > 2 ? actualLanguage.split('_').last : null;
+    return Locale(languageCode, countryCode);
   }
 }
 

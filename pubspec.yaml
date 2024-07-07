@@ -23,6 +23,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   file_picker: ^8.0.1
   url_launcher: ^6.3.0
+  easy_debounce: ^2.0.3
   window_size:
     git:
       url: https://github.com/google/flutter-desktop-embedding
@@ -54,3 +55,6 @@ flutter:
     
 flutter_intl:
   enabled: true
+  locales: ['en', 'fr_FR', 'es_ES']
+  arb_dir: lib/l10n
+  template_arbs: [intl_en.arb]

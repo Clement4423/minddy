@@ -58,17 +58,29 @@ class _CustomTableCopyableCellState extends State<CustomTableCopyableCell> {
               alignment: Alignment.centerRight,
               child: Padding(
                 padding: const EdgeInsets.only(right: 5),
-                child: IconButton(
-                  onPressed: () {
-                    Clipboard.setData(ClipboardData(text: widget.data));
-                  }, 
-                  tooltip: S.of(context).articles_copy_text,
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(widget.theme.primary),
-                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
-                    elevation: const MaterialStatePropertyAll(8)
+                child: TweenAnimationBuilder(
+                  tween: Tween<double>(
+                    begin: isHovering ? 0.8 : 0.9,
+                    end: isHovering ? 0.9 : 0.8,
                   ),
-                  icon: Icon(Icons.copy_outlined, color: widget.theme.onPrimary)
+                  duration: const Duration(milliseconds: 100),
+                  builder: (context, size, child) {
+                    return Transform.scale(
+                      scale: size,
+                      child: IconButton(
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: widget.data));
+                        }, 
+                        tooltip: S.of(context).articles_copy_text,
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll(widget.theme.primary),
+                          shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
+                          elevation: const MaterialStatePropertyAll(8)
+                        ),
+                        icon: Icon(Icons.copy_outlined, color: widget.theme.onPrimary)
+                      ),
+                    );
+                  }
                 ),
               ),
             )

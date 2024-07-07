@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/files/secure_storage.dart';
@@ -64,6 +64,9 @@ class WelcomeViewModel extends ChangeNotifier {
 
   goToPasswordPage() async {
     String? isPassowrdAlreadyExist = await SecuredStorage.read('minddy_password');
+    if (kDebugMode) {
+      isPassowrdAlreadyExist = ''; // Non null, for debuging
+    }
     if (isPassowrdAlreadyExist != null) {
       AppRouter.router.navigateTo('/home');
     }

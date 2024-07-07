@@ -48,7 +48,7 @@ class HomeViewArticleCard extends StatelessWidget {
                   Container(
                     height: 110,
                     decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
                       color: theme.surface
                     ),
                     child: Center(child: background),
@@ -57,7 +57,7 @@ class HomeViewArticleCard extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+                        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25)),
                         color: theme.primary
                       ),
                       child: SizedBox(
@@ -66,7 +66,7 @@ class HomeViewArticleCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
+                              padding: const EdgeInsets.only(top: 5, left: 15, right: 10),
                               child: Text(
                                 title,
                                 style: theme.titleMedium.
@@ -75,7 +75,7 @@ class HomeViewArticleCard extends StatelessWidget {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 2, left: 10, right: 10),
+                              padding: const EdgeInsets.only(top: 2, left: 15, right: 10),
                               child: Text(
                                 description,
                                 maxLines: 2,

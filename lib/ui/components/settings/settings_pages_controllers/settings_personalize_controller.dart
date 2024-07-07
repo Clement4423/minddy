@@ -140,15 +140,9 @@ class PersonalizeViewController extends ChangeNotifier {
 
   // Language settings
   static const Map<String, String> _languagesNames = {
-    'fr': 'Français',
+    'fr_FR': 'Français (France)',
     'en': 'English',
-    'es': 'Español'
-  };
-
-  static const Map<String, String> _languagesCodes = {
-    'Français': 'fr',
-    'English': 'en',
-    'Español': 'es'
+    'es_ES': 'Español (España)'
   };
 
 
@@ -166,15 +160,14 @@ class PersonalizeViewController extends ChangeNotifier {
   }
 
   _initializeLanguageTitle() async {
-    String languageCode = "fr";
+    String languageCode = "en";
     await _getLanguage().then((value) => languageCode = value);
     _menuLanguageTitle = _languagesNames[languageCode] ?? 'English';
     notifyListeners();
   }
 
-  treatLanguageValue(final value) async {
+  treatLanguageValue(final String languageCode) async {
   try {
-    String languageCode = _languagesCodes[value] ?? 'en';
     _menuLanguageTitle = _languagesNames[languageCode] ?? 'English';
     _setLanguage(languageCode);
     S.load(Locale(languageCode));
@@ -189,7 +182,7 @@ class PersonalizeViewController extends ChangeNotifier {
     _languagesNames.forEach((key, value) {
       elements.add(
         DropdownMenuItem(
-          value: value,
+          value: key,
           child: Text(value),
         ),
       );

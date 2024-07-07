@@ -33,7 +33,7 @@ class ProjectCard extends StatelessWidget {
                   height: 185,
                   decoration: BoxDecoration(
                     color: background ?? theme.secondary,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(25),
                     boxShadow: [
                       BoxShadow(
                         offset: const Offset(5, 5),
@@ -52,8 +52,8 @@ class ProjectCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: theme.primaryContainer,
                           borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(20), 
-                            bottomRight: Radius.circular(20)
+                            bottomLeft: Radius.circular(25), 
+                            bottomRight: Radius.circular(25)
                           )
                         ),
                         child: Center(
@@ -71,8 +71,8 @@ class ProjectCard extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 5,
-            right: 5,
+            top: 10,
+            right: 10,
             child: CustomPopupMenuButton(
               items: [
               // Open settings

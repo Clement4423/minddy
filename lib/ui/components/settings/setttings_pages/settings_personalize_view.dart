@@ -7,11 +7,16 @@ import 'package:minddy/ui/components/settings/settings_components/settings_page_
 import 'package:minddy/ui/components/settings/settings_pages_controllers/settings_personalize_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-class PersonalizeView extends StatelessWidget {
+class PersonalizeView extends StatefulWidget {
   final PersonalizeViewController controller;
 
   const PersonalizeView(this.controller, {super.key});
 
+  @override
+  State<PersonalizeView> createState() => _PersonalizeViewState();
+}
+
+class _PersonalizeViewState extends State<PersonalizeView> {
   @override
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
@@ -21,7 +26,7 @@ class PersonalizeView extends StatelessWidget {
         SettingsPagebar(S.of(context).settings_personalize_title),
         Expanded(
           child: AnimatedBuilder(
-            animation: controller,
+            animation: widget.controller,
             builder: (context, child) {
               return Padding(
                 padding: const EdgeInsets.only(left: 10, top: 20, bottom: 10, right: 10),
@@ -39,10 +44,10 @@ class PersonalizeView extends StatelessWidget {
                     Tooltip(
                       message: StaticVariables.currentProjectInfo == null ? '' : S.of(context).settings_need_to_quit_project_to_change_theme,
                       child: CustomDropdownButton(
-                        menuTitle: controller.menuThemeTitle,
-                        action: controller.treatThemeValue,
-                        controller: controller,
-                        items: controller.getThemeItems(context),
+                        menuTitle: widget.controller.menuThemeTitle,
+                        action: widget.controller.treatThemeValue,
+                        controller: widget.controller,
+                        items: widget.controller.getThemeItems(context),
                         needToRestart: false,
                         enabled: StaticVariables.currentProjectInfo != null ? false : true,
                          // Not enabled if in a project, this is done because the change of ui causes the modules to 
@@ -53,10 +58,10 @@ class PersonalizeView extends StatelessWidget {
                     Tooltip(
                       message: StaticVariables.currentProjectInfo == null ? '' : S.of(context).settings_need_to_quit_project_to_change_theme,
                       child: SwitchTile(
-                        controller.isUsingBWMode, 
+                        widget.controller.isUsingBWMode, 
                         S.of(context).settings_personalize_black_and_white_title,
-                        (value) {
-                          controller.setBWMode(value);
+                        (value) async {
+                          await widget.controller.setBWMode(value);
                         },
                         enabled: StaticVariables.currentProjectInfo != null ? false : true,
                         false
@@ -79,10 +84,10 @@ class PersonalizeView extends StatelessWidget {
                         DateTime.now().day < 10 ? "0${DateTime.now().day}" : "${DateTime.now().day}"
                       ),
                       child: SwitchTile(
-                        controller.prefetUsDateFormat, 
+                        widget.controller.prefetUsDateFormat, 
                         S.of(context).settings_date_format,
                         (value) async {
-                          await controller.setDateFormat(value);
+                          await widget.controller.setDateFormat(value);
                         }, 
                         false
                       ),
@@ -99,12 +104,12 @@ class PersonalizeView extends StatelessWidget {
                       ),
                     ),
                     Tooltip(
-                      message: S.of(context).settings_need_to_quit_project_to_change_language,
+                      message: StaticVariables.currentProjectInfo == null ? '' : S.of(context).settings_need_to_quit_project_to_change_language,
                       child: CustomDropdownButton(
-                        menuTitle: controller.menuLanguageTitle,
-                        action: controller.treatLanguageValue,
-                        controller: controller,
-                        items: controller.getLanguageItems(context),
+                        menuTitle: widget.controller.menuLanguageTitle,
+                        action: widget.controller.treatLanguageValue,
+                        controller: widget.controller,
+                        items: widget.controller.getLanguageItems(context),
                         needToRestart: true,
                         enabled: StaticVariables.currentProjectInfo != null ? false : true,
                       ),

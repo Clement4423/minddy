@@ -65,19 +65,19 @@ class _ToolContainerState extends State<ToolContainer> {
             message: widget.tooltip,
             preferBelow: true,
             waitDuration: const Duration(milliseconds: 500),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOutCubicEmphasized,
-              width: _isClosed ? 45 : 300,
-              height: _isClosed ? 45 : 300,
-              decoration: BoxDecoration(
-                color: theme.primaryContainer,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: _isClosed ? 0 : 3, sigmaY: _isClosed ? 0 : 3),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: _isClosed ? 0 : 3, sigmaY: _isClosed ? 0 : 3),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOutCubicEmphasized,
+                  width: _isClosed ? 45 : 300,
+                  height: _isClosed ? 45 : 300,
+                  decoration: BoxDecoration(
+                    color: theme.primaryContainer,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                   child: actualWidget,
                 ),
               ),

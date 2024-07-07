@@ -2137,6 +2137,16 @@ class S {
     );
   }
 
+  /// `Column type`
+  String get projects_module_spreadsheet_data_column_type {
+    return Intl.message(
+      'Column type',
+      name: 'projects_module_spreadsheet_data_column_type',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Text`
   String get projects_module_spreadsheet_data_type_text {
     return Intl.message(
@@ -2297,6 +2307,16 @@ class S {
     );
   }
 
+  /// `Calculate`
+  String get projects_module_spreadsheet_number_operation_calculate {
+    return Intl.message(
+      'Calculate',
+      name: 'projects_module_spreadsheet_number_operation_calculate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Articles`
   String get default_articles_articles_title {
     return Intl.message(
@@ -2424,8 +2444,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
-      Locale.fromSubtags(languageCode: 'es'),
-      Locale.fromSubtags(languageCode: 'fr'),
+      Locale.fromSubtags(languageCode: 'es', countryCode: 'ES'),
+      Locale.fromSubtags(languageCode: 'fr', countryCode: 'FR'),
     ];
   }
 

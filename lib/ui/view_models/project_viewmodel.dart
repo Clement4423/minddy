@@ -18,6 +18,12 @@ import 'package:minddy/ui/components/projects/modules/spreadsheet/project_spread
 import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view.dart';
 import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view_controller.dart';
 
+class ProjectViewResizeFinishedNotifier extends ChangeNotifier {
+  notify() {
+    notifyListeners();
+  }
+}
+
 class ProjectViewModel extends ChangeNotifier {
   final ProjectInfo projectInfo;
 

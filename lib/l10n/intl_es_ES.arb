@@ -1,5 +1,5 @@
 {
-    "@@locale": "es",
+    "@@locale": "es_ES",
     "system_files_copy_text": "Copiar",
     "appbar_go_home" : "Retorno al inicio",
     "welcome_appbar": "Bienvenido",
@@ -208,6 +208,7 @@
     "projects_module_spreadsheet_new_column": "Nueva columna",
     "projects_module_spreadsheet_delete_row": "Eliminar esta fila",
     "projects_module_spreadsheet_delete_column": "Eliminar esta columna",
+    "projects_module_spreadsheet_data_column_type": "Tipo de columna",
     "projects_module_spreadsheet_data_type_text": "Texto",
     "projects_module_spreadsheet_data_type_number": "Número",
     "projects_module_spreadsheet_data_type_phone_number": "Número de teléfono",
@@ -224,6 +225,7 @@
     "projects_module_spreadsheet_number_operation_interval": "Intervalo",
     "projects_module_spreadsheet_number_operation_median": "Mediana",
     "projects_module_spreadsheet_number_operation_standard_deviation": "Desviación estándar",
+    "projects_module_spreadsheet_number_operation_calculate": "Calcular",
     "default_articles_articles_title": "Artículos",
     "default_articles_articles_description": "Descubre artículos en minddy",
     "default_articles_articles_first_subtitle": "Función Clave",

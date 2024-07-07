@@ -103,16 +103,19 @@ class _MnemonicSentenceSubMenuState extends State<MnemonicSentenceSubMenu> {
             child: SizedBox(
               width: 350,
               height: 60,
-              child: CustomTextButton(
-                S.of(context).submenu_artilces_image_description_button, 
-                () async {
-                  await SecuredStorage.write("minddy_mnemonic_sentence", _sentence);
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-                false, 
-                false
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: CustomTextButton(
+                  S.of(context).submenu_artilces_image_description_button, 
+                  () async {
+                    await SecuredStorage.write("minddy_mnemonic_sentence", _sentence);
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  false, 
+                  false
+                ),
               ),
             ),
           )

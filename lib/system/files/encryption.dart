@@ -31,18 +31,32 @@ class AppEncrypter {
     }
   }
 
-  static Future<bool> _generateKeyEncrypter(String hashedPassword) async {
+  static Future<String?> getSalt() async {
     try {
-      final generator = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64));
-
       String? salt = await SecuredStorage.read("minddy_salt");
 
       if (salt == null) {
         salt = _generateSalt();
         await SecuredStorage.write("minddy_salt", salt);
       }
+      return salt;
+    } catch (e) {
+      await AppLogs.writeError(e, 'encryption.dart');
+      return null;
+    }
+  }
 
-      final params = Pbkdf2Parameters(utf8.encode("salt"), 10000, 32);
+  static Future<bool> _generateKeyEncrypter(String hashedPassword) async {
+    try {
+      final generator = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64));
+
+      String? salt = await getSalt();
+
+      if (salt == null) {
+        return false;
+      }
+
+      final params = Pbkdf2Parameters(utf8.encode(salt), 10000, 32);
 
       generator.init(params);
 
@@ -191,8 +205,15 @@ class AppEncrypter {
   }
   
 
-  static String hashPassword(String password) {
-    final bytes = utf8.encode(password);
+  static Future<String> hashPassword(String password) async {
+    final salt = await getSalt();
+
+    if (salt == null) {
+      return '';
+    }
+
+    final saltedPassword = password + salt;
+    final bytes = utf8.encode(saltedPassword);
     final digest = sha256.convert(bytes);
     return digest.toString();
   }

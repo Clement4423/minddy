@@ -32,7 +32,11 @@ class CustomTextButton extends StatelessWidget {
           );
         }
       },
-      style: isCritic ? ButtonThemes.crititcButtonTheme(context) : isSecondary ? ButtonThemes.secondaryButtonStyle(context) : ButtonThemes.primaryButtonStyle(context),
+      style: isCritic 
+        ? ButtonThemes.crititcButtonTheme(context)
+        : isSecondary 
+          ? ButtonThemes.secondaryButtonStyle(context) 
+          : ButtonThemes.primaryButtonStyle(context),
       child: Text(
         title, 
         style: theme.titleSmall

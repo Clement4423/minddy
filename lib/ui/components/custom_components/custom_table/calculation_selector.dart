@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_view.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -15,26 +16,25 @@ class FunctionSelector extends StatefulWidget {
 class _FunctionSelectorState extends State<FunctionSelector> {
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
     return PopupMenuButton(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(13)
       ),
-      color: theme.primaryColor,
+      color: widget.theme.primary,
       onSelected: (value) {
         setState(() {
           widget.onFunctionSelected(value);
         });
       },
       itemBuilder: (context) {
-        return calculationsMenuItems;
+        return getCalculationsMenuItems(widget.theme, 'Null');
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 8),
-            child: Text("Calculate", style: widget.theme.bodyMedium
+            child: Text(S.of(context).projects_module_spreadsheet_number_operation_calculate, style: widget.theme.bodyMedium
               .copyWith(color: widget.theme.onPrimary)
             ),
           ),

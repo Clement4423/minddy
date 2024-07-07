@@ -85,6 +85,7 @@ class _CustomTableUrlCellState extends State<CustomTableUrlCell> {
                     },
                     child: Tooltip(
                       message: S.of(context).projetcs_module_spreadsheet_open_website(getDomain(widget.data)),
+                      waitDuration: const Duration(seconds: 1),
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 100),
                         height: 30,
@@ -119,22 +120,34 @@ class _CustomTableUrlCellState extends State<CustomTableUrlCell> {
               alignment: Alignment.centerRight,
               child: Padding(
                 padding: const EdgeInsets.only(right: 5),
-                child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      showEditor = true;
-                    });
-                  }, 
-                  tooltip: S.of(context).projects_module_notes_modify_category,
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(widget.theme.primary),
-                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
-                    elevation: const MaterialStatePropertyAll(8)
+                child: TweenAnimationBuilder<double>(
+                  tween: Tween<double>(
+                    begin: isHovering ? 0.8 : 0.9,
+                    end: isHovering ? 0.9 : 0.8,
                   ),
-                  icon: Icon(Icons.brush_rounded, color: widget.theme.onPrimary)
+                  duration: const Duration(milliseconds: 100),
+                  builder: (context, size, child) {
+                    return Transform.scale(
+                      scale: size,
+                      child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            showEditor = true;
+                          });
+                        },
+                        tooltip: S.of(context).projects_module_notes_modify_category,
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll(widget.theme.primary),
+                          shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
+                          elevation: const MaterialStatePropertyAll(8),
+                        ),
+                        icon: Icon(Icons.brush_rounded, color: widget.theme.onPrimary),
+                      ),
+                    );
+                  },
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

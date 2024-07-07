@@ -27,12 +27,14 @@ class AccountViewController extends ChangeNotifier {
 
   String get username => _username;
 
-  void usernameChanged(String newUsername) {
+  void usernameChanged(String newUsername) async {
+    if (newUsername.isEmpty) {
+      newUsername = S.current.welcome_pass_default_username;
+    }
     _username = newUsername;
-    _saveUsername();
   }
 
-  Future<bool> _saveUsername() async {
+  Future<bool> saveUsername() async {
     final writtenUsername = await AppConfig.modifyConfigValue("username", _username);
     return writtenUsername;
   }

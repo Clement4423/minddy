@@ -4,11 +4,12 @@ import 'package:minddy/system/calendar/app_date.dart';
 import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/interface/i_custom_table_cell_data.dart';
 import 'package:minddy/system/model/custom_date_picker_result.dart';
+import 'package:minddy/ui/components/custom_components/custom_table/custom_table_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 // ignore: must_be_immutable
 class CustomTableDateCell extends StatefulWidget implements ICustomTableCellData {
-  CustomTableDateCell({super.key, required this.initialValue, required this.theme, required this.cellHeight, required this.cellWidth}) {
+  CustomTableDateCell({super.key, required this.initialValue, required this.theme, required this.cellHeight, required this.cellWidth, required this.controller}) {
     data = initialValue;
   }
 
@@ -16,6 +17,8 @@ class CustomTableDateCell extends StatefulWidget implements ICustomTableCellData
 
   final double cellHeight;
   final double cellWidth;
+
+  final CustomTableController controller;
 
   final StylesGetters theme;
 
@@ -57,17 +60,29 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
             CustomDatePickerResult? result = await AppDate.pickDate(
             // ignore: use_build_context_synchronously
             context, 
-            initialDate: widget.data as String != '' 
-              ? await AppDate.formatDateAsDateTime(widget.data)
-              : null
+            initialDate: widget.data == null 
+              ? null
+              : widget.data as String != ''
+                ? await AppDate.formatDateAsDateTime(widget.data)
+                : null
             );
     
             if (result != null) {
               String resultAsString = await AppDate.formatDateAsString(result.selectedDates.first);
-              setState(() {
-                widget.data = resultAsString;
-              });
-            }          
+              widget.data = resultAsString;
+              if (context.mounted) {
+                setState(() {});
+              } else {
+                widget.controller.saveCells();
+              }
+            } else {
+              widget.data = null;
+              if (context.mounted) {
+                setState(() {});
+              } else {
+                widget.controller.saveCells();
+              }
+            }      
         }, 
         child: Center(
           child: Container(

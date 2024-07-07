@@ -32,6 +32,7 @@ class _SwitchTileState extends State<SwitchTile> {
     setState(() {
       _isSwitched = !_isSwitched;                
     });
+    
     await widget.action(_isSwitched);
     if (widget.needToRestart && mounted) {
       showBottomSnackBar(

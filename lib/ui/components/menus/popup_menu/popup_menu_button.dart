@@ -34,7 +34,7 @@ class CustomPopupMenuButton extends StatelessWidget {
           color: theme.primaryContainer,
           borderRadius: BorderRadius.circular(15),
         ),
-        child: Icon(Icons.more_horiz_rounded, color: theme.secondary, size: 28,),
+        child: Icon(Icons.more_horiz_rounded, color: theme.secondary, size: 28),
       ),
     );
   }

@@ -49,8 +49,8 @@ class CreatePasswordViewModel extends ChangeNotifier {
       return;
     }
 
-    _hashedPassword = AppEncrypter.hashPassword(password);
-    _hashedConfirmedPassword = AppEncrypter.hashPassword(confirmedPassword);
+    _hashedPassword = await AppEncrypter.hashPassword(password);
+    _hashedConfirmedPassword = await AppEncrypter.hashPassword(confirmedPassword);
 
     if (_hashedPassword != _hashedConfirmedPassword) {
       _setErrorMessage(S.current.welcome_password_creation_error_not_match);
