@@ -35,19 +35,22 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m5(totalNotesCount) =>
       "${Intl.plural(totalNotesCount, zero: 'No note', one: '1 note', other: '${totalNotesCount} notes')}";
 
-  static String m6(totalTasksCount, checkedTasks) =>
+  static String m6(optionName) =>
+      "Two options can\'t have the same name (${optionName})";
+
+  static String m7(totalTasksCount, checkedTasks) =>
       "${Intl.plural(totalTasksCount, zero: 'No tasks', one: '${checkedTasks}/${totalTasksCount} task completed', other: '${checkedTasks}/${totalTasksCount} tasks completed')}";
 
-  static String m7(websiteName) => "Open ${websiteName}";
+  static String m8(websiteName) => "Open ${websiteName}";
 
-  static String m8(actualMonth, actualDay) =>
+  static String m9(actualMonth, actualDay) =>
       "This option will put the month before the day. Like this : ${actualMonth}/${actualDay}";
 
-  static String m9(element) => "Delete ${element} ?";
+  static String m10(element) => "Delete ${element} ?";
 
-  static String m10(user) => "Welcome back ${user}";
+  static String m11(user) => "Welcome back ${user}";
 
-  static String m11(accountSettingName) =>
+  static String m12(accountSettingName) =>
       "You will still be able to enter your first name in settings / ${accountSettingName}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -192,6 +195,27 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Select a date"),
         "custom_date_picker_start":
             MessageLookupByLibrary.simpleMessage("Start"),
+        "default_app_colors_change_color":
+            MessageLookupByLibrary.simpleMessage("Change color"),
+        "default_app_colors_grey": MessageLookupByLibrary.simpleMessage("Grey"),
+        "default_app_colors_lavender":
+            MessageLookupByLibrary.simpleMessage("Lavender"),
+        "default_app_colors_light_blue":
+            MessageLookupByLibrary.simpleMessage("Light Blue"),
+        "default_app_colors_light_green":
+            MessageLookupByLibrary.simpleMessage("Light Green"),
+        "default_app_colors_light_pink":
+            MessageLookupByLibrary.simpleMessage("Light Pink"),
+        "default_app_colors_light_purple":
+            MessageLookupByLibrary.simpleMessage("Light Purple"),
+        "default_app_colors_light_yellow":
+            MessageLookupByLibrary.simpleMessage("Light Yellow"),
+        "default_app_colors_mint_green":
+            MessageLookupByLibrary.simpleMessage("Mint Green"),
+        "default_app_colors_peach":
+            MessageLookupByLibrary.simpleMessage("Peach"),
+        "default_app_colors_soft_red":
+            MessageLookupByLibrary.simpleMessage("Soft Red"),
         "default_articles_articles_description":
             MessageLookupByLibrary.simpleMessage("Discover articles in minddy"),
         "default_articles_articles_fifth_paragraph":
@@ -278,6 +302,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Project notes"),
         "projects_module_notes_title":
             MessageLookupByLibrary.simpleMessage("Notes"),
+        "projects_module_spreadsheet_data_choose_column_type_tooltip":
+            MessageLookupByLibrary.simpleMessage("Choose a column type"),
         "projects_module_spreadsheet_data_column_type":
             MessageLookupByLibrary.simpleMessage("Column type"),
         "projects_module_spreadsheet_data_type_date":
@@ -294,10 +320,20 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Text"),
         "projects_module_spreadsheet_data_type_url":
             MessageLookupByLibrary.simpleMessage("URL"),
+        "projects_module_spreadsheet_date_from_text":
+            MessageLookupByLibrary.simpleMessage("From"),
+        "projects_module_spreadsheet_date_single_tooltip":
+            MessageLookupByLibrary.simpleMessage("Single date"),
+        "projects_module_spreadsheet_date_start_end_tooltip":
+            MessageLookupByLibrary.simpleMessage("Add an end date"),
+        "projects_module_spreadsheet_date_to_text":
+            MessageLookupByLibrary.simpleMessage("To"),
         "projects_module_spreadsheet_delete_column":
             MessageLookupByLibrary.simpleMessage("Delete this column"),
         "projects_module_spreadsheet_delete_row":
             MessageLookupByLibrary.simpleMessage("Delete this row"),
+        "projects_module_spreadsheet_extend_cell_tooltip":
+            MessageLookupByLibrary.simpleMessage("Extend this cell"),
         "projects_module_spreadsheet_new_column":
             MessageLookupByLibrary.simpleMessage("New column"),
         "projects_module_spreadsheet_new_row":
@@ -320,13 +356,35 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Standard deviation"),
         "projects_module_spreadsheet_number_operation_sum":
             MessageLookupByLibrary.simpleMessage("Sum"),
+        "projects_module_spreadsheet_selection_cell_add_an_option":
+            MessageLookupByLibrary.simpleMessage("Add an option"),
+        "projects_module_spreadsheet_selection_cell_add_options":
+            MessageLookupByLibrary.simpleMessage("Add options"),
+        "projects_module_spreadsheet_selection_cell_all_options":
+            MessageLookupByLibrary.simpleMessage("All options"),
+        "projects_module_spreadsheet_selection_cell_finished":
+            MessageLookupByLibrary.simpleMessage("Finished"),
+        "projects_module_spreadsheet_selection_cell_modify_options":
+            MessageLookupByLibrary.simpleMessage("Modify options"),
+        "projects_module_spreadsheet_selection_cell_name_option_hint":
+            MessageLookupByLibrary.simpleMessage("Name this option..."),
+        "projects_module_spreadsheet_selection_cell_not_started":
+            MessageLookupByLibrary.simpleMessage("Not started"),
+        "projects_module_spreadsheet_selection_cell_started":
+            MessageLookupByLibrary.simpleMessage("Started"),
+        "projects_module_spreadsheet_selection_sub_menu_error_message_no_options":
+            MessageLookupByLibrary.simpleMessage("Please, add options"),
+        "projects_module_spreadsheet_selection_sub_menu_error_message_redundant_option_name":
+            m6,
+        "projects_module_spreadsheet_selection_sub_menu_error_message_unnamed_option":
+            MessageLookupByLibrary.simpleMessage("Please, name all options"),
         "projects_module_spreadsheet_title":
             MessageLookupByLibrary.simpleMessage("Spreadsheet"),
         "projects_module_spreadsheet_value_unnamed":
             MessageLookupByLibrary.simpleMessage("Unnamed"),
         "projects_module_tasks_add_task_tooltip":
             MessageLookupByLibrary.simpleMessage("Add a new task"),
-        "projects_module_tasks_completed": m6,
+        "projects_module_tasks_completed": m7,
         "projects_module_tasks_task_add_subtask_tooltip":
             MessageLookupByLibrary.simpleMessage("Add a subtask"),
         "projects_module_tasks_task_title_hint":
@@ -343,7 +401,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Previous page ⌘ + ⭠"),
         "projects_save_project_button_tooltip":
             MessageLookupByLibrary.simpleMessage("Save"),
-        "projetcs_module_spreadsheet_open_website": m7,
+        "projetcs_module_spreadsheet_open_website": m8,
         "settings_accessibility_title":
             MessageLookupByLibrary.simpleMessage("Accessibility"),
         "settings_account_title":
@@ -352,7 +410,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Prefer MM/dd date format"),
         "settings_date_format_subtitle":
             MessageLookupByLibrary.simpleMessage("Date format"),
-        "settings_date_format_tooltip": m8,
+        "settings_date_format_tooltip": m9,
         "settings_language_subtitle":
             MessageLookupByLibrary.simpleMessage("Language"),
         "settings_need_to_quit_project_to_change_language":
@@ -398,7 +456,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "snackbar_cancel_button": MessageLookupByLibrary.simpleMessage("Close"),
         "snackbar_delete_button":
             MessageLookupByLibrary.simpleMessage("Delete"),
-        "snackbar_delete_element_text": m9,
+        "snackbar_delete_element_text": m10,
         "snackbar_reset_button": MessageLookupByLibrary.simpleMessage("Reset"),
         "snackbar_reset_text":
             MessageLookupByLibrary.simpleMessage("Reset settings ?"),
@@ -408,7 +466,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "You will need to restart the app to apply changes"),
         "snackbar_welcome_back_button":
             MessageLookupByLibrary.simpleMessage("Thank\'s"),
-        "snackbar_welcome_back_text": m10,
+        "snackbar_welcome_back_text": m11,
         "submenu_artilces_image_description_button":
             MessageLookupByLibrary.simpleMessage("Validate"),
         "submenu_artilces_image_description_hint":
@@ -484,7 +542,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Next page"),
         "welcome_pass_default_username":
             MessageLookupByLibrary.simpleMessage("User"),
-        "welcome_pass_tooltip": m11,
+        "welcome_pass_tooltip": m12,
         "welcome_pass_username": MessageLookupByLibrary.simpleMessage("Skip"),
         "welcome_password_creation_confirm_hint":
             MessageLookupByLibrary.simpleMessage("Confirm your password"),

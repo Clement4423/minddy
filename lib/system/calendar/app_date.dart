@@ -28,6 +28,7 @@ class AppDate {
         title: title,
         initialStartDate: initialDate,
         initialEndDate: initialEndDate,
+        mode: mode,
         onSelected: (result) {
           completer.complete(result);
         }

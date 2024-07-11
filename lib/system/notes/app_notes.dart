@@ -57,11 +57,11 @@ class AppNotes {
         categoriesDirectory.createSync(recursive: true);
       }
 
+      await ensureDefaultCategoriesExist();
+
       List<FileSystemEntity> content = categoriesDirectory.listSync();
 
-      List<ProjectNoteModuleCategoryModel> models = [];
-
-      await ensureDefaultCategoriesExist();
+      List<ProjectNoteModuleCategoryModel> models = [];   
       
       for (FileSystemEntity entity in content) {
         if (entity is Directory && !entity.path.split('/').last.startsWith('.')) {

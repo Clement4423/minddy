@@ -6,6 +6,7 @@ import 'package:minddy/system/model/custom_table_cell_position.dart';
 import 'package:minddy/system/model/custom_table_type.dart';
 import 'package:minddy/system/model/projects_modules.dart';
 import 'package:minddy/system/projects/get_module_data.dart';
+import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_selection_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_controller.dart';
 
 class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IProjectModuleController {
@@ -29,6 +30,7 @@ class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IPro
         customTableController.tableTitle = data['title'] ?? '';
         customTableController.rows = data['rows'] ?? 1;
         customTableController.columns = data['columns'] ?? 1;
+        customTableController.columnsSelectionsOptions = getColumnSelectionOptionsAsModel(data['column_selections_options'] ?? {});
         customTableController.cellData = getCellDataAsModel(data['cell_data'] ?? {});
         customTableController.columnNames = getIntKeyMap<String>(data['column_names'] ?? {});
         customTableController.columnTypes = getColumnTypesAsModel(data['column_type'] ?? {});
@@ -50,6 +52,7 @@ class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IPro
         'title': customTableController.tableTitle,
         'rows': customTableController.rows,
         'columns': customTableController.columns,
+        'column_selections_options': getColumnSelectionOptionsAsMap(customTableController.columnsSelectionsOptions),
         'cell_data': getCellDataAsMap(customTableController.cellData),
         'column_names': getStringKeyMap(customTableController.columnNames),
         'column_type': getColumnTypesAsMap(customTableController.columnTypes),
@@ -66,6 +69,46 @@ class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IPro
       await AppLogs.writeError(e, "project_spreadsheet_module_view_controller.dart - savingMethod");
       return false;
     } 
+  }
+
+  Map<int, List<CustomTableSelectionCellOptionModel>?> getColumnSelectionOptionsAsModel(Map map) {
+    return map.map((key, value) {
+      return MapEntry(int.parse(key), _convertListDynamicToListModels(value));
+    });
+  }
+
+  List<CustomTableSelectionCellOptionModel> _convertListDynamicToListModels(List list) {
+    List<CustomTableSelectionCellOptionModel> newList = [];
+    for (Map option in list) {
+      newList.add(CustomTableSelectionCellOptionModel(name: option['name'], color: Color.fromARGB(255, option['red'], option['green'], option['blue'])));
+    }
+    return newList;
+  }
+
+  Map<String, List<Map<String, dynamic>>?> getColumnSelectionOptionsAsMap(Map<int, List<CustomTableSelectionCellOptionModel>?> map) {
+    return map.map((key, value) {
+      return MapEntry(key.toString(), _convertModelToMap(value));
+    });
+  }
+
+  List<Map<String, dynamic>> _convertModelToMap(List<CustomTableSelectionCellOptionModel>? models) {
+    if (models == null) {
+      return [];
+    }
+    
+    List<Map<String, dynamic>> maps = [];
+    for (CustomTableSelectionCellOptionModel model in models) {
+      maps.add(
+        {
+          'name': model.name,
+          'red': model.color.red,
+          'green': model.color.green,
+          'blue': model.color.blue
+        }
+      );
+    }
+
+    return maps;
   }
 
   Map<String, dynamic> getCellDataAsMap(Map<CustomTableCellPosition, dynamic> cellData) {
@@ -110,6 +153,7 @@ class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IPro
     'columns': 1,
     'cell_data': {},
     'column_names': {},
+    'column_selections_options': {},
     'column_type': {},
     'column_functions': {},
     'row_names': {}

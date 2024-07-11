@@ -29,7 +29,7 @@ Future<Locale> getCurrentLocale() async {
   String locale;
   if (actualLanguage == null) {
     String systemLocale = getSystemLocale();
-    if (supportedLocales.contains(systemLocale)) {
+    if (supportedLocales.contains(systemLocale.replaceAll(RegExp(r'[-]'), '_'))) {
       AppConfig.modifyConfigValue("language", systemLocale);
       locale = systemLocale;
     } else {

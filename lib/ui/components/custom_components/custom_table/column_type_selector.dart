@@ -80,7 +80,7 @@ class _ColumnTypeSelectorState extends State<ColumnTypeSelector> {
         padding: const EdgeInsets.only(left: 5, right: 5),
         decoration: BoxDecoration(
           color: widget.theme.surface,
-          border: Border.all(color: widget.theme.onSurface, width: 0.25),
+          border: Border.all(color: widget.theme.onSurface, width: 0.5),
           borderRadius: widget.colIndex == widget.widget.controller.columns
             ? const BorderRadius.only(topRight: Radius.circular(10))
             : null,
@@ -152,6 +152,7 @@ class _ColumnTypeSelectorState extends State<ColumnTypeSelector> {
               },
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
               color: widget.theme.primary,
+              tooltip: S.of(context).projects_module_spreadsheet_data_choose_column_type_tooltip,
               itemBuilder: (context) {
                 return CustomTableType.values.reversed.map((value) {
                   return PopupMenuItem(

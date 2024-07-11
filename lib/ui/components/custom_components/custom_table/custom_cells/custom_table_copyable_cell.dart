@@ -13,7 +13,7 @@ class CustomTableCopyableCell extends StatefulWidget implements ICustomTableCell
   @override
   State<CustomTableCopyableCell> createState() => _CustomTableCopyableCellState();
 
-  String initialValue;
+  final String initialValue;
   
   @override
   var data = 0;

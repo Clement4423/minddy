@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interface/i_custom_table_cell_data.dart';
 import 'package:minddy/system/model/custom_table_cell_position.dart';
 import 'package:minddy/system/model/custom_table_type.dart';
@@ -100,7 +101,7 @@ class _CustomTableCellState extends State<CustomTableCell> {
                 : widget.theme.onSurface, 
               width: widget.controller.selectedCellsForExtension.contains(widget.position) 
                 ? 1.25 
-                : 0.25,
+                : 0.5
             ),
             borderRadius: widget.position.column == widget.controller.columns && widget.position.row == widget.controller.rows 
               ? const BorderRadius.only(bottomRight: Radius.circular(10))
@@ -113,7 +114,7 @@ class _CustomTableCellState extends State<CustomTableCell> {
                 Positioned(
                   top: widget.position.row == widget.controller.rows ? 5 : null,
                   bottom: widget.position.row == widget.controller.rows ? null : 5,
-                  left: widget.width / 2,
+                  left: (widget.width / 2) - 25 / 2,
                   child: GestureDetector(
                     onTapDown: (details) {
                       setState(() {
@@ -175,7 +176,7 @@ class _CustomTableCellState extends State<CustomTableCell> {
 }
 
 
-class _CellExtendButton extends StatelessWidget {
+class _CellExtendButton extends StatefulWidget {
   const _CellExtendButton(this.theme, this.position, this.totalRows);
 
   final CustomTableCellPosition position;
@@ -184,15 +185,41 @@ class _CellExtendButton extends StatelessWidget {
   final StylesGetters theme;
 
   @override
+  State<_CellExtendButton> createState() => _CellExtendButtonState();
+}
+
+class _CellExtendButtonState extends State<_CellExtendButton> {
+
+  bool isHovering = false;
+
+  @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      cursor: position.row == totalRows ? SystemMouseCursors.resizeUp : position.row == 1 ? SystemMouseCursors.resizeDown : SystemMouseCursors.resizeUpDown,
-      child: Container(
-        width: 5,
-        height: 5,
-        decoration: BoxDecoration(
-          color: theme.secondary,
-          borderRadius: BorderRadius.circular(3)
+      onEnter: (event) {
+        setState(() {
+          isHovering = true;
+        });
+      },
+      onExit: (event) {
+        setState(() {
+          isHovering = false;
+        });
+      },
+      cursor: widget.position.row == widget.totalRows ? SystemMouseCursors.resizeUp : widget.position.row == 1 ? SystemMouseCursors.resizeDown : SystemMouseCursors.resizeUpDown,
+      child: Tooltip(
+        message: S.of(context).projects_module_spreadsheet_extend_cell_tooltip,
+        waitDuration: const Duration(seconds: 1),
+        child: AnimatedOpacity(
+          duration: const Duration(milliseconds: 200),
+          opacity: isHovering ? 1 : 0.3,
+          child: Container(
+            width: 25,
+            height: 5,
+            decoration: BoxDecoration(
+              color: widget.theme.secondary,
+              borderRadius: BorderRadius.circular(3)
+            ),
+          ),
         ),
       ),
     );

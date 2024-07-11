@@ -2147,6 +2147,16 @@ class S {
     );
   }
 
+  /// `Choose a column type`
+  String get projects_module_spreadsheet_data_choose_column_type_tooltip {
+    return Intl.message(
+      'Choose a column type',
+      name: 'projects_module_spreadsheet_data_choose_column_type_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Text`
   String get projects_module_spreadsheet_data_type_text {
     return Intl.message(
@@ -2202,6 +2212,46 @@ class S {
     return Intl.message(
       'Date',
       name: 'projects_module_spreadsheet_data_type_date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `From`
+  String get projects_module_spreadsheet_date_from_text {
+    return Intl.message(
+      'From',
+      name: 'projects_module_spreadsheet_date_from_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To`
+  String get projects_module_spreadsheet_date_to_text {
+    return Intl.message(
+      'To',
+      name: 'projects_module_spreadsheet_date_to_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Single date`
+  String get projects_module_spreadsheet_date_single_tooltip {
+    return Intl.message(
+      'Single date',
+      name: 'projects_module_spreadsheet_date_single_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add an end date`
+  String get projects_module_spreadsheet_date_start_end_tooltip {
+    return Intl.message(
+      'Add an end date',
+      name: 'projects_module_spreadsheet_date_start_end_tooltip',
       desc: '',
       args: [],
     );
@@ -2312,6 +2362,243 @@ class S {
     return Intl.message(
       'Calculate',
       name: 'projects_module_spreadsheet_number_operation_calculate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Extend this cell`
+  String get projects_module_spreadsheet_extend_cell_tooltip {
+    return Intl.message(
+      'Extend this cell',
+      name: 'projects_module_spreadsheet_extend_cell_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not started`
+  String get projects_module_spreadsheet_selection_cell_not_started {
+    return Intl.message(
+      'Not started',
+      name: 'projects_module_spreadsheet_selection_cell_not_started',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Started`
+  String get projects_module_spreadsheet_selection_cell_started {
+    return Intl.message(
+      'Started',
+      name: 'projects_module_spreadsheet_selection_cell_started',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Finished`
+  String get projects_module_spreadsheet_selection_cell_finished {
+    return Intl.message(
+      'Finished',
+      name: 'projects_module_spreadsheet_selection_cell_finished',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modify options`
+  String get projects_module_spreadsheet_selection_cell_modify_options {
+    return Intl.message(
+      'Modify options',
+      name: 'projects_module_spreadsheet_selection_cell_modify_options',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add options`
+  String get projects_module_spreadsheet_selection_cell_add_options {
+    return Intl.message(
+      'Add options',
+      name: 'projects_module_spreadsheet_selection_cell_add_options',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add an option`
+  String get projects_module_spreadsheet_selection_cell_add_an_option {
+    return Intl.message(
+      'Add an option',
+      name: 'projects_module_spreadsheet_selection_cell_add_an_option',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All options`
+  String get projects_module_spreadsheet_selection_cell_all_options {
+    return Intl.message(
+      'All options',
+      name: 'projects_module_spreadsheet_selection_cell_all_options',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name this option...`
+  String get projects_module_spreadsheet_selection_cell_name_option_hint {
+    return Intl.message(
+      'Name this option...',
+      name: 'projects_module_spreadsheet_selection_cell_name_option_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, add options`
+  String
+      get projects_module_spreadsheet_selection_sub_menu_error_message_no_options {
+    return Intl.message(
+      'Please, add options',
+      name:
+          'projects_module_spreadsheet_selection_sub_menu_error_message_no_options',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, name all options`
+  String
+      get projects_module_spreadsheet_selection_sub_menu_error_message_unnamed_option {
+    return Intl.message(
+      'Please, name all options',
+      name:
+          'projects_module_spreadsheet_selection_sub_menu_error_message_unnamed_option',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Two options can't have the same name ({optionName})`
+  String
+      projects_module_spreadsheet_selection_sub_menu_error_message_redundant_option_name(
+          Object optionName) {
+    return Intl.message(
+      'Two options can\'t have the same name ($optionName)',
+      name:
+          'projects_module_spreadsheet_selection_sub_menu_error_message_redundant_option_name',
+      desc: '',
+      args: [optionName],
+    );
+  }
+
+  /// `Change color`
+  String get default_app_colors_change_color {
+    return Intl.message(
+      'Change color',
+      name: 'default_app_colors_change_color',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Grey`
+  String get default_app_colors_grey {
+    return Intl.message(
+      'Grey',
+      name: 'default_app_colors_grey',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mint Green`
+  String get default_app_colors_mint_green {
+    return Intl.message(
+      'Mint Green',
+      name: 'default_app_colors_mint_green',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Light Pink`
+  String get default_app_colors_light_pink {
+    return Intl.message(
+      'Light Pink',
+      name: 'default_app_colors_light_pink',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Light Yellow`
+  String get default_app_colors_light_yellow {
+    return Intl.message(
+      'Light Yellow',
+      name: 'default_app_colors_light_yellow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Peach`
+  String get default_app_colors_peach {
+    return Intl.message(
+      'Peach',
+      name: 'default_app_colors_peach',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Soft Red`
+  String get default_app_colors_soft_red {
+    return Intl.message(
+      'Soft Red',
+      name: 'default_app_colors_soft_red',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lavender`
+  String get default_app_colors_lavender {
+    return Intl.message(
+      'Lavender',
+      name: 'default_app_colors_lavender',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Light Blue`
+  String get default_app_colors_light_blue {
+    return Intl.message(
+      'Light Blue',
+      name: 'default_app_colors_light_blue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Light Green`
+  String get default_app_colors_light_green {
+    return Intl.message(
+      'Light Green',
+      name: 'default_app_colors_light_green',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Light Purple`
+  String get default_app_colors_light_purple {
+    return Intl.message(
+      'Light Purple',
+      name: 'default_app_colors_light_purple',
       desc: '',
       args: [],
     );

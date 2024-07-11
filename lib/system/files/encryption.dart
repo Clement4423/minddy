@@ -5,7 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/files/secure_storage.dart';
-import 'package:pointycastle/digests/sha256.dart';
+import 'package:pointycastle/digests/sha512.dart';
 import 'package:pointycastle/key_derivators/api.dart';
 import 'package:pointycastle/key_derivators/pbkdf2.dart';
 import 'package:pointycastle/macs/hmac.dart';
@@ -48,7 +48,7 @@ class AppEncrypter {
 
   static Future<bool> _generateKeyEncrypter(String hashedPassword) async {
     try {
-      final generator = PBKDF2KeyDerivator(HMac(SHA256Digest(), 64));
+      final generator = PBKDF2KeyDerivator(HMac(SHA512Digest(), 64));
 
       String? salt = await getSalt();
 
@@ -214,7 +214,7 @@ class AppEncrypter {
 
     final saltedPassword = password + salt;
     final bytes = utf8.encode(saltedPassword);
-    final digest = sha256.convert(bytes);
+    final digest = sha512.convert(bytes);
     return digest.toString();
   }
 }

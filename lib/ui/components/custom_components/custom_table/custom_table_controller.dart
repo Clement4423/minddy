@@ -5,6 +5,7 @@ import 'package:minddy/system/model/custom_table_cell_position.dart';
 import 'package:minddy/system/model/custom_table_type.dart';
 import 'package:minddy/system/model/number_value.dart';
 import 'package:minddy/system/utils/column_letters.dart';
+import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_selection_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_cell.dart';
 
 class ColumnCalculationController extends ChangeNotifier {
@@ -21,7 +22,8 @@ class CustomTableController extends ChangeNotifier {
   Map<int, String> columnNames = {};
   Map<int, String> rowNames = {};
 
-  Map<int, String?> columnsFunctions = {}; // This stand for the calculations that has to be done if the column is of type number
+  Map<int, String?> columnsFunctions = {}; // This stands for the calculations that has to be done if the column is of type number
+  Map<int, List<CustomTableSelectionCellOptionModel>?> columnsSelectionsOptions = {}; // This stands for the options available per column for the selection data type
   ColumnCalculationController numbersChangeNotifier = ColumnCalculationController();
 
   Map<CustomTableCellPosition, GlobalKey> globalKeys = {};
@@ -32,8 +34,8 @@ class CustomTableController extends ChangeNotifier {
 
   List<TableRow> content = [];
 
-  List<CustomTableType> stringTypes = [CustomTableType.date, CustomTableType.email, CustomTableType.text, CustomTableType.url, CustomTableType.phoneNumber];
-  List<CustomTableType> doublesTypes = [CustomTableType.number];
+  List<CustomTableType> stringTypes = [CustomTableType.number, CustomTableType.email, CustomTableType.text, CustomTableType.url, CustomTableType.phoneNumber];
+  List<CustomTableType> uniquesTypes = [CustomTableType.date, CustomTableType.selection];
 
   String tableTitle;
 
@@ -80,6 +82,7 @@ class CustomTableController extends ChangeNotifier {
   void newColumn() {
     saveCells();
     columns++;
+    columnTypes[columns] = getMostUsedColumnType();
     notifyListeners();
   }
 
@@ -87,6 +90,32 @@ class CustomTableController extends ChangeNotifier {
     saveCells();
     rows++;
     notifyListeners();
+  }
+
+  CustomTableType getMostUsedColumnType() {
+    try {
+      CustomTableType? mostUsed;
+
+      Map<CustomTableType, num> count = {};
+
+      for (MapEntry entry in columnTypes.entries) {
+        count[entry.value] = count[entry.value] != null ? count[entry.value]! + 1 : 1;
+      }
+
+      List<num> counts = count.values.toList();
+
+      if (counts.isEmpty) {
+        return CustomTableType.text;
+      }
+
+      num max = counts.reduce((a, b) => a > b ? a : b);
+
+      mostUsed = count.entries.lastWhere((element) => element.value == max, orElse: () => const MapEntry(CustomTableType.text, 1),).key;
+
+      return mostUsed;
+    } catch (e) {
+      return CustomTableType.text;
+    }
   }
 
   void deleteRow(int rowIndex) {
@@ -161,6 +190,18 @@ class CustomTableController extends ChangeNotifier {
         }
       });
       columnsFunctions = updatedColumnsFunctions;
+
+      // Shift column selections options
+      columnsSelectionsOptions.remove(columnIndex);
+      Map<int, List<CustomTableSelectionCellOptionModel>?> updatedSelectionsOptions = {};
+      columnsSelectionsOptions.forEach((key, value) {
+        if (key > columnIndex) {
+          updatedSelectionsOptions[key - 1] = value;
+        } else {
+          updatedSelectionsOptions[key] = value;
+        }
+      });
+      columnsSelectionsOptions = updatedSelectionsOptions;
 
       // Shift cell data
       Map<CustomTableCellPosition, dynamic> updatedCellData = {};
@@ -239,6 +280,14 @@ class CustomTableController extends ChangeNotifier {
     return columnsFunctions[columnIndex];
   }
 
+  List<CustomTableSelectionCellOptionModel>? getColumnSelectionOptions(int columnIndex) {
+    return columnsSelectionsOptions[columnIndex];
+  }
+
+  void setColumnSelectionOptions(int columnIndex, List<CustomTableSelectionCellOptionModel> options) {
+    columnsSelectionsOptions[columnIndex] = options;
+  }
+
   List<num> getAllNumbersFromColumn(int columnIndex) {
     try {
       if (getColumnType(columnIndex) != CustomTableType.number) {
@@ -312,11 +361,9 @@ class CustomTableController extends ChangeNotifier {
       return false;
     }
     
-    if (stringTypes.contains(actualType) && stringTypes.contains(newType)) {
+    if (stringTypes.contains(actualType) && !uniquesTypes.contains(newType)) {
       return true;
-    } else if (doublesTypes.contains(actualType) && doublesTypes.contains(newType)) {
-      return true;
-    } 
+    }
     return false;
   }
 

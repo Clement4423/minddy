@@ -73,7 +73,7 @@ class _CustomTableRowHeaderState extends State<CustomTableRowHeader> {
         height: widget.widget.cellHeight,
         decoration: BoxDecoration(
           color: widget.theme.surface,
-          border: Border.all(color: widget.theme.onSurface, width: 0.25),
+          border: Border.all(color: widget.theme.onSurface, width: 0.5),
           borderRadius: widget.rowIndex == widget.widget.controller.rows
               ? const BorderRadius.only(bottomLeft: Radius.circular(10))
               : null,

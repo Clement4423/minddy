@@ -65,10 +65,11 @@ class WelcomeViewModel extends ChangeNotifier {
   goToPasswordPage() async {
     String? isPassowrdAlreadyExist = await SecuredStorage.read('minddy_password');
     if (kDebugMode) {
-      isPassowrdAlreadyExist = ''; // Non null, for debuging
+      isPassowrdAlreadyExist = null; // If in debug mode, null, for debuging
     }
     if (isPassowrdAlreadyExist != null) {
       AppRouter.router.navigateTo('/home');
+      return;
     }
     AppRouter.router.navigateTo('/create_password');
   }

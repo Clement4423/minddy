@@ -8,6 +8,7 @@ import 'package:minddy/ui/components/custom_components/custom_table/column_type_
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_date_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_number_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_copyable_cell.dart';
+import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_selection_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_text_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_url_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_cell.dart';
@@ -42,7 +43,7 @@ class _CustomTableState extends State<CustomTable> {
       height: widget.cellHeight,
       decoration: BoxDecoration(
         color: theme.surface,
-        border: Border.all(color: theme.onSurface, width: 0.25),
+        border: Border.all(color: theme.onSurface, width: 0.5),
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(10))
       ),
       child: Center(
@@ -97,9 +98,18 @@ class _CustomTableState extends State<CustomTable> {
 
     switch (type) {
       case CustomTableType.date:
-        return CustomTableDateCell(initialValue: initialValue, controller: widget.controller, cellHeight: widget.cellHeight, cellWidth: widget.cellWidth, theme: theme);
+        return CustomTableDateCell(
+          initialValue: initialValue, 
+          controller: widget.controller, 
+          cellHeight: widget.cellHeight, 
+          cellWidth: widget.cellWidth, 
+          theme: theme
+        );
       case CustomTableType.text:
-        return CustomTableTextCell(theme: theme, initialText: initialValue ?? '');
+        return CustomTableTextCell(
+          theme: theme, 
+          initialText: initialValue ?? ''
+        );
       case CustomTableType.number:
         return CustomTableNumberCell(
           theme: theme, 
@@ -109,18 +119,32 @@ class _CustomTableState extends State<CustomTable> {
           initialValue: initialValue ?? ''
         );
       case CustomTableType.phoneNumber:
-        return CustomTableCopyableCell(theme: theme, initialValue: initialValue ?? '');
+        return CustomTableCopyableCell(
+          theme: theme, 
+          initialValue: initialValue ?? ''
+        );
       case CustomTableType.email:
-        return CustomTableCopyableCell(theme: theme, initialValue: initialValue ?? '');
+        return CustomTableCopyableCell(
+          theme: theme, 
+          initialValue: initialValue ?? ''
+        );
       case CustomTableType.url:
-        return CustomTableUrlCell(theme: theme, initialValue: initialValue ?? '');
+        return CustomTableUrlCell(
+          theme: theme, 
+          initialValue: initialValue ?? ''
+        );
       case CustomTableType.selection:
-        return CustomTableTextCell(theme: theme, initialText: initialValue ?? '');
+        return CustomTableSelectionCell(
+          theme: theme, 
+          columnIndex: columnIndex, 
+          controller: widget.controller, 
+          cellWidth: widget.cellWidth, 
+          cellHeight: widget.cellHeight,
+          initialValue: initialValue ?? ''
+        );
     }
   }
   // TODO : Faire tous les types de données (Selection)
-  // TODO : Faire en sorte de pouvoir avoir plusieurs dates 
-  //  -> Faire un bouton qui change d'état quand on clique dessus (Une date / Plusieurs)
   // TODO : Faire en sorte de pouvoir convertir en graphiques
 
   List<TableRow> buildCells(StylesGetters theme) {

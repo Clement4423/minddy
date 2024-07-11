@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
@@ -16,7 +15,7 @@ class AppConfig {
     "username": "",
     "language": null,
     "using_bw_mode": false,
-    "prefer_us_date_format": Intl.systemLocale.toLowerCase().contains('us') ? true : false,
+    "prefer_us_date_format": WidgetsBinding.instance.platformDispatcher.locale.languageCode.toLowerCase().contains('us') ? true : false,
     "using_system_theme": true,
     "dark_mode": false,
     "is_first_start": true

@@ -48,7 +48,7 @@ class HomeView extends StatelessWidget {
                   semanticText: S.of(context).submenu_new_project_title,
                   isPrimary: true, 
                   action: () async {_viewmodel.showNewProjectMenu(context, _viewmodel.initializeProjectCards);}
-                ),
+                )
               ] 
           )),
         body: AnimatedBuilder(

@@ -432,20 +432,22 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // First calendar board for start date
               _buildCalendar(_currentMonth, false, theme),
               if (widget.mode == CustomDatePickerMode.startEnd)
-                // Separator
+                // Separator (If mode is CustomDatePickerMode.startEnd)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Container(
                     width: 4,
                     height: 300,
                     decoration: BoxDecoration(
-                      color: theme.primary,
+                      color: theme.primary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(2)
                     ),
                   ),
                 ),
+                // Second calendar board for end date (If mode is CustomDatePickerMode.startEnd)
               if (widget.mode == CustomDatePickerMode.startEnd)
                 _buildCalendar(_endMonth, true, theme),
             ],
@@ -481,7 +483,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     );
   }
 
-  CustomDatePickerResult? getResults() {
+  CustomDatePickerResult getResults() {
     switch (widget.mode) {
       case CustomDatePickerMode.single:
         if (_startDate != null) {
@@ -498,7 +500,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         }
     }
 
-    return null;
+    return CustomDatePickerResult([]);
   }
 
   Widget _getDatesInputs() {
