@@ -42,7 +42,7 @@ class _ModifyNoteCategorySubMenuState extends State<ModifyNoteCategorySubMenu> {
   void initState() {
     _name = widget.categoryTitle;
     isPrivate = widget.isPrivate;
-    isPrivateOriginalValue = isPrivate;
+    isPrivateOriginalValue = widget.isPrivate;
     super.initState();
   }
 
@@ -120,32 +120,41 @@ class _ModifyNoteCategorySubMenuState extends State<ModifyNoteCategorySubMenu> {
             child: SizedBox(
               width: 350,
               height: 60,
-              child: CustomTextButton(
-                S.of(context).projects_module_notes_modify_category,
-                () async {
-                  bool isNameOk = _verifyName();
-                  if (isNameOk) {
-
-                    await AppNotes.renameCategory(widget.categoryName, _name);
-
-                    if (isPrivateOriginalValue == true && isPrivate == false && context.mounted) {
-                      bool isUnlocked = await showUnlockContentSubMenu(context);
-                      if (isUnlocked) {
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: CustomTextButton(
+                  S.of(context).projects_module_notes_modify_category,
+                  () async {
+                    bool isNameOk = _verifyName();
+                    if (isNameOk) {
+                
+                      await AppNotes.renameCategory(widget.categoryName, _name);
+                
+                      if (isPrivateOriginalValue == true && isPrivate == false) {
+                        if (context.mounted) {
+                          bool isUnlocked = await showUnlockContentSubMenu(context);
+                          if (isUnlocked) {
+                            await AppNotes.switchIsPrivate(_name, isPrivate);
+                          } else {
+                            await AppNotes.switchIsPrivate(_name, true); 
+                            // I don't know why, but if this else condition is not here, 
+                            // it deletes the category if isUnlocked is false
+                          }
+                        }
+                      } else {
                         await AppNotes.switchIsPrivate(_name, isPrivate);
                       }
-                    } else {
-                      await AppNotes.switchIsPrivate(_name, isPrivate);
+                
+                      await widget.onCompleted();
+                
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
                     }
-
-                    await widget.onCompleted();
-
-                    if (context.mounted) {
-                      Navigator.pop(context);
-                    }
-                  }
-                },
-                false,
-                false
+                  },
+                  false,
+                  false
+                ),
               ),
             ),
           )

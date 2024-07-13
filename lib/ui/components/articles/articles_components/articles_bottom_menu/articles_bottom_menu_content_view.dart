@@ -54,8 +54,7 @@ class _ArticlesBottomMenuContentViewState extends State<ArticlesBottomMenuConten
                   );
                 },
                 buildDefaultDragHandles: false,
-                children: 
-                widget.articleController.articleContent
+                children: widget.articleController.articleContent
                   .asMap()
                   .entries
                   .map((entry) {
@@ -98,8 +97,7 @@ class _ArticlesBottomMenuContentViewState extends State<ArticlesBottomMenuConten
                         ),
                       ),
                     );
-                  })
-                  .toList(),
+                  }).toList(),
               )
               : ListView(
                 children: [
@@ -169,11 +167,12 @@ class _ArticlesBottomMenuContentViewState extends State<ArticlesBottomMenuConten
                     S.of(context).snacbar_close_button, 
                     () {}, 
                     10
-                  );                }
+                  );
+                }
               },
               itemBuilder: (context) {
                 return [
-                PopupMenuItem(
+                  PopupMenuItem(
                     enabled: false,
                     child: Text(
                       S.of(context).articles_export_articles_choose_category,
@@ -183,14 +182,14 @@ class _ArticlesBottomMenuContentViewState extends State<ArticlesBottomMenuConten
                   ...ArticleCategory.values
                   .where((element) => element != ArticleCategory.created)
                   .map((category) => 
-                  PopupMenuItem(
-                    value: category,
-                    child: Text(
-                      categoriesTranslatedNames[category] ?? "",
-                      style: theme.bodyMedium.copyWith(color: theme.onPrimary)
-                    )
-                  ),
-                )
+                    PopupMenuItem(
+                      value: category,
+                      child: Text(
+                        categoriesTranslatedNames[category] ?? "",
+                        style: theme.bodyMedium.copyWith(color: theme.onPrimary)
+                      )
+                    ),
+                  )
                 ];
               }
             ),
@@ -202,16 +201,17 @@ class _ArticlesBottomMenuContentViewState extends State<ArticlesBottomMenuConten
 }
 
 IconData _whatIconToUse(Widget item) {
-  if (item is ArticlesTextElement) {
-    return Icons.text_fields_rounded;
-  } else if (item is ArticlesImageElement) {
-    return Icons.photo_outlined;
-  } else if (item is ArticlesSubtitleElement) {
-    return Icons.title_rounded;
-  } else if (item is ArticlesListElement) {
-    return Icons.format_list_bulleted_rounded;
-  } else if (item is ArticlesCodeElement) {
-    return Icons.code_rounded;
+  switch (item) {
+    case ArticlesTextElement():
+      return Icons.text_fields_rounded;
+    case ArticlesImageElement():
+      return Icons.photo_outlined;
+    case ArticlesSubtitleElement():
+      return Icons.title_rounded;
+    case ArticlesListElement():
+      return Icons.format_list_bulleted_rounded;
+    case ArticlesCodeElement():
+      return Icons.code_rounded;
   }
   return Icons.error_outline_rounded;
 }
@@ -225,16 +225,17 @@ String _truncateText(String text, int maxLength) {
 }
 
 String _whatTextToUse(Widget item) {
-  if (item is ArticlesTextElement) {
-    return _truncateText(item.controller.textContent, 16);
-  } else if (item is ArticlesImageElement) {
-    return _truncateText(item.controller.description, 16);
-  } else if (item is ArticlesSubtitleElement) {
-    return _truncateText(item.controller.textContent, 16);
-  } else if (item is ArticlesListElement) {
-    return _truncateText(item.controller.content.first.text, 16);
-  } else if (item is ArticlesCodeElement) {
-    return _truncateText(item.controller.code, 16);
+  switch (item) {
+    case ArticlesTextElement():
+      return _truncateText(item.controller.textContent, 16);
+    case ArticlesImageElement():
+      return _truncateText(item.controller.description, 16);
+    case ArticlesSubtitleElement():
+      return _truncateText(item.controller.textContent, 16);
+    case ArticlesListElement():
+      return _truncateText(item.controller.content.first.text, 16);
+    case ArticlesCodeElement():
+      return _truncateText(item.controller.code, 16);
   }
   return "";
 }

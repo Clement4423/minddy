@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/ui/components/custom_components/custom_password_text_field.dart';
-import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/components/custom_components/custom_underlined_text_button.dart';
 import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
 import 'package:minddy/ui/components/menus/sub_menus_controllers/unlock_submenu_controller.dart';
@@ -120,7 +119,13 @@ class _UnlockContentSubmenuState extends State<_UnlockContentSubmenu> {
                   child: CallbackShortcuts(
                     bindings: {
                       const SingleActivator(LogicalKeyboardKey.enter): () async {
+                        setState(() {
+                          widget.controller.setIsLoading(true);
+                        });
                         await _checkUnlockState(context);
+                        setState(() {
+                          widget.controller.setIsLoading(false);
+                        });
                       }
                     },
                     child: Focus(
@@ -216,14 +221,37 @@ class _UnlockContentSubmenuState extends State<_UnlockContentSubmenu> {
               height: 60,
               child: Padding(
                 padding: const EdgeInsets.all(10),
-                child: CustomTextButton(
-                  S.of(context).submenu_artilces_image_description_button, 
-                  () async {
+                child:  ElevatedButton(
+                  onPressed: () async {
+                    setState(() {
+                      widget.controller.setIsLoading(true);  
+                    });
                     await _checkUnlockState(context);
-                  }, 
-                  false, 
-                  false
-                ),
+                    setState(() {
+                      widget.controller.setIsLoading(false);  
+                    });
+                  },
+                  style: ButtonThemes.primaryButtonStyle(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (widget.controller.isLoading)
+                        SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: theme.onSecondary,
+                          ),
+                        ),
+                      Text(
+                        S.of(context).submenu_artilces_image_description_button,
+                        style: theme.titleSmall.
+                        copyWith(color: theme.onSecondary),
+                      )
+                    ],
+                  ),
+                )
               ),
             ),
           )

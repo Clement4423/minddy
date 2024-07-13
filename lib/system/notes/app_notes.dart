@@ -108,7 +108,7 @@ class AppNotes {
   }
 
   static Future<bool> renameCategory(String actualCategoryName, String newCategoryName) async {
-    if (newCategoryName.isNotEmpty && newCategoryName.length <= 12) {
+    if (newCategoryName.isNotEmpty && newCategoryName.length <= 15) {
 
       Map<String, dynamic> fileContent = await _openNotesFile(actualCategoryName);
 

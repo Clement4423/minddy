@@ -104,20 +104,23 @@ class _NewNoteCategorySubMenuState extends State<NewNoteCategorySubMenu> {
             child: SizedBox(
               width: 350,
               height: 60,
-              child: CustomTextButton(
-                S.of(context).submenu_new_project_button,
-                () async {
-                  bool isNameOk = _verifyName();
-                  if (isNameOk) {
-                    await AppNotes.newCategory(_name, isPrivate);
-                    await widget.onCompleted();
-                    if (context.mounted) {
-                      Navigator.pop(context);
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: CustomTextButton(
+                  S.of(context).submenu_new_project_button,
+                  () async {
+                    bool isNameOk = _verifyName();
+                    if (isNameOk) {
+                      await AppNotes.newCategory(_name, isPrivate);
+                      await widget.onCompleted();
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
                     }
-                  }
-                },
-                false,
-                false
+                  },
+                  false,
+                  false
+                ),
               ),
             ),
           )

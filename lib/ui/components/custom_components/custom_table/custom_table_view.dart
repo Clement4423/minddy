@@ -11,12 +11,16 @@ import 'package:minddy/ui/components/custom_components/custom_table/custom_cells
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_selection_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_text_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_url_cell.dart';
+import 'package:minddy/ui/components/custom_components/custom_table/custom_table_calculation_explanation_tooltip.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_controller.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_row_header.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/calculation_selector.dart';
 import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
+import 'package:minddy/ui/components/menus/sub_menus/custom_table_rearange_columns_sub_menu.dart';
+import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
+import 'package:minddy/ui/components/menus/sub_menus_controllers/custom_table_rearange_columns_sub_menu_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class CustomTable extends StatefulWidget {
@@ -144,7 +148,7 @@ class _CustomTableState extends State<CustomTable> {
         );
     }
   }
-  // TODO : Faire tous les types de données (Selection)
+  // TODO : Faire les sticky headers
   // TODO : Faire en sorte de pouvoir convertir en graphiques
 
   List<TableRow> buildCells(StylesGetters theme) {
@@ -250,9 +254,9 @@ class _CustomTableState extends State<CustomTable> {
                                       padding: const EdgeInsets.only(left: 10, top: 5),
                                       child: IconButton(
                                         onPressed: () {
-                                          // TODO : Faire le menu de gestion du tableau
+                                          showSubMenu(context, CustomTableRearangeColumnsSubMenu(controller: CustomTableRearangeColumnsSubMenuController(tableController: widget.controller)));
                                         },
-                                        tooltip: S.of(context).projects_module_notes_modify_category,
+                                        tooltip: S.of(context).projects_module_spreadsheet_manage_columns_sub_menu_title,
                                         style: ButtonThemes.secondaryButtonStyle(context),
                                         icon: const Icon(Icons.more_horiz_rounded)
                                       ),
@@ -339,11 +343,11 @@ class _CustomTableState extends State<CustomTable> {
 List<PopupMenuItem<String>> getCalculationsMenuItems(StylesGetters theme, String selected) {
 
   TextStyle getStyle(String value) {
-    return value == 'Null' 
-    ? theme.titleMedium.copyWith(color: theme.onPrimary) 
-    : value == selected 
-      ? theme.bodyMedium.copyWith(color: theme.secondary)
-      : theme.bodyMedium.copyWith(color: theme.onPrimary);
+    return value == 'Null'
+        ? theme.titleMedium.copyWith(color: theme.onPrimary)
+        : value == selected
+            ? theme.bodyMedium.copyWith(color: theme.secondary)
+            : theme.bodyMedium.copyWith(color: theme.onPrimary);
   }
 
   return [
@@ -353,38 +357,90 @@ List<PopupMenuItem<String>> getCalculationsMenuItems(StylesGetters theme, String
     ),
     PopupMenuItem(
       value: 'sum',
-      child: Text(calculationsOperationsTitles['sum'] ?? 'Sum', style: getStyle('sum'),)
+      child: CustomTableCalculationExplanationTooltip(
+        example: S.current.projects_module_spreadsheet_number_operation_sum_example,
+        message: S.current.projects_module_spreadsheet_number_operation_sum_message,
+        theme: theme,
+        child: Text(
+          calculationsOperationsTitles['sum'] ?? 'Sum', 
+          style: getStyle('sum')
+        )
+      )
     ),
     PopupMenuItem(
       value: 'average',
-      child: Text(calculationsOperationsTitles['average'] ?? 'Average', style: getStyle('average'),)
+      child: CustomTableCalculationExplanationTooltip(
+        example: S.current.projects_module_spreadsheet_number_operation_average_example,
+        message: S.current.projects_module_spreadsheet_number_operation_average_message,
+        theme: theme,
+        child: Text(
+          calculationsOperationsTitles['average'] ?? 'Average', 
+          style: getStyle('average')
+        )
+      )
     ),
     PopupMenuItem(
       value: 'maximum',
-      child: Text(calculationsOperationsTitles['maximum'] ?? 'Maximum', style: getStyle('maximum'),)
+      child: CustomTableCalculationExplanationTooltip(
+        example: S.current.projects_module_spreadsheet_number_operation_maximum_example,
+        message: S.current.projects_module_spreadsheet_number_operation_maximum_message,
+        theme: theme,
+        child: Text(
+          calculationsOperationsTitles['maximum'] ?? 'Maximum', 
+          style: getStyle('maximum')
+        )
+      )
     ),
     PopupMenuItem(
       value: 'minimum',
-      child: Text(calculationsOperationsTitles['minimum'] ?? 'Minimum', style: getStyle('minimum'),)
+      child: CustomTableCalculationExplanationTooltip(
+        example: S.current.projects_module_spreadsheet_number_operation_minimum_example,
+        message: S.current.projects_module_spreadsheet_number_operation_minimum_message,
+        theme: theme,
+        child: Text(
+          calculationsOperationsTitles['minimum'] ?? 'Minimum', 
+          style: getStyle('minimum')
+        )
+      )
     ),
     PopupMenuItem(
       value: 'interval',
-      child: Text(calculationsOperationsTitles['interval'] ?? 'Interval', style: getStyle('interval'),)
+      child: CustomTableCalculationExplanationTooltip(
+        example: S.current.projects_module_spreadsheet_number_operation_interval_example,
+        message: S.current.projects_module_spreadsheet_number_operation_interval_message,
+        theme: theme,
+        child: Text(
+          calculationsOperationsTitles['interval'] ?? 'Interval', 
+          style: getStyle('interval')
+        )
+      )
     ),
     PopupMenuItem(
       value: 'median',
-      child: Text(calculationsOperationsTitles['median'] ?? 'Median', style: getStyle('median'),)
+      child: CustomTableCalculationExplanationTooltip(
+        example: S.current.projects_module_spreadsheet_number_operation_median_example,
+        message: S.current.projects_module_spreadsheet_number_operation_median_message,
+        theme: theme,
+        child: Text(
+          calculationsOperationsTitles['median'] ?? 'Median', 
+          style: getStyle('median')
+        )
+      )
     ),
     PopupMenuItem(
       value: 'standardDeviation',
-      child: Text(calculationsOperationsTitles['standardDeviation'] ?? 'Standard Deviation', style: getStyle('standardDeviation'),)
+      child: CustomTableCalculationExplanationTooltip(
+        example: S.current.projects_module_spreadsheet_number_operation_standardDeviation_example,
+        message: S.current.projects_module_spreadsheet_number_operation_standardDeviation_message,
+        theme: theme,
+        child: Text(
+          calculationsOperationsTitles['standardDeviation'] ?? 'Standard deviation', 
+          style: getStyle('standardDeviation')
+        )
+      )
     )
   ];
 }
-
-
-
-// TODO : Faire des tooltips pour expliquer à quoi chaque opération sert
 
 Map<String, String> calculationsOperationsTitles = {
   'Null': S.current.projects_module_spreadsheet_number_operation_none,

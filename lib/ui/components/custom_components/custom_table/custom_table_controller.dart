@@ -82,6 +82,9 @@ class CustomTableController extends ChangeNotifier {
   void newColumn() {
     saveCells();
     columns++;
+    columnNames[columns] = '';
+    columnsFunctions[columns] = null;
+    columnsSelectionsOptions[columns] = null;
     columnTypes[columns] = getMostUsedColumnType();
     notifyListeners();
   }
@@ -89,28 +92,23 @@ class CustomTableController extends ChangeNotifier {
   void newRow() {
     saveCells();
     rows++;
+    rowNames[rows] = '';
     notifyListeners();
   }
 
   CustomTableType getMostUsedColumnType() {
     try {
-      CustomTableType? mostUsed;
+      Map<CustomTableType, int> count = {};
 
-      Map<CustomTableType, num> count = {};
-
-      for (MapEntry entry in columnTypes.entries) {
-        count[entry.value] = count[entry.value] != null ? count[entry.value]! + 1 : 1;
+      for (var entry in columnTypes.entries) {
+        count[entry.value] = (count[entry.value] ?? 0) + 1;
       }
 
-      List<num> counts = count.values.toList();
-
-      if (counts.isEmpty) {
+      if (count.isEmpty) {
         return CustomTableType.text;
       }
 
-      num max = counts.reduce((a, b) => a > b ? a : b);
-
-      mostUsed = count.entries.lastWhere((element) => element.value == max, orElse: () => const MapEntry(CustomTableType.text, 1),).key;
+      CustomTableType mostUsed = count.entries.reduce((a, b) => a.value > b.value ? a : b).key;
 
       return mostUsed;
     } catch (e) {
@@ -119,103 +117,163 @@ class CustomTableController extends ChangeNotifier {
   }
 
   void deleteRow(int rowIndex) {
-      saveCells();
-      
-      cellData.removeWhere((key, value) => key.row == rowIndex);
-      
-      // Shift row names
-      rowNames.remove(rowIndex);
-      Map<int, String> updatedRowNames = {};
-      rowNames.forEach((key, value) {
-        if (key > rowIndex) {
-          updatedRowNames[key - 1] = value;
-        } else {
-          updatedRowNames[key] = value;
-        }
-      });
-      rowNames = updatedRowNames;
+    saveCells();
 
-      // Shift cell data
-      Map<CustomTableCellPosition, dynamic> updatedCellData = {};
-      cellData.forEach((key, value) {
-        if (key.row > rowIndex) {
-          updatedCellData[CustomTableCellPosition(row: key.row - 1, column: key.column)] = value;
-        } else if (key.row < rowIndex) {
-          updatedCellData[key] = value;
-        }
-      });
-      cellData = updatedCellData;
+    // Remove cells in the deleted row
+    cellData.removeWhere((key, value) => key.row == rowIndex);
 
-      rows--;
-      notifyListeners();
+    // Shift rows in all relevant maps
+    _shiftRows(rowIndex);
+
+    rows--;
+    notifyListeners();
   }
 
   void deleteColumn(int columnIndex) {
-      saveCells();
-      
-      cellData.removeWhere((key, value) => key.column == columnIndex);
-      
-      // Shift column types
-      columnTypes.remove(columnIndex);
-      Map<int, CustomTableType> updatedColumnTypes = {};
-      columnTypes.forEach((key, value) {
-        if (key > columnIndex) {
-          updatedColumnTypes[key - 1] = value;
-        } else {
-          updatedColumnTypes[key] = value;
-        }
-      });
-      columnTypes = updatedColumnTypes;
+    saveCells();
 
-      // Shift column names
-      columnNames.remove(columnIndex);
-      Map<int, String> updatedColumnNames = {};
-      columnNames.forEach((key, value) {
-        if (key > columnIndex) {
-          updatedColumnNames[key - 1] = value;
-        } else {
-          updatedColumnNames[key] = value;
-        }
-      });
-      columnNames = updatedColumnNames;
+    // Remove cells in the deleted column
+    cellData.removeWhere((key, value) => key.column == columnIndex);
 
-      // Shift column functions
-      columnsFunctions.remove(columnIndex);
-      Map<int, String?> updatedColumnsFunctions = {};
-      columnsFunctions.forEach((key, value) {
-        if (key > columnIndex) {
-          updatedColumnsFunctions[key - 1] = value;
-        } else {
-          updatedColumnsFunctions[key] = value;
-        }
-      });
-      columnsFunctions = updatedColumnsFunctions;
+    // Shift columns in all relevant maps
+    _shiftColumns(columnIndex);
 
-      // Shift column selections options
-      columnsSelectionsOptions.remove(columnIndex);
-      Map<int, List<CustomTableSelectionCellOptionModel>?> updatedSelectionsOptions = {};
-      columnsSelectionsOptions.forEach((key, value) {
-        if (key > columnIndex) {
-          updatedSelectionsOptions[key - 1] = value;
-        } else {
-          updatedSelectionsOptions[key] = value;
-        }
-      });
-      columnsSelectionsOptions = updatedSelectionsOptions;
+    columns--;
+    notifyListeners();
+  }
 
-      // Shift cell data
-      Map<CustomTableCellPosition, dynamic> updatedCellData = {};
-      cellData.forEach((key, value) {
-        if (key.column > columnIndex) {
-          updatedCellData[CustomTableCellPosition(row: key.row, column: key.column - 1)] = value;
-        } else if (key.column < columnIndex) {
-          updatedCellData[key] = value;
-        }
-      });
-      cellData = updatedCellData;
+  void _shiftRows(int rowIndex) {
+    // Shift row names
+    rowNames.remove(rowIndex);
+    Map<int, String> updatedRowNames = {};
+    rowNames.forEach((key, value) {
+      if (key > rowIndex) {
+        updatedRowNames[key - 1] = value;
+      } else {
+        updatedRowNames[key] = value;
+      }
+    });
+    rowNames = updatedRowNames;
 
-      columns--;
-      notifyListeners();
+    // Shift cell data
+    Map<CustomTableCellPosition, dynamic> updatedCellData = {};
+    cellData.forEach((key, value) {
+      if (key.row > rowIndex) {
+        updatedCellData[CustomTableCellPosition(row: key.row - 1, column: key.column)] = value;
+      } else if (key.row < rowIndex) {
+        updatedCellData[key] = value;
+      }
+    });
+    cellData = updatedCellData;
+  }
+
+  void _shiftColumns(int columnIndex) {
+    // Shift column types
+    columnTypes.remove(columnIndex);
+    Map<int, CustomTableType> updatedColumnTypes = {};
+    columnTypes.forEach((key, value) {
+      if (key > columnIndex) {
+        updatedColumnTypes[key - 1] = value;
+      } else {
+        updatedColumnTypes[key] = value;
+      }
+    });
+    columnTypes = updatedColumnTypes;
+
+    // Shift column names
+    columnNames.remove(columnIndex);
+    Map<int, String> updatedColumnNames = {};
+    columnNames.forEach((key, value) {
+      if (key > columnIndex) {
+        updatedColumnNames[key - 1] = value;
+      } else {
+        updatedColumnNames[key] = value;
+      }
+    });
+    columnNames = updatedColumnNames;
+
+    // Shift column functions
+    columnsFunctions.remove(columnIndex);
+    Map<int, String?> updatedColumnsFunctions = {};
+    columnsFunctions.forEach((key, value) {
+      if (key > columnIndex) {
+        updatedColumnsFunctions[key - 1] = value;
+      } else {
+        updatedColumnsFunctions[key] = value;
+      }
+    });
+    columnsFunctions = updatedColumnsFunctions;
+
+    // Shift column selections options
+    columnsSelectionsOptions.remove(columnIndex);
+    Map<int, List<CustomTableSelectionCellOptionModel>?> updatedSelectionsOptions = {};
+    columnsSelectionsOptions.forEach((key, value) {
+      if (key > columnIndex) {
+        updatedSelectionsOptions[key - 1] = value;
+      } else {
+        updatedSelectionsOptions[key] = value;
+      }
+    });
+    columnsSelectionsOptions = updatedSelectionsOptions;
+
+    // Shift cell data
+    Map<CustomTableCellPosition, dynamic> updatedCellData = {};
+    cellData.forEach((key, value) {
+      if (key.column > columnIndex) {
+        updatedCellData[CustomTableCellPosition(row: key.row, column: key.column - 1)] = value;
+      } else if (key.column < columnIndex) {
+        updatedCellData[key] = value;
+      }
+    });
+    cellData = updatedCellData;
+  }
+
+  void rearrangeColumn(int fromIndex, int toIndex) {
+    saveCells();
+    if (fromIndex == toIndex) return;
+
+    if (toIndex < 1 || toIndex > columns) {
+      throw RangeError('Column index out of bounds');
+    }
+
+    // Store the moving column's data
+    CustomTableType movingType = columnTypes[fromIndex]!;
+    String movingName = columnNames[fromIndex]!;
+    String? movingFunction = columnsFunctions[fromIndex];
+    List<CustomTableSelectionCellOptionModel>? movingOptions = columnsSelectionsOptions[fromIndex];
+
+    // Shift all affected columns
+    int step = fromIndex < toIndex ? 1 : -1;
+    for (int i = fromIndex; i != toIndex; i += step) {
+      int nextIndex = i + step;
+      columnTypes[i] = columnTypes[nextIndex] ?? CustomTableType.text;
+      columnNames[i] = columnNames[nextIndex] ?? '';
+      columnsFunctions[i] = columnsFunctions[nextIndex];
+      columnsSelectionsOptions[i] = columnsSelectionsOptions[nextIndex];
+    }
+
+    // Place the moving column at its new position
+    columnTypes[toIndex] = movingType;
+    columnNames[toIndex] = movingName;
+    columnsFunctions[toIndex] = movingFunction;
+    columnsSelectionsOptions[toIndex] = movingOptions;
+
+    // Handle cell data
+    Map<CustomTableCellPosition, dynamic> updatedCellData = {};
+    cellData.forEach((key, value) {
+      if (key.column == fromIndex) {
+        updatedCellData[CustomTableCellPosition(row: key.row, column: toIndex)] = value;
+      } else if ((fromIndex < toIndex && key.column > fromIndex && key.column <= toIndex) ||
+                (fromIndex > toIndex && key.column < fromIndex && key.column >= toIndex)) {
+        int newColumn = key.column + (fromIndex < toIndex ? -1 : 1);
+        updatedCellData[CustomTableCellPosition(row: key.row, column: newColumn)] = value;
+      } else {
+        updatedCellData[key] = value;
+      }
+    });
+    cellData = updatedCellData;
+
+    notifyListeners();
   }
 
   void updateCell(CustomTableCellPosition position, dynamic data) {
@@ -288,26 +346,21 @@ class CustomTableController extends ChangeNotifier {
     columnsSelectionsOptions[columnIndex] = options;
   }
 
-  List<num> getAllNumbersFromColumn(int columnIndex) {
+  List<NumberValue> getAllNumbersFromColumn(int columnIndex) {
     try {
       if (getColumnType(columnIndex) != CustomTableType.number) {
         return [];
       }
 
-      List<num> numbers = [];
+      List<NumberValue> numbers = [];
 
       for (var row in content) {
         var element = row.children[columnIndex];
         if (element is CustomTableCell && element.child.data != null) {
-          var data = element.child.data.toString().replaceAll(',', '.').replaceAll(RegExp(r'[^\d=.]'), '');
-          num? value;
-          if (num.tryParse(data) != null) {
-            value = num.parse(data);
-          } else if (data.startsWith('=')) {
-            value = calculateExpression(element.child.data ?? '0')!.value;
-          }
-          if (value != null) {
-            numbers.add(value);
+          var data = element.child.data.toString().replaceAll(',', '.');
+          NumberValue numberValue = parseStringToNumberValue(data);
+          if (data.isNotEmpty) {
+            numbers.add(numberValue);
           }
         }
       }

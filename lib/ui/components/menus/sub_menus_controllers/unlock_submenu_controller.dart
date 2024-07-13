@@ -12,6 +12,8 @@ class UnlockSubMenuController extends ChangeNotifier {
 
   final Function? function;
 
+  bool isLoading = false;
+
   UnlockSubMenuController({this.function});
 
   String username = "";
@@ -19,6 +21,10 @@ class UnlockSubMenuController extends ChangeNotifier {
   void _setErrorMessage(String message) {
     _errorMessage = message;
     notifyListeners();
+  }
+
+  setIsLoading(bool value) {
+    isLoading = value;
   }
 
   Future<String> setTitle() async {

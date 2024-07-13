@@ -86,6 +86,9 @@ class _ProjectTaskElementState extends State<ProjectTaskElement> {
                           onChanged: (value) {
                             widget.data.title = value;
                           },
+                          onEditingComplete: () {
+                            setState(() {});
+                          },
                           controller: TextEditingController(text: widget.data.title),
                           textAlign: TextAlign.left,
                           cursorColor: theme.onSurface,

@@ -334,28 +334,68 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Delete this row"),
         "projects_module_spreadsheet_extend_cell_tooltip":
             MessageLookupByLibrary.simpleMessage("Extend this cell"),
+        "projects_module_spreadsheet_manage_columns_sub_menu_subtitle":
+            MessageLookupByLibrary.simpleMessage("All columns"),
+        "projects_module_spreadsheet_manage_columns_sub_menu_title":
+            MessageLookupByLibrary.simpleMessage("Arrange columns"),
         "projects_module_spreadsheet_new_column":
             MessageLookupByLibrary.simpleMessage("New column"),
         "projects_module_spreadsheet_new_row":
             MessageLookupByLibrary.simpleMessage("New row"),
         "projects_module_spreadsheet_number_operation_average":
             MessageLookupByLibrary.simpleMessage("Average"),
+        "projects_module_spreadsheet_number_operation_average_example":
+            MessageLookupByLibrary.simpleMessage("(10 + 50 + 100) / 3"),
+        "projects_module_spreadsheet_number_operation_average_message":
+            MessageLookupByLibrary.simpleMessage(
+                "Calculates the average by dividing the sum of all values by the number of values. This helps in finding the central value of the data."),
         "projects_module_spreadsheet_number_operation_calculate":
             MessageLookupByLibrary.simpleMessage("Calculate"),
         "projects_module_spreadsheet_number_operation_interval":
             MessageLookupByLibrary.simpleMessage("Interval"),
+        "projects_module_spreadsheet_number_operation_interval_example":
+            MessageLookupByLibrary.simpleMessage("(10, 50, 100) = 90"),
+        "projects_module_spreadsheet_number_operation_interval_message":
+            MessageLookupByLibrary.simpleMessage(
+                "Calculates the range by subtracting the smallest value from the largest value in the column. It shows the spread of the values."),
         "projects_module_spreadsheet_number_operation_maximum":
             MessageLookupByLibrary.simpleMessage("Maximum"),
+        "projects_module_spreadsheet_number_operation_maximum_example":
+            MessageLookupByLibrary.simpleMessage("(10, 50, 100) = 100"),
+        "projects_module_spreadsheet_number_operation_maximum_message":
+            MessageLookupByLibrary.simpleMessage(
+                "Finds the highest value in the column. Useful for identifying the largest number."),
         "projects_module_spreadsheet_number_operation_median":
             MessageLookupByLibrary.simpleMessage("Median"),
+        "projects_module_spreadsheet_number_operation_median_example":
+            MessageLookupByLibrary.simpleMessage("(10, 50, 100) = 50"),
+        "projects_module_spreadsheet_number_operation_median_message":
+            MessageLookupByLibrary.simpleMessage(
+                "Finds the middle value when the column values are sorted. Useful for identifying the central value."),
         "projects_module_spreadsheet_number_operation_minimum":
             MessageLookupByLibrary.simpleMessage("Minimum"),
+        "projects_module_spreadsheet_number_operation_minimum_example":
+            MessageLookupByLibrary.simpleMessage("(10, 50, 100) = 10"),
+        "projects_module_spreadsheet_number_operation_minimum_message":
+            MessageLookupByLibrary.simpleMessage(
+                "Finds the lowest value in the column. This helps in identifying the smallest number."),
         "projects_module_spreadsheet_number_operation_none":
             MessageLookupByLibrary.simpleMessage("None"),
+        "projects_module_spreadsheet_number_operation_standardDeviation_example":
+            MessageLookupByLibrary.simpleMessage(
+                "√[((10-53.33)² + (50-53.33)² + (100-53.33)²) / 3]"),
+        "projects_module_spreadsheet_number_operation_standardDeviation_message":
+            MessageLookupByLibrary.simpleMessage(
+                "Calculates the standard deviation to measure how much the values vary from the average. Here, 53.33 is the mean of the values 10, 50, and 100."),
         "projects_module_spreadsheet_number_operation_standard_deviation":
             MessageLookupByLibrary.simpleMessage("Standard deviation"),
         "projects_module_spreadsheet_number_operation_sum":
             MessageLookupByLibrary.simpleMessage("Sum"),
+        "projects_module_spreadsheet_number_operation_sum_example":
+            MessageLookupByLibrary.simpleMessage("10 + 50 + 100"),
+        "projects_module_spreadsheet_number_operation_sum_message":
+            MessageLookupByLibrary.simpleMessage(
+                "Adds up all the values in the column to get the total. Useful for summing up data."),
         "projects_module_spreadsheet_selection_cell_add_an_option":
             MessageLookupByLibrary.simpleMessage("Add an option"),
         "projects_module_spreadsheet_selection_cell_add_options":

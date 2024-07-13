@@ -2367,6 +2367,150 @@ class S {
     );
   }
 
+  /// `10 + 50 + 100`
+  String get projects_module_spreadsheet_number_operation_sum_example {
+    return Intl.message(
+      '10 + 50 + 100',
+      name: 'projects_module_spreadsheet_number_operation_sum_example',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Adds up all the values in the column to get the total. Useful for summing up data.`
+  String get projects_module_spreadsheet_number_operation_sum_message {
+    return Intl.message(
+      'Adds up all the values in the column to get the total. Useful for summing up data.',
+      name: 'projects_module_spreadsheet_number_operation_sum_message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(10 + 50 + 100) / 3`
+  String get projects_module_spreadsheet_number_operation_average_example {
+    return Intl.message(
+      '(10 + 50 + 100) / 3',
+      name: 'projects_module_spreadsheet_number_operation_average_example',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calculates the average by dividing the sum of all values by the number of values. This helps in finding the central value of the data.`
+  String get projects_module_spreadsheet_number_operation_average_message {
+    return Intl.message(
+      'Calculates the average by dividing the sum of all values by the number of values. This helps in finding the central value of the data.',
+      name: 'projects_module_spreadsheet_number_operation_average_message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(10, 50, 100) = 100`
+  String get projects_module_spreadsheet_number_operation_maximum_example {
+    return Intl.message(
+      '(10, 50, 100) = 100',
+      name: 'projects_module_spreadsheet_number_operation_maximum_example',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Finds the highest value in the column. Useful for identifying the largest number.`
+  String get projects_module_spreadsheet_number_operation_maximum_message {
+    return Intl.message(
+      'Finds the highest value in the column. Useful for identifying the largest number.',
+      name: 'projects_module_spreadsheet_number_operation_maximum_message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(10, 50, 100) = 10`
+  String get projects_module_spreadsheet_number_operation_minimum_example {
+    return Intl.message(
+      '(10, 50, 100) = 10',
+      name: 'projects_module_spreadsheet_number_operation_minimum_example',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Finds the lowest value in the column. This helps in identifying the smallest number.`
+  String get projects_module_spreadsheet_number_operation_minimum_message {
+    return Intl.message(
+      'Finds the lowest value in the column. This helps in identifying the smallest number.',
+      name: 'projects_module_spreadsheet_number_operation_minimum_message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(10, 50, 100) = 90`
+  String get projects_module_spreadsheet_number_operation_interval_example {
+    return Intl.message(
+      '(10, 50, 100) = 90',
+      name: 'projects_module_spreadsheet_number_operation_interval_example',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calculates the range by subtracting the smallest value from the largest value in the column. It shows the spread of the values.`
+  String get projects_module_spreadsheet_number_operation_interval_message {
+    return Intl.message(
+      'Calculates the range by subtracting the smallest value from the largest value in the column. It shows the spread of the values.',
+      name: 'projects_module_spreadsheet_number_operation_interval_message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(10, 50, 100) = 50`
+  String get projects_module_spreadsheet_number_operation_median_example {
+    return Intl.message(
+      '(10, 50, 100) = 50',
+      name: 'projects_module_spreadsheet_number_operation_median_example',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Finds the middle value when the column values are sorted. Useful for identifying the central value.`
+  String get projects_module_spreadsheet_number_operation_median_message {
+    return Intl.message(
+      'Finds the middle value when the column values are sorted. Useful for identifying the central value.',
+      name: 'projects_module_spreadsheet_number_operation_median_message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `√[((10-53.33)² + (50-53.33)² + (100-53.33)²) / 3]`
+  String
+      get projects_module_spreadsheet_number_operation_standardDeviation_example {
+    return Intl.message(
+      '√[((10-53.33)² + (50-53.33)² + (100-53.33)²) / 3]',
+      name:
+          'projects_module_spreadsheet_number_operation_standardDeviation_example',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calculates the standard deviation to measure how much the values vary from the average. Here, 53.33 is the mean of the values 10, 50, and 100.`
+  String
+      get projects_module_spreadsheet_number_operation_standardDeviation_message {
+    return Intl.message(
+      'Calculates the standard deviation to measure how much the values vary from the average. Here, 53.33 is the mean of the values 10, 50, and 100.',
+      name:
+          'projects_module_spreadsheet_number_operation_standardDeviation_message',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Extend this cell`
   String get projects_module_spreadsheet_extend_cell_tooltip {
     return Intl.message(
@@ -2452,6 +2596,26 @@ class S {
     return Intl.message(
       'Name this option...',
       name: 'projects_module_spreadsheet_selection_cell_name_option_hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Arrange columns`
+  String get projects_module_spreadsheet_manage_columns_sub_menu_title {
+    return Intl.message(
+      'Arrange columns',
+      name: 'projects_module_spreadsheet_manage_columns_sub_menu_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All columns`
+  String get projects_module_spreadsheet_manage_columns_sub_menu_subtitle {
+    return Intl.message(
+      'All columns',
+      name: 'projects_module_spreadsheet_manage_columns_sub_menu_subtitle',
       desc: '',
       args: [],
     );

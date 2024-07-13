@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minddy/system/model/number_value.dart';
 import 'package:minddy/system/utils/calculations.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_view.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
@@ -8,7 +9,7 @@ class CalculationViewer extends StatefulWidget {
   const CalculationViewer({super.key, required this.calculationName, required this.numbers, required this.theme, required this.onFunctionSelected, required this.isFromLastCell});
 
   final String calculationName;
-  final List<num> numbers;
+  final List<NumberValue> numbers;
   final bool isFromLastCell;
 
   final Function(String) onFunctionSelected;
@@ -21,24 +22,74 @@ class CalculationViewer extends StatefulWidget {
 
 class _CalculationViewerState extends State<CalculationViewer> {
 
+  String? getCurrency() {
+    try {
+      String? mostUsed;
+      Map<String, int> count = {};
+
+      for (var numberValue in widget.numbers) {
+        String? currency = numberValue.currency;
+        if (currency != null) {
+          count[currency] = (count[currency] ?? 0) + 1;
+        }
+      }
+
+      if (count.isEmpty) {
+        return null;
+      }
+
+      mostUsed = count.entries.reduce((a, b) => a.value > b.value ? a : b).key;
+
+      return mostUsed;
+    } catch (e) {
+      return null;
+    }
+  }
+
   num performCalculation() {
+    List<num> numbers = widget.numbers.map((e) => e.value).toList();
     switch (widget.calculationName.toLowerCase()) {
       case 'sum':
-        return sum(widget.numbers);
+        return sum(numbers);
       case 'average':
-        return average(widget.numbers);
+        return average(numbers);
       case 'maximum':
-        return maximum(widget.numbers);
+        return maximum(numbers);
       case 'minimum':
-        return minimum(widget.numbers);
+        return minimum(numbers);
       case 'interval':
-        return interval(widget.numbers);
+        return interval(numbers);
       case 'median':
-        return median(widget.numbers);
+        return median(numbers);
       case 'standarddeviation':
-        return standardDeviation(widget.numbers);
+        return standardDeviation(numbers);
     }
     return 0;
+  }
+
+  bool getIsPercentage() {
+    for (NumberValue number in widget.numbers) {
+      if (number.isPercentage) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  String formatResult() {
+    String finalResult = result.replaceAll(',', '.').replaceFirst('.', ',');
+    String? currency = getCurrency();
+    if (currency != null) {
+      if (currency == '\$') {
+        return '$currency$finalResult';
+      } else {
+        return '$finalResult$currency';
+      }
+    } else if (getIsPercentage()) {
+      return '$finalResult%';
+    } else {
+      return finalResult;
+    }
   }
 
   String result = '';
@@ -94,7 +145,7 @@ class _CalculationViewerState extends State<CalculationViewer> {
               child: Padding(
                 padding: const EdgeInsets.only(right: 13),
                 child: Text(
-                  result.replaceAll(',', '.').replaceFirst('.', ','),
+                  formatResult(),
                   style: widget.theme.titleMedium
                   .copyWith(
                     color: widget.theme.onPrimary,

@@ -124,7 +124,7 @@ class _CustomTableSelectionCellState extends State<CustomTableSelectionCell> {
                   ? options.first.name
                   : widget.data
                 : options.first.name,
-              lengthTreshold: 7,
+              lengthTreshold: 9,
               child: DropdownButton<String>(
                 value: options.map((e) => e.name).toList().contains(widget.data ?? '') 
                   ? widget.data 
