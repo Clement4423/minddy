@@ -337,7 +337,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "projects_module_spreadsheet_manage_columns_sub_menu_subtitle":
             MessageLookupByLibrary.simpleMessage("All columns"),
         "projects_module_spreadsheet_manage_columns_sub_menu_title":
-            MessageLookupByLibrary.simpleMessage("Arrange columns"),
+            MessageLookupByLibrary.simpleMessage("Organize columns"),
+        "projects_module_spreadsheet_manage_rows_sub_menu_subtitle":
+            MessageLookupByLibrary.simpleMessage("All rows"),
+        "projects_module_spreadsheet_manage_rows_sub_menu_title":
+            MessageLookupByLibrary.simpleMessage("Organize rows"),
         "projects_module_spreadsheet_new_column":
             MessageLookupByLibrary.simpleMessage("New column"),
         "projects_module_spreadsheet_new_row":

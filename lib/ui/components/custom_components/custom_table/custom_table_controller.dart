@@ -29,8 +29,8 @@ class CustomTableController extends ChangeNotifier {
   Map<CustomTableCellPosition, GlobalKey> globalKeys = {};
   bool needToShowPosition = false;
   CustomTableCellPosition? hiddenPositionCell;
-  TextEditingController? currentNumberTextEditingController; 
-  // This serve as a bridge between positions widgets shown, and the number cell requesting for them
+  TextEditingController? currentNumberTextEditingController;
+  List<CustomTableCellPosition> usedPositions = [];
 
   List<TableRow> content = [];
 
@@ -228,6 +228,41 @@ class CustomTableController extends ChangeNotifier {
     cellData = updatedCellData;
   }
 
+  void rearrangeRow(int fromIndex, int toIndex) {
+    saveCells();
+    if (fromIndex == toIndex) return;
+
+    if (toIndex < 1 || toIndex > rows) {
+      throw RangeError('Row index out of bounds');
+    }
+
+    String movingName = rowNames[fromIndex] ?? '';
+
+    int step = fromIndex < toIndex ? 1 : -1;
+    for (int i = fromIndex; i != toIndex; i += step) {
+      int nextIndex = i + step;
+      rowNames[i] = rowNames[nextIndex] ?? '';
+    }
+
+    rowNames[toIndex] = movingName;
+
+    Map<CustomTableCellPosition, dynamic> updatedCellData = {};
+    cellData.forEach((key, value) {
+      if (key.row == fromIndex) {
+        updatedCellData[CustomTableCellPosition(row: toIndex, column: key.column)] = value;
+      } else if ((fromIndex < toIndex && key.row > fromIndex && key.row <= toIndex) ||
+                (fromIndex > toIndex && key.row < fromIndex && key.row >= toIndex)) {
+        int newRow = key.row + (fromIndex < toIndex ? -1 : 1);
+        updatedCellData[CustomTableCellPosition(row: newRow, column: key.column)] = value;
+      } else {
+        updatedCellData[key] = value;
+      }
+    });
+    cellData = updatedCellData;
+
+    notifyListeners();
+  }
+
   void rearrangeColumn(int fromIndex, int toIndex) {
     saveCells();
     if (fromIndex == toIndex) return;
@@ -236,13 +271,11 @@ class CustomTableController extends ChangeNotifier {
       throw RangeError('Column index out of bounds');
     }
 
-    // Store the moving column's data
     CustomTableType movingType = columnTypes[fromIndex]!;
     String movingName = columnNames[fromIndex]!;
     String? movingFunction = columnsFunctions[fromIndex];
     List<CustomTableSelectionCellOptionModel>? movingOptions = columnsSelectionsOptions[fromIndex];
 
-    // Shift all affected columns
     int step = fromIndex < toIndex ? 1 : -1;
     for (int i = fromIndex; i != toIndex; i += step) {
       int nextIndex = i + step;
@@ -252,13 +285,11 @@ class CustomTableController extends ChangeNotifier {
       columnsSelectionsOptions[i] = columnsSelectionsOptions[nextIndex];
     }
 
-    // Place the moving column at its new position
     columnTypes[toIndex] = movingType;
     columnNames[toIndex] = movingName;
     columnsFunctions[toIndex] = movingFunction;
     columnsSelectionsOptions[toIndex] = movingOptions;
 
-    // Handle cell data
     Map<CustomTableCellPosition, dynamic> updatedCellData = {};
     cellData.forEach((key, value) {
       if (key.column == fromIndex) {
@@ -266,6 +297,7 @@ class CustomTableController extends ChangeNotifier {
       } else if ((fromIndex < toIndex && key.column > fromIndex && key.column <= toIndex) ||
                 (fromIndex > toIndex && key.column < fromIndex && key.column >= toIndex)) {
         int newColumn = key.column + (fromIndex < toIndex ? -1 : 1);
+        
         updatedCellData[CustomTableCellPosition(row: key.row, column: newColumn)] = value;
       } else {
         updatedCellData[key] = value;
@@ -385,7 +417,7 @@ class CustomTableController extends ChangeNotifier {
 
     saveCells();
 
-    if (!isValuesCompatible(actualType, type)) {
+    if (!isValuesCompatible(actualType, type, columnIndex)) {
       clearDataInAColumn(columnIndex);
     }
 
@@ -409,11 +441,11 @@ class CustomTableController extends ChangeNotifier {
     });
   }
 
-  bool isValuesCompatible(CustomTableType? actualType, CustomTableType newType) {
+  bool isValuesCompatible(CustomTableType? actualType, CustomTableType newType, int columnIndex) {
     if (actualType == null) {
       return false;
     }
-    
+      
     if (stringTypes.contains(actualType) && !uniquesTypes.contains(newType)) {
       return true;
     }
@@ -442,7 +474,7 @@ class CustomTableController extends ChangeNotifier {
 
   NumberValue? calculateExpression(String expression) {
     try {
-      List<String> tokens = tokenizeExpression(expression);
+      List<String> tokens = tokenizeExpression(expression.replaceAll(',', '.'));
       List<String> postfix = infixToPostfix(tokens);
       return evaluatePostfix(postfix);
     } catch (e) {
@@ -517,25 +549,30 @@ class CustomTableController extends ChangeNotifier {
         }
         NumberValue b = stack.removeLast();
         NumberValue a = stack.removeLast();
+        NumberValue result;
+
         switch (token) {
           case '+':
-            stack.add(a + b);
+            result = a + b;
             break;
           case '-':
-            stack.add(a - b);
+            result = a - b;
             break;
           case '*':
             if (a.isPercentage) {
-              stack.add(NumberValue(b.value * a.value, currency: b.currency));
+              result = NumberValue(b.value * a.value, currency: b.currency, isPercentage: b.currency == null ? true : false);
             } else if (b.isPercentage) {
-              stack.add(NumberValue(a.value * b.value, currency: a.currency));
+              result = NumberValue(a.value * b.value, currency: a.currency, isPercentage: b.currency == null ? true : false);
             } else {
-              stack.add(a * b.value);
+              result = a * b.value;
             }
             break;
           case '/':
             if (b.value != 0) {
-              stack.add(a / b.value);
+              result = a / b.value;
+              if (a.currency != null && b.currency != null && a.currency == b.currency) {
+                result = NumberValue(result.value, isPercentage: true);
+              }
             } else {
               return NumberValue(0);
             }
@@ -543,6 +580,7 @@ class CustomTableController extends ChangeNotifier {
           default:
             return NumberValue(0);
         }
+        stack.add(result);
       }
     }
 
@@ -563,7 +601,7 @@ class CustomTableController extends ChangeNotifier {
     if (value.endsWith('%')) {
       String numberPart = value.substring(0, value.length - 1);
       return NumberValue(
-        (num.tryParse(numberPart) ?? 0) / 100, 
+        (num.tryParse(numberPart) ?? 0), 
         isPercentage: true
       );
     }

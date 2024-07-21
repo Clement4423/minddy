@@ -85,13 +85,6 @@ class AppConfig {
   }
 
   static Future<Map<String, dynamic>> _getResetConfigData() async {
-    return {
-      "username": await AppConfig.getConfigValue("username"),
-      "language": null,
-      "using_bw_mode": false,
-      "using_system_theme": true,
-      "dark_mode": false,
-      "is_first_start": false
-    };
+    return _defaultConfigData;
   }
 }

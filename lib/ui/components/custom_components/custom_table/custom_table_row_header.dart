@@ -25,8 +25,27 @@ class CustomTableRowHeader extends StatefulWidget {
 class _CustomTableRowHeaderState extends State<CustomTableRowHeader> {
   bool isHovering = false;
   bool isPressed = false;
-
   bool canBeDeleted = true;
+  final TextEditingController _textEditingController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    canBeDeleted = widget.widget.controller.rows > 1;
+    _initializeTextController();
+  }
+
+  void _initializeTextController() {
+    _textEditingController.text = widget.widget.controller.getRowName(widget.rowIndex) ?? '';
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   void triggerPopEffect() {
     if (canBeDeleted) {
@@ -44,12 +63,21 @@ class _CustomTableRowHeaderState extends State<CustomTableRowHeader> {
     }
   }
 
-  @override
-  void initState() {
-    canBeDeleted = widget.widget.controller.rows > 1 
-      ? true 
-      : false;
-    super.initState();
+  void _updateState({bool? setIsHovering}) {
+    bool needToRequestFocus = false;
+     if (_focusNode.hasFocus) {
+      needToRequestFocus = true;
+    }
+    setState(() {
+      if (setIsHovering != null) {
+        isHovering = setIsHovering;
+      }
+    });
+    if (needToRequestFocus) {
+      _focusNode.requestFocus();
+      final cursorPosition = _textEditingController.selection;
+      _textEditingController.selection = cursorPosition;
+    }
   }
 
   @override
@@ -57,16 +85,12 @@ class _CustomTableRowHeaderState extends State<CustomTableRowHeader> {
     return MouseRegion(
       onEnter: (event) {
         if (canBeDeleted) {
-          setState(() {
-            isHovering = true;
-          });
+          _updateState(setIsHovering: true);
         }
       },
       onExit: (event) {
         if (canBeDeleted) {
-          setState(() {
-            isHovering = false;
-          });
+          _updateState(setIsHovering: false);
         }
       },
       child: Container(
@@ -132,8 +156,10 @@ class _CustomTableRowHeaderState extends State<CustomTableRowHeader> {
                   child: TextField(
                     onChanged: (newValue) {
                       widget.widget.controller.setRowName(widget.rowIndex, newValue);
+                      _updateState();
                     },
-                    controller: TextEditingController(text: widget.widget.controller.getRowName(widget.rowIndex)),
+                    controller: _textEditingController,
+                    focusNode: _focusNode,
                     style: widget.theme.titleMedium.copyWith(
                       fontWeight: FontWeight.w600,
                       overflow: TextOverflow.ellipsis,

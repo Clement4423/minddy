@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interface/i_custom_table_cell_data.dart';
 import 'package:minddy/system/model/custom_table_cell_position.dart';
@@ -16,9 +17,9 @@ import 'package:minddy/ui/components/custom_components/custom_table/custom_table
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_controller.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_row_header.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/calculation_selector.dart';
-import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/components/menus/sub_menus/custom_table_rearange_columns_sub_menu.dart';
+import 'package:minddy/ui/components/menus/sub_menus/custom_table_rearange_rows_sub_menu.dart';
 import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
 import 'package:minddy/ui/components/menus/sub_menus_controllers/custom_table_rearange_columns_sub_menu_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -97,6 +98,8 @@ class _CustomTableState extends State<CustomTable> {
     return CustomTableRowHeader(key: UniqueKey(), widget: widget, theme: theme, rowIndex: rowIndex, deleteRowMethod: widget.controller.deleteRow);
   }
 
+  
+
   ICustomTableCellData _getCellChildBasedOnType(int columnIndex, dynamic initialValue, CustomTableCellPosition position, StylesGetters theme) {
     CustomTableType type = widget.controller.getColumnType(columnIndex) ?? CustomTableType.text;
 
@@ -148,7 +151,7 @@ class _CustomTableState extends State<CustomTable> {
         );
     }
   }
-  // TODO : Faire les sticky headers
+
   // TODO : Faire en sorte de pouvoir convertir en graphiques
 
   List<TableRow> buildCells(StylesGetters theme) {
@@ -258,7 +261,13 @@ class _CustomTableState extends State<CustomTable> {
                                         },
                                         tooltip: S.of(context).projects_module_spreadsheet_manage_columns_sub_menu_title,
                                         style: ButtonThemes.secondaryButtonStyle(context),
-                                        icon: const Icon(Icons.more_horiz_rounded)
+                                        icon: Transform.scale(
+                                          scaleX: -1,
+                                          child: Transform.rotate(
+                                            angle: math.pi / 2,
+                                            child: const Icon(Icons.move_down_rounded)
+                                          ),
+                                        )
                                       ),
                                     )
                                   ],
@@ -275,17 +284,40 @@ class _CustomTableState extends State<CustomTable> {
                             children: [
                               ...List.generate(widget.controller.columns + 2, (colIndex) {
                                 if (colIndex == 0) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: CustomTextButton(
-                                      S.of(context).projects_module_spreadsheet_new_row,
-                                      () {
-                                        widget.controller.newRow();
-                                      }, 
-                                      false, 
-                                      isSecondary: true,
-                                      false
-                                    ),
+                                  return Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 10, top: 5),
+                                        child: SizedBox(
+                                          height: 40,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              widget.controller.newRow();
+                                            },
+                                            style: ButtonThemes.secondaryButtonStyle(context),
+                                            child: Text(
+                                              S.of(context).projects_module_spreadsheet_new_row,
+                                              style: theme.titleMedium
+                                              .copyWith(
+                                                color: theme.onPrimary,
+                                                fontSize: 13
+                                              )
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                      padding: const EdgeInsets.only(left: 10, top: 5),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showSubMenu(context, CustomTableRearangeRowsSubMenu(controller: CustomTableRearangeColumnsSubMenuController(tableController: widget.controller)));
+                                        },
+                                        tooltip: S.of(context).projects_module_spreadsheet_manage_rows_sub_menu_title,
+                                        style: ButtonThemes.secondaryButtonStyle(context),
+                                        icon: const Icon(Icons.move_down_rounded)
+                                      ),
+                                    )
+                                    ],
                                   );
                                 } else if (widget.controller.getColumnType(colIndex) == CustomTableType.number) {
                                   return Padding(

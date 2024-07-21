@@ -199,6 +199,10 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
                               animation: widget._viewmodel,
                               builder: (context, child) {
                                 widget._viewmodel.buildContainers(currentSize ?? constraints.biggest);
+                                widget._viewmodel.pageIndicatorController.setTotalPages(widget._viewmodel.modulesContainer.length);
+                                if (widget._viewmodel.pageIndicatorController.currentPageIndex >= widget._viewmodel.modulesContainer.length) {
+                                  widget._viewmodel.pageIndicatorController.pageChanged(widget._viewmodel.modulesContainer.length - 1);
+                                }
                                 return Stack(
                                   children: [
                                     Column(
@@ -212,7 +216,11 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
                                           child: PageView.builder(
                                             itemCount: widget._viewmodel.modulesContainer.length,
                                             onPageChanged: (index) async {
-                                              widget._viewmodel.pageIndicatorController.pageChanged(index);
+                                              widget._viewmodel.pageIndicatorController.pageChanged(
+                                                index >= widget._viewmodel.modulesContainer.length 
+                                                ? 0 
+                                                : index
+                                              );
                                               await widget._viewmodel.saveProject();
                                             },
                                             controller: _pageController,

@@ -344,6 +344,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Todas las columnas"),
         "projects_module_spreadsheet_manage_columns_sub_menu_title":
             MessageLookupByLibrary.simpleMessage("Organizar columnas"),
+        "projects_module_spreadsheet_manage_rows_sub_menu_subtitle":
+            MessageLookupByLibrary.simpleMessage("Todas las filas"),
+        "projects_module_spreadsheet_manage_rows_sub_menu_title":
+            MessageLookupByLibrary.simpleMessage("Organizar filas"),
         "projects_module_spreadsheet_new_column":
             MessageLookupByLibrary.simpleMessage("Nueva columna"),
         "projects_module_spreadsheet_new_row":

@@ -10,32 +10,32 @@ class DefaultAppColor {
 
 class DefaultAppColors {
   static final DefaultAppColor grey = DefaultAppColor(
-    color: const Color.fromARGB(255, 100, 100, 100),
+    color: const Color.fromARGB(255, 130, 130, 130),
     colorName: S.current.default_app_colors_grey
   );
 
   static final DefaultAppColor mintGreen = DefaultAppColor(
-    color: const Color.fromARGB(255, 94, 151, 126),
+    color: const Color.fromARGB(255, 0, 215, 122),
     colorName: S.current.default_app_colors_mint_green
   );
 
-  static final DefaultAppColor lightPink = DefaultAppColor(
-    color: const Color.fromARGB(255, 174, 120, 132),
+  static final DefaultAppColor pink = DefaultAppColor(
+    color: const Color.fromARGB(255, 232, 49, 89),
     colorName: S.current.default_app_colors_light_pink
   );
 
-  static final DefaultAppColor lightYellow = DefaultAppColor(
-    color: const Color.fromARGB(255, 184, 156, 88),
+  static final DefaultAppColor yellow = DefaultAppColor(
+    color: const Color.fromARGB(255, 216, 160, 19),
     colorName: S.current.default_app_colors_light_yellow
   );
 
   static final DefaultAppColor peach = DefaultAppColor(
-    color: const Color.fromARGB(255, 184, 133, 113),
+    color: const Color.fromARGB(255, 255, 133, 85),
     colorName: S.current.default_app_colors_peach
   );
 
   static final DefaultAppColor softRed = DefaultAppColor(
-    color: const Color.fromARGB(255, 164, 102, 102),
+    color: const Color.fromARGB(255, 226, 58, 58),
     colorName: S.current.default_app_colors_soft_red
   );
 
@@ -44,30 +44,30 @@ class DefaultAppColors {
     colorName: S.current.default_app_colors_lavender
   );
 
-  static final DefaultAppColor lightBlue = DefaultAppColor(
-    color: const Color.fromARGB(255, 88, 131, 184),
+  static final DefaultAppColor blue = DefaultAppColor(
+    color: const Color.fromARGB(255, 40, 122, 222),
     colorName: S.current.default_app_colors_light_blue
   );
 
   static final DefaultAppColor lightGreen = DefaultAppColor(
-    color: const Color.fromARGB(255, 113, 161, 113),
+    color: const Color.fromARGB(255, 125, 252, 125),
     colorName: S.current.default_app_colors_light_green
   );
 
   static final DefaultAppColor lightPurple = DefaultAppColor(
-    color: const Color.fromARGB(255, 138, 91, 143),
+    color: const Color.fromARGB(255, 210, 36, 229),
     colorName: S.current.default_app_colors_light_purple
   );
 
   static final List<DefaultAppColor> asList = [
     grey,
     mintGreen,
-    lightPink,
-    lightYellow,
+    pink,
+    yellow,
     peach,
     softRed,
     lavender,
-    lightBlue,
+    blue,
     lightGreen,
     lightPurple,
   ];

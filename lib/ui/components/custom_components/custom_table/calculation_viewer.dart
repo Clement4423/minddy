@@ -102,8 +102,8 @@ class _CalculationViewerState extends State<CalculationViewer> {
     result = performCalculation().toStringAsFixed(2).endsWith('00') 
       ? performCalculation().toStringAsFixed(0) 
       : performCalculation().toStringAsFixed(2);
-    if (result.length > 9) {
-      result = result.substring(0, 7).padRight(11, '.');
+    if (result.length > 8) {
+      result = result.substring(0, 7).padRight(10, '.');
     } else if (result == 'NaN') {
       result = '0';
     }
@@ -112,50 +112,53 @@ class _CalculationViewerState extends State<CalculationViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      onSelected: (value) {
-        widget.onFunctionSelected(value);
-      },
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(13)
-      ),
-      color: widget.theme.primary,
-      itemBuilder: (context) {
-        return getCalculationsMenuItems(widget.theme, widget.calculationName);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          border: widget.isFromLastCell ? null : Border.symmetric(vertical: BorderSide(color: widget.theme.onPrimary, width: 0.25))
+    return Material(
+      type: MaterialType.transparency,
+      child: PopupMenuButton(
+        onSelected: (value) {
+          widget.onFunctionSelected(value);
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(13)
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Tooltip(
-              message: calculationOpetationTitle.length > 7 ? calculationOpetationTitle : '',
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Text(calculationOpetationTitle.length > 7 ? calculationOpetationTitle.substring(0, 4).padRight(7, '.') : calculationOpetationTitle, style: widget.theme.bodyMedium
-                  .copyWith(color: widget.theme.onPrimary)
+        color: widget.theme.primary,
+        itemBuilder: (context) {
+          return getCalculationsMenuItems(widget.theme, widget.calculationName);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            border: widget.isFromLastCell ? null : Border.symmetric(vertical: BorderSide(color: widget.theme.onPrimary, width: 0.25))
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Tooltip(
+                message: calculationOpetationTitle.length > 7 ? calculationOpetationTitle : '',
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Text(calculationOpetationTitle.length > 7 ? calculationOpetationTitle.substring(0, 4).padRight(7, '.') : calculationOpetationTitle, style: widget.theme.bodyMedium
+                    .copyWith(color: widget.theme.onPrimary)
+                  ),
                 ),
               ),
-            ),
-            CustomTooltip(
-              message: performCalculation().toString().replaceAll('.', ','),
-              lengthTreshold: 9,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 13),
-                child: Text(
-                  formatResult(),
-                  style: widget.theme.titleMedium
-                  .copyWith(
-                    color: widget.theme.onPrimary,
-                    overflow: TextOverflow.ellipsis,
-                    fontWeight: FontWeight.w600
-                  )
+              CustomTooltip(
+                message:  formatCalculation(performCalculation().toString().replaceAll('.', ',')),
+                lengthTreshold: 9,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 13),
+                  child: Text(
+                    formatCalculation(formatResult()),
+                    style: widget.theme.titleMedium
+                    .copyWith(
+                      color: widget.theme.onPrimary,
+                      overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.w600
+                    )
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interface/i_custom_table_cell_data.dart';
 import 'package:minddy/system/model/custom_table_cell_position.dart';
 import 'package:minddy/system/model/custom_table_type.dart';
+import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/system/utils/column_letters.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -128,46 +129,83 @@ class _CustomTableCellState extends State<CustomTableCell> {
               if (
                 widget.controller.needToShowPosition 
                 && widget.controller.getColumnType(widget.position.column) != null 
-                && widget.controller.getColumnType(widget.position.column) == CustomTableType.number 
+                && widget.controller.getColumnType(widget.position.column) == CustomTableType.number
                 && widget.controller.hiddenPositionCell != null 
                 && widget.position != widget.controller.hiddenPositionCell
               )
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: GestureDetector(
-                      onTap: () {
-                        try {
-                          if (widget.controller.currentNumberTextEditingController != null) {
-                            if (widget.controller.currentNumberTextEditingController!.text.characters.last == ')') {
-                              widget.controller.currentNumberTextEditingController!.text += '+';
-                            }
-                            widget.controller.currentNumberTextEditingController!.text += '(${getColumnLetter(widget.position.column - 1)}${widget.position.row})';
-                          }                          
-                        } catch (e) {
-                          return;
-                        }
-                      },
-                      child: Container(
-                        width: 50,
-                        height: 30,
-                        margin: const EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                          color: widget.theme.secondary,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '${getColumnLetter(widget.position.column - 1)}${widget.position.row}',
-                            style: widget.theme.bodyMedium.copyWith(color: widget.theme.onSecondary),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  child: _CustomTableCellPositionWidget(widget: widget),
                 ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CustomTableCellPositionWidget extends StatefulWidget {
+  const _CustomTableCellPositionWidget({
+    required this.widget,
+  });
+
+  final CustomTableCell widget;
+
+  @override
+  State<_CustomTableCellPositionWidget> createState() => _CustomTableCellPositionWidgetState();
+}
+
+class _CustomTableCellPositionWidgetState extends State<_CustomTableCellPositionWidget> {
+
+  bool isSelected = false;
+
+  @override
+  void initState() {
+    isSelected = widget.widget.controller.usedPositions.contains(widget.widget.position);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          try {
+            if (widget.widget.controller.currentNumberTextEditingController != null) {
+              if (widget.widget.controller.currentNumberTextEditingController!.text.characters.last == ')') {
+                widget.widget.controller.currentNumberTextEditingController!.text += '+';
+              }
+              widget.widget.controller.currentNumberTextEditingController!.text += '(${getColumnLetter(widget.widget.position.column - 1)}${widget.widget.position.row})';
+            }
+            setState(() {
+              isSelected = true;
+            });                  
+          } catch (e) {
+            return;
+          }
+        },
+        child: Container(
+          width: 50,
+          height: 30,
+          margin: const EdgeInsets.only(left: 10),
+          decoration: BoxDecoration(
+            color: isSelected
+              ? DefaultAppColors.mintGreen.color 
+              : widget.widget.theme.secondary,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Center(
+            child: Text(
+              '${getColumnLetter(widget.widget.position.column - 1)}${widget.widget.position.row}',
+              style: widget.widget.theme.bodyMedium
+              .copyWith(
+                color: isSelected
+                  ? Colors.white 
+                  : widget.widget.theme.onSecondary
+              ),
+            ),
           ),
         ),
       ),

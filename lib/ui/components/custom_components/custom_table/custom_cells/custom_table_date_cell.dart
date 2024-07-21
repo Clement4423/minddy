@@ -138,7 +138,7 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
           if (result != null) {
             if (result.selectedDates.isEmpty) {
               widget.data = null;
-            } else if (isStartEndDate()) {
+            } else if (datePickerMode == CustomDatePickerMode.startEnd) {
               if (result.selectedDates.length != 2) {
                 widget.data = null;
                 return;
@@ -221,7 +221,7 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
                             }
                             setState(() {});
                           }, 
-                          tooltip: isStartEndDate() 
+                          tooltip: datePickerMode == CustomDatePickerMode.startEnd 
                             ? S.of(context).projects_module_spreadsheet_date_single_tooltip 
                             : S.of(context).projects_module_spreadsheet_date_start_end_tooltip,
                           style: ButtonStyle(
@@ -229,7 +229,7 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
                             shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
                             elevation: const MaterialStatePropertyAll(8)
                           ),
-                          icon: Icon(isStartEndDate() ? Icons.calendar_today_rounded : Icons.calendar_month_rounded, color: widget.theme.onPrimary)
+                          icon: Icon(datePickerMode == CustomDatePickerMode.startEnd ? Icons.calendar_today_rounded : Icons.calendar_month_rounded, color: widget.theme.onPrimary)
                         ),
                       );
                     }

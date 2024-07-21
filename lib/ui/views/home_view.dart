@@ -70,6 +70,7 @@ class HomeView extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 50, bottom: 30),
                               child: Text(
                                 _viewmodel.greetingText,
+                                  key: UniqueKey(),
                                   style: theme.headlineLarge.
                                   copyWith(color: theme.onBackground)
                               ),

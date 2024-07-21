@@ -28,34 +28,61 @@ class ColumnTypeSelector extends StatefulWidget {
 class _ColumnTypeSelectorState extends State<ColumnTypeSelector> {
   bool isHovering = false;
   bool isPressed = false;
-
   bool canBeDeleted = true;
+  CustomTableType? actualType;
+  final TextEditingController _textEditingController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
-    void triggerPopEffect() {
-      if (canBeDeleted) {
-        setState(() {
-          isPressed = true;
-        });
-      }
-    }
-
-    void endPopEffect() {
-      if (canBeDeleted) {
-        setState(() {
-          isPressed = false;
-        });
-      }
-    }
-
-    CustomTableType? actualType;
-
-    @override
+  @override
   void initState() {
-    actualType = widget.widget.controller.getColumnType(widget.colIndex);
-    canBeDeleted = canBeDeleted = widget.widget.controller.columns > 1 
-      ? true 
-      : false;
     super.initState();
+    actualType = widget.widget.controller.getColumnType(widget.colIndex);
+    canBeDeleted = widget.widget.controller.columns > 1;
+    _initializeTextController();
+  }
+
+  void _initializeTextController() {
+    _textEditingController.text = widget.widget.controller.columnNames[widget.colIndex] ?? '';
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void triggerPopEffect() {
+    if (canBeDeleted) {
+      setState(() {
+        isPressed = true;
+      });
+    }
+  }
+
+  void endPopEffect() {
+    if (canBeDeleted) {
+      setState(() {
+        isPressed = false;
+      });
+    }
+  }
+
+  void _updateState({bool? setIsHovering}) {
+    bool needToRequestFocus = false;
+     if (_focusNode.hasFocus) {
+      needToRequestFocus = true;
+    }
+    setState(() {
+      if (setIsHovering != null) {
+        isHovering = setIsHovering;
+      }
+    });
+    if (needToRequestFocus) {
+      _focusNode.requestFocus();
+      final cursorPosition = _textEditingController.selection;
+      _textEditingController.selection = cursorPosition;
+    }
   }
 
   @override
@@ -63,17 +90,13 @@ class _ColumnTypeSelectorState extends State<ColumnTypeSelector> {
     return MouseRegion(
       onEnter: (event) {
         if (canBeDeleted) {
-        setState(() {
-          isHovering = true;
-        });
-      }
+          _updateState(setIsHovering: true);
+        }
       },
       onExit: (event) {
         if (canBeDeleted) {
-        setState(() {
-          isHovering = false;
-        });
-      }
+          _updateState(setIsHovering: false);
+        }
       },
       child: Container(
         height: widget.widget.cellHeight,
@@ -118,7 +141,6 @@ class _ColumnTypeSelectorState extends State<ColumnTypeSelector> {
                             child: Icon(Icons.delete_outline_rounded, color: widget.theme.error),
                           )
                         : widget.icon 
-                          
                     );
                   },
                 ),
@@ -131,9 +153,11 @@ class _ColumnTypeSelectorState extends State<ColumnTypeSelector> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8),
                   child: TextField(
-                    controller: TextEditingController(text: widget.widget.controller.columnNames[widget.colIndex]),
+                    controller: _textEditingController,
+                    focusNode: _focusNode,
                     onChanged: (value) {
                       widget.widget.controller.setColumnName(widget.colIndex, value);
+                      _updateState();
                     },
                     style: widget.theme.titleMedium.copyWith(fontWeight: FontWeight.w600),
                     cursorColor: widget.theme.onSurface,

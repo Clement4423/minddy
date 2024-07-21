@@ -278,11 +278,14 @@ class _ArticleContentListState extends State<_ArticleContentList> {
           child: ListView.builder(
             padding: const EdgeInsets.only(right: 20),
             controller: _scrollController,
-            itemCount: widget.controller.articleContent.length + 1,
+            itemCount: widget.controller.articleContent.length + 2,
             semanticChildCount: widget.controller.articleContent.length,
             itemBuilder: (context, index) {
-              if (index < widget.controller.articleContent.length) {
-                return widget.controller.articleContent[index];
+              if (index == 0) {
+                return const SizedBox(height: 50);
+              }
+              else if (index < widget.controller.articleContent.length + 1) {
+                return widget.controller.articleContent[index - 1];
               } else {
                 return SizedBox(height: MediaQuery.of(context).size.height / 1.5);
               }

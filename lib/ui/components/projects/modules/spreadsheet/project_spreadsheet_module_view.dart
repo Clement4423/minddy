@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interface/projects_modules_controller_interface.dart';
@@ -71,11 +72,12 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                // Icon and title
                 Row(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
-                      child: Icon(Icons.view_column_rounded, color: theme.onSurface, size: 28),
+                      child: Icon(CupertinoIcons.table, color: theme.onSurface)
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
@@ -83,57 +85,70 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
                     )
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 5),
-                  child: CustomPopupMenuButton(items: [
-                    CustomPopupItemModel(
-                      text: Text(S.of(context).projects_module_help_text, style: theme.bodyMedium.copyWith(color: theme.onPrimary),), 
-                      icon: Icon(Icons.help_outline_rounded, color: theme.onPrimary), 
-                      action: () {
-                        
-                      }
+                // Convert to chart and module options
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+
+                      }, 
+                      tooltip: 'Convert to chart',
+                      style: ButtonThemes.secondaryButtonStyle(context),
+                      icon: Icon(CupertinoIcons.chart_pie, color: theme.onPrimary)
                     ),
-                    CustomPopupItemModel(
-                      text: Text(S.of(context).project_card_duplicate, style: theme.bodyMedium.copyWith(color: theme.onPrimary),), 
-                      icon: Icon(Icons.copy_rounded, color: theme.onPrimary), 
-                      action: () {
-                       widget.duplicateFunction(widget.controller.id);
-                      }
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 5),
+                      child: CustomPopupMenuButton(items: [
+                        CustomPopupItemModel(
+                          text: Text(S.of(context).projects_module_help_text, style: theme.bodyMedium.copyWith(color: theme.onPrimary),), 
+                          icon: Icon(Icons.help_outline_rounded, color: theme.onPrimary), 
+                          action: () {
+                            
+                          }
+                        ),
+                        CustomPopupItemModel(
+                          text: Text(S.of(context).project_card_duplicate, style: theme.bodyMedium.copyWith(color: theme.onPrimary),), 
+                          icon: Icon(Icons.copy_rounded, color: theme.onPrimary), 
+                          action: () {
+                           widget.duplicateFunction(widget.controller.id);
+                          }
+                        ),
+                        CustomPopupItemModel(
+                          text: Text(S.of(context).snackbar_delete_button, style: theme.bodyMedium.copyWith(color: theme.error),), 
+                          icon: Icon(Icons.delete_outline_rounded, color: theme.error), 
+                          action: () {
+                            widget.deleteFunction(widget.controller.id);
+                          }
+                        ) 
+                      ])
                     ),
-                    CustomPopupItemModel(
-                      text: Text(S.of(context).snackbar_delete_button, style: theme.bodyMedium.copyWith(color: theme.error),), 
-                      icon: Icon(Icons.delete_outline_rounded, color: theme.error), 
-                      action: () {
-                        widget.deleteFunction(widget.controller.id);
-                      }
-                    ) 
-                  ])
+                  ],
                 )
               ],
             ),
           ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: FutureBuilder(
-                future: widget.controller.initialize(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (snapshot.hasData && snapshot.data == true) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
+            child: FutureBuilder(
+              future: widget.controller.initialize(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                }
+                if (snapshot.hasData && snapshot.data == true) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10), bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
                       child: CustomTable(
                         cellHeight: 50, 
                         cellWidth: 200, 
                         controller: widget.controller.customTableController,
                       ),
-                    );
-                  }
-                  return const SizedBox();
+                    ),
+                  );
                 }
-              ),
+                return const SizedBox();
+              }
             ),
           ),
         ],

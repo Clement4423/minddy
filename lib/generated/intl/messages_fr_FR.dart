@@ -344,7 +344,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "projects_module_spreadsheet_manage_columns_sub_menu_subtitle":
             MessageLookupByLibrary.simpleMessage("Toutes les colonnes"),
         "projects_module_spreadsheet_manage_columns_sub_menu_title":
-            MessageLookupByLibrary.simpleMessage("Arranger les colonnes"),
+            MessageLookupByLibrary.simpleMessage("Organiser les colonnes"),
+        "projects_module_spreadsheet_manage_rows_sub_menu_subtitle":
+            MessageLookupByLibrary.simpleMessage("Toutes les lignes"),
+        "projects_module_spreadsheet_manage_rows_sub_menu_title":
+            MessageLookupByLibrary.simpleMessage("Organiser les lignes"),
         "projects_module_spreadsheet_new_column":
             MessageLookupByLibrary.simpleMessage("Nouvelle colonne"),
         "projects_module_spreadsheet_new_row":
@@ -371,14 +375,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("(10, 50, 100) = 100"),
         "projects_module_spreadsheet_number_operation_maximum_message":
             MessageLookupByLibrary.simpleMessage(
-                "Trouver la valeur la plus élevée dans la colonne. Utile pour identifier le plus grand nombre."),
+                "Trouve la valeur la plus élevée dans la colonne. Utile pour identifier le plus grand nombre."),
         "projects_module_spreadsheet_number_operation_median":
             MessageLookupByLibrary.simpleMessage("Médiane"),
         "projects_module_spreadsheet_number_operation_median_example":
             MessageLookupByLibrary.simpleMessage("(10, 50, 100) = 50"),
         "projects_module_spreadsheet_number_operation_median_message":
             MessageLookupByLibrary.simpleMessage(
-                "Trouver la valeur centrale lorsque les valeurs des colonnes sont triées. Utile pour identifier la valeur centrale."),
+                "Trouve la valeur centrale lorsque les valeurs des colonnes sont triées. Utile pour identifier la valeur centrale."),
         "projects_module_spreadsheet_number_operation_minimum":
             MessageLookupByLibrary.simpleMessage("Minimum"),
         "projects_module_spreadsheet_number_operation_minimum_example":

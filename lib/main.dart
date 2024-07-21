@@ -52,6 +52,8 @@ class MainApp extends StatelessWidget {
   // TODO : Faire le menu d'ajout de module
   // TODO : Faire le système d'addons
   // TODO : Faire le module tableau(Code)
+  // TODO : Faire la section graphique pour le module tableau
+  // TODO : Faire le widget graphique
   
   @override
   Widget build(BuildContext context) {

@@ -66,7 +66,7 @@ class _ProjectsTasksModuleState extends State<ProjectsTasksModule> {
           Container(
             margin: const EdgeInsets.all(5),
             padding: const EdgeInsets.all(5),
-            height: 130,
+            height: 135,
             decoration: BoxDecoration(
               color: theme.surface,
               borderRadius: BorderRadius.circular(15)
@@ -114,16 +114,19 @@ class _ProjectsTasksModuleState extends State<ProjectsTasksModule> {
                   ],
                 ),
                 // Completed tasks
-                AnimatedBuilder(
-                  animation: widget.controller,
-                  builder: (context, animation) {
-                    return Text(
-                      S.of(context).projects_module_tasks_completed(
-                        widget.controller.tasksWidgets.length, 
-                        widget.controller.tasksWidgets.where((element) => element.data.isChecked).length),
-                      style: theme.bodyMedium.copyWith(color: theme.onSurface),
-                    );
-                  }
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: AnimatedBuilder(
+                    animation: widget.controller,
+                    builder: (context, animation) {
+                      return Text(
+                        S.of(context).projects_module_tasks_completed(
+                          widget.controller.tasksWidgets.length, 
+                          widget.controller.tasksWidgets.where((element) => element.data.isChecked).length),
+                        style: theme.bodyMedium.copyWith(color: theme.onSurface),
+                      );
+                    }
+                  ),
                 ),
                 // New task button
                 Align(

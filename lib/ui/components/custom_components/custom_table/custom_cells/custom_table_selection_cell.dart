@@ -48,7 +48,7 @@ class _CustomTableSelectionCellState extends State<CustomTableSelectionCell> {
     ),
     CustomTableSelectionCellOptionModel(
       name: S.current.projects_module_spreadsheet_selection_cell_started, 
-      color: DefaultAppColors.lightBlue.color
+      color: DefaultAppColors.blue.color
     ),
     CustomTableSelectionCellOptionModel(
       name: S.current.projects_module_spreadsheet_selection_cell_finished, 
@@ -113,7 +113,6 @@ class _CustomTableSelectionCellState extends State<CustomTableSelectionCell> {
                 // All of this serves as centering the menu. 
                 // Using a center widget caused problems of alignement, so i came up with this.
             ),
-            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
             decoration: BoxDecoration(
               border: Border.all(color: _getOptionColor(), width: 2),
               borderRadius: BorderRadius.circular((widget.cellHeight * 0.7) / 2)
@@ -125,39 +124,44 @@ class _CustomTableSelectionCellState extends State<CustomTableSelectionCell> {
                   : widget.data
                 : options.first.name,
               lengthTreshold: 9,
-              child: DropdownButton<String>(
-                value: options.map((e) => e.name).toList().contains(widget.data ?? '') 
-                  ? widget.data 
-                  : options.first.name,
-                items: options.map((option) {
-                  return DropdownMenuItem(
-                    value: option.name,
-                    child: CustomTooltip(
-                      message: option.name,
-                      lengthTreshold: 10,
-                      waitDuration: const Duration(milliseconds: 500),
-                      child: Text(
-                        option.name,
-                        overflow: TextOverflow.ellipsis,
-                        style: widget.theme.bodyMedium
-                        .copyWith(color: option.color), maxLines: 1
-                      )
+              child: Material(
+                type: MaterialType.transparency,
+                child: DropdownButton<String>(
+                  value: options.map((e) => e.name).toList().contains(widget.data ?? '') 
+                    ? widget.data 
+                    : options.first.name,
+                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                  focusColor: Colors.transparent,
+                  items: options.map((option) {
+                    return DropdownMenuItem(
+                      value: option.name,
+                      child: CustomTooltip(
+                        message: option.name,
+                        lengthTreshold: 10,
+                        waitDuration: const Duration(milliseconds: 500),
+                        child: Text(
+                          option.name,
+                          overflow: TextOverflow.ellipsis,
+                          style: widget.theme.bodyMedium
+                          .copyWith(color: option.color), maxLines: 1
+                        )
+                      ),
+                    );
+                  }).toList(),
+                  icon: Icon(
+                    Icons.arrow_drop_down_rounded,
+                     color: _getOptionColor()
                     ),
-                  );
-                }).toList(),
-                icon: Icon(
-                  Icons.arrow_drop_down_rounded,
-                   color: _getOptionColor()
-                  ),
-                borderRadius: BorderRadius.circular((widget.cellHeight * 0.7) / 2),
-                style: widget.theme.bodyMedium.copyWith(color: widget.theme.onSurface),
-                isExpanded: true,
-                underline: const SizedBox(),
-                onChanged: (value) {
-                  setState(() {
-                    widget.data = value;
-                  });
-                },
+                  borderRadius: BorderRadius.circular((widget.cellHeight * 0.7) / 2),
+                  style: widget.theme.bodyMedium.copyWith(color: widget.theme.onSurface),
+                  isExpanded: true,
+                  underline: const SizedBox(),
+                  onChanged: (value) {
+                    setState(() {
+                      widget.data = value;
+                    });
+                  },
+                ),
               ),
             ),
           ),

@@ -19,12 +19,13 @@ class CustomTableCalculationExplanationTooltip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tooltip(
       waitDuration: const Duration(seconds: 1),
+      margin: const EdgeInsets.only(left: 490),
       decoration: BoxDecoration(
-        color: theme.primary,
+        color: theme.surface,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: theme.shadow.withOpacity(0.1),
+            color: theme.shadow.withOpacity(0.2),
             offset: const Offset(5, 5),
             blurRadius: 20,
           )
@@ -33,28 +34,49 @@ class CustomTableCalculationExplanationTooltip extends StatelessWidget {
       richMessage: WidgetSpan(
         alignment: PlaceholderAlignment.baseline,
         baseline: TextBaseline.alphabetic,
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 350),
-          padding: const EdgeInsets.all(5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(example, style: theme.titleMedium.copyWith(fontWeight: FontWeight.w300)), // TODO : Faire sonner les textes plus simples
-              Container(
-                width: 100,
-                height: 3,
-                margin: const EdgeInsets.only(top: 5, bottom: 10),
-                decoration: BoxDecoration(
-                  color: theme.onPrimary.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(1)
+        child: Stack(
+          children: [
+            Container(
+              constraints: const BoxConstraints(maxWidth: 350),
+              padding: const EdgeInsets.all(5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(example, style: theme.titleMedium.copyWith(fontWeight: FontWeight.w300)),
+                  Container(
+                    width: 100,
+                    height: 3,
+                    margin: const EdgeInsets.only(top: 5, bottom: 10),
+                    decoration: BoxDecoration(
+                      color: theme.onSurface.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(1)
+                    ),
+                  ),
+                  Text(message, style: theme.bodySmall)
+                ],
+              ),
+            ),
+            Positioned(
+              right: 0,
+              top: 5,
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: Container(
+                  width: 22,
+                  height: 22,
+                  decoration: BoxDecoration(
+                    color: theme.surface,
+                    border: Border.all(color: theme.onSurface, width: 2),
+                    borderRadius: BorderRadius.circular(6)
+                  ),
+                  child: Icon(Icons.close_rounded, color: theme.onSurface, size: 16,),
                 ),
               ),
-              Text(message, style: theme.bodyMedium)
-            ],
-          ),
+            ),
+          ],
         )
       ),
-      preferBelow: true,
+      preferBelow: false,
       child: child,
     );
   }

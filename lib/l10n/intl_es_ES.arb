@@ -256,6 +256,8 @@
     "projects_module_spreadsheet_selection_cell_name_option_hint": "Nombre esta opción...",
     "projects_module_spreadsheet_manage_columns_sub_menu_title": "Organizar columnas",
     "projects_module_spreadsheet_manage_columns_sub_menu_subtitle": "Todas las columnas",
+    "projects_module_spreadsheet_manage_rows_sub_menu_title": "Organizar filas",
+    "projects_module_spreadsheet_manage_rows_sub_menu_subtitle": "Todas las filas",
     "projects_module_spreadsheet_selection_sub_menu_error_message_no_options": "Por favor agregue opciones",
     "projects_module_spreadsheet_selection_sub_menu_error_message_unnamed_option": "Por favor nombre todas las opciones",
     "projects_module_spreadsheet_selection_sub_menu_error_message_redundant_option_name": "Dos opciones no pueden tener el mismo nombre ({optionName})",

@@ -2601,10 +2601,10 @@ class S {
     );
   }
 
-  /// `Arrange columns`
+  /// `Organize columns`
   String get projects_module_spreadsheet_manage_columns_sub_menu_title {
     return Intl.message(
-      'Arrange columns',
+      'Organize columns',
       name: 'projects_module_spreadsheet_manage_columns_sub_menu_title',
       desc: '',
       args: [],
@@ -2616,6 +2616,26 @@ class S {
     return Intl.message(
       'All columns',
       name: 'projects_module_spreadsheet_manage_columns_sub_menu_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Organize rows`
+  String get projects_module_spreadsheet_manage_rows_sub_menu_title {
+    return Intl.message(
+      'Organize rows',
+      name: 'projects_module_spreadsheet_manage_rows_sub_menu_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All rows`
+  String get projects_module_spreadsheet_manage_rows_sub_menu_subtitle {
+    return Intl.message(
+      'All rows',
+      name: 'projects_module_spreadsheet_manage_rows_sub_menu_subtitle',
       desc: '',
       args: [],
     );

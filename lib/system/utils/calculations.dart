@@ -83,3 +83,49 @@ num mode(List<num> numbers) {
   int maxFrequency = frequency.values.reduce((current, next) => current > next ? current : next);
   return frequency.entries.firstWhere((element) => element.value == maxFrequency).key;
 }
+
+String formatCalculation(String input) {
+    if (input.startsWith('=')) {
+      return input;
+    }
+    input = input.replaceAll(' ', '');
+
+    RegExp currencyRegex = RegExp(r'^(\$|£|€|¥)|(\$|£|€|¥)$');
+
+    String? currency;
+    bool isPercentage = false;
+    
+    if (input.contains(currencyRegex)) {
+      Match? currencyMatch = currencyRegex.firstMatch(input);
+      currency = currencyMatch?.group(1) ?? currencyMatch?.group(2);
+      input = input.replaceAllMapped(currencyRegex, (match) => '');
+    } else if (input.endsWith('%')) {
+      isPercentage = true;
+      input = input.replaceAll('%', '');
+    }
+
+    List<String> parts = input.split(',');
+    String integerPart = parts[0];
+    String fractionalPart = parts.length > 1 ? parts[1] : '';
+
+    String formattedIntegerPart = _addSpacesToIntegerPart(integerPart);
+    return fractionalPart.isEmpty || fractionalPart.replaceAll('0', '').isEmpty
+      ? '${currency != null && currency == "\$" ? '\$' : ''}$formattedIntegerPart${currency != null && currency != "\$" ? currency : ''}${isPercentage ? '%' : ''}'
+      : '${currency != null && currency == "\$" ? '\$' : ''}$formattedIntegerPart,$fractionalPart${currency != null && currency != "\$" ? currency : ''}${isPercentage ? '%' : ''}';
+  }
+
+  String _addSpacesToIntegerPart(String input) {
+    StringBuffer buffer = StringBuffer();
+    int length = input.length;
+    int count = 0;
+
+    for (int i = length - 1; i >= 0; i--) {
+      buffer.write(input[i]);
+      count++;
+      if (count % 3 == 0 && i != 0) {
+        buffer.write(' ');
+      }
+    }
+
+    return buffer.toString().split('').reversed.join('');
+  }

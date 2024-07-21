@@ -91,6 +91,11 @@ class CurrentPageIndicatorController extends ChangeNotifier {
   int currentPageIndex = 0;
   int totalPages = 0;
 
+  void setTotalPages(int totalPagesAmmount) {
+    totalPages = totalPagesAmmount;
+    notifyListeners();
+  }
+
   void pageChanged(int newPageIndex) {
     currentPageIndex = newPageIndex;
     notifyListeners();
