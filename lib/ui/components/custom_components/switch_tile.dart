@@ -92,7 +92,8 @@ class _SwitchTileState extends State<SwitchTile> {
                     widget.enabled 
                     ? await triggerSwitch()
                     : () {};
-                  }
+                  },
+                  mouseCursor: widget.enabled ? SystemMouseCursors.click : SystemMouseCursors.basic
                 )
               ],
             ),

@@ -186,6 +186,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wellness"),
         "center_menu_general": MessageLookupByLibrary.simpleMessage("General"),
         "center_menu_others": MessageLookupByLibrary.simpleMessage("Other"),
+        "custom_chart_donut_share":
+            MessageLookupByLibrary.simpleMessage("Share"),
+        "custom_chart_donut_total":
+            MessageLookupByLibrary.simpleMessage("Total"),
+        "custom_chart_grid_extend_chart":
+            MessageLookupByLibrary.simpleMessage("Enlarge chart"),
         "custom_date_picker_end": MessageLookupByLibrary.simpleMessage("End"),
         "custom_date_picker_invalid_date":
             MessageLookupByLibrary.simpleMessage("Invalid date"),

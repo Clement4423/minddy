@@ -2678,6 +2678,36 @@ class S {
     );
   }
 
+  /// `Total`
+  String get custom_chart_donut_total {
+    return Intl.message(
+      'Total',
+      name: 'custom_chart_donut_total',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Share`
+  String get custom_chart_donut_share {
+    return Intl.message(
+      'Share',
+      name: 'custom_chart_donut_share',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enlarge chart`
+  String get custom_chart_grid_extend_chart {
+    return Intl.message(
+      'Enlarge chart',
+      name: 'custom_chart_grid_extend_chart',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Change color`
   String get default_app_colors_change_color {
     return Intl.message(

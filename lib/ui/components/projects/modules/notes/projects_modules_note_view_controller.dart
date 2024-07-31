@@ -53,7 +53,7 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
     try {
       Map<String, dynamic> notesMap = await _convertModelToJson(_projectNotes, 'PROJECT');
       bool isSaved = await StaticVariables.fileSource.writeJsonFile(
-        '$projectPath/${ProjectsModules.notes.name}/$_globalId.json',
+        '$projectPath/${ProjectsModulesTypes.notes.name}/$_globalId.json',
         notesMap
       );
       return isSaved;
@@ -83,7 +83,7 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
 
   Future<bool> modifyProjectNote(NoteModel updatedNote) async {
   try {
-    Map<String, dynamic>? fileContent = await getModuleData(_globalId, ProjectsModules.notes, projectPath);
+    Map<String, dynamic>? fileContent = await getModuleData(_globalId, ProjectsModulesTypes.notes, projectPath);
     if (fileContent != null) {
       List<dynamic> notes = fileContent["notes"] ?? [];
 
@@ -92,7 +92,7 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
         notes[noteIndex] = await AppNotes.convertModelToJson(updatedNote);
 
         bool savedFile = await StaticVariables.fileSource.writeJsonFile(
-          "$projectPath/${ProjectsModules.notes.name}/$_globalId.json",
+          "$projectPath/${ProjectsModulesTypes.notes.name}/$_globalId.json",
           {
             'category' : 'PROJECT',
             'private': false,
@@ -112,7 +112,7 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
 }
   
   Future<List<NoteModel>> getProjectNotes() async {
-    Map<String, dynamic>? moduleData = await getModuleData(_globalId, ProjectsModules.notes, projectPath);
+    Map<String, dynamic>? moduleData = await getModuleData(_globalId, ProjectsModulesTypes.notes, projectPath);
     if (moduleData != null) {
       List<dynamic> projectNotes = moduleData['notes'] ?? [];
 
@@ -120,9 +120,9 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
       _projectNotes = projectNotesModels;
       return projectNotesModels;
     } else {
-      await StaticVariables.fileSource.createFile("$projectPath/${ProjectsModules.notes.name}/$_globalId.json");
+      await StaticVariables.fileSource.createFile("$projectPath/${ProjectsModulesTypes.notes.name}/$_globalId.json");
       await StaticVariables.fileSource.writeJsonFile(
-        "$projectPath/${ProjectsModules.notes.name}/$_globalId.json", 
+        "$projectPath/${ProjectsModulesTypes.notes.name}/$_globalId.json", 
         {
           'category' : 'PROJECT',
           'private': false,
@@ -135,14 +135,14 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
 
   Future<bool> deleteProjectNote(NoteModel noteToRemove) async {
     try {
-      Map<String, dynamic>? fileContent = await getModuleData(_globalId, ProjectsModules.notes, projectPath);
+      Map<String, dynamic>? fileContent = await getModuleData(_globalId, ProjectsModulesTypes.notes, projectPath);
       if (fileContent != null) {
         List<dynamic> notes = fileContent["notes"] ?? [];
 
         notes.removeWhere((element) => element['id'] == noteToRemove.id);
 
         bool savedFile = await StaticVariables.fileSource.writeJsonFile(
-          "$projectPath/${ProjectsModules.notes.name}/$_globalId.json",
+          "$projectPath/${ProjectsModulesTypes.notes.name}/$_globalId.json",
           {
             'category' : 'PROJECT',
             'private': false,
@@ -160,14 +160,14 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
 
   Future<bool> addProjectNote(NoteModel noteToAdd) async {
     try {
-      Map<String, dynamic>? fileContent = await getModuleData(_globalId, ProjectsModules.notes, projectPath);
+      Map<String, dynamic>? fileContent = await getModuleData(_globalId, ProjectsModulesTypes.notes, projectPath);
       if (fileContent != null) {
         List<dynamic> notes = fileContent["notes"] ?? [];
 
         notes.add(await AppNotes.convertModelToJson(noteToAdd));
 
         bool savedFile = await StaticVariables.fileSource.writeJsonFile(
-          "$projectPath/${ProjectsModules.notes.name}/$_globalId.json",
+          "$projectPath/${ProjectsModulesTypes.notes.name}/$_globalId.json",
           {
             'category' : 'PROJECT',
             'private': false,

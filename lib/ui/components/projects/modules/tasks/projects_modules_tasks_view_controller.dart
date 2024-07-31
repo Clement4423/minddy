@@ -30,7 +30,7 @@ class ProjectsTasksModuleController extends ChangeNotifier implements IProjectMo
   List<ProjectTaskElement> tasksWidgets = [];
 
   ProjectsTasksModuleController({required this.projectPath, required this.id}) {
-    _dataFile = File("${StaticVariables.fileSource.documentDirectoryPath}/$projectPath/${ProjectsModules.tasks.name}/$id.json");
+    _dataFile = File("${StaticVariables.fileSource.documentDirectoryPath}/$projectPath/${ProjectsModulesTypes.tasks.name}/$id.json");
     initialize();
   }
 
@@ -53,7 +53,7 @@ class ProjectsTasksModuleController extends ChangeNotifier implements IProjectMo
         _dataFile.createSync(recursive: true);
         return;
       }
-      Map<String, dynamic>? data = await getModuleData(id, ProjectsModules.tasks, projectPath);
+      Map<String, dynamic>? data = await getModuleData(id, ProjectsModulesTypes.tasks, projectPath);
       if (data != null) {
         for (Map task in data['tasks']) {
           ProjectsTasksModuleTaskModel? taskModel = await _converMapToTaskModel(task);

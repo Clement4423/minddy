@@ -25,6 +25,7 @@ Future<bool> initializeState() async {
     if (Platform.isWindows || Platform.isLinux) {
       setWindowTitle('minddy');
       setWindowMinSize(const Size(900, 630));
+      
     }
     _currentThemeMode = await AppTheme.getCurrentThemeMode();
     _routeName = await getFirstPageRouteName();

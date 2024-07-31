@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/custom_appbar_button_model.dart';
 import 'package:minddy/system/model/projects_modules.dart';
+import 'package:minddy/system/utils/debouncer.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar_controller.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_buttons_components/articles_menu_button.dart';
@@ -65,6 +65,8 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
   Size? _lastSize;
 
   Size? currentSize;
+
+  Debouncer debouncer = Debouncer(delay: const Duration(milliseconds: 600));
 
   late PageController _pageController;
 
@@ -139,7 +141,9 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
               backgroundColor: Colors.transparent,
               appBar: CustomAppBar(
                 CustomAppBarController(
-                  onHomeButtonPressed: widget._viewmodel.saveProject,
+                  onHomeButtonPressed: () async {
+                    await widget._viewmodel.saveProject();
+                  },
                   widget._viewmodel.projectInfo.name,
                   true,
                   [
@@ -169,21 +173,18 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
                 builder: (context, child) {
                   return LayoutBuilder(
                     builder: (context, constraints) {
-                  
                       _lastSize = currentSize;
                   
                       currentSize = constraints.biggest;
                   
                       if (widget._viewmodel.isInitialized) {
                         if (_lastSize != currentSize) {
-                          EasyDebounce.debounce(
-                            'wait_for_resize',
-                            const Duration(milliseconds: 300), 
-                            () {
-                              _resizeFinishedNotifier.notify();
-                            }
-                          );
+                          debouncer.call(() async {
+                            await widget._viewmodel.saveProject().then((value) {_resizeFinishedNotifier.notify();});
+                          });
                           return const SizedBox();
+                        } else {
+                          debouncer.dispose();
                         }
                       }
                   
@@ -227,11 +228,10 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
                                             itemBuilder: (context, index) {
                                               widget._viewmodel.pageIndicatorController.totalPages = widget._viewmodel.modulesContainer.length;
                                               return Row(
+                                                key: UniqueKey(),
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                children: [
-                                                  ...widget._viewmodel.modulesContainer[index].modules
-                                                ]
+                                                children: widget._viewmodel.modulesContainer[index].modules
                                               );
                                             },
                                           ),
@@ -335,19 +335,19 @@ Future<dynamic> _showAddModuleMenu(BuildContext context, ProjectViewModel viewMo
     items: [
       PopupMenuItem(
         onTap: () {
-          viewModel.newModule(ProjectsModules.tasks);
+          viewModel.newModule(ProjectsModulesTypes.tasks);
         },
         child: Text(S.current.projects_module_tasks_title),
       ),
       PopupMenuItem(
         onTap: () {
-          viewModel.newModule(ProjectsModules.notes);
+          viewModel.newModule(ProjectsModulesTypes.notes);
         },
         child: Text(S.of(context).projects_module_notes_title),
       ),
       PopupMenuItem(
         onTap: () {
-          viewModel.newModule(ProjectsModules.spreadsheet);
+          viewModel.newModule(ProjectsModulesTypes.spreadsheet);
         },
         child: Text(S.of(context).projects_module_spreadsheet_title),
       ),

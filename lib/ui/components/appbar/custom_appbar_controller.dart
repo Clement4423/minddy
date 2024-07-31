@@ -51,5 +51,4 @@ class CustomAppBarController extends ChangeNotifier {
     StaticVariables.currentProjectInfo = null;
     Navigator.of(context).pop();
   }
-
 }

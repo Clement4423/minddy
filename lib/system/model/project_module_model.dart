@@ -3,7 +3,7 @@ import 'package:minddy/system/model/projects_modules.dart';
 // Each module is independant, and manage itself. 
 class ProjectModuleModel {
   String projectPath;
-  ProjectsModules type;
+  ProjectsModulesTypes type;
   int id;
 
 

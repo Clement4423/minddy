@@ -28,12 +28,15 @@ class CustomTable extends StatefulWidget {
   final double cellWidth;
   final double cellHeight;
 
+  final Function? onRebuild;
+
   final CustomTableController controller;
 
   const CustomTable({
     super.key,
     this.cellWidth = 170,
     this.cellHeight = 40,
+    this.onRebuild,
     required this.controller
   });
 
@@ -42,6 +45,18 @@ class CustomTable extends StatefulWidget {
 }
 
 class _CustomTableState extends State<CustomTable> {
+
+  bool isInitialized = false;
+
+  Future<void> initialize() async {
+    if (!isInitialized) {
+      isInitialized = true;
+    } else {
+      if (widget.onRebuild != null) {
+        await widget.onRebuild!();
+      }
+    }
+  }
 
   Widget _buildTitleCell(BuildContext context, StylesGetters theme) {
     return Container(
@@ -97,8 +112,6 @@ class _CustomTableState extends State<CustomTable> {
   Widget _buildRowHeader(int rowIndex, StylesGetters theme) {
     return CustomTableRowHeader(key: UniqueKey(), widget: widget, theme: theme, rowIndex: rowIndex, deleteRowMethod: widget.controller.deleteRow);
   }
-
-  
 
   ICustomTableCellData _getCellChildBasedOnType(int columnIndex, dynamic initialValue, CustomTableCellPosition position, StylesGetters theme) {
     CustomTableType type = widget.controller.getColumnType(columnIndex) ?? CustomTableType.text;
@@ -221,144 +234,149 @@ class _CustomTableState extends State<CustomTable> {
                     scrollDirection: Axis.horizontal,
                     controller: horizontalScrollController,
                     children: [
-                      Table(
-                        columnWidths: Map.fromIterables(
-                          List.generate(widget.controller.columns + 1, (index) => index),
-                          List.generate(widget.controller.columns + 1, (index) {
-                            if (index == 0) {
-                              return FixedColumnWidth(widget.cellWidth * 1.2);
-                            } else {
-                              return FixedColumnWidth(widget.cellWidth);
-                            }
-                          }),
-                        ),
-                        defaultColumnWidth: FixedColumnWidth(widget.cellWidth),
-                        children: [
-                          // First Row
-                          TableRow(
-                            children: List.generate(widget.controller.columns + 2, (colIndex) {
-                              if (colIndex == 0) {
-                                return _buildTitleCell(context, theme);
-                              } else if (colIndex == widget.controller.columns + 1) {
-                                return Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10, top: 5),
-                                      child: IconButton(
-                                        onPressed: () {
-                                          widget.controller.newColumn();
-                                        },
-                                        tooltip: S.of(context).projects_module_spreadsheet_new_column,
-                                        style: ButtonThemes.secondaryButtonStyle(context),
-                                        icon: const Icon(Icons.add_rounded)
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10, top: 5),
-                                      child: IconButton(
-                                        onPressed: () {
-                                          showSubMenu(context, CustomTableRearangeColumnsSubMenu(controller: CustomTableRearangeColumnsSubMenuController(tableController: widget.controller)));
-                                        },
-                                        tooltip: S.of(context).projects_module_spreadsheet_manage_columns_sub_menu_title,
-                                        style: ButtonThemes.secondaryButtonStyle(context),
-                                        icon: Transform.scale(
-                                          scaleX: -1,
-                                          child: Transform.rotate(
-                                            angle: math.pi / 2,
-                                            child: const Icon(Icons.move_down_rounded)
-                                          ),
-                                        )
-                                      ),
-                                    )
-                                  ],
-                                );
-                              } else {
-                                return _buildColumnTypeSelector(colIndex, theme);
-                              }
-                            }),
-                          ),
-                          // Content
-                          ...buildCells(theme),
-                          // Last row
-                          TableRow(
+                      FutureBuilder(
+                        future: initialize(),
+                        builder: (context, snapshot) {
+                          return Table(
+                            columnWidths: Map.fromIterables(
+                              List.generate(widget.controller.columns + 1, (index) => index),
+                              List.generate(widget.controller.columns + 1, (index) {
+                                if (index == 0) {
+                                  return FixedColumnWidth(widget.cellWidth * 1.2);
+                                } else {
+                                  return FixedColumnWidth(widget.cellWidth);
+                                }
+                              }),
+                            ),
+                            defaultColumnWidth: FixedColumnWidth(widget.cellWidth),
                             children: [
-                              ...List.generate(widget.controller.columns + 2, (colIndex) {
-                                if (colIndex == 0) {
-                                  return Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 10, top: 5),
-                                        child: SizedBox(
-                                          height: 40,
-                                          child: ElevatedButton(
+                              // First Row
+                              TableRow(
+                                children: List.generate(widget.controller.columns + 2, (colIndex) {
+                                  if (colIndex == 0) {
+                                    return _buildTitleCell(context, theme);
+                                  } else if (colIndex == widget.controller.columns + 1) {
+                                    return Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10, top: 5),
+                                          child: IconButton(
                                             onPressed: () {
-                                              widget.controller.newRow();
+                                              widget.controller.newColumn();
                                             },
+                                            tooltip: S.of(context).projects_module_spreadsheet_new_column,
                                             style: ButtonThemes.secondaryButtonStyle(context),
-                                            child: Text(
-                                              S.of(context).projects_module_spreadsheet_new_row,
-                                              style: theme.titleMedium
-                                              .copyWith(
-                                                color: theme.onPrimary,
-                                                fontSize: 13
-                                              )
-                                            ),
+                                            icon: const Icon(Icons.add_rounded)
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                      padding: const EdgeInsets.only(left: 10, top: 5),
-                                      child: IconButton(
-                                        onPressed: () {
-                                          showSubMenu(context, CustomTableRearangeRowsSubMenu(controller: CustomTableRearangeColumnsSubMenuController(tableController: widget.controller)));
-                                        },
-                                        tooltip: S.of(context).projects_module_spreadsheet_manage_rows_sub_menu_title,
-                                        style: ButtonThemes.secondaryButtonStyle(context),
-                                        icon: const Icon(Icons.move_down_rounded)
-                                      ),
-                                    )
-                                    ],
-                                  );
-                                } else if (widget.controller.getColumnType(colIndex) == CustomTableType.number) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(top: 2),
-                                    child: widget.controller.getColumnCalculation(colIndex) != null 
-                                      ? AnimatedBuilder(
-                                        animation: widget.controller.numbersChangeNotifier,
-                                        builder: (context, animation) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(top: 5),
-                                            child: CalculationViewer(
-                                              key: UniqueKey(), // Keep it or it will not refresh
-                                              calculationName: widget.controller.getColumnCalculation(colIndex) ?? 'sum', 
-                                              numbers: widget.controller.getAllNumbersFromColumn(colIndex),
-                                              isFromLastCell: colIndex == widget.controller.columns,
-                                              onFunctionSelected: (name) {
-                                                widget.controller.setColumnCalculation(colIndex, name);
-                                              },
-                                              theme: theme,
-                                            ),
-                                          );
-                                        }
-                                      )
-                                      : Padding(
-                                        padding: const EdgeInsets.only(top: 5),
-                                        child: FunctionSelector(
-                                            theme: theme,
-                                            onFunctionSelected: (name) {
-                                              widget.controller.setColumnCalculation(colIndex, name);
-                                            }, 
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 10, top: 5),
+                                          child: IconButton(
+                                            onPressed: () {
+                                              showSubMenu(context, CustomTableRearangeColumnsSubMenu(controller: CustomTableRearangeColumnsSubMenuController(tableController: widget.controller)));
+                                            },
+                                            tooltip: S.of(context).projects_module_spreadsheet_manage_columns_sub_menu_title,
+                                            style: ButtonThemes.secondaryButtonStyle(context),
+                                            icon: Transform.scale(
+                                              scaleX: -1,
+                                              child: Transform.rotate(
+                                                angle: math.pi / 2,
+                                                child: const Icon(Icons.move_down_rounded)
+                                              ),
+                                            )
                                           ),
-                                      ),
-                                  );
-                                } 
-                                else {
-                                  return const SizedBox();
-                                }
-                              })
-                            ]
-                          )
-                        ],
+                                        )
+                                      ],
+                                    );
+                                  } else {
+                                    return _buildColumnTypeSelector(colIndex, theme);
+                                  }
+                                }),
+                              ),
+                              // Content
+                              ...buildCells(theme),
+                              // Last row
+                              TableRow(
+                                children: [
+                                  ...List.generate(widget.controller.columns + 2, (colIndex) {
+                                    if (colIndex == 0) {
+                                      return Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 10, top: 5),
+                                            child: SizedBox(
+                                              height: 40,
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  widget.controller.newRow();
+                                                },
+                                                style: ButtonThemes.secondaryButtonStyle(context),
+                                                child: Text(
+                                                  S.of(context).projects_module_spreadsheet_new_row,
+                                                  style: theme.titleMedium
+                                                  .copyWith(
+                                                    color: theme.onPrimary,
+                                                    fontSize: 13
+                                                  )
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                          padding: const EdgeInsets.only(left: 10, top: 5),
+                                          child: IconButton(
+                                            onPressed: () {
+                                              showSubMenu(context, CustomTableRearangeRowsSubMenu(controller: CustomTableRearangeColumnsSubMenuController(tableController: widget.controller)));
+                                            },
+                                            tooltip: S.of(context).projects_module_spreadsheet_manage_rows_sub_menu_title,
+                                            style: ButtonThemes.secondaryButtonStyle(context),
+                                            icon: const Icon(Icons.move_down_rounded)
+                                          ),
+                                        )
+                                        ],
+                                      );
+                                    } else if (widget.controller.getColumnType(colIndex) == CustomTableType.number) {
+                                      return Padding(
+                                        padding: const EdgeInsets.only(top: 2),
+                                        child: widget.controller.getColumnCalculation(colIndex) != null 
+                                          ? AnimatedBuilder(
+                                            animation: widget.controller.numbersChangeNotifier,
+                                            builder: (context, animation) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(top: 5),
+                                                child: CalculationViewer(
+                                                  key: UniqueKey(), // Keep it or it will not refresh
+                                                  calculationName: widget.controller.getColumnCalculation(colIndex) ?? 'sum', 
+                                                  numbers: widget.controller.getAllNumbersFromColumn(colIndex),
+                                                  isFromLastCell: colIndex == widget.controller.columns,
+                                                  onFunctionSelected: (name) {
+                                                    widget.controller.setColumnCalculation(colIndex, name);
+                                                  },
+                                                  theme: theme,
+                                                ),
+                                              );
+                                            }
+                                          )
+                                          : Padding(
+                                            padding: const EdgeInsets.only(top: 5),
+                                            child: FunctionSelector(
+                                                theme: theme,
+                                                onFunctionSelected: (name) {
+                                                  widget.controller.setColumnCalculation(colIndex, name);
+                                                }, 
+                                              ),
+                                          ),
+                                      );
+                                    } 
+                                    else {
+                                      return const SizedBox();
+                                    }
+                                  })
+                                ]
+                              )
+                            ],
+                          );
+                        }
                       ),
                     ],
                   ),

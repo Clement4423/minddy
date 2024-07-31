@@ -15,10 +15,13 @@ class ColumnCalculationController extends ChangeNotifier {
 }
 
 class CustomTableController extends ChangeNotifier {
+
+  final Map emptyMap = {};
+
   int columns;
   int rows;
   Map<CustomTableCellPosition, dynamic> cellData = {};
-  Map<int, CustomTableType> columnTypes = {};
+  Map<int, CustomTableType> columnTypes = {1: CustomTableType.email};
   Map<int, String> columnNames = {};
   Map<int, String> rowNames = {};
 
@@ -42,7 +45,17 @@ class CustomTableController extends ChangeNotifier {
   bool isExtendingCells = false;
   List<CustomTableCellPosition> selectedCellsForExtension = [];
 
-  CustomTableController(this.columns, this.rows, {this.tableTitle = ''});
+  CustomTableController(
+    this.columns,
+    this.rows, {
+      this.tableTitle = '',
+      this.cellData = const {},
+      this.columnsFunctions = const {},
+      this.columnsSelectionsOptions = const {},
+      this.rowNames = const {},
+      this.columnNames = const {},
+      this.columnTypes = const {},
+    });
 
   String incrementDigits(String input, int incrementBy, bool isAdding) {
     final regex = RegExp(r'([a-zA-Z])(\d+)\)');

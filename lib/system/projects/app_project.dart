@@ -35,20 +35,20 @@ class AppProject {
     return isFolderDeleted;
   }
 
-  static Future<bool> modifyProperty(String path, String propety, dynamic newValue) async {
+  static Future<bool> modifyProperty(String projectPath, String propety, dynamic newValue) async {
     try {
-      String infoFilePath = "$path/infos.json";
+      String infoFilePath = "$projectPath/infos.json";
       Map<String, dynamic>? infoFileContent = await StaticVariables.fileSource.readJsonFile(infoFilePath);
       if (infoFileContent != null) {
         infoFileContent[propety] = newValue;
-        await StaticVariables.fileSource.writeJsonFile(infoFilePath, infoFileContent);
-        return true;
+        bool isSaved = await StaticVariables.fileSource.writeJsonFile(infoFilePath, infoFileContent);
+        return isSaved;
       } else {
         await AppLogs.writeError("Tried to modify a non-existing file", "project.dart - modifyProperty");
         return false;
       }
     } catch(e) {
-      await AppLogs.writeError(e, "project.dart - modifyProperty");
+      await AppLogs.writeError(e, "app_project.dart - modifyProperty");
       return false;
     }
   }
@@ -72,7 +72,7 @@ class AppProject {
 
   static Future<bool> _generateProjectFiles(String projectFolderName) async {
     try {
-      for (ProjectsModules module in ProjectsModules.values) {
+      for (ProjectsModulesTypes module in ProjectsModulesTypes.values) {
         await _createFolders(projectFolderName, module.name);
       }
       return true;

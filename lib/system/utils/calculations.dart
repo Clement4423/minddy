@@ -84,6 +84,10 @@ num mode(List<num> numbers) {
   return frequency.entries.firstWhere((element) => element.value == maxFrequency).key;
 }
 
+num flipSign(num number) {
+  return number * -1;
+}
+
 String formatCalculation(String input) {
     if (input.startsWith('=')) {
       return input;

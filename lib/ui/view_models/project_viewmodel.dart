@@ -54,7 +54,7 @@ class ProjectViewModel extends ChangeNotifier {
     pageIndicatorController.currentPageIndex = lastPage;
   }
 
-  Future<void> newModule(ProjectsModules moduleType) async {
+  Future<void> newModule(ProjectsModulesTypes moduleType) async {
     modulesModels.add(
       ProjectModuleModel(
         type: moduleType, 
@@ -75,7 +75,7 @@ class ProjectViewModel extends ChangeNotifier {
     }
   }
 
-  buildContainers(Size screenSize) {
+  void buildContainers(Size screenSize) {
     double padding = screenSize.width / 4.2;
     _getModules();
 
@@ -118,7 +118,7 @@ class ProjectViewModel extends ChangeNotifier {
 
   }
 
-  Future<bool> _duplicateModuleData(int id, String projectPath, ProjectsModules moduleType, int newId) async {
+  Future<bool> _duplicateModuleData(int id, String projectPath, ProjectsModulesTypes moduleType, int newId) async {
     try {
       String actualDataFilePath = "$projectPath/${moduleType.name}/$id.json";
       String newDataFilePath = "$projectPath/${moduleType.name}/$newId.json";
@@ -151,7 +151,7 @@ class ProjectViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> _deleteModuleData(int id, String projectPath, ProjectsModules moduleType) async {
+  Future<bool> _deleteModuleData(int id, String projectPath, ProjectsModulesTypes moduleType) async {
     try {
       String dataFilePath = "$projectPath/${moduleType.name}/$id.json";
       bool isDeleted = await StaticVariables.fileSource.removeFile(dataFilePath);
@@ -178,7 +178,7 @@ class ProjectViewModel extends ChangeNotifier {
     return isContentSaved;
   }
 
-  _createNewContainer() {
+  void _createNewContainer() {
     modulesContainer.add(ModuleContainerModel(modules: []));
   }
 
@@ -196,7 +196,7 @@ class ProjectViewModel extends ChangeNotifier {
   }
 
   ProjectModuleModel _convertJsonModuleToModel(Map module) {
-    return ProjectModuleModel(type: ProjectsModules.values[module['type']], id: module['id'], projectPath: projectInfo.path);
+    return ProjectModuleModel(type: ProjectsModulesTypes.values[module['type']], id: module['id'], projectPath: projectInfo.path);
   }
 
   List<Map> _convertMapToJson() {
@@ -209,13 +209,13 @@ class ProjectViewModel extends ChangeNotifier {
 
   IProjectsModules _buildModule(ProjectModuleModel module) {
     switch (module.type) {
-      case ProjectsModules.tasks:
+      case ProjectsModulesTypes.tasks:
         return ProjectsTasksModule(key: UniqueKey(), duplicateFunction: duplicateModule, deleteFunction: deleteModule, controller: ProjectsTasksModuleController(id: module.id, projectPath: module.projectPath));
-      case ProjectsModules.expenses:
+      case ProjectsModulesTypes.expenses:
         return ProjectsTasksModule(key: UniqueKey(), duplicateFunction: duplicateModule, deleteFunction: deleteModule, controller: ProjectsTasksModuleController(id: module.id, projectPath: module.projectPath));
-      case ProjectsModules.notes:
+      case ProjectsModulesTypes.notes:
         return ProjectsNotesModule(key: UniqueKey(), duplicateFunction: duplicateModule, deleteFunction: deleteModule, controller: ProjectsNotesModuleController(id: module.id, projectPath: module.projectPath));
-      case ProjectsModules.spreadsheet:
+      case ProjectsModulesTypes.spreadsheet:
         return ProjectsSpreadsheetModule(key: UniqueKey(), duplicateFunction: duplicateModule, deleteFunction: deleteModule, controller: ProjectsSpreadsheetModuleController(id: module.id, projectPath: module.projectPath));
     }
   }

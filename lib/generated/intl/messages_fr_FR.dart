@@ -189,6 +189,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Bien-être"),
         "center_menu_general": MessageLookupByLibrary.simpleMessage("Général"),
         "center_menu_others": MessageLookupByLibrary.simpleMessage("Autre"),
+        "custom_chart_donut_share":
+            MessageLookupByLibrary.simpleMessage("Part"),
+        "custom_chart_donut_total":
+            MessageLookupByLibrary.simpleMessage("Total"),
+        "custom_chart_grid_extend_chart":
+            MessageLookupByLibrary.simpleMessage("Agrandir le graphique"),
         "custom_date_picker_end": MessageLookupByLibrary.simpleMessage("Fin"),
         "custom_date_picker_invalid_date":
             MessageLookupByLibrary.simpleMessage("Date invalide"),

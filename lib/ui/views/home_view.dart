@@ -6,6 +6,11 @@ import 'package:minddy/system/model/custom_appbar_button_model.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar_controller.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_buttons_components/articles_menu_button.dart';
+import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_data.dart';
+import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_element.dart';
+import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_element_controller.dart';
+import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_types.dart';
+import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
 import 'package:minddy/ui/components/settings/settings_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:minddy/ui/view_models/home_viewmodel.dart';
@@ -37,6 +42,35 @@ class HomeView extends StatelessWidget {
           S.of(context).home_appbar,
           false,
               [
+                CustomAppBarButtonModel(
+                  icon: Icons.pie_chart_outline_rounded, 
+                  semanticText: "See chart",
+                  isPrimary: false, 
+                  action: () async {await showSubMenu(
+                    context, Container(
+                      width: 700,
+                      height: 420,
+                      decoration: BoxDecoration(
+                        color: theme.primaryContainer,
+                        borderRadius: BorderRadius.circular(15)
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          CustomChart(
+                            controller: CustomChartController(
+                              content: List.generate(2, (list) => List.generate(1, (index) => CustomChartData(value: 16 + (list + 1)))),
+                              width: 340, 
+                              height: 260,
+                              type: CustomChartType.barMultiples
+                            )
+                          ),
+                        ],
+                      )
+                    )
+                  );}
+                ),
                 CustomAppBarButtonModel(
                   icon: Icons.settings_rounded, 
                   semanticText: S.of(context).settings_title,
@@ -70,7 +104,6 @@ class HomeView extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 50, bottom: 30),
                               child: Text(
                                 _viewmodel.greetingText,
-                                  key: UniqueKey(),
                                   style: theme.headlineLarge.
                                   copyWith(color: theme.onBackground)
                               ),
