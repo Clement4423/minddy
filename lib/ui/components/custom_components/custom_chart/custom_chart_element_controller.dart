@@ -5,11 +5,13 @@ import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart
 import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_types.dart';
 
 class CustomChartController extends ChangeNotifier {
+  /// Prepare 80 more pixels in space for values indicators
   final double width;
+  /// Prepare 40 more pixels in space for value titles
   final double height;
   final CustomChartType type;
 
-  final List<List<CustomChartData>> content;
+  final List<CustomChartDataMultiple> content;
 
   List<num> allNumbers = [];
 
@@ -42,20 +44,15 @@ class CustomChartController extends ChangeNotifier {
 
     topPoint = getTopPoint() ?? 0;
 
-    num totalHighestNumbers = topPoint;
+    num totalHighestNumbers = getExtremeValue();
 
-    containsNegativeValue = _isListContainingNegativeValue();
-    if (containsNegativeValue) {
-      totalHighestNumbers += flipSign(getLowestNegativeValue() ?? 0);
-    }
-
-    colorPalette = colors ?? _getColorPalette();
+    colorPalette = colors != null ? colors! : isChartEmpty() ? [] : _getColorPalette();
 
     if (totalHighestNumbers != 0) {
       if (needToBeHorizontalBars()) {
-        sizeRatio = width/totalHighestNumbers;
+        sizeRatio = (width - 80) / totalHighestNumbers;
       } else {
-        sizeRatio = height/totalHighestNumbers;
+        sizeRatio = (height - 40) / totalHighestNumbers;
       }
     }
   }
@@ -71,6 +68,44 @@ class CustomChartController extends ChangeNotifier {
       default: 
         return [];
     }
+  }
+
+  Map<int, int> getOriginalIndicesMapping(List<CustomChartData> sortedList, List<CustomChartData> originalList) {
+    Map<int, int> indexMapping = {};
+    for (var i = 0; i < sortedList.length; i++) {
+      indexMapping[i] = originalList.indexOf(sortedList[i]);
+    }
+    return indexMapping;
+  }
+
+  num getExtremeValue() {
+    topPoint = getTopPoint() ?? 0;
+
+    num totalHighestNumbers = topPoint;
+
+    containsNegativeValue = _isListContainingNegativeValue();
+    if (containsNegativeValue) {
+      totalHighestNumbers = flipSign(getLowestNegativeValue() ?? 0);
+      if (totalHighestNumbers < topPoint) {
+        totalHighestNumbers = topPoint;
+      }
+    }
+
+    return totalHighestNumbers;
+  }
+
+  bool isChartEmpty() {
+    if (content.isEmpty) {
+      return true;
+    } else {
+      for (CustomChartDataMultiple part in content) {
+        if (part.values.isNotEmpty) {
+          return false;
+        }
+      }
+    } 
+
+    return true;
   }
 
   bool needToBeHorizontalBars() {
@@ -108,11 +143,11 @@ class CustomChartController extends ChangeNotifier {
 
   double? getSizeFor(num data) {
     if (sizeRatio != 0) {
-      double size = data * sizeRatio;
+      double size = (data * sizeRatio);
       if (size.isNegative) {
         size = flipSign(size).toDouble();
       }
-      return size;
+      return containsNegativeValue ? size / 2 : size;
     } else {
       return null;
     }
@@ -120,11 +155,11 @@ class CustomChartController extends ChangeNotifier {
 
   List<num> _getAllNumbersFromContent() {
     List<num> numbers = [];
-    for (List<CustomChartData> dataList in content) {
+    for (CustomChartDataMultiple dataList in content) {
       if (type == CustomChartType.barStacked) {      
-        numbers.add(sum(_getAllNumbersFromList(dataList)));
+        numbers.add(sum(_getAllNumbersFromList(dataList.values)));
       } else {
-        numbers.addAll(_getAllNumbersFromList(dataList));
+        numbers.addAll(_getAllNumbersFromList(dataList.values));
       }
     }
 
@@ -133,36 +168,31 @@ class CustomChartController extends ChangeNotifier {
 
   List<CustomChartData> getDataAsUnique() {
     List<CustomChartData> data = [];
-    for (List<CustomChartData> dataList in content) {      
-      data.addAll(dataList);
+    for (CustomChartDataMultiple dataList in content) { 
+      data.addAll(dataList.values);
     }
+
+    data = sortDataList(data);
+
     return data;
   }
 
   List<CustomChartDataMultiple> getDataAsMultiples() {
-    List<CustomChartDataMultiple> data = [];
-    for (List<CustomChartData> dataList in content) {
-      data.add(CustomChartDataMultiple(values: dataList));
-    }
-    return data;
-  }  
+    return content;
+  } 
 
-  double getPercentageOf(num data) {
-    num total = sum(allNumbers);
+  List<CustomChartData> sortDataList(List<CustomChartData> list) {
+    list.sort((a, b) {
+      return a.value.compareTo(b.value);
+    });
 
-    if (total != 0) {
-      return data/total;
-    } else {
-      return 0;
-    }
+    return list;
   }
 
   List<num> _getAllNumbersFromList(List<CustomChartData> dataList) {
     List<num> numbers = [];
     for (CustomChartData data in dataList) {
-      if (data.value is num) {
-        numbers.add(data.value);
-      }
+      numbers.add(data.value);
     }
     return numbers;
   }
@@ -183,7 +213,11 @@ class CustomChartController extends ChangeNotifier {
   int? getTopPoint() {
     num max = maximum(allNumbers);
     if (max != 0) {
-      return roundToCompleteInteger((max * 1.8).round());
+      int maxRounded = roundToCompleteInteger((max * 1.8).round());
+      if (maxRounded < max) {
+        return roundToCompleteInteger((max * 2).round());
+      }
+      return maxRounded;
     } else {
       return null;
     }

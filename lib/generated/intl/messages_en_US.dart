@@ -190,6 +190,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Share"),
         "custom_chart_donut_total":
             MessageLookupByLibrary.simpleMessage("Total"),
+        "custom_chart_empty_content": MessageLookupByLibrary.simpleMessage(
+            "To create a chart, please add data to it"),
         "custom_chart_grid_extend_chart":
             MessageLookupByLibrary.simpleMessage("Enlarge chart"),
         "custom_date_picker_end": MessageLookupByLibrary.simpleMessage("End"),
@@ -308,6 +310,32 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Project notes"),
         "projects_module_notes_title":
             MessageLookupByLibrary.simpleMessage("Notes"),
+        "projects_module_spreadsheet_chart_chart_column_plural":
+            MessageLookupByLibrary.simpleMessage("Columns"),
+        "projects_module_spreadsheet_chart_chart_column_single":
+            MessageLookupByLibrary.simpleMessage("Column"),
+        "projects_module_spreadsheet_chart_chart_select_column":
+            MessageLookupByLibrary.simpleMessage("Select a column"),
+        "projects_module_spreadsheet_chart_chart_type_bar":
+            MessageLookupByLibrary.simpleMessage("Bar"),
+        "projects_module_spreadsheet_chart_chart_type_bar_grouped":
+            MessageLookupByLibrary.simpleMessage("Grouped bars"),
+        "projects_module_spreadsheet_chart_chart_type_bar_simple":
+            MessageLookupByLibrary.simpleMessage("Simple bars"),
+        "projects_module_spreadsheet_chart_chart_type_bar_stacked":
+            MessageLookupByLibrary.simpleMessage("Stacked bars"),
+        "projects_module_spreadsheet_chart_chart_type_donut":
+            MessageLookupByLibrary.simpleMessage("Donut"),
+        "projects_module_spreadsheet_chart_chart_type_subtitle":
+            MessageLookupByLibrary.simpleMessage("Chart type"),
+        "projects_module_spreadsheet_chart_new_column":
+            MessageLookupByLibrary.simpleMessage("Add a coulumn"),
+        "projects_module_spreadsheet_chart_new_tab":
+            MessageLookupByLibrary.simpleMessage("New tab"),
+        "projects_module_spreadsheet_chart_show_chart":
+            MessageLookupByLibrary.simpleMessage("Show the charts"),
+        "projects_module_spreadsheet_chart_show_table":
+            MessageLookupByLibrary.simpleMessage("Show the table"),
         "projects_module_spreadsheet_data_choose_column_type_tooltip":
             MessageLookupByLibrary.simpleMessage("Choose a column type"),
         "projects_module_spreadsheet_data_column_type":

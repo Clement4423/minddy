@@ -2678,6 +2678,146 @@ class S {
     );
   }
 
+  /// `Show the table`
+  String get projects_module_spreadsheet_chart_show_table {
+    return Intl.message(
+      'Show the table',
+      name: 'projects_module_spreadsheet_chart_show_table',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show the charts`
+  String get projects_module_spreadsheet_chart_show_chart {
+    return Intl.message(
+      'Show the charts',
+      name: 'projects_module_spreadsheet_chart_show_chart',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New tab`
+  String get projects_module_spreadsheet_chart_new_tab {
+    return Intl.message(
+      'New tab',
+      name: 'projects_module_spreadsheet_chart_new_tab',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a coulumn`
+  String get projects_module_spreadsheet_chart_new_column {
+    return Intl.message(
+      'Add a coulumn',
+      name: 'projects_module_spreadsheet_chart_new_column',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chart type`
+  String get projects_module_spreadsheet_chart_chart_type_subtitle {
+    return Intl.message(
+      'Chart type',
+      name: 'projects_module_spreadsheet_chart_chart_type_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Donut`
+  String get projects_module_spreadsheet_chart_chart_type_donut {
+    return Intl.message(
+      'Donut',
+      name: 'projects_module_spreadsheet_chart_chart_type_donut',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bar`
+  String get projects_module_spreadsheet_chart_chart_type_bar {
+    return Intl.message(
+      'Bar',
+      name: 'projects_module_spreadsheet_chart_chart_type_bar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Simple bars`
+  String get projects_module_spreadsheet_chart_chart_type_bar_simple {
+    return Intl.message(
+      'Simple bars',
+      name: 'projects_module_spreadsheet_chart_chart_type_bar_simple',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Grouped bars`
+  String get projects_module_spreadsheet_chart_chart_type_bar_grouped {
+    return Intl.message(
+      'Grouped bars',
+      name: 'projects_module_spreadsheet_chart_chart_type_bar_grouped',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stacked bars`
+  String get projects_module_spreadsheet_chart_chart_type_bar_stacked {
+    return Intl.message(
+      'Stacked bars',
+      name: 'projects_module_spreadsheet_chart_chart_type_bar_stacked',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select a column`
+  String get projects_module_spreadsheet_chart_chart_select_column {
+    return Intl.message(
+      'Select a column',
+      name: 'projects_module_spreadsheet_chart_chart_select_column',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Column`
+  String get projects_module_spreadsheet_chart_chart_column_single {
+    return Intl.message(
+      'Column',
+      name: 'projects_module_spreadsheet_chart_chart_column_single',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Columns`
+  String get projects_module_spreadsheet_chart_chart_column_plural {
+    return Intl.message(
+      'Columns',
+      name: 'projects_module_spreadsheet_chart_chart_column_plural',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To create a chart, please add data to it`
+  String get custom_chart_empty_content {
+    return Intl.message(
+      'To create a chart, please add data to it',
+      name: 'custom_chart_empty_content',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Total`
   String get custom_chart_donut_total {
     return Intl.message(

@@ -193,6 +193,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Parte"),
         "custom_chart_donut_total":
             MessageLookupByLibrary.simpleMessage("Total"),
+        "custom_chart_empty_content": MessageLookupByLibrary.simpleMessage(
+            "Para crear un gráfico, agréguele datos"),
         "custom_chart_grid_extend_chart":
             MessageLookupByLibrary.simpleMessage("Ampliar gráfico"),
         "custom_date_picker_end": MessageLookupByLibrary.simpleMessage("Fin"),
@@ -313,6 +315,32 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Notas del proyecto"),
         "projects_module_notes_title":
             MessageLookupByLibrary.simpleMessage("Notas"),
+        "projects_module_spreadsheet_chart_chart_column_plural":
+            MessageLookupByLibrary.simpleMessage("Columnas"),
+        "projects_module_spreadsheet_chart_chart_column_single":
+            MessageLookupByLibrary.simpleMessage("Columna"),
+        "projects_module_spreadsheet_chart_chart_select_column":
+            MessageLookupByLibrary.simpleMessage("Seleccione una columna"),
+        "projects_module_spreadsheet_chart_chart_type_bar":
+            MessageLookupByLibrary.simpleMessage("Barra"),
+        "projects_module_spreadsheet_chart_chart_type_bar_grouped":
+            MessageLookupByLibrary.simpleMessage("Barras agrupadas"),
+        "projects_module_spreadsheet_chart_chart_type_bar_simple":
+            MessageLookupByLibrary.simpleMessage("Barras simples"),
+        "projects_module_spreadsheet_chart_chart_type_bar_stacked":
+            MessageLookupByLibrary.simpleMessage("Barras apiladas"),
+        "projects_module_spreadsheet_chart_chart_type_donut":
+            MessageLookupByLibrary.simpleMessage("Donut"),
+        "projects_module_spreadsheet_chart_chart_type_subtitle":
+            MessageLookupByLibrary.simpleMessage("Tipo de gráfico"),
+        "projects_module_spreadsheet_chart_new_column":
+            MessageLookupByLibrary.simpleMessage("Agregar una columna"),
+        "projects_module_spreadsheet_chart_new_tab":
+            MessageLookupByLibrary.simpleMessage("Nueva pestaña"),
+        "projects_module_spreadsheet_chart_show_chart":
+            MessageLookupByLibrary.simpleMessage("Mostrar gráficos"),
+        "projects_module_spreadsheet_chart_show_table":
+            MessageLookupByLibrary.simpleMessage("Mostrar tabla"),
         "projects_module_spreadsheet_data_choose_column_type_tooltip":
             MessageLookupByLibrary.simpleMessage("Elija un tipo de columna"),
         "projects_module_spreadsheet_data_column_type":

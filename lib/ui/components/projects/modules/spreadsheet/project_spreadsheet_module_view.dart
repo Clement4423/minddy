@@ -3,11 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interface/projects_modules_controller_interface.dart';
 import 'package:minddy/system/interface/projects_modules_interface.dart';
+import 'package:minddy/system/model/custom_table_type.dart';
+import 'package:minddy/system/model/default_app_color.dart';
+import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_element.dart';
+import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_element_controller.dart';
 import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_types.dart';
+import 'package:minddy/ui/components/custom_components/custom_dropdown_button.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_view.dart';
 import 'package:minddy/ui/components/menus/popup_menu/popup_menu_button.dart';
 import 'package:minddy/ui/components/menus/popup_menu/popup_menu_item_model.dart';
 import 'package:minddy/ui/components/projects/modules/spreadsheet/chart_tab_widget.dart';
+import 'package:minddy/ui/components/projects/modules/spreadsheet/custom_projects_spreadsheet_module_column_dropdown_selector.dart';
 import 'package:minddy/ui/components/projects/modules/spreadsheet/project_spreadsheet_module_view_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -99,7 +105,7 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
                           onPressed: () async {
                             await widget.controller.changeView();
                           }, 
-                          tooltip: widget.controller.showTable ? "Convert to chart" : "Show table",
+                          tooltip: widget.controller.showTable ? S.current.projects_module_spreadsheet_chart_show_chart : S.current.projects_module_spreadsheet_chart_show_table,
                           style: ButtonThemes.secondaryButtonStyle(context),
                           icon: Icon(widget.controller.showTable ? CupertinoIcons.chart_pie : CupertinoIcons.table, color: theme.onPrimary)
                         ),
@@ -165,6 +171,7 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
               else 
               // Chart
                 Container(
+                  key: UniqueKey(),
                   width: widget.width - 10,
                   height: widget.height - 10 - 10 - 50,
                   margin: const EdgeInsets.only(top: 10),
@@ -190,13 +197,14 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
                                 return Padding(
                                   padding: const EdgeInsets.only(right: 10),
                                   child: ChartTabWidget(
+                                    key: UniqueKey(),
                                     tabId: tabId, 
-                                    isSelected: index == widget.controller.tabs.keys.toList().indexOf(widget.controller.activeTab ?? 0) ? true : false,
+                                    isSelected: tabId == widget.controller.activeTab ? true : false,
                                     chartType: _getChartType(widget.controller.chartsTypes[tabId] ?? ''), 
                                     tabTitle: widget.controller.tabs[tabId] ?? '',
                                     renameTab: widget.controller.renameTab,
                                     navigateToTab: widget.controller.selectTab, 
-                                    deleteTab: widget.controller.deleteTab, 
+                                    deleteTab: widget.controller.deleteTab,
                                     theme: theme
                                   ),
                                 );
@@ -208,6 +216,7 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
                                   onPressed: () async {
                                     await widget.controller.newTab();
                                   },
+                                  tooltip: S.current.projects_module_spreadsheet_chart_new_tab,
                                   style: ButtonStyle(
                                     shape: MaterialStatePropertyAll(
                                       RoundedRectangleBorder(
@@ -235,16 +244,159 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           // Chart type selection, and columns selection
-                          SingleChildScrollView(
-                            child: SizedBox(
-                              width: widget.width / 3,
+                          Container(
+                            width: widget.width / 3,
+                            height: widget.height - 10 - 10 - 50 - 40 - 20 - 30,
+                            margin: const EdgeInsets.only(top: 30),
+                            child: SingleChildScrollView(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  
+                                  Text(
+                                    S.current.projects_module_spreadsheet_chart_chart_type_subtitle,
+                                    style: theme.titleSmall
+                                    .copyWith(color: theme.onSurface),
+                                  ),
+                                  // Chart Type selector
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: SizedBox(
+                                      width: widget.width / 3.2,
+                                      child: CustomDropdownButton(
+                                        menuTitle: getChartTypeName(widget.controller.getChartType(widget.controller.activeTab ?? 0)),
+                                        backgroundColor: theme.primary,
+                                        foregroundColor: theme.onPrimary,
+                                        action: (CustomChartType value) {},
+                                        items: [
+                                          DropdownMenuItem(
+                                            onTap: () {
+                                              widget.controller.selectChartType(
+                                                widget.controller.activeTab ?? 0, 
+                                                CustomChartType.donut
+                                              );
+                                            },
+                                            value: CustomChartType.donut,
+                                            child: Text(
+                                              S.current.projects_module_spreadsheet_chart_chart_type_donut,
+                                              style: theme.bodyMedium
+                                              .copyWith(color: theme.onPrimary),
+                                            )
+                                          ),
+                                          DropdownMenuItem(
+                                            onTap: () {
+                                              widget.controller.selectChartType(
+                                                widget.controller.activeTab ?? 0, 
+                                                CustomChartType.barSingle
+                                              );
+                                            },
+                                            value: CustomChartType.barSingle,
+                                            child: Text(
+                                              S.current.projects_module_spreadsheet_chart_chart_type_bar,
+                                              style: theme.bodyMedium
+                                              .copyWith(color: theme.onPrimary),
+                                            )
+                                          )
+                                        ],
+                                        needToRestart: false
+                                      ),
+                                    ),
+                                  ),
+                                  // Bar chart type selector
+                                  if (barTypes.contains(widget.controller.getChartType(widget.controller.activeTab ?? 0)))
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Row(
+                                        children: [
+                                          CustomProjectsSpreadsheetModuleBarChartTypeButton(
+                                            theme: theme,
+                                            onTap: widget.controller.selectChartType,
+                                            tooltip: S.current.projects_module_spreadsheet_chart_chart_type_bar_simple,
+                                            tabId: widget.controller.activeTab ?? 0,
+                                            selectedType: widget.controller.getChartType(widget.controller.activeTab ?? 0),
+                                            buttonType: CustomChartType.barSingle
+                                          ),
+                                          CustomProjectsSpreadsheetModuleBarChartTypeButton(
+                                            theme: theme,
+                                            onTap: widget.controller.selectChartType,
+                                            tooltip: S.current.projects_module_spreadsheet_chart_chart_type_bar_grouped,
+                                            tabId: widget.controller.activeTab ?? 0,
+                                            selectedType: widget.controller.getChartType(widget.controller.activeTab ?? 0),
+                                            buttonType: CustomChartType.barMultiples
+                                          ),
+                                          CustomProjectsSpreadsheetModuleBarChartTypeButton(
+                                            theme: theme,
+                                            onTap: widget.controller.selectChartType,
+                                            tooltip: S.current.projects_module_spreadsheet_chart_chart_type_bar_stacked,
+                                            tabId: widget.controller.activeTab ?? 0,
+                                            selectedType: widget.controller.getChartType(widget.controller.activeTab ?? 0),
+                                            buttonType: CustomChartType.barStacked
+                                          )
+                                        ],
+                                      ),
+                                    ),
+
+                                  // Columns selector
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 30),
+                                    child: Text(
+                                      widget.controller.chartColumns[widget.controller.activeTab ?? 0]!.length > 1 
+                                        ? S.current.projects_module_spreadsheet_chart_chart_column_plural
+                                        : S.current.projects_module_spreadsheet_chart_chart_column_single,
+                                      style: theme.titleSmall.copyWith(color: theme.onSurface),
+                                    )
+                                  ),
+                                  ...List.generate(widget.controller.chartColumns[widget.controller.activeTab ?? 0]?.length ?? 0, (index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: CustomProjectsSpreadsheetModuleColumnDropdownSelector(
+                                        width: widget.width / 3.2,
+                                        height: 40,
+                                        controller: widget.controller,
+                                        columnIndex: widget.controller.chartColumns[widget.controller.activeTab ?? 0]?[index] ?? 0,
+                                        columnName: getColumnName(widget.controller.chartColumns[widget.controller.activeTab ?? 0]?[index] ?? -1),
+                                        availableColumns: _getColumns(),
+                                      ),
+                                    );
+                                  }),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 5, bottom: 5),
+                                    child: SizedBox(
+                                      width: widget.width / 3.2,
+                                      height: 40,
+                                      child: IconButton(
+                                        icon: Icon(Icons.add_rounded, color: theme.onPrimary),
+                                        style: ButtonThemes.secondaryButtonStyle(context).copyWith(elevation: const MaterialStatePropertyAll(0)),
+                                        tooltip: S.current.projects_module_spreadsheet_chart_new_column,
+                                        onPressed: () async {
+                                          widget.controller.addChartColumn(widget.controller.activeTab ?? 0);
+                                        },
+                                      ),
+                                    ),
+                                  )
                                 ],
                               ),
+                            ),
+                          ),
+                          // Chart
+                          Container(
+                            width: widget.width / 1.8,
+                            height: widget.height - 10 - 10 - 50 - 40 - 20 - 30,
+                            margin: EdgeInsets.only(
+                              top: 30, 
+                              right: widget.controller.getChartContent(
+                                widget.controller.activeTab ?? 0).isEmpty || widget.controller.getChartType(widget.controller.activeTab ?? 0) == CustomChartType.donut 
+                                  ? 0 
+                                  : 30
+                            ),
+                            child: CustomChart(
+                              controller: CustomChartController(
+                                width: widget.width / 1.8,
+                                height: widget.height - 10 - 10 - 50 - 40 - 20 - 30, 
+                                type: widget.controller.getChartType(widget.controller.activeTab ?? 0), 
+                                unit: widget.controller.getChartUnit(widget.controller.activeTab ?? 0),
+                                content: widget.controller.getChartContent(widget.controller.activeTab ?? 0),
+                              )
                             ),
                           )
                         ],
@@ -259,6 +411,38 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
     );
   }
 
+  List<CustomChartType> barTypes = [CustomChartType.barMultiples, CustomChartType.barSingle, CustomChartType.barStacked];
+
+  List<MapEntry<int, String>> _getColumns() {
+    List<int> usedColumns = widget.controller.chartColumns[widget.controller.activeTab ?? 0] ?? [];
+
+    List<MapEntry<int, CustomTableType>> compatibles = widget.controller.customTableController.columnTypes.entries.where(
+      (entry) => entry.value == CustomTableType.number
+    ).toList();
+
+    compatibles.removeWhere((element) => usedColumns.contains(element.key));
+
+    List<MapEntry<int, String>> columns = compatibles.map((entry) => MapEntry<int, String>(entry.key, getColumnName(entry.key))).toList();
+
+    return columns;
+  }
+
+  String getColumnName(int colIndex) {
+    if (colIndex == -1) {
+      return S.current.projects_module_spreadsheet_chart_chart_select_column;
+    } else {
+      return widget.controller.customTableController.columnNames[colIndex] ?? S.current.projects_module_spreadsheet_value_unnamed;
+    }
+  }
+
+  String getChartTypeName(CustomChartType type) {
+    if (type == CustomChartType.donut) {
+      return S.current.projects_module_spreadsheet_chart_chart_type_donut;
+    } else {
+      return S.current.projects_module_spreadsheet_chart_chart_type_bar;
+    }
+  }
+
   CustomChartType _getChartType(String typeName) {
     if (typeName == CustomChartType.barMultiples.name) {
       return CustomChartType.barMultiples;
@@ -269,5 +453,158 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
     } else {
       return CustomChartType.donut;
     }
+  }
+}
+
+class CustomProjectsSpreadsheetModuleBarChartTypeButton extends StatefulWidget {
+  const CustomProjectsSpreadsheetModuleBarChartTypeButton({
+    super.key, 
+    required this.theme,
+    required this.selectedType, 
+    required this.buttonType,
+    required this.tabId,
+    required this.tooltip,
+    required this.onTap
+  });
+
+  final StylesGetters theme;
+  final CustomChartType selectedType;
+  final CustomChartType buttonType;
+  final String tooltip;
+  final int tabId;
+  final Function(int, CustomChartType) onTap;
+
+  @override
+  State<CustomProjectsSpreadsheetModuleBarChartTypeButton> createState() => _CustomProjectsSpreadsheetModuleBarChartTypeButtonState();
+}
+
+class _CustomProjectsSpreadsheetModuleBarChartTypeButtonState extends State<CustomProjectsSpreadsheetModuleBarChartTypeButton> {
+
+  bool isHovering = false;
+
+  Color getColor() {
+    return widget.selectedType == widget.buttonType 
+      ? widget.theme.secondary 
+      : widget.theme.onSecondary;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: widget.tooltip,
+      child: GestureDetector(
+        onTap: () {
+          widget.onTap(widget.tabId, widget.buttonType);
+        },
+        child: MouseRegion(
+          onEnter: (details) => isHovering = true,
+          onExit: (details) => isHovering = false,
+          cursor: SystemMouseCursors.click,
+          child: Container(
+            width: 40,
+            height: 40,
+            margin: const EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.only(bottom: 5, right: 5, left: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: isHovering ? getColor().withOpacity(0.7) : getColor()
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: widget.buttonType == CustomChartType.barStacked 
+              ? [
+                SizedBox(
+                  width: 8,
+                  height: 30,
+                  child: Column(
+                    children: [
+                      Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: widget.selectedType == widget.buttonType 
+                                ? widget.theme.onSecondary 
+                                : widget.theme.secondary
+                            ),
+                          ),
+                          Container(
+                            width: 8,
+                            height: 15,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: DefaultAppColors.mintGreen.color
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                  height: 30,
+                  child: Column(
+                    children: [
+                      Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: widget.selectedType == widget.buttonType 
+                                ? widget.theme.onSecondary 
+                                : widget.theme.secondary
+                            ),
+                          ),
+                          Container(
+                            width: 8,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: DefaultAppColors.mintGreen.color
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ]
+              : [
+                Container(
+                  width: 8,
+                  height: 15,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: widget.selectedType == widget.buttonType 
+                      ? widget.theme.onSecondary 
+                      : widget.theme.secondary
+                  ),
+                ),
+                Container(
+                  width: 8,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: widget.buttonType == CustomChartType.barMultiples
+                      ? DefaultAppColors.mintGreen.color 
+                      : widget.selectedType == widget.buttonType 
+                        ? widget.theme.onSecondary
+                        : widget.theme.secondary
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

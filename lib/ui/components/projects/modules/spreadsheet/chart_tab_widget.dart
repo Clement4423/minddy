@@ -102,6 +102,9 @@ class __ChartTabWidgetState extends State<ChartTabWidget> {
                       focusNode.requestFocus();
                     });
                   },
+                  onTapDown: (details) async {
+                    await widget.navigateToTab(widget.tabId);
+                  },
                   child: TextField(
                     controller: TextEditingController(text: widget.tabTitle),
                     onChanged: (value) {

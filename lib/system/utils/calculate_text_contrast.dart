@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:ui';
 
 double _relativeLuminance(Color color) {
-  // Convert sRGB values to linear RGB
   num r = color.red / 255.0;
   num g = color.green / 255.0;
   num b = color.blue / 255.0;
@@ -11,7 +10,6 @@ double _relativeLuminance(Color color) {
   g = g <= 0.03928 ? g / 12.92 : pow((g + 0.055) / 1.055, 2.4);
   b = b <= 0.03928 ? b / 12.92 : pow((b + 0.055) / 1.055, 2.4);
 
-  // Calculate the relative luminance
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 

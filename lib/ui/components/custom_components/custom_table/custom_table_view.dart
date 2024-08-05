@@ -58,6 +58,8 @@ class _CustomTableState extends State<CustomTable> {
     }
   }
 
+  final FocusNode _titleCellFocusNode = FocusNode();
+
   Widget _buildTitleCell(BuildContext context, StylesGetters theme) {
     return Container(
       height: widget.cellHeight,
@@ -75,9 +77,12 @@ class _CustomTableState extends State<CustomTable> {
               widget.controller.tableTitle = value;
             },
             onEditingComplete: () {
+              _titleCellFocusNode.unfocus();
               setState(() {});
             },
+            focusNode: _titleCellFocusNode,
             controller: TextEditingController(text: widget.controller.tableTitle),
+            autofocus: false,
             style: theme.titleLarge.copyWith(color: theme.onSurface, fontSize: 20),
             cursorColor: theme.onSurface,
             decoration: InputDecoration(
@@ -165,8 +170,6 @@ class _CustomTableState extends State<CustomTable> {
     }
   }
 
-  // TODO : Faire en sorte de pouvoir convertir en graphiques
-
   List<TableRow> buildCells(StylesGetters theme) {
     List<TableRow> list = List.generate(widget.controller.rows, (rowIndex) {
       return TableRow(
@@ -205,6 +208,7 @@ class _CustomTableState extends State<CustomTable> {
   void dispose() {
     verticalScrollController.dispose();
     horizontalScrollController.dispose();
+    _titleCellFocusNode.dispose();
     super.dispose();
   }
 

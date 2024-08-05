@@ -13,6 +13,7 @@ class CustomChartBar extends StatelessWidget {
     required this.value,
     required this.isHorizontal,
     required this.shouldOffsetUp,
+    this.shouldOffsetDownIfNegative = true,
     required this.unit,
     this.secondaryValueForTooltip,
     this.borderRadius,
@@ -29,6 +30,7 @@ class CustomChartBar extends StatelessWidget {
   final num? secondaryValueForTooltip;
   final BorderRadius? borderRadius;
   final bool shouldOffsetUp;
+  final bool? shouldOffsetDownIfNegative;
   final bool isHorizontal;
 
   final double height;
@@ -40,7 +42,7 @@ class CustomChartBar extends StatelessWidget {
     }
 
     double verticalOffset = 0; 
-    if (value.isNegative) {
+    if (value.isNegative && shouldOffsetDownIfNegative == true) {
       verticalOffset = height / 2;
     } else if (shouldOffsetUp) {
       verticalOffset = -(height / 2);
@@ -54,7 +56,7 @@ class CustomChartBar extends StatelessWidget {
     }
 
     double horizontalOffset = 0;
-    if (value.isNegative) {
+    if (value.isNegative && shouldOffsetDownIfNegative == true) {
       horizontalOffset = -(width / 2);
     } else if (shouldOffsetUp) {
       horizontalOffset = width / 2;
@@ -80,7 +82,7 @@ class CustomChartBar extends StatelessWidget {
           height: height,
           decoration: BoxDecoration(
             color: color,
-            borderRadius: borderRadius ?? BorderRadius.circular(isHorizontal ? height / 5 : width / 5)
+            borderRadius: borderRadius ?? BorderRadius.circular(isHorizontal ? height / 7 : width / 7)
           ),
         ),
       ),

@@ -44,17 +44,17 @@ class _DonutChartState extends State<DonutChart> {
     return widget.values[hoveredIndex!];
   }
 
+  num flipIfNegative(num number) {
+    if (number.isNegative) {
+      return flipSign(number);
+    }
+
+    return number;
+  }
+
   List<num> _getValuesAsNum() {
     List<num> valuesAsNum = widget.values.map((data) {
-      if (data.value is num) {
-        return data.value as num;
-      } else {
-        try {
-          return num.tryParse(data.value) ?? 0;
-        } catch (e) {
-          return 0;
-        }
-      }
+      return flipIfNegative(data.value);
     }).toList();
     
     valuesAsNum.sort();
@@ -70,12 +70,6 @@ class _DonutChartState extends State<DonutChart> {
 
   @override
   void initState() {
-    widget.values.sort((x, y) {
-      num a = x.value as num;
-      num b = y.value as num;
-
-      return a.compareTo(b);
-    });
     widget.values = widget.values.reversed.toList();
 
     valuesAsNum = _getValuesAsNum();
@@ -103,7 +97,7 @@ class _DonutChartState extends State<DonutChart> {
     return CustomChartDataTooltip(
       key: shouldChangeTooltip ? UniqueKey() : tooltipKey,
       value: hoveredSectionData?.value ?? 0,
-      secondaryValue: hoveredSectionData?.value != null ? (hoveredSectionData?.value / valuesAsNumTotal) * 100 : null,
+      secondaryValue: hoveredSectionData?.value != null ? (flipIfNegative(hoveredSectionData?.value ?? 1) / valuesAsNumTotal) * 100 : null,
       secondaryValuePrefix: '${S.current.custom_chart_donut_share}: ',
       secondaryValueUnit: '%',
       name: hoveredSectionData?.title,
@@ -207,7 +201,9 @@ class DonutChartPainter extends CustomPainter {
     final paint = Paint()..style = PaintingStyle.fill;
 
     for (int i = 0; i < values.length; i++) {
-      final sweepAngle = (values[i] / values.reduce((a, b) => a + b)) * 2 * pi;
+      num value= values[i];
+      num total = sum(values);
+      double sweepAngle = (value / total) * 2 * pi;
       paint.color = colorPalette[i];
       canvas.drawArc(rect, startAngle, sweepAngle, true, paint);
       startAngle += sweepAngle;

@@ -4,9 +4,12 @@ import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/interface/projects_modules_controller_interface.dart';
 import 'package:minddy/system/model/custom_table_cell_position.dart';
 import 'package:minddy/system/model/custom_table_type.dart';
+import 'package:minddy/system/model/number_value.dart';
 import 'package:minddy/system/model/projects_modules.dart';
 import 'package:minddy/system/projects/get_module_data.dart';
+import 'package:minddy/system/utils/calculations.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
+import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_data.dart';
 import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_types.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_selection_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_controller.dart';
@@ -22,7 +25,7 @@ class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IPro
 
   ProjectsSpreadsheetModuleController({required this.id, required this.projectPath}) {
     customTableController = CustomTableController(1, 1, tableTitle: id.toString());
-    initialize().then((value) => notifyListeners());
+    initialize().then((value) => WidgetsBinding.instance.addPostFrameCallback((_) {notifyListeners();}));
   }
 
   bool showTable = true;
@@ -48,33 +51,30 @@ class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IPro
       showTable = true;
     }
 
-    await savingMethod();
-    notifyListeners();
+    await rebuild();
   }
 
-  Future<void> selectTab(tabId) async {
+  Future<void> selectTab(int tabId) async {
     activeTab = tabId;
 
-    await savingMethod();
-    notifyListeners();
+    await rebuild();
   }
 
   Future<void> newTab() async {
-    tabs[createUniqueId()] = '';
+    int id = createUniqueId();
+    tabs[id] = '';
+    chartsTypes[id] = CustomChartType.barSingle.name;
+    chartColumns[id] = [-1];
 
-    print(tabs);
+    activeTab = id;
 
-    await savingMethod();
-    notifyListeners();
+    await rebuild();
   }
 
   Future<void> renameTab(int tabId, String newName) async {
     tabs[tabId] = newName;
 
-    print(tabs);
-
-    await savingMethod();
-    notifyListeners();
+    await rebuild();
   }
 
   Future<void> deleteTab(int tabId) async {
@@ -82,20 +82,138 @@ class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IPro
     chartColumns.remove(tabId);
     chartsTypes.remove(tabId);
 
-    await savingMethod();
-    notifyListeners();
+    if (tabs.entries.isEmpty) {
+      newTab();
+      return;
+    }
+
+    activeTab = tabs.entries.last.key;
+
+    await rebuild();
   }
 
   Future<void> selectChartType(int tabId, CustomChartType newType) async {
     chartsTypes[tabId] = newType.name;
 
-    await savingMethod();
-    notifyListeners();
+    await rebuild();
   }
 
-  Future<void> setChartColumns(int tabId, List<int> columns) async {
-    chartColumns[tabId] = columns;
-    notifyListeners();
+  Future<void> addChartColumn(int tabId) async {
+    chartColumns[tabId]?.add(-1);
+    await rebuild();
+  }
+
+  Future<void> updateChartColumn(int tabId, int lastColumnindex, int newColumnIndex) async {
+    int lastIndex = chartColumns[tabId]?.indexOf(lastColumnindex) ?? 0;
+    if (lastIndex == -1) {
+      chartColumns[tabId]?.clear();
+      return;
+    }
+    chartColumns[tabId]?[lastIndex] = newColumnIndex;
+    await rebuild();
+  }
+
+  Future<void> deleteChartColumn(int tabId, int columnIndex) async {
+    chartColumns[tabId]?.remove(columnIndex);
+    await rebuild();
+  }
+
+  CustomChartType getChartType(int tabID) {
+    String typeAsString = chartsTypes[tabID] ?? '';
+
+    if (typeAsString == '') {
+      return CustomChartType.barSingle;
+    } 
+
+    for (CustomChartType type in CustomChartType.values) {
+      if (typeAsString == type.name) {
+        return type;
+      }
+    }
+
+    return CustomChartType.barSingle;
+  }
+
+  String? getChartUnit(int tabID) {
+    List<int> columns = chartColumns[tabID] ?? [];
+
+    int isPercentageCount = 0;
+    Map<String, int> currenciesCount = {};
+
+    for (MapEntry<int, String> row in customTableController.rowNames.entries) {
+      for (int column in columns) {
+          var result = _tryFormatNumber(customTableController.getCellData(CustomTableCellPosition(row: row.key, column: column)));
+
+          if (result.isPercentage) {
+            isPercentageCount++;
+          } else if (result.currency != null) {
+            if (currenciesCount[result.currency] == null) {
+              currenciesCount[result.currency!] = 1;
+            } else {
+              currenciesCount[result.currency!] = currenciesCount[result.currency!]! + 1;
+            }
+          }
+
+      }
+    }
+
+    var maxCurrencyCount = maximum(currenciesCount.entries.map((e) => num.parse(e.value.toString())).toList());
+
+    if (maxCurrencyCount > isPercentageCount) {
+      return currenciesCount.entries.firstWhere((element) => element.value == maxCurrencyCount).key;
+    } else if (isPercentageCount > maxCurrencyCount) {
+      return '%';
+    } else {
+      return null;
+    }
+  }
+
+  List<CustomChartDataMultiple> getChartContent(int tabID) {
+    List<int> columns = chartColumns[tabID] ?? [];
+
+    List<CustomChartDataMultiple> rowsData = [];
+
+    for (MapEntry<int, String> row in customTableController.rowNames.entries) {
+      List<CustomChartData> columnsData = [];
+      for (int column in columns) {
+        if (customTableController.getColumnType(column) == CustomTableType.number) {
+        columnsData.add(
+          CustomChartData(
+            title: getChartType(tabID) == CustomChartType.donut || getChartType(tabID) == CustomChartType.barSingle 
+              ? customTableController.getRowName(row.key) 
+              : customTableController.getColumnName(column),
+            value: _tryFormatNumber(
+              customTableController.getCellData(
+                CustomTableCellPosition(row: row.key, column: column)
+              )
+            ).value
+          )
+        );        
+      }
+    }
+      bool isNotEmpty = columnsData.map((value) => value.value == 0).toList().contains(false);
+      if (isNotEmpty) {
+        rowsData.add(CustomChartDataMultiple(values: columnsData, title: customTableController.getRowName(row.key)));
+      }
+    }
+
+    return rowsData;
+  }
+
+  NumberValue _tryFormatNumber(dynamic input) {
+    if (input == null) {
+      return NumberValue(0);
+    }
+
+    NumberValue? value;
+
+    if (input.toString().startsWith('=')) {
+      value = customTableController.calculateExpression(input);
+    } else {
+      value = revertFormattedCalculation(input);
+    }
+    
+    return value ?? NumberValue(0);
   }
 
   Future<bool> initialize() async {
@@ -103,12 +221,22 @@ class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IPro
       Map<String, dynamic>? data = await getModuleData(id, ProjectsModulesTypes.spreadsheet, projectPath);
       if (data == null) {
         await StaticVariables.fileSource.createFile("$projectPath/${ProjectsModulesTypes.spreadsheet.name}/$id.json");
+        await StaticVariables.fileSource.writeJsonFile(
+          "$projectPath/${ProjectsModulesTypes.spreadsheet.name}/$id.json", 
+          defaultDataFormat
+        );
       }
       await updateCustomTableController(data);
       showTable = data?["show_table"] ?? true;
-      tabs = convertMapToMapIntString( data?["tabs"] ?? {});
-      chartsTypes = convertMapToMapIntString( data?["tabs"] ?? {});
+      tabs = convertMapToMapIntString(data?["tabs"] ?? {});
+      if (tabs.isEmpty) {
+        newTab();
+      }
+      chartsTypes = convertMapToMapIntString(data?["charts_types"] ?? {});
       chartColumns = convertMapToMapIntListInt(data?["charts_columns"] ?? {});
+      activeTab = tabs.isNotEmpty 
+        ? int.tryParse(data?["active_tab"].toString() ?? tabs.entries.first.key.toString()) ?? tabs.entries.first.key
+        : null;
       return true;
     } catch (e) {
       await AppLogs.writeError(e, "project_spreadsheet_module_view_controller.dart - initialize");
@@ -133,11 +261,25 @@ class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IPro
 
   List<MapEntry<int, List<int>>> newEntries = [];
 
-  initialMap.forEach((key, value) {newEntries.add(MapEntry(int.tryParse(key) ?? 0, value.runtimeType == List ? value : []));});
+  initialMap.forEach((key, value) {newEntries.add(MapEntry(int.tryParse(key) ?? 0, value.runtimeType == List ? _convertListToListInt(value) : []));});
 
   map.addEntries(newEntries);
 
   return map;
+ }
+
+
+ List<int> _convertListToListInt(List list) {
+  List<int> newList = [];
+
+  for (dynamic element in list) {
+    element = num.tryParse(element.toString());
+    if (element is num || element is int || element is double) {
+      newList.add(element);
+    }
+  }
+
+  return newList;
  }
 
 
@@ -158,6 +300,7 @@ class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IPro
     try {
       customTableController.saveCells();
       Map<String, dynamic> savedMap = {
+        "active_tab": activeTab != null ? activeTab.toString() : tabs.entries.first.key.toString(),
         "tabs": getStringKeyMap(tabs),
         "charts_types": getStringKeyMap(chartsTypes),
         "charts_columns": getChartColumnsAsMap(chartColumns),
@@ -182,6 +325,11 @@ class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IPro
       await AppLogs.writeError(e, "project_spreadsheet_module_view_controller.dart - savingMethod");
       return false;
     } 
+  }
+
+  Future<void> rebuild() async {
+    await savingMethod();
+    notifyListeners();
   }
 
   Map<String, dynamic> getStringKeyMap<T>(Map<int, T> map) {
@@ -265,6 +413,10 @@ class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IPro
   }
 
   Map<String, dynamic> defaultDataFormat = {
+    "active_tab": '',
+    "tabs": {},
+    "charts_types": {},
+    "charts_columns": {},
     "show_table": true,
     'title': '',
     'rows': 1,

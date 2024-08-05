@@ -69,19 +69,18 @@ class _ColumnTypeSelectorState extends State<ColumnTypeSelector> {
   }
 
   void _updateState({bool? setIsHovering}) {
-    bool needToRequestFocus = false;
-     if (_focusNode.hasFocus) {
-      needToRequestFocus = true;
-    }
+    bool needToRequestFocus = _focusNode.hasFocus;
+    TextSelection currentSelection = _textEditingController.selection;
+
     setState(() {
       if (setIsHovering != null) {
         isHovering = setIsHovering;
       }
     });
+
     if (needToRequestFocus) {
       _focusNode.requestFocus();
-      final cursorPosition = _textEditingController.selection;
-      _textEditingController.selection = cursorPosition;
+      _textEditingController.selection = currentSelection;
     }
   }
 
@@ -157,6 +156,9 @@ class _ColumnTypeSelectorState extends State<ColumnTypeSelector> {
                     focusNode: _focusNode,
                     onChanged: (value) {
                       widget.widget.controller.setColumnName(widget.colIndex, value);
+                    },
+                    onEditingComplete: () {
+                      _focusNode.unfocus();
                       _updateState();
                     },
                     style: widget.theme.titleMedium.copyWith(fontWeight: FontWeight.w600),

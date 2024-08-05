@@ -35,9 +35,9 @@ class _CustomChartState extends State<CustomChart> {
   bool isHovering = false;
   final _CustomChartHoverController _hoverController = _CustomChartHoverController();
 
-  double getBarWidth() {
-    double width = (widget.controller.width / widget.controller.allNumbers.length) / 1.2;
-    double maxWidth = widget.controller.width / 5;
+  double getBarWidth([bool isOverHeight = false]) {
+    double width = ((isOverHeight ? widget.controller.height - 40 : widget.controller.width - 80) / widget.controller.allNumbers.length) * 0.8;
+    double maxWidth = (widget.controller.width - 80) / 5;
 
     if (width > maxWidth) {
       return maxWidth;
@@ -48,14 +48,14 @@ class _CustomChartState extends State<CustomChart> {
 
   double getPadding() {
     double totalBarWidth = getBarWidth() * widget.controller.allNumbers.length;
-    double remainingSpace = widget.controller.width - totalBarWidth;
+    double remainingSpace = (widget.controller.width - 80) - totalBarWidth;
     double padding = (remainingSpace / (widget.controller.allNumbers.length * 2)) / 2;
     return padding > remainingSpace ? 0.0 : padding;
   }
 
   double getHeight(num data) {
     if (widget.controller.needToBeHorizontalBars()) {
-      return getBarWidth();
+      return getBarWidth(true);
     } else {
       return widget.controller.getSizeFor(data) ?? 0;
     }
@@ -72,66 +72,88 @@ class _CustomChartState extends State<CustomChart> {
   List<Widget> buildBarsAsStacked(StylesGetters theme) {
     List<CustomChartDataMultiple> content = widget.controller.getDataAsMultiples();
 
-    List<Widget> columns = [];
+    List<Widget> stackedBars = [];
 
     for (CustomChartDataMultiple part in content) {
-      num total = sum(part.values.map((e) => e.value as num).toList());
+      num total = sum(part.values.map((e) => e.value).toList());
 
-      part.values.sort((x, y) {
-        num a = x.value as num;
-        num b = y.value as num;
+      num totalNegativevalues = sum(part.values.map((e) {
+        if (e.value.isNegative) {
+          return flipSign(e.value);
+        }
+        return 0;
+      }).toList());
 
-        return a.compareTo(b);
-      });
+      double sizeForNegativeValues = widget.controller.getSizeFor(totalNegativevalues) ?? 0;
 
-      List<Widget> data = part.values.reversed.map((data) {
+      List<CustomChartData> values = List.from(part.values);
+
+      if (totalNegativevalues > 0) {
+        values.sort((a, b) {
+          return a.value.compareTo(b.value);
+        });
+      }
+
+      List<num> sizes = values.map((data) => getWidth(data.value) as num).toList();
+
+      num minSize = minimum(sizes);
+
+      List<Widget> bars = values.reversed.map((data) {
         return CustomChartBar(
           color: widget.controller.colorPalette[part.values.indexOf(data)],
           theme: theme, 
           unit: widget.controller.getUnit(),
+          value: data.value,
           secondaryValueForTooltip: total,
           height: getHeight(data.value),
           width: getWidth(data.value),
           isHorizontal: widget.controller.needToBeHorizontalBars(),
           name: data.title,
-          shouldOffsetUp: widget.controller.containsNegativeValue,
-          value: data.value,
+          shouldOffsetUp: false,
+          shouldOffsetDownIfNegative: false,
           borderRadius: 
-            part.values.indexOf(data) == 0 
+            values.indexOf(data) == 0 
             ? BorderRadius.only(
-              bottomLeft: Radius.circular(getBarWidth() / 5), 
-              bottomRight: Radius.circular(getBarWidth() / 5)
+              bottomLeft: Radius.circular(minSize / 7), 
+              bottomRight: Radius.circular(minSize / 7)
             )
-            : part.values.indexOf(data) == part.values.length - 1
+            : values.indexOf(data) == values.length - 1
               ? BorderRadius.only(
-                topLeft: Radius.circular(getBarWidth() / 5),
-                topRight: Radius.circular(getBarWidth() / 5)
+                topLeft: Radius.circular(minSize / 7),
+                topRight: Radius.circular(minSize / 7)
             )
             : BorderRadius.zero,
         );
       }).toList();
 
-      columns.add(
+      stackedBars.add(
         widget.controller.needToBeHorizontalBars() 
-        ? Row(
-          crossAxisAlignment: widget.controller.containsNegativeValue 
-            ? CrossAxisAlignment.center
-            : CrossAxisAlignment.end,
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: data
+        ? Container(
+          margin: widget.controller.containsNegativeValue ? EdgeInsets.only(left: ((widget.controller.width - 80) / 2) - sizeForNegativeValues) : null,
+          child: Row(
+            crossAxisAlignment: widget.controller.containsNegativeValue 
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: bars
+          ),
         )
-        : Column(
-          crossAxisAlignment: widget.controller.containsNegativeValue 
-            ? CrossAxisAlignment.center
-            : CrossAxisAlignment.end,
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: data
+        : Container(
+          margin: widget.controller.containsNegativeValue ? EdgeInsets.only(bottom: ((widget.controller.height - 40) / 2) - sizeForNegativeValues) : null,
+          child: Column(
+            crossAxisAlignment: widget.controller.containsNegativeValue 
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: bars
+          ),
         )
       );
     }
-    return columns;
+    
+    return stackedBars;
   }
 
   List<Widget> buildBarsAsMultiples(StylesGetters theme) {
@@ -345,7 +367,7 @@ class _CustomChartState extends State<CustomChart> {
   Widget buildBars(StylesGetters theme) {
     if (widget.controller.needToBeHorizontalBars()) {
       return SizedBox(
-        width: widget.controller.width,
+        width: widget.controller.width - 80,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: widget.controller.containsNegativeValue 
@@ -382,10 +404,12 @@ class _CustomChartState extends State<CustomChart> {
   }
 
   List<Widget> buildIndicators() {
-  num lowestNegativeValue = widget.controller.getLowestNegativeValue() ?? 0;
+  num lowestNegativeValue = widget.controller.containsNegativeValue 
+    ? flipSign(widget.controller.getExtremeValue())
+    : widget.controller.getLowestNegativeValue() ?? 0;
   num midPoint = widget.controller.getMidPoint() ?? 0;
   num topPoint = widget.controller.containsNegativeValue 
-    ? flipSign(widget.controller.getLowestNegativeValue() ?? 0)
+    ? widget.controller.getExtremeValue()
     : widget.controller.getTopPoint() ?? 0;
 
   num secondValue = midPoint == 0 
@@ -406,14 +430,21 @@ class _CustomChartState extends State<CustomChart> {
   return List.generate(5, (index)  {
     String value = formatCalculation('${values[index].toString().replaceAll('.', ',')}${widget.controller.getUnit() ?? ''}');
     return Row(
+      mainAxisAlignment: widget.controller.needToBeHorizontalBars() 
+        ? MainAxisAlignment.start
+        : MainAxisAlignment.end,
       children: [
         Padding(
           padding: EdgeInsets.only(right: widget.controller.needToBeHorizontalBars() ? 0 : 10),
-          child: Text(
-            value.replaceAll(' ', '').length > 10 
-              ? formatCalculation(value.replaceAll(' ', '').substring(0, 7).padRight(10, '.'))
-              : value,
-            textAlign: TextAlign.end,
+          child: CustomTooltip(
+            message: value,
+            child: Text(
+              value.replaceAll(' ', '').length > 9
+                ? value.substring(0, 6).padRight(9, '.')
+                : value,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
+            ),
           ),
         )
       ],
@@ -431,9 +462,9 @@ class _CustomChartState extends State<CustomChart> {
           children: [
             DashedLine(
               color: theme.onPrimary.withOpacity(0.5),
-              dashWidth: widget.controller.width / (widget.controller.height / 10), 
-              dashSpace: (widget.controller.width / (widget.controller.height / 10)) / 2, 
-              lineHeight: widget.controller.height,
+              dashWidth: (widget.controller.width - 80) / ((widget.controller.height - 40) / 10), 
+              dashSpace: ((widget.controller.width - 80) / ((widget.controller.height - 40) / 10)) / 2, 
+              lineHeight: widget.controller.height - 40,
             ),
           ],
         ))
@@ -449,9 +480,9 @@ class _CustomChartState extends State<CustomChart> {
           children: [
             DashedLine(
               color: widget.controller.gridColor ?? theme.onPrimary.withOpacity(0.3),
-              dashWidth: widget.controller.width / (widget.controller.height / 10), 
-              dashSpace: (widget.controller.width / (widget.controller.height / 10)) / 2, 
-              lineWidth: widget.controller.width
+              dashWidth: (widget.controller.width - 80) / ((widget.controller.height - 40) / 10), 
+              dashSpace: ((widget.controller.width - 80) / ((widget.controller.height - 40) / 10)) / 2, 
+              lineWidth: widget.controller.width - 80
             )
           ],
         ))
@@ -467,41 +498,90 @@ class _CustomChartState extends State<CustomChart> {
     }
   }
 
+  double getDonutChartSize() {
+    if (widget.controller.width > widget.controller.height) {
+      return widget.controller.height;
+    } else {
+      return widget.controller.width;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
     return Row(
-      children: widget.controller.type == CustomChartType.donut 
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children:
+      widget.controller.isChartEmpty() 
+      ? [
+        Container(
+          width: widget.controller.width,
+          height: widget.controller.height,
+          decoration: BoxDecoration(
+            color: widget.controller.gridColor ?? theme.primary,
+            borderRadius: BorderRadius.circular(10)
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                widget.controller.type == CustomChartType.donut 
+                ? CupertinoIcons.chart_pie
+                : CupertinoIcons.chart_bar,
+                size: widget.controller.width / 7,
+                color: theme.onPrimary
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text(
+                  S.of(context).custom_chart_empty_content,
+                  style: theme.bodyMedium.copyWith(color: theme.onPrimary),
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                  maxLines: 2,
+                ),
+              ),
+            ],
+          ),
+        )
+      ] 
+      : widget.controller.type == CustomChartType.donut 
       ? [
         DonutChart(
           values: widget.controller.getDataAsUnique(),
           colorPalette: widget.controller.colorPalette,
           unit: widget.controller.getUnit(),
           innerRadiusRatio: 0.8,
-          innerCircleColor: theme.surface,
-          width: widget.controller.width,
-          height: widget.controller.height
+          innerCircleColor: widget.controller.gridColor ?? theme.surface,
+          width: getDonutChartSize(),
+          height: getDonutChartSize()
         )
       ]
       : [
         // Grid container
         SizedBox(
-          height: widget.controller.height + 40,
+          height: widget.controller.height,
+          width: widget.controller.width,
           child: Row(
             children: [
               // Values indicators
               Container(
-                height: widget.controller.height,
+                height: widget.controller.height - 40,
                 margin: const EdgeInsets.only(bottom: 40),
+                width: 80,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.max,
                   children: [            
                     if (widget.controller.needToBeHorizontalBars()) ...buildTitles(theme) else ...buildIndicators()
                   ],
                 ),
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MouseRegion(
                     onEnter: (event) {
@@ -513,18 +593,18 @@ class _CustomChartState extends State<CustomChart> {
                       _hoverController.notify();
                     },
                     child: SizedBox(
-                      width: widget.controller.width,
-                      height: widget.controller.height,
+                      width: widget.controller.width - 80,
+                      height: widget.controller.height - 40,
                       child: Stack(
                         alignment: Alignment.bottomLeft,
                         children: [
                           // Grid
                           buildGrid(theme),
-                          
+    
                           // Data
                           SizedBox(
-                            height: widget.controller.height,
-                            width: widget.controller.width,
+                            height: widget.controller.height - 40,
+                            width: widget.controller.width - 80,
                             child: buildBars(theme),
                           ),
                           // Scale up button
@@ -604,7 +684,7 @@ class _CustomChartState extends State<CustomChart> {
                   // Bottom with titles
                   SizedBox(
                     height: 40,
-                    width: widget.controller.width,
+                    width: widget.controller.width - 80,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

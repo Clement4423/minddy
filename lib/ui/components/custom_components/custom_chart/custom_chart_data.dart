@@ -1,5 +1,5 @@
 class CustomChartData {
-  dynamic value;
+  num value;
 
   /// The title of the value 
   /// 
@@ -9,7 +9,11 @@ class CustomChartData {
   CustomChartData({
     required this.value,
     this.title
-  });
+  }) {
+    if (title != null && title!.isEmpty) {
+      title == null;
+    }
+  }
 }
 
 class CustomChartDataMultiple {
@@ -19,5 +23,9 @@ class CustomChartDataMultiple {
   CustomChartDataMultiple({
     required this.values,
     this.title
-  });
+  }) {
+    if (title != null && title!.isEmpty) {
+      title == null;
+    }
+  }
 }

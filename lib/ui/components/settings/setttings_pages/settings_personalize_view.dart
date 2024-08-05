@@ -43,15 +43,17 @@ class _PersonalizeViewState extends State<PersonalizeView> {
                     // Theme value
                     Tooltip(
                       message: StaticVariables.currentProjectInfo == null ? '' : S.of(context).settings_need_to_quit_project_to_change_theme,
-                      child: CustomDropdownButton(
-                        menuTitle: widget.controller.menuThemeTitle,
-                        action: widget.controller.treatThemeValue,
-                        controller: widget.controller,
-                        items: widget.controller.getThemeItems(context),
-                        needToRestart: false,
-                        enabled: StaticVariables.currentProjectInfo != null ? false : true,
-                         // Not enabled if in a project, this is done because the change of ui causes the modules to 
-                         // duplicate and create problems 
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: CustomDropdownButton(
+                          menuTitle: widget.controller.menuThemeTitle,
+                          action: widget.controller.treatThemeValue,
+                          items: widget.controller.getThemeItems(context),
+                          needToRestart: false,
+                          enabled: StaticVariables.currentProjectInfo != null ? false : true,
+                           // Not enabled if in a project, this is done because the change of ui causes the modules to 
+                           // duplicate and create problems 
+                        ),
                       ),
                     ),
                     // Use black and white
@@ -105,13 +107,15 @@ class _PersonalizeViewState extends State<PersonalizeView> {
                     ),
                     Tooltip(
                       message: StaticVariables.currentProjectInfo == null ? '' : S.of(context).settings_need_to_quit_project_to_change_language,
-                      child: CustomDropdownButton(
-                        menuTitle: widget.controller.menuLanguageTitle,
-                        action: widget.controller.treatLanguageValue,
-                        controller: widget.controller,
-                        items: widget.controller.getLanguageItems(context),
-                        needToRestart: true,
-                        enabled: StaticVariables.currentProjectInfo != null ? false : true,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: CustomDropdownButton(
+                          menuTitle: widget.controller.menuLanguageTitle,
+                          action: widget.controller.treatLanguageValue,
+                          items: widget.controller.getLanguageItems(context),
+                          needToRestart: true,
+                          enabled: StaticVariables.currentProjectInfo != null ? false : true,
+                        ),
                       ),
                     ),
                   ],
