@@ -76,17 +76,14 @@ class _ElementWidgetState extends State<CustomBulletedListElementWidget> {
         textBaseline: TextBaseline.alphabetic,
         children: [
           Center(
-            child: Transform.translate(
-              offset: const Offset(0, 4),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Container(
-                  width: 3,
-                  height: 3,
-                  decoration: BoxDecoration(
-                    color: theme.onPrimary,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                width: 3,
+                height: 3,
+                decoration: BoxDecoration(
+                  color: theme.onPrimary,
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
             ),

@@ -225,9 +225,9 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
                             ? S.of(context).projects_module_spreadsheet_date_single_tooltip 
                             : S.of(context).projects_module_spreadsheet_date_start_end_tooltip,
                           style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(widget.theme.primary),
-                            shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
-                            elevation: const MaterialStatePropertyAll(8)
+                            backgroundColor: WidgetStatePropertyAll(widget.theme.primary),
+                            shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
+                            elevation: const WidgetStatePropertyAll(8)
                           ),
                           icon: Icon(datePickerMode == CustomDatePickerMode.startEnd ? Icons.calendar_today_rounded : Icons.calendar_month_rounded, color: widget.theme.onPrimary)
                         ),

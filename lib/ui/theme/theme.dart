@@ -43,8 +43,6 @@ class AppTheme{
       brightness: Brightness.light,
       secondaryContainer: Color.fromARGB(255, 116, 232, 255),
       primaryContainer: Color.fromARGB(99, 255, 255, 255),
-      background: Color.fromARGB(255,255,255,255),
-      onBackground: Colors.black,
       primary: Colors.white,
       onPrimary: Colors.black,
       secondary: Color.fromARGB(255, 0, 133, 255,),
@@ -77,8 +75,6 @@ class AppTheme{
       brightness: Brightness.dark,
       secondaryContainer: Color.fromARGB(255, 34, 48, 52),
       primaryContainer: Color.fromARGB(99, 31, 31, 31),
-      background: Color.fromARGB(255, 31, 31, 31),
-      onBackground: Color.fromARGB(255, 241, 241, 241),
       primary: Color.fromARGB(255, 31, 31, 31),
       onPrimary: Color.fromARGB(255, 241, 241, 241),
       secondary: Color.fromARGB(255, 0, 133, 255),
@@ -111,8 +107,6 @@ class AppTheme{
       brightness: Brightness.light,
       secondaryContainer: Color.fromARGB(255, 255, 255, 255),
       primaryContainer: Color.fromARGB(99, 255, 255, 255),
-      background: Color.fromARGB(255,255,255,255),
-      onBackground: Colors.black,
       primary: Colors.white,
       onPrimary: Colors.black,
       secondary: Color.fromARGB(255, 0, 0, 0),
@@ -145,8 +139,6 @@ class AppTheme{
       brightness: Brightness.dark,
       secondaryContainer: Color.fromARGB(255, 40, 40, 40),
       primaryContainer: Color.fromARGB(99, 31, 31, 31),
-      background: Color.fromARGB(255, 31, 31, 31),
-      onBackground: Color.fromARGB(255, 241, 241, 241),
       primary: Color.fromARGB(255, 31, 31, 31),
       onPrimary: Color.fromARGB(255, 241, 241, 241),
       secondary: Color.fromARGB(255, 220, 220, 220),
@@ -179,32 +171,32 @@ class ButtonThemes {
   static ButtonStyle primaryButtonStyle(BuildContext context) {
     final StylesGetters theme = StylesGetters(context);
     return ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(theme.secondary),
-      textStyle: MaterialStateProperty.all(theme.bodyMedium.copyWith(color: theme.onSecondary)),
-      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-      elevation: MaterialStateProperty.all(7),
-      shadowColor: MaterialStateProperty.all(theme.shadow),
+      backgroundColor: WidgetStateProperty.all(theme.secondary),
+      textStyle: WidgetStateProperty.all(theme.bodyMedium.copyWith(color: theme.onSecondary)),
+      shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+      elevation: WidgetStateProperty.all(7),
+      shadowColor: WidgetStateProperty.all(theme.shadow),
     );
   }
 
   static ButtonStyle secondaryButtonStyle(BuildContext context) {
     final StylesGetters theme = StylesGetters(context);
     return ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(theme.primary),
-      textStyle: MaterialStateProperty.all(theme.bodyMedium.copyWith(color: theme.onPrimary)),
-      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-      elevation: MaterialStateProperty.all(7),
-      shadowColor: MaterialStateProperty.all(theme.shadow),
+      backgroundColor: WidgetStateProperty.all(theme.primary),
+      textStyle: WidgetStateProperty.all(theme.bodyMedium.copyWith(color: theme.onPrimary)),
+      shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+      elevation: WidgetStateProperty.all(7),
+      shadowColor: WidgetStateProperty.all(theme.shadow),
     );
   }
 
   static ButtonStyle crititcButtonTheme(BuildContext context) {
     final StylesGetters theme = StylesGetters(context);
     return ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(theme.error),
-      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-      elevation: MaterialStateProperty.all(7),
-      shadowColor: MaterialStateProperty.all(theme.shadow),
+      backgroundColor: WidgetStateProperty.all(theme.error),
+      shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+      elevation: WidgetStateProperty.all(7),
+      shadowColor: WidgetStateProperty.all(theme.shadow),
     );
   }
 }
@@ -221,8 +213,6 @@ class StylesGetters{
   Color get secondaryContainer => Theme.of(context).colorScheme.secondaryContainer;
   Color get primaryContainer => Theme.of(context).colorScheme.primaryContainer;
   Color get secondary => Theme.of(context).colorScheme.secondary;
-  Color get background => Theme.of(context).colorScheme.background;
-  Color get onBackground => Theme.of(context).colorScheme.onBackground;
   Color get onPrimary => Theme.of(context).colorScheme.onPrimary;
   Color get onSecondary => Theme.of(context).colorScheme.onSecondary;
   Color get surface => Theme.of(context).colorScheme.surface;

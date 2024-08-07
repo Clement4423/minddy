@@ -19,7 +19,7 @@ class HomeView extends StatelessWidget {
     StylesGetters theme = StylesGetters(context);
     return Container(
       decoration: BoxDecoration(
-        color: theme.background,
+        color: theme.primary,
         image: DecorationImage(
          image: AssetImage(
           AppTheme.isUsingBWMode 
@@ -71,7 +71,7 @@ class HomeView extends StatelessWidget {
                               child: Text(
                                 _viewmodel.greetingText,
                                   style: theme.headlineLarge.
-                                  copyWith(color: theme.onBackground)
+                                  copyWith(color: theme.onPrimary)
                               ),
                             ),
                             Padding(

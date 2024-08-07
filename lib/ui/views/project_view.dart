@@ -123,7 +123,7 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
           autofocus: true,
           child: Container(
             decoration: BoxDecoration(
-              color: theme.background,
+              color: theme.primary,
               image: DecorationImage(
                 image: AssetImage(
                   AppTheme.isUsingBWMode
@@ -409,7 +409,7 @@ class SwitchPageButton extends StatelessWidget {
                   } 
                 },
                 style: ButtonStyle(
-                  shape: MaterialStatePropertyAll(
+                  shape: WidgetStatePropertyAll(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)
                     )

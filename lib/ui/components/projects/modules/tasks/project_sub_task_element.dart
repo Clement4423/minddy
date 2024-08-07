@@ -68,8 +68,8 @@ class _ProjectSubTaskElementState extends State<ProjectSubTaskElement> {
                           checkColor: theme.onSecondary,
                           materialTapTargetSize: MaterialTapTargetSize.padded,
                           side: BorderSide.none,
-                          overlayColor: const MaterialStatePropertyAll(Colors.transparent),
-                          fillColor: widget.data.isChecked ? MaterialStatePropertyAll(theme.secondary) : MaterialStatePropertyAll(theme.onSecondary),
+                          overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+                          fillColor: widget.data.isChecked ? WidgetStatePropertyAll(theme.secondary) : WidgetStatePropertyAll(theme.onSecondary),
                           value: widget.data.isChecked,
                           onChanged: (value) {
                             setState(() {

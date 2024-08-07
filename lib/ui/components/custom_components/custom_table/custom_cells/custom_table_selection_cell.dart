@@ -132,6 +132,7 @@ class _CustomTableSelectionCellState extends State<CustomTableSelectionCell> {
                     : options.first.name,
                   padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
                   focusColor: Colors.transparent,
+                  dropdownColor: widget.theme.primary,
                   items: options.map((option) {
                     return DropdownMenuItem(
                       value: option.name,
@@ -194,9 +195,9 @@ class _CustomTableSelectionCellState extends State<CustomTableSelectionCell> {
                       },
                       tooltip: S.of(context).projects_module_spreadsheet_selection_cell_modify_options,
                       style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(widget.theme.primary),
-                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
-                        elevation: const MaterialStatePropertyAll(8)
+                        backgroundColor: WidgetStatePropertyAll(widget.theme.primary),
+                        shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
+                        elevation: const WidgetStatePropertyAll(8)
                       ),
                       icon: Icon(Icons.brush_rounded, color: widget.theme.onPrimary)
                     ),

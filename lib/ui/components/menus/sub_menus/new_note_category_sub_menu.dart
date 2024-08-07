@@ -56,7 +56,7 @@ class _NewNoteCategorySubMenuState extends State<NewNoteCategorySubMenu> {
                 children: [
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(S.of(context).projects_module_notes_new_category_sub_menu_subtitle, style: theme.bodySmall.copyWith(color: theme.onBackground)),
+                    child: Text(S.of(context).projects_module_notes_new_category_sub_menu_subtitle, style: theme.bodySmall.copyWith(color: theme.onPrimary)),
                   ),
                   Container(
                     width: 350,

@@ -63,7 +63,7 @@ class _ArticlesBookmarkButtonState extends State<ArticlesBookmarkButton> {
           color: theme.onPrimary,
           semanticLabel: S.of(context).articles_bookmark_semantic_text,
         ),
-        style: ButtonThemes.secondaryButtonStyle(context).copyWith(backgroundColor: MaterialStatePropertyAll(theme.primaryContainer)),
+        style: ButtonThemes.secondaryButtonStyle(context).copyWith(backgroundColor: WidgetStatePropertyAll(theme.primaryContainer)),
       ),
     );
   }

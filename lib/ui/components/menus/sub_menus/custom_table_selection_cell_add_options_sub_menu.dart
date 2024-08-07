@@ -81,7 +81,7 @@ class _CustomTableSelectionCellAddOptionsSubMenuState extends State<CustomTableS
                           child: Text(
                             S.of(context).projects_module_spreadsheet_selection_cell_all_options,
                             style: theme.bodySmall.
-                            copyWith(color: theme.onBackground),
+                            copyWith(color: theme.onPrimary),
                           ),
                         ),
                       ),

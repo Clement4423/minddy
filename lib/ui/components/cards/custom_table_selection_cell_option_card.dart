@@ -97,6 +97,7 @@ class _CustomTableSelectionCellOptionCardState extends State<CustomTableSelectio
                 cursorColor: widget.theme.onSurface,
                 decoration: InputDecoration(
                   border: InputBorder.none,
+                  contentPadding: const EdgeInsets.only(bottom: 15),
                   hintText: S.of(context).projects_module_spreadsheet_selection_cell_name_option_hint
                 ),
               ),

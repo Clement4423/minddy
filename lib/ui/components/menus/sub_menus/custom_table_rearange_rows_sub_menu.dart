@@ -62,7 +62,7 @@ class _CustomTableRearangeRowsSubMenuState extends State<CustomTableRearangeRows
                           child: Text(
                             S.of(context).projects_module_spreadsheet_manage_rows_sub_menu_subtitle,
                             style: theme.bodySmall.
-                            copyWith(color: theme.onBackground),
+                            copyWith(color: theme.onPrimary),
                           ),
                         ),
                       ),

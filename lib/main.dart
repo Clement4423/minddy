@@ -44,15 +44,15 @@ class MainApp extends StatelessWidget {
   // TODO : Faire les articles 'aide' pour les modules
   // TODO : Faire l'écran d'erreur au lancement
   // TODO : Faire thème high contrast et l'ajouter au main
-  // TODO : Faire en sorte de pouvoir mettre un projet en privé, pour nécessiter le mot de passe pour l'ouvrir
   // TODO : Terminer les paramètres
+  // TODO : Faire en sorte de pouvoir mettre un projet en privé, pour nécessiter le mot de passe pour l'ouvrir
   // TODO : Tools note rapide ?
   // TODO : Terminer la page des projets
   // TODO : Ajouter une fonction pour sauvagarder le projet avant de fermer l'app
   // TODO : Ajouter le déplacement des pages, ainsi que le déplacement des modules
   // TODO : Faire le menu d'ajout de module
   // TODO : Faire le système d'addon
-  
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<void>(

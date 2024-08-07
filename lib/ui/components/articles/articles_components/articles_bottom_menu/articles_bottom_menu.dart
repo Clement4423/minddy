@@ -83,8 +83,8 @@ class _ArticlesBottomMenuState extends State<ArticlesBottomMenu> {
                                             widget.controller.setCurrentPage("/sources");
                                           },
                                           style: widget.controller.getActive(0)
-                                              ? ButtonThemes.primaryButtonStyle(context).copyWith(elevation: const MaterialStatePropertyAll(0))
-                                              : ButtonThemes.secondaryButtonStyle(context).copyWith(elevation: const MaterialStatePropertyAll(0)),
+                                              ? ButtonThemes.primaryButtonStyle(context).copyWith(elevation: const WidgetStatePropertyAll(0))
+                                              : ButtonThemes.secondaryButtonStyle(context).copyWith(elevation: const WidgetStatePropertyAll(0)),
                                           child: Text(
                                             S.of(context).articles_bottom_menu_sources_button,
                                             style: theme.bodyMedium.copyWith(
@@ -107,8 +107,8 @@ class _ArticlesBottomMenuState extends State<ArticlesBottomMenu> {
                                               widget.controller.setCurrentPage("/content");
                                             },
                                             style: widget.controller.getActive(1)
-                                                ? ButtonThemes.primaryButtonStyle(context).copyWith(elevation: const MaterialStatePropertyAll(0))
-                                                : ButtonThemes.secondaryButtonStyle(context).copyWith(elevation: const MaterialStatePropertyAll(0)),
+                                                ? ButtonThemes.primaryButtonStyle(context).copyWith(elevation: const WidgetStatePropertyAll(0))
+                                                : ButtonThemes.secondaryButtonStyle(context).copyWith(elevation: const WidgetStatePropertyAll(0)),
                                             child: Text(
                                               S.of(context).articles_bottom_menu_content_button,
                                               style: theme.bodyMedium.copyWith(
@@ -132,8 +132,8 @@ class _ArticlesBottomMenuState extends State<ArticlesBottomMenu> {
                                               widget.controller.setCurrentPage("/notes");
                                             },
                                             style: widget.controller.getActive(2)
-                                                ? ButtonThemes.primaryButtonStyle(context).copyWith(elevation: const MaterialStatePropertyAll(0))
-                                                : ButtonThemes.secondaryButtonStyle(context).copyWith(elevation: const MaterialStatePropertyAll(0)),
+                                                ? ButtonThemes.primaryButtonStyle(context).copyWith(elevation: const WidgetStatePropertyAll(0))
+                                                : ButtonThemes.secondaryButtonStyle(context).copyWith(elevation: const WidgetStatePropertyAll(0)),
                                             child: Text(
                                               S.of(context).articles_bottom_menu_notes_button,
                                               style: theme.bodyMedium.copyWith(

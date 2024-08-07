@@ -110,9 +110,9 @@ class _CustomTableCopyableCellState extends State<CustomTableCopyableCell> {
                           },
                           tooltip: S.of(context).articles_copy_text,
                           style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(widget.theme.primary),
-                            shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
-                            elevation: const MaterialStatePropertyAll(8)
+                            backgroundColor: WidgetStatePropertyAll(widget.theme.primary),
+                            shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
+                            elevation: const WidgetStatePropertyAll(8)
                           ),
                           icon: Icon(Icons.copy_outlined, color: widget.theme.onPrimary)
                         ),

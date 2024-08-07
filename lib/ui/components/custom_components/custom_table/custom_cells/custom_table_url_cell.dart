@@ -137,9 +137,9 @@ class _CustomTableUrlCellState extends State<CustomTableUrlCell> {
                         },
                         tooltip: S.of(context).projects_module_notes_modify_category,
                         style: ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll(widget.theme.primary),
-                          shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
-                          elevation: const MaterialStatePropertyAll(8),
+                          backgroundColor: WidgetStatePropertyAll(widget.theme.primary),
+                          shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
+                          elevation: const WidgetStatePropertyAll(8),
                         ),
                         icon: Icon(Icons.brush_rounded, color: widget.theme.onPrimary),
                       ),

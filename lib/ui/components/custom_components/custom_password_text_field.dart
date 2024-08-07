@@ -51,6 +51,7 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
               keyboardType: TextInputType.visiblePassword,
               decoration: InputDecoration(
                 border: InputBorder.none,
+                contentPadding: const EdgeInsets.only(bottom: 15),
                 hintText: widget.hintText,
               ),
             ),

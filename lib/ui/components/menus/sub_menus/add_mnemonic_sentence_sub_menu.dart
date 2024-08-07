@@ -55,7 +55,7 @@ class _MnemonicSentenceSubMenuState extends State<MnemonicSentenceSubMenu> {
                     child: Text(
                       S.of(context).submenu_welcome_password_mnemonic_sentence_subtitle, 
                       style: theme.bodySmall.
-                      copyWith(color: theme.onBackground),
+                      copyWith(color: theme.onPrimary),
                     ),
                   ),
                   Container(

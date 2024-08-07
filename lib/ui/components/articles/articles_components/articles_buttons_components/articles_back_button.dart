@@ -23,7 +23,7 @@ class ArticlesBackButton extends StatelessWidget {
         }, 
         tooltip: S.of(context).articles_go_back_semantic_text,
         icon: Icon(Icons.arrow_back_rounded, color: theme.onPrimary, semanticLabel: S.of(context).articles_go_back_semantic_text,),
-        style: ButtonThemes.secondaryButtonStyle(context).copyWith(backgroundColor: MaterialStatePropertyAll(theme.primaryContainer)),
+        style: ButtonThemes.secondaryButtonStyle(context).copyWith(backgroundColor: WidgetStatePropertyAll(theme.primaryContainer)),
       ),
     );
   }

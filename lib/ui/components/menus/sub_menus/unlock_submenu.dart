@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -54,192 +56,197 @@ class _UnlockSubMenuState extends State<UnlockSubMenu> {
   @override
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
-    return Container(
-      width: 650,
-      height: 430,
-      decoration: BoxDecoration(
-        color: theme.primaryContainer,
-        borderRadius: BorderRadius.circular(20)
-      ),
-      // Main column
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Top bar
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Text(
-                          _title,
-                          style: theme.titleLarge.copyWith(color: theme.onPrimary),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: SvgPicture.asset("assets/logo/Logo.svg", width: 35, height: 35,),
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          width: 650,
+          height: 430,
+          decoration: BoxDecoration(
+            color: theme.primaryContainer,
+            borderRadius: BorderRadius.circular(20)
+          ),
+          // Main column
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Top bar
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Text(
+                              _title,
+                              style: theme.titleLarge.copyWith(color: theme.onPrimary),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: SvgPicture.asset("assets/logo/Logo.svg", width: 35, height: 35,),
+                          )
+                        ],
                       )
-                    ],
-                  )
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, bottom: 5, top: 20),
-                  child: Text(
-                    S.of(context).submenu_unlock_subtitle_text,
-                    style: theme.headlineSmall.copyWith(fontSize: 14, color: theme.onPrimary),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, bottom: 5),
-                  child: CallbackShortcuts(
-                    bindings: {
-                      const SingleActivator(LogicalKeyboardKey.enter): () async {
-                        setState(() {
-                          widget.controller.setIsLoading(true);
-                        });
-                        await _checkUnlockState(context);
-                        setState(() {
-                          widget.controller.setIsLoading(false);
-                        });
-                      }
-                    },
-                    child: Focus(
-                      child: CustomPasswordTextField(
-                        hintText: S.of(context).submenu_unlock_subtitle_text, 
-                        onChanged: (value) {
-                          _password = value;
-                        }, 
-                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15), 
-                        width: 300, 
-                        height: 50, 
-                        margin: const EdgeInsets.only(left: 10, top: 5),
-                        borderRadius: BorderRadius.circular(10), 
-                        style: theme.bodyMedium.copyWith(color: theme.onSurface)
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, bottom: 5, top: 20),
+                      child: Text(
+                        S.of(context).submenu_unlock_subtitle_text,
+                        style: theme.headlineSmall.copyWith(fontSize: 14, color: theme.onPrimary),
                       ),
                     ),
-                  ),
-                ),
-                AnimatedBuilder(
-                  animation: widget.controller, 
-                  builder: (context, child) {
-                    return Visibility(
-                      visible: widget.controller.errorMessage.isEmpty 
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, bottom: 5),
+                      child: CallbackShortcuts(
+                        bindings: {
+                          const SingleActivator(LogicalKeyboardKey.enter): () async {
+                            setState(() {
+                              widget.controller.setIsLoading(true);
+                            });
+                            await _checkUnlockState(context);
+                            setState(() {
+                              widget.controller.setIsLoading(false);
+                            });
+                          }
+                        },
+                        child: Focus(
+                          child: CustomPasswordTextField(
+                            hintText: S.of(context).submenu_unlock_subtitle_text, 
+                            onChanged: (value) {
+                              _password = value;
+                            }, 
+                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15), 
+                            width: 300, 
+                            height: 50, 
+                            margin: const EdgeInsets.only(left: 10, top: 5),
+                            borderRadius: BorderRadius.circular(10), 
+                            style: theme.bodyMedium.copyWith(color: theme.onSurface)
+                          ),
+                        ),
+                      ),
+                    ),
+                    AnimatedBuilder(
+                      animation: widget.controller, 
+                      builder: (context, child) {
+                        return Visibility(
+                          visible: widget.controller.errorMessage.isEmpty 
+                            ? false 
+                            : true,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20, top: 5, bottom: 5),
+                            child: Text(
+                              widget.controller.errorMessage,
+                              style: theme.bodyMedium.copyWith(color: theme.error),
+                            ),
+                          ),
+                        );
+                      }
+                    ),
+                    Visibility(
+                      visible: _mnemonicSentence.isEmpty 
                         ? false 
                         : true,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20, top: 5, bottom: 5),
-                        child: Text(
-                          widget.controller.errorMessage,
-                          style: theme.bodyMedium.copyWith(color: theme.error),
-                        ),
-                      ),
-                    );
-                  }
-                ),
-                Visibility(
-                  visible: _mnemonicSentence.isEmpty 
-                    ? false 
-                    : true,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: SizedBox(
-                      width: 300,
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: CustomUnderlinedTextButton(
-                          text: _showMnemonic 
-                            ? S.of(context).submenu_unlock_hide_mnemonic
-                            : S.of(context).submenu_unlock_show_mnemonic, 
-                            action: () {
-                              setState(() {
-                                _showMnemonic = !_showMnemonic;
-                              });
-                          }
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: _showMnemonic,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 5),
-                    child: Container(
-                      width: 300,
-                      height: 90,
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: theme.surface,
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Text(
-                              _mnemonicSentence,
-                              style: theme.bodyMedium.copyWith(color: theme.onSurface),
-                              textAlign: TextAlign.start,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: SizedBox(
-              width: 150,
-              height: 60,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    setState(() {
-                      widget.controller.setIsLoading(true);  
-                    });
-                    await _checkUnlockState(context);
-                    setState(() {
-                      widget.controller.setIsLoading(false);  
-                    });
-                  },
-                  style: ButtonThemes.primaryButtonStyle(context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (widget.controller.isLoading)
-                        SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: theme.onSecondary,
+                        padding: const EdgeInsets.only(left: 20),
+                        child: SizedBox(
+                          width: 300,
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: CustomUnderlinedTextButton(
+                              text: _showMnemonic 
+                                ? S.of(context).submenu_unlock_hide_mnemonic
+                                : S.of(context).submenu_unlock_show_mnemonic, 
+                                action: () {
+                                  setState(() {
+                                    _showMnemonic = !_showMnemonic;
+                                  });
+                              }
+                            ),
                           ),
                         ),
-                      Text(
-                        S.of(context).submenu_artilces_image_description_button,
-                        style: theme.titleSmall.
-                        copyWith(color: theme.onSecondary),
-                      )
-                    ],
-                  ),
-                )
+                      ),
+                    ),
+                    Visibility(
+                      visible: _showMnemonic,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20, top: 5),
+                        child: Container(
+                          width: 300,
+                          height: 90,
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: theme.surface,
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Text(
+                                  _mnemonicSentence,
+                                  style: theme.bodyMedium.copyWith(color: theme.onSurface),
+                                  textAlign: TextAlign.start,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  width: 150,
+                  height: 60,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        setState(() {
+                          widget.controller.setIsLoading(true);  
+                        });
+                        await _checkUnlockState(context);
+                        setState(() {
+                          widget.controller.setIsLoading(false);  
+                        });
+                      },
+                      style: ButtonThemes.primaryButtonStyle(context),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (widget.controller.isLoading)
+                            SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: theme.onSecondary,
+                              ),
+                            ),
+                          Text(
+                            S.of(context).submenu_artilces_image_description_button,
+                            style: theme.titleSmall.
+                            copyWith(color: theme.onSecondary),
+                          )
+                        ],
+                      ),
+                    )
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

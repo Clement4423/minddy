@@ -664,7 +664,7 @@ class _CustomChartState extends State<CustomChart> {
                                           },
                                           tooltip: S.of(context).custom_chart_grid_extend_chart,
                                           style: ButtonStyle(
-                                            shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
+                                            shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
                                           ),
                                           icon: Icon(CupertinoIcons.arrow_up_left_arrow_down_right, color: widget.controller.gridColor != null ? widget.controller.gridColor!.withOpacity(1) : theme.onPrimary)
                                           ),

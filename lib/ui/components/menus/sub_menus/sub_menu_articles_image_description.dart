@@ -71,7 +71,7 @@ class ArticlesWriteViewImageDescriptionMenu extends StatelessWidget {
                       child: Text(
                         S.of(context).submenu_artilces_image_description_subtitle, 
                         style: theme.bodySmall.
-                        copyWith(color: theme.onBackground),
+                        copyWith(color: theme.onPrimary),
                       ),
                     ),
                     Container(

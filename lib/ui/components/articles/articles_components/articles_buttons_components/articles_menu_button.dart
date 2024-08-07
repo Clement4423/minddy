@@ -34,9 +34,9 @@ class ArticlesMenuButton extends StatelessWidget {
                   copyWith(color: theme.onPrimary),
                 ),
                 style: ButtonStyle(
-                  elevation: const MaterialStatePropertyAll(12),
-                  backgroundColor: MaterialStatePropertyAll(theme.primaryContainer),
-                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)))
+                  elevation: const WidgetStatePropertyAll(12),
+                  backgroundColor: WidgetStatePropertyAll(theme.primaryContainer),
+                  shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)))
                 ),
               ),
             ),

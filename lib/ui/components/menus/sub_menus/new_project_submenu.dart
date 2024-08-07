@@ -42,7 +42,7 @@ class NewProjectSubMenu extends StatelessWidget {
                         child: Text(
                           S.of(context).submenu_new_project_subtitle, 
                           style: theme.bodySmall.
-                          copyWith(color: theme.onBackground),
+                          copyWith(color: theme.onPrimary),
                         ),
                       ),
                       Container(

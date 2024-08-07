@@ -49,6 +49,7 @@ class CustomDropdownButton extends StatelessWidget {
         style: theme.bodyMedium.copyWith(color: backgroundColor ?? theme.onSurface),
         borderRadius: BorderRadius.circular(10),
         underline: const SizedBox(),
+        dropdownColor: enabled ? backgroundColor ?? theme.surface : Colors.grey,
         isExpanded: true,
         items: enabled ? items : [],
         onChanged: (value) async {

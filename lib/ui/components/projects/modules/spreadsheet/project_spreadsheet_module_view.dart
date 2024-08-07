@@ -218,12 +218,12 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
                                   },
                                   tooltip: S.current.projects_module_spreadsheet_chart_new_tab,
                                   style: ButtonStyle(
-                                    shape: MaterialStatePropertyAll(
+                                    shape: WidgetStatePropertyAll(
                                       RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10)
                                       )
                                     ),
-                                    backgroundColor: MaterialStatePropertyAll(theme.primary)
+                                    backgroundColor: WidgetStatePropertyAll(theme.primary)
                                   ),
                                   icon: Center(
                                     child: Icon(
@@ -366,7 +366,7 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
                                       height: 40,
                                       child: IconButton(
                                         icon: Icon(Icons.add_rounded, color: theme.onPrimary),
-                                        style: ButtonThemes.secondaryButtonStyle(context).copyWith(elevation: const MaterialStatePropertyAll(0)),
+                                        style: ButtonThemes.secondaryButtonStyle(context).copyWith(elevation: const WidgetStatePropertyAll(0)),
                                         tooltip: S.current.projects_module_spreadsheet_chart_new_column,
                                         onPressed: () async {
                                           widget.controller.addChartColumn(widget.controller.activeTab ?? 0);

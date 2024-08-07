@@ -20,7 +20,7 @@ class ArticlesActionButton extends StatelessWidget {
         tooltip: semanticLabel,
         icon: Icon(icon, color: theme.onPrimary, semanticLabel: semanticLabel),
         style: ButtonThemes.secondaryButtonStyle(context).
-        copyWith(backgroundColor: MaterialStatePropertyAll(theme.primaryContainer)),
+        copyWith(backgroundColor: WidgetStatePropertyAll(theme.primaryContainer)),
       ),
     );
   }

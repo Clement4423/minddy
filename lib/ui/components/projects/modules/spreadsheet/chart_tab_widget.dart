@@ -160,8 +160,8 @@ class __ChartTabWidgetState extends State<ChartTabWidget> {
                       await widget.deleteTab(widget.tabId);
                     },
                     style: ButtonStyle(
-                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-                      backgroundColor: MaterialStatePropertyAll(widget.theme.primaryContainer)
+                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+                      backgroundColor: WidgetStatePropertyAll(widget.theme.primaryContainer)
                     ),
                     tooltip: S.of(context).snackbar_delete_button,
                     icon: Center(
