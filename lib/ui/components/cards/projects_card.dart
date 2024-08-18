@@ -24,7 +24,7 @@ class ProjectCard extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () async {
-              AppRouter.router.showProject(context, projectInfo);
+              await AppRouter.router.showProject(context, projectInfo);
             },
             child: MouseRegion(
               cursor: SystemMouseCursors.click,

@@ -60,6 +60,7 @@
     "articles_importer_import_images_button": "Importer",
     "articles_importer_dont_import_images_button": "Ne pas importer",
     "articles_empty_menu_page_text" : "C'est vide pour l'instant. Importez des articles ou écrivez les vôtres pour remplir l'espace !",
+    "articles_empty_menu_saved_page_text": "Aucun article enregistré pour l'instant, pour enregistrer un article, cliquez sur enregistrer l'article",
     "articles_new_article": "Nouvel article",
     "articles_import_articles": "Importer des articles",
     "articles_export_canceled": "L'article n'a pas été exporté",

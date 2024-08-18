@@ -95,6 +95,30 @@ num mode(List<num> numbers) {
       .key;
 }
 
+num sinh(num x) {
+  return (exp(x) - exp(-x)) / 2;
+}
+
+num cosh(num x) {
+  return (exp(x) + exp(-x)) / 2;
+}
+
+num tanh(num x) {
+  return sinh(x) / cosh(x);
+}
+
+num asinh(num x) {
+  return log(x + sqrt(x * x + 1));
+}
+
+num acosh(num x) {
+  return log(x + sqrt(x * x - 1));
+}
+
+num atanh(num x) {
+  return (log(1 + x) - log(1 - x)) / 2;
+}
+
 num flipSign(num number) {
   return number * -1;
 }

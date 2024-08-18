@@ -18,13 +18,15 @@ class CustomAppBarController extends ChangeNotifier {
   late bool _homeButton;
   late List<CustomAppBarButtonModel> _actionsElements;
 
+  final Icon? homeButtonIcon;
   final Function? onHomeButtonPressed;
 
   CustomAppBarController (
     this._title, 
     this._homeButton,
-    this._actionsElements,{
-      this.onHomeButtonPressed
+    this._actionsElements, {
+      this.onHomeButtonPressed,
+      this.homeButtonIcon
     }
   );
 

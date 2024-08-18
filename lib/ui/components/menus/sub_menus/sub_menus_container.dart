@@ -40,7 +40,7 @@ Future<dynamic> showSubMenu(BuildContext context, Widget child, {bool isDismissi
                 DismissDirection.down: isDismissible ? 0.4 : 1.0,
               },
               movementDuration: const Duration(milliseconds: 500),
-              direction: DismissDirection.down,
+              direction: DismissDirection.none, // TODO : Réactiver -> Down
               onDismissed: (direction) async {
                 if (onMenuDismissed != null) {
                   await onMenuDismissed();

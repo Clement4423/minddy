@@ -13,7 +13,7 @@ class ArticlesRouter implements IRouter {
 // and to do so, we need to return a different object everytime we call the navigateTo method.
 @override
 final Map<String, dynamic> routes = {
-  // But it still needs to be overriden
+  // Search returns the same instance eachtime, because otherwise, clicking the 'Search' tab would list everytime every articles.
   "/search" : ArticleMenuSearchView(S.current.articles_creativity_title, ArticleMenuSearchViewController(ArticleCategory.creativity.name, "shared/articles"))
 };
 
@@ -31,7 +31,7 @@ Widget navigateTo(String route, {BuildContext? context}) {
     case "/wellness":
       return ArticleMenuView(S.current.articles_wellness_title, ArticleMenuViewController(ArticleCategory.wellness.name, "shared/articles"));
     case "/saved":
-      return ArticleMenuView(S.current.articles_saved_title, ArticleMenuViewController("saved", "shared/articles"));
+      return ArticleMenuView(key: UniqueKey(), S.current.articles_saved_title, ArticleMenuViewController("saved", "shared/articles"));
     case "/created":
       return ArticleMenuView(S.current.articles_my_articles_title, ArticleMenuViewController(ArticleCategory.created.name, "shared/articles"));
     case "/":

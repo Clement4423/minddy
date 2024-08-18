@@ -60,6 +60,7 @@
     "articles_importer_import_images_button": "Import",
     "articles_importer_dont_import_images_button": "Don't import",
     "articles_empty_menu_page_text" : "It's empty now. Import articles or write your own to fill the space !",
+    "articles_empty_menu_saved_page_text": "No saved article yet, to save an article, click on save article",
     "articles_new_article": "New article",
     "articles_import_articles": "Import articles",
     "articles_export_articles": "Export this article",

@@ -3,6 +3,7 @@ import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/articles/defaults_articles/default_articles_list.dart';
 import 'package:minddy/system/initialize/login_state.dart';
 import 'package:minddy/system/model/custom_appbar_button_model.dart';
+import 'package:minddy/system/router/app_router.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar_controller.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_buttons_components/articles_menu_button.dart';
@@ -37,6 +38,12 @@ class HomeView extends StatelessWidget {
           S.of(context).home_appbar,
           false,
               [
+                CustomAppBarButtonModel(
+                  icon: Icons.star_border_rounded, 
+                  semanticText: "Node editor",
+                  isPrimary: false, 
+                  action: () async {AppRouter.router.navigateTo('/plugin_editor');}
+                ),
                 CustomAppBarButtonModel(
                   icon: Icons.settings_rounded, 
                   semanticText: S.of(context).settings_title,

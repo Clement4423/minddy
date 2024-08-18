@@ -108,6 +108,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Éducation"),
         "articles_empty_menu_page_text": MessageLookupByLibrary.simpleMessage(
             "C\'est vide pour l\'instant. Importez des articles ou écrivez les vôtres pour remplir l\'espace !"),
+        "articles_empty_menu_saved_page_text": MessageLookupByLibrary.simpleMessage(
+            "Aucun article enregistré pour l\'instant, pour enregistrer un article, cliquez sur enregistrer l\'article"),
         "articles_environment_title":
             MessageLookupByLibrary.simpleMessage("Nature"),
         "articles_export_articles":

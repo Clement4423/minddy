@@ -12,12 +12,14 @@ class ArticlesElementEnvelop extends StatefulWidget {
   final Function removeFunction;
   final Key keyToRemove;
   final double sideMenuIconOffsetOnYAxis;
+  final bool readOnly;
 
   const ArticlesElementEnvelop({
     required this.child,
     required this.removeFunction,
     required this.keyToRemove,
     required this.sideMenuIconOffsetOnYAxis,
+    required this.readOnly,
     super.key
   });
 
@@ -121,23 +123,24 @@ class _ArticlesElementEnvelopState extends State<ArticlesElementEnvelop> {
                         ],
                       )
                     ),
-                    // Delete element
-                    PopupMenuItem(
-                      onTap: () {
-                        widget.removeFunction(widget.keyToRemove);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            S.of(context).snackbar_delete_button,
-                            style: theme.bodyMedium.copyWith(color: theme.error),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Icon(Icons.delete_outline_rounded, color: theme.error),
-                        ],
-                      ),
-                    )
+                    if (!widget.readOnly)
+                      // Delete element
+                      PopupMenuItem(
+                        onTap: () {
+                          widget.removeFunction(widget.keyToRemove);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              S.of(context).snackbar_delete_button,
+                              style: theme.bodyMedium.copyWith(color: theme.error),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Icon(Icons.delete_outline_rounded, color: theme.error),
+                          ],
+                        ),
+                      )
                   ],
                 );
               },

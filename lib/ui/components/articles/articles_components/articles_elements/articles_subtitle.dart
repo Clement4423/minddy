@@ -21,7 +21,9 @@ class ArticlesSubtitleElement extends StatefulWidget {
   late final ArticlesSubtitleElementController controller;
   final ArticlesViewController articleController;
 
-  ArticlesSubtitleElement({super.key, this.initialContent, required this.removeFunction, required this.articleController}){
+  final bool readOnly;
+
+  ArticlesSubtitleElement({super.key, this.initialContent, required this.removeFunction, required this.articleController, this.readOnly = false}){
     controller = ArticlesSubtitleElementController(initialContent ?? "");
   }
 
@@ -39,13 +41,21 @@ class _ArticlesSubtitleViewState extends State<ArticlesSubtitleElement> {
         sideMenuIconOffsetOnYAxis: 2.8,
         removeFunction: widget.removeFunction, 
         keyToRemove: widget.key ?? UniqueKey(),
-        child: _ArticlesSubtitleViewContent(theme: theme, controller: widget.controller, articleController: widget.articleController)
+        readOnly: widget.readOnly,
+        child: _ArticlesSubtitleViewContent(
+          theme: theme, 
+          controller: widget.controller, 
+          articleController: widget.articleController,
+          readOnly: widget.readOnly,
+        )
       ),
     );
   }
 }
 
 class _ArticlesSubtitleViewContent extends StatelessWidget implements IArticlesWriteElement {
+
+  final bool readOnly;
 
   @override
   dynamic get data => controller.textContent;
@@ -57,6 +67,7 @@ class _ArticlesSubtitleViewContent extends StatelessWidget implements IArticlesW
     required this.theme,
     required this.controller, 
     required this.articleController,
+    required this.readOnly
   });
 
 
@@ -78,6 +89,7 @@ class _ArticlesSubtitleViewContent extends StatelessWidget implements IArticlesW
             onChanged: (value) {
               controller.textContent = value;
             },
+            readOnly: readOnly,
             controller: TextEditingController(text: controller.textContent),
             style: theme.titleLarge.copyWith(color: theme.onPrimary),
             cursorColor: theme.onPrimary,

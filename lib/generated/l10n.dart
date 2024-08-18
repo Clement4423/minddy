@@ -650,6 +650,16 @@ class S {
     );
   }
 
+  /// `No saved article yet, to save an article, click on save article`
+  String get articles_empty_menu_saved_page_text {
+    return Intl.message(
+      'No saved article yet, to save an article, click on save article',
+      name: 'articles_empty_menu_saved_page_text',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `New article`
   String get articles_new_article {
     return Intl.message(

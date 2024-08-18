@@ -11,6 +11,7 @@ class ArticlesListElementModel {
   final FocusNode focusNode;
 
 
+
   ArticlesListElementModel({required this.text, required this.index, required this.isNew, required this.focusNode});
 }
 
@@ -24,6 +25,7 @@ class ArticlesListElementWidget extends StatefulWidget {
     required this.index,
     required this.focusNode, 
     required this.isNew,
+    this.readOnly = false
   });
 
   final String initialText;
@@ -32,6 +34,8 @@ class ArticlesListElementWidget extends StatefulWidget {
   final bool isNew;
   final double maxWidth;
   final FocusNode focusNode;
+
+  final bool readOnly;
 
   String text = "";
 
@@ -122,6 +126,7 @@ class _ArticlesListElementWidgetState extends State<ArticlesListElementWidget> {
                     widget.text = value;
                     widget.controller.modifyText(widget.text, widget.index);
                   },
+                  readOnly: widget.readOnly,
                   focusNode: widget.focusNode,
                   controller: _textEditingController,
                   style: theme.bodyMedium.copyWith(color: theme.onPrimary),

@@ -21,7 +21,6 @@ class CustomCodeDisplay extends StatefulWidget implements IArticlesWriteElement 
   
   @override
   var data = {};
-
 }
 
 
@@ -80,7 +79,8 @@ class _CustomCodeDisplay extends State<CustomCodeDisplay> {
                         widget.data['language'] = selectedLanguage.index;                      
                       });
                     },
-                    borderRadius: BorderRadius.circular(5),
+                    dropdownColor: theme.primary,
+                    borderRadius: BorderRadius.circular(13),
                     icon: Icon(Icons.arrow_drop_down_rounded, color: theme.onSurface),
                     underline: const SizedBox(),
                     items: CodeLanguages.values.map((lang) {

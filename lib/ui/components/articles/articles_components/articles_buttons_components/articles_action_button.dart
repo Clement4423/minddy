@@ -14,8 +14,8 @@ class ArticlesActionButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 2, bottom: 0, right: 0, left: 8),
       child: IconButton(
-        onPressed: () {
-          action();
+        onPressed: () async {
+          await action();
         },
         tooltip: semanticLabel,
         icon: Icon(icon, color: theme.onPrimary, semanticLabel: semanticLabel),

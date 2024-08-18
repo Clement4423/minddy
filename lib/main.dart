@@ -51,6 +51,7 @@ class MainApp extends StatelessWidget {
   // TODO : Ajouter une fonction pour sauvagarder le projet avant de fermer l'app
   // TODO : Ajouter le déplacement des pages, ainsi que le déplacement des modules
   // TODO : Faire le menu d'ajout de module
+  // TODO : AJouter les légendes en dessous des graphiques
   // TODO : Faire le système d'addon
 
   @override

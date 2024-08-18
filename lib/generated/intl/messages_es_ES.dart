@@ -108,6 +108,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Educación"),
         "articles_empty_menu_page_text": MessageLookupByLibrary.simpleMessage(
             "Está vacío ahora. ¡Importe artículos o escriba los suyos propios para llenar el espacio!"),
+        "articles_empty_menu_saved_page_text": MessageLookupByLibrary.simpleMessage(
+            "Aún no se han guardado artículos. Para guardar un artículo, haga clic en guardar artículo"),
         "articles_environment_title":
             MessageLookupByLibrary.simpleMessage("Medio ambiente"),
         "articles_export_articles":

@@ -125,6 +125,7 @@ class ArticlesViewController extends ChangeNotifier {
       return ArticlesTextElement(
         initialContent: element.data as String, 
         removeFunction: removeElementFromKey,
+        readOnly: readOnly,
         key: UniqueKey()
       );
     } else if (element.type == 'image') {
@@ -133,12 +134,14 @@ class ArticlesViewController extends ChangeNotifier {
         initialUrl: imageData["url"], 
         initialDescription: imageData["description"], 
         removeFunction: removeElementFromKey,
+        readOnly: readOnly,
         key: UniqueKey(),
       );
     } else if (element.type == 'list') {
       return ArticlesListElement(
         initialContent: element.data, 
         removeFunction: removeElementFromKey,
+        readOnly: readOnly,
         key: UniqueKey()
       );
     } else if (element.type == "subtitle") {
@@ -146,6 +149,7 @@ class ArticlesViewController extends ChangeNotifier {
         initialContent: element.data, 
         articleController: this,
         removeFunction: removeElementFromKey,
+        readOnly: readOnly,
         key: UniqueKey()
       );
     } else if (element.type == 'code') {
@@ -154,6 +158,7 @@ class ArticlesViewController extends ChangeNotifier {
         initialContent: codeData['code'],
         language: codeData['language'],
         removeFunction: removeElementFromKey,
+        readOnly: readOnly,
         key: UniqueKey(), 
       );
     }
@@ -274,49 +279,49 @@ class ArticlesViewController extends ChangeNotifier {
     articleTitle = newTitle;
   }
 
-  void addTextElement({String? initialText}) {
+  void addTextElement({String? initialText}) async {
     articleContent.add(ArticlesTextElement(
       removeFunction: removeElementFromKey, 
       initialContent: initialText, 
       key: UniqueKey()
     ));
-    saveArticle();
+    await saveArticle();
     notifyListeners();
   }
 
-  void addSubtitleElement({String? initialText}) {
+  void addSubtitleElement({String? initialText}) async {
     articleContent.add(ArticlesSubtitleElement(
       removeFunction: removeElementFromKey, 
       articleController: this,
       initialContent: initialText, 
       key: UniqueKey()
     ));
-    saveArticle();
+    await saveArticle();
     notifyListeners();
   }
 
-  void addImageElement({String? initialUrl, String? initialDescription}) {
+  void addImageElement({String? initialUrl, String? initialDescription}) async {
     articleContent.add(ArticlesImageElement(
       removeFunction: removeElementFromKey, 
       initialUrl: initialUrl, 
       initialDescription: initialDescription, 
       key: UniqueKey()
     ));
-    saveArticle();
+    await saveArticle();
     notifyListeners();
   }
 
-  void addListElement({List? initialContent}) {
+  void addListElement({List? initialContent}) async {
     articleContent.add(ArticlesListElement(
       removeFunction: removeElementFromKey, 
       initialContent: initialContent, 
       key: UniqueKey()
     ));
-    saveArticle();
+    await saveArticle();
     notifyListeners();
   }
 
-  void addCodeElement({String? initialContent, int? language}) {
+  void addCodeElement({String? initialContent, int? language}) async {
     articleContent.add(
       ArticlesCodeElement(
         removeFunction: removeElementFromKey,
@@ -325,7 +330,7 @@ class ArticlesViewController extends ChangeNotifier {
         key: UniqueKey(),
       )
     );
-    saveArticle();
+    await saveArticle();
     notifyListeners();
   }
 }

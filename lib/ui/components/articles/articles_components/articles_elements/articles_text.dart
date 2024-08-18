@@ -18,7 +18,9 @@ class ArticlesTextElement extends StatefulWidget {
   final Function(Key) removeFunction;
   late final ArticlesTextElementController controller;
 
-  ArticlesTextElement({super.key, this.initialContent, required this.removeFunction}) {
+  final bool readOnly;
+
+  ArticlesTextElement({super.key, this.initialContent, required this.removeFunction, this.readOnly = false}) {
     controller = ArticlesTextElementController(initialContent ?? "");
   }
 
@@ -36,7 +38,8 @@ class _ArticlesTextViewState extends State<ArticlesTextElement> {
         sideMenuIconOffsetOnYAxis: 5.5,
         removeFunction: widget.removeFunction,
         keyToRemove: widget.key ?? UniqueKey(), 
-        child: _ArticlesTextViewContent(theme: theme, controller: widget.controller),
+        readOnly: widget.readOnly,
+        child: _ArticlesTextViewContent(theme: theme, controller: widget.controller, readOnly: widget.readOnly),
         ),
     );
   }
@@ -46,7 +49,10 @@ class _ArticlesTextViewContent extends StatelessWidget implements IArticlesWrite
   const _ArticlesTextViewContent({
     required this.theme,
     required this.controller,
+    required this.readOnly
   });
+
+  final bool readOnly;
 
   @override
   dynamic get data => controller.textContent;
@@ -69,6 +75,7 @@ class _ArticlesTextViewContent extends StatelessWidget implements IArticlesWrite
             onChanged: (value) {
               controller.textContent = value;
             },
+            readOnly: readOnly,
             controller: TextEditingController(text: controller.textContent),
             style: theme.bodyMedium.copyWith(color: theme.onPrimary),
             cursorColor: theme.onPrimary,

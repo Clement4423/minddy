@@ -107,6 +107,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Education"),
         "articles_empty_menu_page_text": MessageLookupByLibrary.simpleMessage(
             "It\'s empty now. Import articles or write your own to fill the space !"),
+        "articles_empty_menu_saved_page_text":
+            MessageLookupByLibrary.simpleMessage(
+                "No saved article yet, to save an article, click on save article"),
         "articles_environment_title":
             MessageLookupByLibrary.simpleMessage("Nature"),
         "articles_export_articles":

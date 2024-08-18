@@ -78,10 +78,13 @@ class ArticlesListElement extends StatelessWidget {
   final Function(Key) removeFunction;
   late final ArticlesListElementcontroller controller;
 
+  final bool readOnly;
+
   ArticlesListElement({
     super.key, 
     this.initialContent,
-    required this.removeFunction
+    required this.removeFunction,
+    this.readOnly = false
   }) {
     controller = ArticlesListElementcontroller(initialContent ?? []);
   }
@@ -94,6 +97,7 @@ class ArticlesListElement extends StatelessWidget {
         removeFunction: removeFunction, 
         keyToRemove: key ?? UniqueKey(), 
         sideMenuIconOffsetOnYAxis: 5, 
+        readOnly: readOnly,
         child: _ArticlesListElementContent(controller: controller)
       )
     );

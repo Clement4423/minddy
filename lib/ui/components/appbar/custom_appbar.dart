@@ -39,7 +39,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   children: [
                     if (_controller.homeButton)
                       Tooltip(
-                        message: S.of(context).appbar_go_home,
+                        message: _controller.homeButtonIcon != null 
+                          ? S.of(context).articles_go_back_semantic_text 
+                          : S.of(context).appbar_go_home,
                         child: Padding(
                           padding: const EdgeInsets.only(right: 8),
                           child: IconButton(
@@ -52,8 +54,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                               }
                             },
                             style: ButtonThemes.secondaryButtonStyle(context),
-                            // ignore: deprecated_member_use
-                            icon: SvgPicture.asset("assets/custom_icons/home_icon.svg", width: 20, height: 20, color: theme.onPrimary),
+                            icon: _controller.homeButtonIcon != null 
+                              ? _controller.homeButtonIcon!
+                              // ignore: deprecated_member_use
+                              : SvgPicture.asset("assets/custom_icons/home_icon.svg", width: 20, height: 20, color: theme.onPrimary),
                           )
                         ),
                       ),

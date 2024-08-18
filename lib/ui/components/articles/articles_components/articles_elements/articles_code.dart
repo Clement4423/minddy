@@ -19,7 +19,7 @@ class ArticlesCodeElementController {
 }
 
 class ArticlesCodeElement extends StatefulWidget {
-  ArticlesCodeElement({super.key, this.initialContent, required this.removeFunction, this.language}) {
+  ArticlesCodeElement({super.key, this.initialContent, required this.removeFunction, this.language, this.readOnly = false}) {
     controller = ArticlesCodeElementController(initialContent ?? "", language ?? 0);
   }
 
@@ -27,6 +27,8 @@ class ArticlesCodeElement extends StatefulWidget {
   final int? language;
   final Function(Key) removeFunction;
   late final ArticlesCodeElementController controller;
+
+  final bool readOnly;
 
   @override
   State<ArticlesCodeElement> createState() => _ArticlesCodeElementState();
@@ -41,8 +43,9 @@ class _ArticlesCodeElementState extends State<ArticlesCodeElement> {
       child: ArticlesElementEnvelop(
         sideMenuIconOffsetOnYAxis: 5.5,
         removeFunction: widget.removeFunction, 
-        keyToRemove: widget.key ?? UniqueKey(), 
-        child: _ArticleCodeElementContent(controller: widget.controller),
+        keyToRemove: widget.key ?? UniqueKey(),
+        readOnly: widget.readOnly, 
+        child: _ArticleCodeElementContent(controller: widget.controller, readOnly: widget.readOnly),
         ),
     );
   }
@@ -51,9 +54,12 @@ class _ArticlesCodeElementState extends State<ArticlesCodeElement> {
 class _ArticleCodeElementContent extends StatefulWidget implements IArticlesWriteElement {
   const _ArticleCodeElementContent({
     required this.controller,
+    required this.readOnly
   });
 
   final ArticlesCodeElementController controller;
+
+  final bool readOnly;
 
   @override
   State<_ArticleCodeElementContent> createState() => __ArticleCodeElementContentState();
@@ -121,8 +127,9 @@ class __ArticleCodeElementContentState extends State<_ArticleCodeElementContent>
                           widget.controller.languageIndex = selectedLanguage.index;                       
                         });
                       },
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(13),
                       icon: Icon(Icons.arrow_drop_down_rounded, color: theme.onSurface),
+                      dropdownColor: theme.primary,
                       underline: const SizedBox(),
                       items: CodeLanguages.values.map((lang) {
                         String langFirstLetter = lang.name.characters.first.toUpperCase();
@@ -195,6 +202,7 @@ class __ArticleCodeElementContentState extends State<_ArticleCodeElementContent>
                       onChanged: (value) {
                         widget.controller.code = value;
                       },
+                      readOnly: widget.readOnly,
                       controller: TextEditingController(text: widget.controller.code),
                       style: theme.bodyMedium.copyWith(color: Colors.white, fontFamily: 'Menlo', fontSize: 15),
                       cursorColor: Colors.white,

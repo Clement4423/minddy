@@ -26,7 +26,7 @@ ShortcutActivator saveActivator = SingleActivator(
 
 ShortcutActivator _closeArticle = const SingleActivator(LogicalKeyboardKey.escape);
 
-// Width before the article content is shifted on the left
+// Width limit before the article content is shifted on the left
 double _widthTreshold = 1000;
 
 Future<dynamic> showArticle(ArticlesViewController controller, BuildContext context) async {
@@ -158,6 +158,7 @@ Future<dynamic> showArticle(ArticlesViewController controller, BuildContext cont
                                                     message: controller.articleTitle,
                                                     child: TextField(
                                                         onChanged: (value) => controller.articleTitleChanged(value),
+                                                        readOnly: controller.readOnly,
                                                         controller: TextEditingController(text: controller.articleTitle == "" ? null : controller.articleTitle),
                                                         style: theme.titleLarge.copyWith(color: theme.onPrimary, fontSize: 30, overflow: TextOverflow.ellipsis),
                                                         cursorColor: theme.onPrimary,
@@ -173,14 +174,21 @@ Future<dynamic> showArticle(ArticlesViewController controller, BuildContext cont
                                                     crossAxisAlignment: CrossAxisAlignment.center,
                                                     children: [
                                                       MouseRegion(
-                                                        cursor: SystemMouseCursors.click,
+                                                        cursor: controller.readOnly 
+                                                          ? SystemMouseCursors.basic
+                                                          : SystemMouseCursors.click,
                                                         child: GestureDetector(
                                                           onTap: () {
+                                                            if (controller.readOnly) {
+                                                              return;
+                                                            }
                                                             controller.calculateArticleReadingTime(); 
                                                             controller.orderChanged();
                                                           },
                                                           child: Tooltip(
-                                                            message: S.of(context).articles_calculate_reading_time,
+                                                            message: controller.readOnly 
+                                                              ? ''
+                                                              : S.of(context).articles_calculate_reading_time,
                                                             child: Text(
                                                               "${controller.articleReadingTime} min",
                                                               style: theme.headlineSmall.copyWith(color: theme.onPrimary),

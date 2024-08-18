@@ -49,11 +49,14 @@ class ArticlesImageElement extends StatefulWidget {
   final String? initialDescription;
   late final ArticlesImageElementController controller;
 
+  final bool readOnly;
+
   ArticlesImageElement({
     this.initialUrl,
     this.initialDescription,
     super.key,
-    required this.removeFunction, 
+    required this.removeFunction,
+    this.readOnly = false 
   }) {
     controller = ArticlesImageElementController(initialDescription: initialDescription, initialUrl: initialUrl);
   }
@@ -79,7 +82,8 @@ class _ArticlesImageElementState extends State<ArticlesImageElement> {
         removeFunction: widget.removeFunction,
         keyToRemove: widget.key ?? UniqueKey(),
         sideMenuIconOffsetOnYAxis: 2,
-        child: _ArticlesImageElementContent(theme: theme, controller: widget.controller),
+        readOnly: widget.readOnly,
+        child: _ArticlesImageElementContent(theme: theme, controller: widget.controller, readOnly: widget.readOnly),
       ),
     );
   }
@@ -91,7 +95,10 @@ class _ArticlesImageElementContent extends StatefulWidget implements IArticlesWr
   const _ArticlesImageElementContent({
     required this.theme,
     required this.controller,
+    required this.readOnly
   });
+
+  final bool readOnly;
 
   final StylesGetters theme;
   final ArticlesImageElementController controller;
@@ -198,21 +205,22 @@ class _ArticlesImageElementContentState extends State<_ArticlesImageElementConte
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-                child: MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () async {
-                      String? imageName = await AppImages.pickImage();
-                      widget.controller.imageUrl = imageName ?? widget.controller.imageUrl;
-                      await widget.controller.setImageWidget();
-                      setState(() {});
-                    },
-                    child: Tooltip(message: S.of(context).articles_images_change_button,child: const Icon(Icons.photo_outlined)),
+              if (!widget.readOnly)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: () async {
+                          String? imageName = await AppImages.pickImage();
+                          widget.controller.imageUrl = imageName ?? widget.controller.imageUrl;
+                          await widget.controller.setImageWidget();
+                          setState(() {});
+                        },
+                        child: Tooltip(message: S.of(context).articles_images_change_button,child: const Icon(Icons.photo_outlined)),
+                    ),
+                  ),
                 ),
-              ),
-            ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: AnimatedBuilder(
@@ -224,6 +232,9 @@ class _ArticlesImageElementContentState extends State<_ArticlesImageElementConte
                         cursor: SystemMouseCursors.click,
                         child: GestureDetector(
                           onTap: () async {
+                            if (widget.readOnly) {
+                              return;
+                            }
                             widget.controller.description = await showDescriptionEditingMenu(context, widget.controller.description);
                             setState(() {});
                           },

@@ -11,6 +11,7 @@ class ChartTabWidget extends StatefulWidget {
     required this.chartType,
     required this.isSelected,
     required this.navigateToTab,
+    required this.canBeDeleted,
     required this.renameTab,
     required this.deleteTab,
     required this.theme,
@@ -22,6 +23,7 @@ class ChartTabWidget extends StatefulWidget {
   final bool isSelected;
   final String? tabTitle;
   final Function(int) navigateToTab;
+  final bool canBeDeleted;
   final Function(int, String) renameTab;
   final StylesGetters theme;
   final Function(int) deleteTab;
@@ -151,7 +153,7 @@ class __ChartTabWidgetState extends State<ChartTabWidget> {
                   )
                 )
               ),
-              if (isHovering)
+              if (isHovering && widget.canBeDeleted)
                 SizedBox(
                   width: 30,
                   height: 30,

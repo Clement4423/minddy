@@ -201,6 +201,7 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
                                     tabId: tabId, 
                                     isSelected: tabId == widget.controller.activeTab ? true : false,
                                     chartType: _getChartType(widget.controller.chartsTypes[tabId] ?? ''), 
+                                    canBeDeleted: widget.controller.tabs.keys.length > 1,
                                     tabTitle: widget.controller.tabs[tabId] ?? '',
                                     renameTab: widget.controller.renameTab,
                                     navigateToTab: widget.controller.selectTab, 
@@ -244,137 +245,145 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           // Chart type selection, and columns selection
-                          Container(
-                            width: widget.width / 3,
-                            height: widget.height - 10 - 10 - 50 - 40 - 20 - 30,
-                            margin: const EdgeInsets.only(top: 30),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    S.current.projects_module_spreadsheet_chart_chart_type_subtitle,
-                                    style: theme.titleSmall
-                                    .copyWith(color: theme.onSurface),
-                                  ),
-                                  // Chart Type selector
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: SizedBox(
-                                      width: widget.width / 3.2,
-                                      child: CustomDropdownButton(
-                                        menuTitle: getChartTypeName(widget.controller.getChartType(widget.controller.activeTab ?? 0)),
-                                        backgroundColor: theme.primary,
-                                        foregroundColor: theme.onPrimary,
-                                        action: (CustomChartType value) {},
-                                        items: [
-                                          DropdownMenuItem(
-                                            onTap: () {
-                                              widget.controller.selectChartType(
-                                                widget.controller.activeTab ?? 0, 
-                                                CustomChartType.donut
-                                              );
-                                            },
-                                            value: CustomChartType.donut,
-                                            child: Text(
-                                              S.current.projects_module_spreadsheet_chart_chart_type_donut,
-                                              style: theme.bodyMedium
-                                              .copyWith(color: theme.onPrimary),
-                                            )
-                                          ),
-                                          DropdownMenuItem(
-                                            onTap: () {
-                                              widget.controller.selectChartType(
-                                                widget.controller.activeTab ?? 0, 
-                                                CustomChartType.barSingle
-                                              );
-                                            },
-                                            value: CustomChartType.barSingle,
-                                            child: Text(
-                                              S.current.projects_module_spreadsheet_chart_chart_type_bar,
-                                              style: theme.bodyMedium
-                                              .copyWith(color: theme.onPrimary),
-                                            )
-                                          )
-                                        ],
-                                        needToRestart: false
-                                      ),
+                          Material(
+                            type: MaterialType.transparency,
+                            child: Container(
+                              width: widget.width / 3,
+                              height: widget.height - 10 - 10 - 50 - 40 - 20 - 30,
+                              margin: const EdgeInsets.only(top: 30),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      S.current.projects_module_spreadsheet_chart_chart_type_subtitle,
+                                      style: theme.titleSmall
+                                      .copyWith(color: theme.onSurface),
                                     ),
-                                  ),
-                                  // Bar chart type selector
-                                  if (barTypes.contains(widget.controller.getChartType(widget.controller.activeTab ?? 0)))
+                                    // Chart Type selector
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10),
-                                      child: Row(
-                                        children: [
-                                          CustomProjectsSpreadsheetModuleBarChartTypeButton(
-                                            theme: theme,
-                                            onTap: widget.controller.selectChartType,
-                                            tooltip: S.current.projects_module_spreadsheet_chart_chart_type_bar_simple,
-                                            tabId: widget.controller.activeTab ?? 0,
-                                            selectedType: widget.controller.getChartType(widget.controller.activeTab ?? 0),
-                                            buttonType: CustomChartType.barSingle
+                                      child: SizedBox(
+                                        width: widget.width / 3.2,
+                                        child: Material(
+                                          type: MaterialType.transparency,
+                                          child: CustomDropdownButton(
+                                            menuTitle: getChartTypeName(widget.controller.getChartType(widget.controller.activeTab ?? 0)),
+                                            backgroundColor: theme.primary,
+                                            foregroundColor: theme.onPrimary,
+                                            action: (CustomChartType value) {},
+                                            items: [
+                                              DropdownMenuItem(
+                                                onTap: () {
+                                                  widget.controller.selectChartType(
+                                                    widget.controller.activeTab ?? 0, 
+                                                    CustomChartType.donut
+                                                  );
+                                                },
+                                                value: CustomChartType.donut,
+                                                child: Text(
+                                                  S.current.projects_module_spreadsheet_chart_chart_type_donut,
+                                                  style: theme.bodyMedium
+                                                  .copyWith(color: theme.onPrimary),
+                                                )
+                                              ),
+                                              DropdownMenuItem(
+                                                onTap: () {
+                                                  widget.controller.selectChartType(
+                                                    widget.controller.activeTab ?? 0, 
+                                                    CustomChartType.barSingle
+                                                  );
+                                                },
+                                                value: CustomChartType.barSingle,
+                                                child: Text(
+                                                  S.current.projects_module_spreadsheet_chart_chart_type_bar,
+                                                  style: theme.bodyMedium
+                                                  .copyWith(color: theme.onPrimary),
+                                                )
+                                              )
+                                            ],
+                                            needToRestart: false
                                           ),
-                                          CustomProjectsSpreadsheetModuleBarChartTypeButton(
-                                            theme: theme,
-                                            onTap: widget.controller.selectChartType,
-                                            tooltip: S.current.projects_module_spreadsheet_chart_chart_type_bar_grouped,
-                                            tabId: widget.controller.activeTab ?? 0,
-                                            selectedType: widget.controller.getChartType(widget.controller.activeTab ?? 0),
-                                            buttonType: CustomChartType.barMultiples
-                                          ),
-                                          CustomProjectsSpreadsheetModuleBarChartTypeButton(
-                                            theme: theme,
-                                            onTap: widget.controller.selectChartType,
-                                            tooltip: S.current.projects_module_spreadsheet_chart_chart_type_bar_stacked,
-                                            tabId: widget.controller.activeTab ?? 0,
-                                            selectedType: widget.controller.getChartType(widget.controller.activeTab ?? 0),
-                                            buttonType: CustomChartType.barStacked
-                                          )
-                                        ],
+                                        ),
                                       ),
                                     ),
-
-                                  // Columns selector
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 30),
-                                    child: Text(
-                                      widget.controller.chartColumns[widget.controller.activeTab ?? 0]!.length > 1 
-                                        ? S.current.projects_module_spreadsheet_chart_chart_column_plural
-                                        : S.current.projects_module_spreadsheet_chart_chart_column_single,
-                                      style: theme.titleSmall.copyWith(color: theme.onSurface),
-                                    )
-                                  ),
-                                  ...List.generate(widget.controller.chartColumns[widget.controller.activeTab ?? 0]?.length ?? 0, (index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(top: 5),
-                                      child: CustomProjectsSpreadsheetModuleColumnDropdownSelector(
+                                    // Bar chart type selector
+                                    if (barTypes.contains(widget.controller.getChartType(widget.controller.activeTab ?? 0)))
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Row(
+                                          children: [
+                                            CustomProjectsSpreadsheetModuleBarChartTypeButton(
+                                              theme: theme,
+                                              onTap: widget.controller.selectChartType,
+                                              tooltip: S.current.projects_module_spreadsheet_chart_chart_type_bar_simple,
+                                              tabId: widget.controller.activeTab ?? 0,
+                                              selectedType: widget.controller.getChartType(widget.controller.activeTab ?? 0),
+                                              buttonType: CustomChartType.barSingle
+                                            ),
+                                            CustomProjectsSpreadsheetModuleBarChartTypeButton(
+                                              theme: theme,
+                                              onTap: widget.controller.selectChartType,
+                                              tooltip: S.current.projects_module_spreadsheet_chart_chart_type_bar_grouped,
+                                              tabId: widget.controller.activeTab ?? 0,
+                                              selectedType: widget.controller.getChartType(widget.controller.activeTab ?? 0),
+                                              buttonType: CustomChartType.barMultiples
+                                            ),
+                                            CustomProjectsSpreadsheetModuleBarChartTypeButton(
+                                              theme: theme,
+                                              onTap: widget.controller.selectChartType,
+                                              tooltip: S.current.projects_module_spreadsheet_chart_chart_type_bar_stacked,
+                                              tabId: widget.controller.activeTab ?? 0,
+                                              selectedType: widget.controller.getChartType(widget.controller.activeTab ?? 0),
+                                              buttonType: CustomChartType.barStacked
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                            
+                                    // Columns selector
+                                    Material(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 30),
+                                        child: Text(
+                                          widget.controller.chartColumns[widget.controller.activeTab ?? 0]!.length > 1 
+                                            ? S.current.projects_module_spreadsheet_chart_chart_column_plural
+                                            : S.current.projects_module_spreadsheet_chart_chart_column_single,
+                                          style: theme.titleSmall.copyWith(color: theme.onSurface),
+                                        )
+                                      ),
+                                    ),
+                                    ...List.generate(widget.controller.chartColumns[widget.controller.activeTab ?? 0]?.length ?? 0, (index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.only(top: 5),
+                                        child: CustomProjectsSpreadsheetModuleColumnDropdownSelector(
+                                          width: widget.width / 3.2,
+                                          height: 40,
+                                          controller: widget.controller,
+                                          columnIndex: widget.controller.chartColumns[widget.controller.activeTab ?? 0]?[index] ?? 0,
+                                          columnName: getColumnName(widget.controller.chartColumns[widget.controller.activeTab ?? 0]?[index] ?? -1),
+                                          availableColumns: _getColumns(),
+                                        ),
+                                      );
+                                    }),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 5, bottom: 5),
+                                      child: SizedBox(
                                         width: widget.width / 3.2,
                                         height: 40,
-                                        controller: widget.controller,
-                                        columnIndex: widget.controller.chartColumns[widget.controller.activeTab ?? 0]?[index] ?? 0,
-                                        columnName: getColumnName(widget.controller.chartColumns[widget.controller.activeTab ?? 0]?[index] ?? -1),
-                                        availableColumns: _getColumns(),
+                                        child: IconButton(
+                                          icon: Icon(Icons.add_rounded, color: theme.onPrimary),
+                                          style: ButtonThemes.secondaryButtonStyle(context).copyWith(elevation: const WidgetStatePropertyAll(0)),
+                                          tooltip: S.current.projects_module_spreadsheet_chart_new_column,
+                                          onPressed: () async {
+                                            widget.controller.addChartColumn(widget.controller.activeTab ?? 0);
+                                          },
+                                        ),
                                       ),
-                                    );
-                                  }),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5, bottom: 5),
-                                    child: SizedBox(
-                                      width: widget.width / 3.2,
-                                      height: 40,
-                                      child: IconButton(
-                                        icon: Icon(Icons.add_rounded, color: theme.onPrimary),
-                                        style: ButtonThemes.secondaryButtonStyle(context).copyWith(elevation: const WidgetStatePropertyAll(0)),
-                                        tooltip: S.current.projects_module_spreadsheet_chart_new_column,
-                                        onPressed: () async {
-                                          widget.controller.addChartColumn(widget.controller.activeTab ?? 0);
-                                        },
-                                      ),
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),

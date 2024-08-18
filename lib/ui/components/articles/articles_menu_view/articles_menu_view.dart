@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/articles/app_articles.dart';
 import 'package:minddy/system/articles/article_categories.dart';
+import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/model/article_info.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_menu_view_controller.dart';
 import 'package:minddy/ui/components/articles/articles_menu_view/articles_page_top_bar.dart';
@@ -29,7 +30,7 @@ class ArticleMenuView extends StatelessWidget {
             animation: _controller,
             builder: (context, child) {
               if (_controller.articlesCardsList.isEmpty) {
-                return EmptyArticleMenuPage(resetFunction: _controller.initalize);
+                return EmptyArticleMenuPage(resetFunction: _controller.initalize, pageTitle: title);
               }
               return ListView.builder(
                 itemCount: _controller.articlesCardsList.length,
@@ -48,9 +49,10 @@ class ArticleMenuView extends StatelessWidget {
 }
 
 class EmptyArticleMenuPage extends StatefulWidget {
-  const EmptyArticleMenuPage({super.key, required this.resetFunction});
+  const EmptyArticleMenuPage({super.key, required this.resetFunction, required this.pageTitle});
 
   final Function resetFunction;
+  final String pageTitle;
 
   @override
   State<EmptyArticleMenuPage> createState() => _EmptyArticleMenuPageState();
@@ -58,6 +60,14 @@ class EmptyArticleMenuPage extends StatefulWidget {
 
 class _EmptyArticleMenuPageState extends State<EmptyArticleMenuPage> {
   bool _isHovering = false;
+
+  bool canTheIconRotate = true;
+
+  @override
+  void initState() {
+    canTheIconRotate = widget.pageTitle != S.current.articles_saved_title;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +82,7 @@ class _EmptyArticleMenuPageState extends State<EmptyArticleMenuPage> {
               title: "", 
               relativeFolderPath: "shared/articles", 
               isMultiLanguage: false,
-              languageCode: "fr", 
+              languageCode: await AppConfig.getConfigValue('language') ?? "en", 
               category: ArticleCategory.created,
             );
             if (infos != null) {
@@ -94,11 +104,11 @@ class _EmptyArticleMenuPageState extends State<EmptyArticleMenuPage> {
             child: AnimatedRotation(
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeInQuart,
-              turns: _isHovering ? 0.125 : 0,
+              turns: _isHovering && canTheIconRotate ? 0.125 : 0,
               child: Tooltip(
-                message: S.of(context).articles_new_article,
+                message: canTheIconRotate ? S.of(context).articles_new_article : '',
                 waitDuration: const Duration(milliseconds: 300),
-                child: Icon(Icons.close_rounded, color: theme.onPrimary, size: 70)
+                child: Icon(canTheIconRotate ? Icons.close_rounded : Icons.bookmark_border_rounded, color: theme.onPrimary, size: 70)
               )
             ),
           ),
@@ -106,7 +116,9 @@ class _EmptyArticleMenuPageState extends State<EmptyArticleMenuPage> {
         Padding(
           padding: const EdgeInsets.all(20),
           child: Text(
-            S.of(context).articles_empty_menu_page_text,
+            widget.pageTitle == S.of(context).articles_saved_title 
+              ? S.of(context).articles_empty_menu_saved_page_text
+              : S.of(context).articles_empty_menu_page_text,
             textAlign: TextAlign.center,
             style: theme.titleMedium.copyWith(color: theme.onPrimary),
           ),
