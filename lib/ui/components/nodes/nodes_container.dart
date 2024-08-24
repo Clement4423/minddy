@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
+import 'package:minddy/ui/components/nodes/node_editor_grid_painter.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class NodesContainer extends StatefulWidget {
@@ -145,33 +146,5 @@ class _DraggableNodeState extends State<DraggableNode> {
         ),
       ),
     );
-  }
-}
-
-class NodeEditorGridPainter extends CustomPainter {
-  final double scale;
-  final double pointRadius;
-  final StylesGetters theme;
-
-  NodeEditorGridPainter({required this.scale, this.pointRadius = 0.5, required this.theme});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = theme.onPrimary.withOpacity(0.4)
-      ..style = PaintingStyle.fill;
-
-    double gridSize = 10 * scale;
-
-    for (double x = 0; x < size.width; x += gridSize) {
-      for (double y = 0; y < size.height; y += gridSize) {
-        canvas.drawCircle(Offset(x, y), pointRadius, paint);
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
   }
 }

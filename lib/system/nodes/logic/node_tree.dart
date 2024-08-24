@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:minddy/system/nodes/all_nodes/boolean_node.dart';
 import 'package:minddy/system/nodes/all_nodes/comparison_node.dart';
-import 'package:minddy/system/nodes/all_nodes/operation_node.dart';
+import 'package:minddy/system/nodes/all_nodes/math_node.dart';
 import 'package:minddy/system/nodes/all_nodes/outputs_nodes/boolean_output_node.dart';
 import 'package:minddy/system/nodes/all_nodes/outputs_nodes/number_output_node.dart';
 import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
@@ -89,9 +89,21 @@ class NodeTree {
     return null;
   }
 
-  bool isNodeBefore(INode node) {
-    return true; // TODO : Remplir la fonction
-  }
+bool isNodeBefore(INode first, INode second) {
+    List<INode> sortedNodes = topologicalSort();
+
+    if (first.targets.isEmpty && second.targets.isEmpty) {
+      return false;
+    }
+
+    int firstIndex = sortedNodes.indexOf(first);
+    int secondIndex = sortedNodes.indexOf(second);
+
+    if (firstIndex == -1 || secondIndex == -1) {
+      return true;
+    }
+    return firstIndex < secondIndex;
+}
 
   void _addDataToNextNode(List<INode> sortedNodes, int index) {
     INode currentNode = sortedNodes[index];
@@ -155,7 +167,6 @@ class NodeTree {
     }
   }
 
-  @protected
   List<INode> topologicalSort() {
     Map<INode, bool> visited = {for (var node in nodes) node: false};
     List<INode> result = [];
@@ -228,7 +239,7 @@ class NodeTree {
         INode? node = _getCorrectNodeType(nodeMap['type'])?.fromJson(nodeJson);
         
         if (node != null) {
-          targetsMap[node.id] = _convertListToListString(nodeMap['targets'] ?? []);
+          targetsMap[node.id] = convertListToListString(nodeMap['targets'] ?? []);
           allNodes.add(node);
         }
       }
@@ -244,7 +255,7 @@ class NodeTree {
   }
 }
 
-Map<String, Function> nodeTypeConstructors = {
+Map<String, Function> _nodeTypeConstructors = {
     MathNode().runtimeType.toString(): () => MathNode(),
     NumberOutputNode().runtimeType.toString(): () => NumberOutputNode(),
     ComparisonNode().runtimeType.toString(): () => ComparisonNode(),
@@ -254,8 +265,8 @@ Map<String, Function> nodeTypeConstructors = {
 };
 
 INode? _getCorrectNodeType(String type) {
-  if (nodeTypeConstructors[type] != null) {
-    return nodeTypeConstructors[type]?.call();
+  if (_nodeTypeConstructors[type] != null) {
+    return _nodeTypeConstructors[type]?.call();
   }
   return null;
 }
@@ -267,7 +278,7 @@ class NodeTreeEvaluation {
   NodeTreeEvaluation({required this.isValid, required this.incorrectNodes});
 }
 
-List<String> _convertListToListString(List list) {
+List<String> convertListToListString(List list) {
   List<String> stringList = [];
   for (var element in list) {
     if (element is String) {

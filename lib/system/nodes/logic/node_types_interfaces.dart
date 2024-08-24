@@ -5,18 +5,88 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:minddy/system/model/node_connection.dart';
 import 'package:minddy/system/nodes/all_nodes/comparison_node.dart';
-import 'package:minddy/system/nodes/all_nodes/operation_node.dart';
+import 'package:minddy/system/nodes/all_nodes/math_node.dart';
 import 'package:minddy/system/nodes/all_nodes/outputs_nodes/boolean_output_node.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/nodes/logic/node_tree.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
+import 'package:minddy/ui/components/nodes/controllers/node_editor_bottom_sheet_controller.dart';
+import 'package:minddy/ui/theme/theme.dart';
 
 // Process to create a new node: 
 // -> Create a new class that extends INode, provide inputs types, outputs types, targets and ids, which is ([automaticly created if not provided]) -> REALLY IMPORTANT
 // -> Create a [main] method that is going to be set as a getter for the execute method, this main method will modify the outputs.
 // -> Add it's type to the [nodeTypeConstructors] in the node_tree.dart file at line 223.
 // -> Test it.
+
+/// This class is basicly the same as INode, but it extends it to make widgets out of notes
+// ignore: must_be_immutable
+abstract class INodeWidget extends Widget {
+  INodeWidget({super.key});
+
+  /// This represents the position of the node relatively to the board
+  late Offset position;
+  
+  /// This is the node that is represented by the widget
+  late INode node;
+
+  /// The width of the widget
+  late double width;
+
+  /// The height of the widget
+  late double height;
+
+  /// This will contain all the positions of the node inputs port.
+  late List<Offset> inputsOffsets;
+
+  /// This will contain all the positions of the node outputs port.
+  late List<Offset> outputsOffsets;
+
+  /// This represents the borders that the node can't cross
+  late Offset maxOffset;
+
+  /// Theme is used as an argument, so that only one instance of StylesGetters is used by every node.
+  late StylesGetters theme;
+
+  /// This function will return if there the user is dragging a node port to create NodeConnections.
+  late bool Function() getIsDragging;
+
+  /// This will set the is dragging value
+  late Function(bool) setIsDragging;
+
+  /// This will add a node connection
+  late Function(NodePortInfo) addConnection;
+
+  /// This function serves as setting the selected port, in the case [``getDragging``] is true
+  late Function(NodePortInfo?) setSelectedPort;
+
+  /// This function will return the selected port. Returns null if no port is selected
+  late NodePortInfo? Function() getSelectedPort;
+
+  /// This will allow the node to correctly unplug nodes that are connected to it
+  late List<NodeConnection> Function() getConnections;
+
+  /// This will serve as updating visually the connections between nodes
+  late Function updateConnections;
+
+  /// This will return a string representatin of this object  
+  String toJson() {throw UnimplementedError();}
+  
+  /// This will return a INodeWidget Object, recreated from string
+  static INodeWidget? fromJson(
+    String json, 
+    Offset maxOffset, 
+    StylesGetters theme, 
+    Function(NodePortInfo? info) setSelectedPort, 
+    bool Function() getIsDragging, 
+    Function(bool) setIsDragging, 
+    Function(NodeConnection) addConnection
+  ) {
+    throw UnimplementedError();
+  }
+}
 
 /// This is a class that each Node must implement, it contains all the variables that a Node will require to work well.
 class INode {
@@ -54,15 +124,12 @@ class INode {
 
     inode.id = int.tryParse( map['id'].toString()) ?? 0;
 
-    // Deserialize inputs
     List inputsAsJson = map['inputs'] != null ? map['inputs'] as List : [];
     inode.inputs = inputsAsJson.map((e) => NodeData.fromString(e as String)!).toList();
 
-    // Deserialize input types
     List inputsTypesAsJson = map['inputsTypes'] != null ? map['inputsTypes'] as List : [];
     inode.inputsTypes = inputsTypesAsJson.map((e) => NodeDataType.values.firstWhere((type) => type.name == e)).toList();
 
-    // Deserialize output types
     List outputsTypesAsJson = map['outputsTypes'] != null ? map['outputsTypes'] as List : [];
     inode.outputsTypes = outputsTypesAsJson.map((e) => NodeDataType.values.firstWhere((type) => type.name == e)).toList();
 
@@ -81,8 +148,8 @@ class INode {
       targetsList = targetsStringsPerNodesMap[id]!.map((targetString) {
         NodeTarget? target = NodeTarget.fromString(targetString, nodes);
         if (target != null) {
-          INode? actualNode = nodes.firstWhere((node) => node.id == target.node.id);
-          return NodeTarget(node: actualNode, inputIndex: target.inputIndex);
+          INode? targetNode = nodes.firstWhere((node) => node.id == target.node.id);
+          return NodeTarget(node: targetNode, inputIndex: target.inputIndex, outputIndex: target.outputIndex);
         }
       }).whereType<NodeTarget>().toList();
 
@@ -193,7 +260,7 @@ class IOutputNode implements INode {
   @override
   Function execute = () {};
 
-  // TODO : Faire les commentaires
+  // This method will return a NodeData from the input
   Future<NodeData?> Function() getResult = () async {return;};
 
   /// This makes a copy of the current node, by creating a new instance
@@ -223,9 +290,9 @@ void main() async {
   ComparisonNode nodeB = ComparisonNode(comparisonType: ComparisonNodeType.greatherThan);
   BooleanOutputNode nodeC = BooleanOutputNode();
 
-  nodeA.targets = [NodeTarget(node: nodeB, inputIndex: 0)];
-  nodeB.targets = [NodeTarget(node: nodeC, inputIndex: 0)];
-  nodeD.targets = [NodeTarget(node: nodeA, inputIndex: 0), NodeTarget(node: nodeA, inputIndex: 1), NodeTarget(node: nodeB, inputIndex: 1)];
+  nodeA.targets = [NodeTarget(node: nodeB, inputIndex: 0, outputIndex: 0)];
+  nodeB.targets = [NodeTarget(node: nodeC, inputIndex: 0, outputIndex: 0)];
+  nodeD.targets = [NodeTarget(node: nodeA, inputIndex: 0, outputIndex: 0), NodeTarget(node: nodeA, inputIndex: 1, outputIndex: 0), NodeTarget(node: nodeB, inputIndex: 1, outputIndex: 0)];
 
   NodeTree tree = NodeTree(nodes: [nodeA, nodeB, nodeC, nodeD], id: createUniqueId());
   

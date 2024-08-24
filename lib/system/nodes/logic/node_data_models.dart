@@ -2,6 +2,8 @@
 // -> Noeuds de logique
 // -> Noeuds d'interface
 
+import 'dart:convert';
+
 import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
 
 class NodeEvaluation {
@@ -14,39 +16,39 @@ class NodeEvaluation {
 class NodeTarget {
   INode node;
   int inputIndex;
+  int outputIndex;
 
-  NodeTarget({required this.node, required this.inputIndex});
+  NodeTarget({required this.outputIndex, required this.node, required this.inputIndex});
 
   @override
   String toString() {
-    return 'NodeTarget(node: ${node.id}, inputIndex: $inputIndex)';
+    return jsonEncode(
+      {
+        'node': node.id,
+        'input_index': inputIndex,
+        'output_index': outputIndex
+      }
+    );
   }
 
   static NodeTarget? fromString(String string, List<INode> nodes) {
-    if (string.startsWith('NodeTarget')) {
-      string = string.substring('NodeTarget'.length).trim();
+    try {
+      Map map = jsonDecode(string);
 
-      final RegExp regex = RegExp(r'\(node: (\d+), inputIndex: (\d+)\)');
-      final Match? match = regex.firstMatch(string);
+      INode node = nodes.firstWhere((node) => node.id == map['node']);
 
-      if (match != null) {
-        int nodeId = int.parse(match.group(1)!);
-        int index = int.parse(match.group(2)!);
+      int inputIndex = map['input_index'];
 
-        INode? targetNode;
-        try {
-          targetNode = nodes.firstWhere((node) => node.id == nodeId);          
-        } catch (e) {
-          return null;
-        }
+      int outputIndex = map['output_index'];
 
-        return NodeTarget(node: targetNode, inputIndex: index);
-      }
+      return NodeTarget(outputIndex: outputIndex, node: node, inputIndex: inputIndex);
+    } catch (e) {
+      return null;
     }
-
-    return null;
   }
 }
+
+// TODO : Revoir les façons de sauvegarder les Objets et de les retrouver
 
 enum NodeDataType {
   int,
