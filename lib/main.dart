@@ -48,6 +48,7 @@ class MainApp extends StatelessWidget {
   // TODO : Faire en sorte de pouvoir mettre un projet en privé, pour nécessiter le mot de passe pour l'ouvrir
   // TODO : Tools note rapide ?
   // TODO : Terminer la page des projets
+  // TODO : Pouvoir changer l'icone des categories de notes
   // TODO : Ajouter une fonction pour sauvagarder le projet avant de fermer l'app
   // TODO : Ajouter le déplacement des pages, ainsi que le déplacement des modules
   // TODO : Faire le menu d'ajout de module

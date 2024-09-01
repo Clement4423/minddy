@@ -35,7 +35,6 @@ class _NodesContainerState extends State<NodesContainer> {
   @override
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
-
     return Container(
       color: theme.primaryContainer,
       height: MediaQuery.of(context).size.height / 1.5,

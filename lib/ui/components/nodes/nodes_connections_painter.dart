@@ -1,22 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/system/model/node_connection.dart';
+import 'package:minddy/ui/theme/theme.dart';
 
 class NodeConnectionPainter extends CustomPainter {
   final List<NodeConnection> connections;
-  final Color color;
+  final List<NodeConnection> selectedConnections;
+  final StylesGetters theme;
 
-  NodeConnectionPainter(this.connections, this.color);
+  NodeConnectionPainter({required this.connections, required this.selectedConnections, required this.theme});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
+    final normalConnectionPaint = Paint()
+      ..color = theme.onSurface
+      ..strokeWidth = 2.0
+      ..style = PaintingStyle.stroke;
+
+    final selectedConnectionPaint = Paint()
+      ..color = DefaultAppColors.blue.color
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
 
     for (var connection in connections) {
-      final startPoint = connection.startNode.outputsOffsets.elementAtOrNull(connection.startOutputIndex) ?? const Offset(0, 0);
-      final endPoint = connection.endNode.inputsOffsets.elementAtOrNull(connection.endInputIndex) ?? const Offset(0, 0);
+      Offset startPoint = connection.startNode.outputsOffsets.elementAtOrNull(connection.startOutputIndex) ?? const Offset(0, 0);
+      Offset endPoint = connection.endNode.inputsOffsets.elementAtOrNull(connection.endInputIndex) ?? const Offset(0, 0);
+
+      if (startPoint == const Offset(0, 0) || endPoint == const Offset(0, 0)) {
+        return;
+      }
+
+      startPoint += connection.startNode.position;
+      endPoint += connection.endNode.position;
 
       // Calculate control points for the curve
       final controlPoint1 = Offset(startPoint.dx + (endPoint.dx - startPoint.dx) / 2, startPoint.dy);
@@ -29,6 +44,8 @@ class NodeConnectionPainter extends CustomPainter {
           controlPoint2.dx, controlPoint2.dy,
           endPoint.dx, endPoint.dy,
         );
+
+      final Paint paint = selectedConnections.contains(connection) ? selectedConnectionPaint : normalConnectionPaint;
 
       canvas.drawPath(path, paint);
     }
@@ -46,12 +63,14 @@ class CurvedLinePainter extends CustomPainter {
   final Color color;
   final double strokeWidth;
   final bool isHoveringANodePort;
+  final Color plusSignColor;
 
   CurvedLinePainter({
     required this.start,
     required this.end,
     required this.isHoveringANodePort,
     this.color = Colors.black,
+    this.plusSignColor = Colors.black,
     this.strokeWidth = 2.0,
   });
 
@@ -85,7 +104,7 @@ class CurvedLinePainter extends CustomPainter {
     if (!isHoveringANodePort) {
       // Draw a plus sign at the end of the line
       final plusPaint = Paint()
-        ..color = color
+        ..color = plusSignColor
         ..strokeCap = StrokeCap.round
         ..strokeWidth = 1;
 

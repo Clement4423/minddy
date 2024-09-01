@@ -15,8 +15,14 @@ class NodeEditorGridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
-      ..color = theme.onPrimary.withOpacity(0.4)
+      ..color = theme.onPrimary.withOpacity(0.2)
       ..style = PaintingStyle.fill;
+
+    Paint brighterPaint = Paint()
+            ..color = theme.onPrimary.withOpacity(0.4)
+            ..style = PaintingStyle.fill;
+
+    double brighterPointRadius = pointRadius * 1.5;
 
     double gridSize = 10 * scale;
 
@@ -28,15 +34,8 @@ class NodeEditorGridPainter extends CustomPainter {
         bool isBrighterPoint = (i % 5 == 0) && (j % 5 == 0);
 
         if (isBrighterPoint) {
-          // Make the point bigger and brighter
-          double brighterPointRadius = pointRadius * 1.5;
-          Paint brighterPaint = Paint()
-            ..color = theme.onPrimary.withOpacity(0.7) // Brighter color
-            ..style = PaintingStyle.fill;
-
           canvas.drawCircle(Offset(x, y), brighterPointRadius, brighterPaint);
         } else {
-          // Draw normal circles
           canvas.drawCircle(Offset(x, y), pointRadius, paint);
         }
       }

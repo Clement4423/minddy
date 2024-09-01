@@ -50,7 +50,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m11(user) => "Encantado de verte de nuevo ${user}";
 
-  static String m12(accountSettingName) =>
+  static String m12(duration) =>
+      "${Intl.plural(duration, zero: 'Pomodoro - Es hora de un descanso', one: 'Pomodoro - Es hora de un descanso por ${duration} minuto', other: 'Pomodoro - Es hora de un descanso por ${duration} minutos')}";
+
+  static String m13(duration) =>
+      "La sesión de pomodoro ha terminado, has trabajado ${Intl.plural(duration, one: '1 minuto', other: '${duration} minutos')}. ¡Es hora de descansar!";
+
+  static String m14(duration) =>
+      "${Intl.plural(duration, zero: 'Pomodoro - Es hora de volver al trabajo', one: 'Pomodoro - Es hora de volver al trabajo por ${duration} minuto', other: 'Pomodoro - Es hora de volver al trabajo por ${duration} minutos')}";
+
+  static String m15(accountSettingName) =>
       "Aún podrás ingresar tu nombre en la configuración - ${accountSettingName}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -460,6 +469,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Iniciado"),
         "projects_module_spreadsheet_selection_sub_menu_error_message_no_options":
             MessageLookupByLibrary.simpleMessage("Por favor agregue opciones"),
+        "projects_module_spreadsheet_selection_sub_menu_error_message_redundant_color":
+            MessageLookupByLibrary.simpleMessage(
+                "Dos opciones no pueden tener el mismo color"),
         "projects_module_spreadsheet_selection_sub_menu_error_message_redundant_option_name":
             m6,
         "projects_module_spreadsheet_selection_sub_menu_error_message_unnamed_option":
@@ -607,6 +619,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Duración de la sesión de descanso"),
         "tool_pomodoro_break_session":
             MessageLookupByLibrary.simpleMessage("Romper"),
+        "tool_pomodoro_break_snackbar": m12,
+        "tool_pomodoro_end_session": m13,
         "tool_pomodoro_focus_timer":
             MessageLookupByLibrary.simpleMessage("Temporizador de enfoque"),
         "tool_pomodoro_repetition_count":
@@ -619,6 +633,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Duración de la sesión de trabajo"),
         "tool_pomodoro_work_session":
             MessageLookupByLibrary.simpleMessage("Trabajo"),
+        "tool_pomodoro_work_snackbar": m14,
         "welcome_appbar": MessageLookupByLibrary.simpleMessage("Bienvenido"),
         "welcome_because": MessageLookupByLibrary.simpleMessage(
             "Para personalizar tu experiencia"),
@@ -634,7 +649,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Siguiente página"),
         "welcome_pass_default_username":
             MessageLookupByLibrary.simpleMessage("Usuario"),
-        "welcome_pass_tooltip": m12,
+        "welcome_pass_tooltip": m15,
         "welcome_pass_username": MessageLookupByLibrary.simpleMessage("Pasar"),
         "welcome_password_creation_confirm_hint":
             MessageLookupByLibrary.simpleMessage("Confirma tu contraseña"),

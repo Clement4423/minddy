@@ -19,20 +19,20 @@ class PluginEditorViewModel {
 
   PluginEditorViewModel({required this.pluginInfo});
 
-  late NodeEditorBottomSheetController bottomSheetController = NodeEditorBottomSheetController(nodeTrees: [], maxOffset: const Offset(0, 0), save: savePlugin);
+  late NodeEditorBottomSheetController bottomSheetController = NodeEditorBottomSheetController(views: [], maxOffset: const Offset(0, 0), save: savePlugin);
 
   Future<void> initialize(Offset maxOffset, StylesGetters theme) async {
-  Map<String, dynamic>? pluginData = await getPluginDataFromFiles();
+    Map<String, dynamic>? pluginData = await getPluginDataFromFiles();
 
-  // If pluginData contains a JSON string, decode it to a map.
-  if (pluginData != null && pluginData['nodes_controller'] is String) {
-    pluginData['nodes_controller'] = jsonDecode(pluginData['nodes_controller']);
+    // If pluginData contains a JSON string, decode it to a map.
+    if (pluginData != null && pluginData['nodes_controller'] is String) {
+      pluginData['nodes_controller'] = jsonDecode(pluginData['nodes_controller']);
+    }
+
+    bottomSheetController = NodeEditorBottomSheetController.fromJson(pluginData?['nodes_controller']??{}, maxOffset, theme, savePlugin) ?? NodeEditorBottomSheetController(views: [NodeEditorBottomSheetView(tree: NodeWidgetTree(nodesWidgets: [MathNodeWidget(key: GlobalKey(), node: MathNode(), updateConnections: bottomSheetController.nodeConnectionUpdater.notify, saveState: bottomSheetController.saveState, updateNode: bottomSheetController.updateNode, theme: theme, getSelectedNodes: bottomSheetController.getSelectedNodes, setSelectedNode: bottomSheetController.setSelectedNode, setIsDragging: bottomSheetController.setIsDragging, getIsDragging: bottomSheetController.getIsDragging, getConnections: bottomSheetController.passNodesConnections, addConnection: bottomSheetController.addConnection, setSelectedPort: bottomSheetController.setSelectedPort, getSelectedPort: bottomSheetController.getSelectedPort, position: const Offset(900, 300), maxOffset: maxOffset)], id: 1), viewPositionController: TransformationController())], maxOffset: maxOffset, save: savePlugin);
+
+    return;
   }
-
-  bottomSheetController = NodeEditorBottomSheetController.fromJson(pluginData?['nodes_controller']??{}, maxOffset, theme, savePlugin) ?? NodeEditorBottomSheetController(nodeTrees: [NodeWidgetTree(nodesWidgets: [MathNodeWidget(node: MathNode(), updateConnections: bottomSheetController.nodeConnectionUpdater.notify, theme: theme, setIsDragging: bottomSheetController.setIsDragging, getIsDragging: bottomSheetController.getIsDragging, getConnections: bottomSheetController.passNodesConnections, addConnection: bottomSheetController.addConnection, setSelectedPort: bottomSheetController.setSelectedPort, getSelectedPort: bottomSheetController.getSelectedPort, position: const Offset(900, 300), maxOffset: maxOffset)], id: 1)], maxOffset: maxOffset, save: savePlugin);
-
-  return;
-}
 
   Future<bool> savePlugin() async {
     try {

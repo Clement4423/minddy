@@ -89,12 +89,12 @@ class NodeTree {
     return null;
   }
 
-bool isNodeBefore(INode first, INode second) {
-    List<INode> sortedNodes = topologicalSort();
-
+  bool isNodeBefore(INode first, INode second) {;
     if (first.targets.isEmpty && second.targets.isEmpty) {
       return false;
     }
+
+    List<INode> sortedNodes = topologicalSort();
 
     int firstIndex = sortedNodes.indexOf(first);
     int secondIndex = sortedNodes.indexOf(second);
@@ -102,8 +102,9 @@ bool isNodeBefore(INode first, INode second) {
     if (firstIndex == -1 || secondIndex == -1) {
       return true;
     }
+
     return firstIndex < secondIndex;
-}
+  }
 
   void _addDataToNextNode(List<INode> sortedNodes, int index) {
     INode currentNode = sortedNodes[index];
@@ -177,13 +178,16 @@ bool isNodeBefore(INode first, INode second) {
         throw Exception("Cycle detected in the graph, topological sort not possible");
       }
 
-      if (visited[node]!) return;
+      bool isVisited = visited[node] ?? false;
+
+      if (isVisited) return;
 
       currentPath.add(node);
       visited[node] = true;
 
       for (var target in node.targets) {
-        if (!visited[target.node]!) {
+        bool isVisited = visited[target.node] ?? false;
+        if (!isVisited) {
           dfs(target.node);
         }
       }

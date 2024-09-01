@@ -30,6 +30,8 @@ class CustomTableSelectionCellAddOptionsSubMenuController extends ChangeNotifier
 
   Future<bool> vertifyOptions(Function(List<CustomTableSelectionCellOptionModel>) onCompleted) async {
     List<String> usedNames = [];
+    List<Color> usedColors = [];
+
     if (options.isEmpty) {
       _setErrorMessage(S.current.projects_module_spreadsheet_selection_sub_menu_error_message_no_options);
       return false;
@@ -42,8 +44,12 @@ class CustomTableSelectionCellAddOptionsSubMenuController extends ChangeNotifier
       } else if (usedNames.contains(option.name.toLowerCase())) {
         _setErrorMessage(S.current.projects_module_spreadsheet_selection_sub_menu_error_message_redundant_option_name(option.name));
         return false;
+      } else if (usedColors.contains(option.color)) {
+        _setErrorMessage(S.current.projects_module_spreadsheet_selection_sub_menu_error_message_redundant_color);
+        return false;
       } else {
         usedNames.add(option.name.toLowerCase());
+        usedColors.add(option.color);
       }
     }
     await onCompleted(options);

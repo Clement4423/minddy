@@ -1730,6 +1730,42 @@ class S {
     );
   }
 
+  /// `{duration, plural, =0 {Pomodoro - It's time for a break} one {Pomodoro - It's time for a break for {duration} minute} other {Pomodoro - It's time for a break for {duration} minutes}}`
+  String tool_pomodoro_break_snackbar(num duration) {
+    return Intl.plural(
+      duration,
+      zero: 'Pomodoro - It\'s time for a break',
+      one: 'Pomodoro - It\'s time for a break for $duration minute',
+      other: 'Pomodoro - It\'s time for a break for $duration minutes',
+      name: 'tool_pomodoro_break_snackbar',
+      desc: '',
+      args: [duration],
+    );
+  }
+
+  /// `{duration, plural, =0 {Pomodoro - It's time to get back to work} one {Pomodoro - It's time to get back to work for {duration} minute} other {Pomodoro - It's time to get back to work for {duration} minutes}}`
+  String tool_pomodoro_work_snackbar(num duration) {
+    return Intl.plural(
+      duration,
+      zero: 'Pomodoro - It\'s time to get back to work',
+      one: 'Pomodoro - It\'s time to get back to work for $duration minute',
+      other: 'Pomodoro - It\'s time to get back to work for $duration minutes',
+      name: 'tool_pomodoro_work_snackbar',
+      desc: '',
+      args: [duration],
+    );
+  }
+
+  /// `Pomodoro session is over, you worked {duration, plural, one {1 minute} other {{duration} minutes}}. Time to take a rest !`
+  String tool_pomodoro_end_session(num duration) {
+    return Intl.message(
+      'Pomodoro session is over, you worked ${Intl.plural(duration, one: '1 minute', other: '$duration minutes')}. Time to take a rest !',
+      name: 'tool_pomodoro_end_session',
+      desc: '',
+      args: [duration],
+    );
+  }
+
   /// `Repetition count`
   String get tool_pomodoro_repetition_count {
     return Intl.message(
@@ -2685,6 +2721,18 @@ class S {
           'projects_module_spreadsheet_selection_sub_menu_error_message_redundant_option_name',
       desc: '',
       args: [optionName],
+    );
+  }
+
+  /// `Two options can't have the same color`
+  String
+      get projects_module_spreadsheet_selection_sub_menu_error_message_redundant_color {
+    return Intl.message(
+      'Two options can\'t have the same color',
+      name:
+          'projects_module_spreadsheet_selection_sub_menu_error_message_redundant_color',
+      desc: '',
+      args: [],
     );
   }
 

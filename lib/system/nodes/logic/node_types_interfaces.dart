@@ -6,13 +6,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:minddy/system/model/node_connection.dart';
+import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/nodes/all_nodes/comparison_node.dart';
 import 'package:minddy/system/nodes/all_nodes/math_node.dart';
 import 'package:minddy/system/nodes/all_nodes/outputs_nodes/boolean_output_node.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/nodes/logic/node_tree.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
-import 'package:minddy/ui/components/nodes/controllers/node_editor_bottom_sheet_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 // Process to create a new node: 
@@ -68,14 +68,33 @@ abstract class INodeWidget extends Widget {
   /// This will allow the node to correctly unplug nodes that are connected to it
   late List<NodeConnection> Function() getConnections;
 
+  /// This will return the node that is actually selected
+  late List<INodeWidget> Function() getSelectedNodes;
+
+  /// This will serve to set the selected nodes list
+  late Function(List<INodeWidget>) setSelectedNode;
+
+  late Function(INodeWidget) updateNode;
+
   /// This will serve as updating visually the connections between nodes
   late Function updateConnections;
 
+  /// This will allow to save the current state of the node board, allowing usage of cmd+z
+  late Function saveState;
+
   /// This will return a string representatin of this object  
-  String toJson() {throw UnimplementedError();}
+  String toJson() {
+    throw UnimplementedError();
+  }
+
+  /// This makes a copy of the current node, by creating a new instance
+  INodeWidget copy(GlobalKey newKey) {
+    throw UnimplementedError();
+  }
   
   /// This will return a INodeWidget Object, recreated from string
   static INodeWidget? fromJson(
+    GlobalKey key,
     String json, 
     Offset maxOffset, 
     StylesGetters theme, 

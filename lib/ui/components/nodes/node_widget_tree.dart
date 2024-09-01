@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:minddy/system/nodes/logic/node_tree.dart';
 import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
@@ -31,27 +31,30 @@ class NodeWidgetGraph {
 class NodeWidgetTree {
   List<INodeWidget> nodesWidgets;
   int id;
+  String name;
 
   final NodeWidgetGraph _graph = NodeWidgetGraph();
   INodeWidget? outputNode;
 
-  NodeWidgetTree({required this.nodesWidgets, required this.id}) {
+  NodeWidgetTree({required this.nodesWidgets, required this.id, this.name = ''}) {
     for (var widget in nodesWidgets) {
       _graph.addNode(widget);
     }
     _buildGraph();
     
     // Identify the single output node (one with no outgoing edges)
-    outputNode = nodesWidgets.firstWhere(
-      (widget) => widget.node is IOutputNode,
-      orElse: () {
-        return nodesWidgets.firstWhere(
-          (widget) => _graph.getDependencies(widget)?.isEmpty ?? true,
-          orElse: () {return topologicalSort().last;}
-        );
-      }
-    );
-    print(outputNode.runtimeType);
+    try {
+      outputNode = nodesWidgets.firstWhere(
+        (widget) => widget.node is IOutputNode,
+        orElse: () {
+          return nodesWidgets.firstWhere(
+            (widget) => _graph.getDependencies(widget)?.isEmpty ?? true
+          );
+        }
+      );
+    } catch (e) {
+      outputNode = null;
+    }
   }
 
 
@@ -59,7 +62,8 @@ class NodeWidgetTree {
     List<String> nodesWidgetsAsStrings = nodesWidgets.map((widget) => widget.toJson()).toList();
     Map map =  {
       'nodes': nodesWidgetsAsStrings,
-      'id': id
+      'id': id,
+      'name': name
     };
     return jsonEncode(map);
   }
@@ -85,10 +89,11 @@ static NodeWidgetTree? fromJson(String string, NodeEditorBottomSheetController c
 
     if (allNodeWidgets.isNotEmpty) {
       for (var widget in allNodeWidgets) {
+        controller.globalKeys[widget] = widget.key as GlobalKey? ?? GlobalKey();
         widget.node.targets = INode.initializeTargets(
             allNodeWidgets.map((w) => w.node).toList(), targetsMap, widget.node.id);
       }
-      return NodeWidgetTree(nodesWidgets: allNodeWidgets, id: map['id'] ?? createUniqueId());
+      return NodeWidgetTree(nodesWidgets: allNodeWidgets, id: map['id'] ?? createUniqueId(), name: map['name'] ?? '');
     }
   }
   return null;
@@ -140,9 +145,10 @@ static NodeWidgetTree? fromJson(String string, NodeEditorBottomSheetController c
 }
 
 INodeWidget? _getCorrectNodeWidgetType(String type, String json, Offset maxOffset, StylesGetters theme, NodeEditorBottomSheetController controller) {
+  GlobalKey key = GlobalKey();
   switch (type) {
     case 'MathNodeWidget':
-      return MathNodeWidget.fromJson(json, maxOffset, theme, controller.setSelectedPort, controller.getIsDragging, controller.setIsDragging, controller.addConnection, controller.getSelectedPort, controller.passNodesConnections, controller.nodeConnectionUpdater.notify);
+      return MathNodeWidget.fromJson(key, json, maxOffset, theme, controller.setSelectedPort, controller.getIsDragging, controller.setIsDragging, controller.addConnection, controller.getSelectedPort, controller.passNodesConnections, controller.nodeConnectionUpdater.notify, controller.getSelectedNodes, controller.setSelectedNode, controller.updateNode, controller.saveState);
     default:
   }
   return null;

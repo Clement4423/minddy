@@ -80,6 +80,7 @@ class _CustomInputDatePickerState extends State<CustomInputDatePicker> {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hint.replaceAll('-', '/'),
+                contentPadding: const EdgeInsets.only(bottom: 15)
               ),
               onEditingComplete: () async {
                 if (date.isEmpty) {

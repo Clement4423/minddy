@@ -1,15 +1,18 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/custom_appbar_button_model.dart';
 import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/system/model/node_connection.dart';
+import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/nodes/all_nodes/math_node.dart';
 import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar_controller.dart';
-import 'package:minddy/ui/components/nodes/controllers/node_editor_bottom_sheet_controller.dart';
 import 'package:minddy/ui/components/nodes/node_editor_bottom_sheet.dart';
 import 'package:minddy/ui/components/nodes/nodes_connections_painter.dart';
 import 'package:minddy/ui/components/settings/settings_menu.dart';
@@ -111,7 +114,11 @@ class MathNodeWidget extends StatefulWidget implements INodeWidget {
     required this.setIsDragging,
     required this.addConnection,
     required this.getConnections,
-    required this.updateConnections
+    required this.updateConnections,
+    required this.getSelectedNodes,
+    required this.setSelectedNode,
+    required this.updateNode,
+    required this.saveState
   });
 
   @override
@@ -133,6 +140,28 @@ class MathNodeWidget extends StatefulWidget implements INodeWidget {
   List<Offset> outputsOffsets = [];
 
   @override
+  MathNodeWidget copy(GlobalKey newKey) {
+    return MathNodeWidget(
+      key: newKey,
+      node: node.copy(), 
+      position: Offset(position.dx, position.dy), 
+      maxOffset: maxOffset, 
+      theme: theme, 
+      getIsDragging: getIsDragging, 
+      setSelectedPort: setSelectedPort, 
+      getSelectedPort: getSelectedPort, 
+      setIsDragging: setIsDragging, 
+      addConnection: addConnection, 
+      getConnections: getConnections, 
+      updateConnections: updateConnections, 
+      getSelectedNodes: getSelectedNodes, 
+      setSelectedNode: setSelectedNode, 
+      updateNode: updateNode, 
+      saveState: saveState
+    );
+  }
+
+  @override
   String toJson() {
     return jsonEncode({
       'node': node.toJson(),
@@ -143,10 +172,11 @@ class MathNodeWidget extends StatefulWidget implements INodeWidget {
   }
 
   // Static method to deserialize from JSON
-  static MathNodeWidget fromJson(String json, Offset maxOffset, StylesGetters theme, Function(NodePortInfo? info) setSelectedPort, bool Function() getIsDragging, Function(bool) setIsDragging, Function(NodePortInfo) addConnection, NodePortInfo? Function() getSelectedPort, List<NodeConnection> Function() getConnections, Function updateConnections) {
+  static MathNodeWidget fromJson(GlobalKey key, String json, Offset maxOffset, StylesGetters theme, Function(NodePortInfo? info) setSelectedPort, bool Function() getIsDragging, Function(bool) setIsDragging, Function(NodePortInfo) addConnection, NodePortInfo? Function() getSelectedPort, List<NodeConnection> Function() getConnections, Function updateConnections, List<INodeWidget> Function() getSelectedNodes, Function(List<INodeWidget>) setSelectedNode, Function(INodeWidget) updateNode, Function saveState) {
     final Map<String, dynamic> data = jsonDecode(json);
 
     return MathNodeWidget(
+      key: key,
       node: MathNode().fromJson(data['node']) as MathNode,
       position: Offset(data['positionX'], data['positionY']),
       maxOffset: maxOffset,
@@ -157,6 +187,10 @@ class MathNodeWidget extends StatefulWidget implements INodeWidget {
       addConnection: addConnection,
       getConnections: getConnections,
       updateConnections: updateConnections,
+      setSelectedNode: setSelectedNode,
+      getSelectedNodes: getSelectedNodes,
+      saveState: saveState,
+      updateNode: updateNode,
       theme: theme,
     );
   }
@@ -204,79 +238,82 @@ class MathNodeWidget extends StatefulWidget implements INodeWidget {
   List<NodeConnection> Function() getConnections;
 
   @override
+  List<INodeWidget> Function() getSelectedNodes;
+
+  @override
+  Function(List<INodeWidget>) setSelectedNode;
+
+  @override
   Function updateConnections;
+
+  @override
+  Function saveState;
+
+  @override
+  Function(INodeWidget) updateNode;
 }
 
 class _MathNodeWidgetState extends State<MathNodeWidget> {
-  late Offset _dragOffset;
   Offset? _draggingStartPort;  // Start port position
   Offset? _currentCursorOffset; // Current cursor position
+
+  final int _outputOffsetsMaxLength = 1;
+
+  final int _inputsOffsetsMaxLength = 2;
+
+  bool isDraggingWithMouse = true;
 
   bool isDraggingStartPortFromAnotherPort = false;
   NodePortInfo? inputPortInfo;
 
-  @override
-  void initState() {
-    super.initState();
-    _dragOffset = widget.position;
+  bool isSelected = false;
+  bool isLastSelected = false;
+
+  bool isDragging = false;
+
+  void setOffset(Offset offset, NodePortInfo portInfo) {
+    if (portInfo.type == NodePortType.input && !initializedInputsOffsets) {
+      widget.inputsOffsets.add(offset);
+
+      if (widget.inputsOffsets.length == _inputsOffsetsMaxLength) {
+        initializedInputsOffsets = true;
+      }
+    } else if (!initializedOutputsOffsets) {
+      widget.outputsOffsets.add(offset);
+
+      if (widget.outputsOffsets.length == _outputOffsetsMaxLength) {
+        initializedOutputsOffsets = true;
+      }
+    }
   }
 
-  void _calculatePortCenters() {
-    // Clear previous offsets
-    widget.inputsOffsets.clear();
-    widget.outputsOffsets.clear();
+  bool initializedOutputsOffsets = false;
+  bool initializedInputsOffsets = false;
 
-    // Relative positions within the widget
-    double outputPortOffsetX = widget.width - 4; // Right edge minus container width minus extra space
-    double outputPortOffsetY = 15 + 5 + 7.5; // Top part height + Padding + half of output port container height
+  void verifyPosition(INodeWidget w) {
+    double maxDx = (w.maxOffset.dx - w.width).clamp(0.0, double.infinity);
+    double maxDy = (w.maxOffset.dy - w.height).clamp(0.0, double.infinity);
 
-    double inputPort1OffsetX = -4; // Start offset
-    double inputPort1OffsetY = 15 + 5 + 20 + 5 + 7.5; // Top part height + Padding + Math operation container height + Padding + half of input port container height
-
-    double inputPort2OffsetX = -4; // Start offset
-    double inputPort2OffsetY = 15 + 5 + 20 + 5 + 15 + 5 + 7.5; // Similar calculation as inputPort1OffsetY
-
-    // Calculate absolute center positions
-    Offset outputPortCenter = Offset(
-      _dragOffset.dx + outputPortOffsetX + 4, // Adding half of the port width (8/2)
-      _dragOffset.dy + outputPortOffsetY
-    );
-
-    Offset inputPort1Center = Offset(
-      _dragOffset.dx + inputPort1OffsetX + 4, // Adding half of the port width (8/2)
-      _dragOffset.dy + inputPort1OffsetY + 20
-    );
-
-    Offset inputPort2Center = Offset(
-      _dragOffset.dx + inputPort2OffsetX + 4, // Adding half of the port width (8/2)
-      _dragOffset.dy + inputPort2OffsetY + 20
-    );
-
-    // Store the calculated centers
-    widget.outputsOffsets.add(outputPortCenter);
-    widget.inputsOffsets.add(inputPort1Center);
-    widget.inputsOffsets.add(inputPort2Center);
-  }
-
-  void verifyPosition() {
-    double maxDx = (widget.maxOffset.dx - widget.width).clamp(0.0, double.infinity);
-    double maxDy = (widget.maxOffset.dy - widget.height).clamp(0.0, double.infinity);
-
-    double dx = _dragOffset.dx.clamp(0.0, maxDx);
-    double dy = _dragOffset.dy.clamp(0.0, maxDy);
+    double dx = w.position.dx.clamp(0.0, maxDx);
+    double dy = w.position.dy.clamp(0.0, maxDy);
 
     Offset clampedPosition = Offset(dx, dy);
-    _dragOffset = clampedPosition;
+    w.position = clampedPosition;
+    widget.updateNode(w);
   }
 
   void _onDragUpdate(DragUpdateDetails details) {
-    setState(() {
-      _dragOffset += details.delta;
-      verifyPosition();
-      _calculatePortCenters();
-    });
-  }
+    if (!isDraggingWithMouse) {
+      return;
+    }
+    List<INodeWidget> selectedNodes = widget.getSelectedNodes();
+    Offset delta = details.delta;
 
+    for (INodeWidget w in selectedNodes) {
+      w.position += delta;
+      verifyPosition(w);
+    }
+  }
 
   void _setStartDraggingPoint(int? index, NodePortType? portType, [INodeWidget? otherNode, NodePortInfo? inputPort]) {
     if (index == null || portType == null) {
@@ -294,251 +331,352 @@ class _MathNodeWidgetState extends State<MathNodeWidget> {
 
     switch (portType) {
       case NodePortType.input:
-        _draggingStartPort = nodeWidget.inputsOffsets[index];
+        _draggingStartPort = nodeWidget.inputsOffsets[index] + nodeWidget.position;
         break;
       case NodePortType.output:
-        _draggingStartPort = nodeWidget.outputsOffsets[index];
+        _draggingStartPort = nodeWidget.outputsOffsets[index] + nodeWidget.position;
         break;
+    }
+  }
+
+  void _handleTapDown() {
+    List<INodeWidget> selectedNodes = widget.getSelectedNodes();
+    bool isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
+    if (!selectedNodes.contains(widget) && selectedNodes.length == 1 && !isShiftPressed) {
+      selectedNodes.clear();
+      selectedNodes.add(widget);
+    } else if (!selectedNodes.contains(widget) && isShiftPressed) {
+      selectedNodes.add(widget);
+    } else if (isShiftPressed) {
+      if (selectedNodes.indexOf(widget) == selectedNodes.length - 1) {
+        selectedNodes.remove(widget);
+      } else {
+        selectedNodes.remove(widget);
+        selectedNodes.add(widget);
+      }
+    }
+    widget.setSelectedNode(selectedNodes);
+  }
+
+  void _handleTapUp() {
+    List<INodeWidget> selectedNodes = widget.getSelectedNodes();
+    bool isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
+
+    if (!selectedNodes.contains(widget) && !isShiftPressed) {
+      if (!isShiftPressed) {
+        selectedNodes.clear();
+      }
+      selectedNodes.add(widget);
+      isSelected = true;
+    } else if (selectedNodes.contains(widget) && selectedNodes.length > 1 && !isShiftPressed) {
+      selectedNodes.clear();
+      selectedNodes.add(widget);
+    }
+
+    widget.setSelectedNode(selectedNodes);
+  }
+
+  _setAsSelectedIfNotAlready() {
+    List<INodeWidget> selectedNodes = widget.getSelectedNodes();
+    bool isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
+    if (!selectedNodes.contains(widget)) {
+
+      if (!isShiftPressed) {
+        selectedNodes.clear();
+      }
+
+      selectedNodes.add(widget);
+      widget.setSelectedNode(selectedNodes);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    _calculatePortCenters();
-    Offset draggingStartPortOffset = _draggingStartPort?.translate(-_dragOffset.dx, -_dragOffset.dy) ?? const Offset(0, 0);
+    List<INodeWidget> selectedNodesList = widget.getSelectedNodes(); 
+    isSelected = selectedNodesList.contains(widget);
+    isLastSelected = isSelected ? selectedNodesList.last == widget : false;
+    Offset draggingStartPortOffset = _draggingStartPort?.translate(-widget.position.dx, -widget.position.dy) ?? const Offset(0, 0);
     return Positioned(
-      top: _dragOffset.dy,
-      left: _dragOffset.dx,
-      child: GestureDetector(
-        onPanUpdate: _onDragUpdate,
-        onPanEnd: (details) {widget.position = _dragOffset;},
-        // Whole node
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-              width: widget.width,
-              height: widget.height,
-              clipBehavior: Clip.none,
-              decoration: BoxDecoration(
-                color: widget.theme.primary,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              // Node body
-              child: Column(
-                children: [
-                  // Node top part, with title
-                  Container(
-                    height: 15,
-                    width: widget.width,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10)
-                      ),
-                      color: DefaultAppColors.mintGreen.color
-                    ),
-                    child: Center(
-                      // Node title
-                      child: Text(
-                        "Math operation", 
-                        style: widget.theme.titleMedium.copyWith(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 8,
-                          color: Colors.white
-                        ),
-                        maxLines: 1,
-                      ),
-                    ),
+      top: widget.position.dy,
+      left: widget.position.dx,
+      child: MouseRegion(
+        cursor: isDragging 
+          ? Platform.isMacOS 
+            ? SystemMouseCursors.grabbing 
+            : SystemMouseCursors.move 
+          : SystemMouseCursors.basic,
+        child: GestureDetector(
+          onPanStart: (details) {
+            if (details.kind == PointerDeviceKind.mouse) {
+              isDragging = true;
+              isDraggingWithMouse = true;
+              _setAsSelectedIfNotAlready();
+            } else {
+              isDraggingWithMouse = false;
+            }
+          },
+          onPanUpdate: _onDragUpdate,
+          onPanEnd: (details) {
+            setState(() {
+              isDraggingWithMouse = true;
+              isDragging = false;  
+              widget.saveState();            
+            });
+          },
+          onTapDown: (details) {_handleTapDown();},
+          onTapUp: (details) {_handleTapUp();},
+          // Whole node
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                width: widget.width,
+                height: widget.height,
+                decoration: BoxDecoration(
+                  color: widget.theme.primary,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: widget.theme.shadow.withOpacity(0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4)
+                    )
+                  ],
+                  border: Border.all(
+                    color: isSelected 
+                      ? isLastSelected 
+                        ? DefaultAppColors.blue.color
+                        : DefaultAppColors.yellow.color
+                      : Colors.transparent, 
+                    width: 1.2,
+                    strokeAlign: BorderSide.strokeAlignOutside
                   ),
-                  // Output.s
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: SizedBox(
+                ),
+                // Node body
+                child: Column(
+                  children: [
+                    // Node top part, with title
+                    Container(
                       height: 15,
                       width: widget.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            "Value", 
-                            style: widget.theme.titleMedium.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 8,
-                              color: widget.theme.onPrimary
-                            ),
-                            maxLines: 1,
-                          ),
-                          Transform.translate(
-                            offset: const Offset(4, 0),
-                            child: NodePortWidget(
-                              portInfo: NodePortInfo(node: widget, type: NodePortType.output, portIndex: 0), 
-                              color: DefaultAppColors.mintGreen.color,
-                              onHoveredColor: widget.theme.onSurface,
-                              setSelectedPort: widget.setSelectedPort,
-                              getNodesConnections: widget.getConnections,
-                              updateConnections: widget.updateConnections,
-                              setIsDragging: widget.setIsDragging,
-                              setDragStartingPort: _setStartDraggingPoint,
-                              setCursorPosition: (offset) {setState(() {
-                                _currentCursorOffset = offset;
-                              });}, 
-                              finalizeConnection: widget.addConnection,
-                              getIsDragging: widget.getIsDragging,
-                            )
-                          )
-                        ],
-                      )
-                    ),
-                  ),
-                  // Math operation selector
-                  Container(
-                    height: 20,
-                    width: widget.width - 10,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: widget.theme.surface
-                    ),
-                    margin: const EdgeInsets.only(top: 5),
-                    padding: const EdgeInsets.only(left: 5),
-                    child: DropdownButton(
-                      hint: Text(
-                        widget.node.operationType.name, 
-                        style: widget.theme.titleMedium.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 8,
-                          color: widget.theme.onPrimary
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
+                        color: DefaultAppColors.mintGreen.color
                       ),
-                      iconSize: 18,
-                      borderRadius: BorderRadius.circular(13),
-                      menuMaxHeight: widget.height * 2,
-                      menuWidth: widget.width * 2,
-                      onChanged: (type) => setState(() {widget.node.operationType = type ?? MathNodeType.addition;}),
-                      underline: const SizedBox(),
-                      icon: Icon(Icons.arrow_drop_down_rounded, color: widget.theme.onSurface),
-                      dropdownColor: widget.theme.primary,
-                      isExpanded: true,
-                      items: [
-                        ...MathNodeType.values.map((type) {
-                          return DropdownMenuItem(
-                            value: type,
-                            child: Text(
-                              type.name,
-                              style: widget.theme.bodyMedium
-                              .copyWith(
-                                color: widget.theme.onPrimary, 
-                                fontWeight: FontWeight.w500
+                      child: Center(
+                        // Node title
+                        child: Text(
+                          "Math operation", 
+                          style: widget.theme.titleMedium.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 8,
+                            color: Colors.white
+                          ),
+                          maxLines: 1,
+                        ),
+                      ),
+                    ),
+                    // Output.s
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: SizedBox(
+                        height: 15,
+                        width: widget.width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              "Value", 
+                              style: widget.theme.titleMedium.copyWith(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 8,
+                                color: widget.theme.onPrimary
                               ),
-                            )
-                          );
-                        })
-                      ], 
-                    ),
-                  ),
-                  // Input.s
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: SizedBox(
-                      height: 15,
-                      width: widget.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Transform.translate(
-                            offset: const Offset(-4, 0),
-                            child: NodePortWidget(
-                              portInfo: NodePortInfo(node: widget, type: NodePortType.input, portIndex: 0), 
-                              color: DefaultAppColors.mintGreen.color,
-                              onHoveredColor: widget.theme.onSurface,
-                              getNodesConnections: widget.getConnections,
-                              updateConnections: widget.updateConnections,
-                              setSelectedPort: widget.setSelectedPort,
-                              setIsDragging: widget.setIsDragging,
-                              setDragStartingPort: _setStartDraggingPoint,
-                              setCursorPosition: (offset) {setState(() {
-                                _currentCursorOffset = offset;
-                              });}, 
-                              finalizeConnection: widget.addConnection,
-                              getIsDragging: widget.getIsDragging,
-                            )
-                          ),
-                          Text(
-                            "Value", 
-                            style: widget.theme.titleMedium.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 8,
-                              color: widget.theme.onPrimary
+                              maxLines: 1,
                             ),
-                            maxLines: 1,
-                          ),
-                        ],
-                      )
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: SizedBox(
-                      height: 15,
-                      width: widget.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Transform.translate(
-                            offset: const Offset(-4, 0),
-                            transformHitTests: true,
-                            child: NodePortWidget(
-                              portInfo: NodePortInfo(node: widget, type: NodePortType.input, portIndex: 1), 
-                              color: DefaultAppColors.mintGreen.color,
-                              onHoveredColor: widget.theme.onSurface,
-                              setSelectedPort: widget.setSelectedPort,
-                              setIsDragging: widget.setIsDragging,
-                              getNodesConnections: widget.getConnections,
-                              updateConnections: widget.updateConnections,
-                              setDragStartingPort: _setStartDraggingPoint,
-                              setCursorPosition: (offset) {setState(() {
-                                _currentCursorOffset = offset;
-                              });}, 
-                              finalizeConnection: widget.addConnection,
-                              getIsDragging: widget.getIsDragging,
+                            Transform.translate(
+                              offset: const Offset(4, 0),
+                              child: NodePortWidget(
+                                portInfo: NodePortInfo(node: widget, type: NodePortType.output, portIndex: 0), 
+                                color: DefaultAppColors.mintGreen.color,
+                                onHoveredColor: widget.theme.onSurface,
+                                setSelectedPort: widget.setSelectedPort,
+                                getNodesConnections: widget.getConnections,
+                                updateConnections: widget.updateConnections,
+                                setOffset: setOffset,
+                                saveState: widget.saveState,
+                                setIsDragging: widget.setIsDragging,
+                                setDragStartingPort: _setStartDraggingPoint,
+                                setCursorPosition: (offset) {setState(() {
+                                  _currentCursorOffset = offset;
+                                });}, 
+                                finalizeConnection: widget.addConnection,
+                                getIsDragging: widget.getIsDragging,
+                              )
                             )
-                          ),
-                          Text(
-                            "Value", 
-                            style: widget.theme.titleMedium.copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 8,
-                              color: widget.theme.onPrimary
-                            ),
-                            maxLines: 1,
-                          ),
-                        ],
-                      )
+                          ],
+                        )
+                      ),
                     ),
-                  )
-                ],
+                    // Math operation selector
+                    Container(
+                      height: 20,
+                      width: widget.width - 10,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: widget.theme.surface
+                      ),
+                      margin: const EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.only(left: 5),
+                      child: DropdownButton(
+                        hint: Text(
+                          widget.node.operationType.name, 
+                          style: widget.theme.titleMedium.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 8,
+                            color: widget.theme.onPrimary
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                        iconSize: 18,
+                        borderRadius: BorderRadius.circular(13),
+                        menuMaxHeight: widget.height * 2,
+                        menuWidth: widget.width * 2,
+                        onChanged: (type) => setState(() {widget.node.operationType = type ?? MathNodeType.addition; widget.saveState();}),
+                        underline: const SizedBox(),
+                        icon: Icon(Icons.arrow_drop_down_rounded, color: widget.theme.onSurface),
+                        dropdownColor: widget.theme.primary,
+                        isExpanded: true,
+                        items: [
+                          ...MathNodeType.values.map((type) {
+                            return DropdownMenuItem(
+                              value: type,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                child: Text(
+                                  type.name,
+                                  style: widget.theme.bodyMedium
+                                  .copyWith(
+                                    color: widget.theme.onPrimary, 
+                                    fontWeight: FontWeight.w500
+                                  ),
+                                ),
+                              )
+                            );
+                          })
+                        ], 
+                      ),
+                    ),
+                    // Input.s
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: SizedBox(
+                        height: 15,
+                        width: widget.width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Transform.translate(
+                              offset: const Offset(-4, 0),
+                              child: NodePortWidget(
+                                portInfo: NodePortInfo(node: widget, type: NodePortType.input, portIndex: 0), 
+                                color: DefaultAppColors.mintGreen.color,
+                                onHoveredColor: widget.theme.onSurface,
+                                getNodesConnections: widget.getConnections,
+                                updateConnections: widget.updateConnections,
+                                setOffset: setOffset,
+                                saveState: widget.saveState,
+                                setSelectedPort: widget.setSelectedPort,
+                                setIsDragging: widget.setIsDragging,
+                                setDragStartingPort: _setStartDraggingPoint,
+                                setCursorPosition: (offset) {setState(() {
+                                  _currentCursorOffset = offset;
+                                });}, 
+                                finalizeConnection: widget.addConnection,
+                                getIsDragging: widget.getIsDragging,
+                              )
+                            ),
+                            Text(
+                              "Value", 
+                              style: widget.theme.titleMedium.copyWith(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 8,
+                                color: widget.theme.onPrimary
+                              ),
+                              maxLines: 1,
+                            ),
+                          ],
+                        )
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: SizedBox(
+                        height: 15,
+                        width: widget.width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Transform.translate(
+                              offset: const Offset(-4, 0),
+                              child: NodePortWidget(
+                                portInfo: NodePortInfo(node: widget, type: NodePortType.input, portIndex: 1), 
+                                color: DefaultAppColors.mintGreen.color,
+                                onHoveredColor: widget.theme.onSurface,
+                                setSelectedPort: widget.setSelectedPort,
+                                setIsDragging: widget.setIsDragging,
+                                getNodesConnections: widget.getConnections,
+                                updateConnections: widget.updateConnections,
+                                saveState: widget.saveState,
+                                setOffset: setOffset,
+                                setDragStartingPort: _setStartDraggingPoint,
+                                setCursorPosition: (offset) {setState(() {
+                                  _currentCursorOffset = offset;
+                                });}, 
+                                finalizeConnection: widget.addConnection,
+                                getIsDragging: widget.getIsDragging,
+                              )
+                            ),
+                            Text(
+                              "Value", 
+                              style: widget.theme.titleMedium.copyWith(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 8,
+                                color: widget.theme.onPrimary
+                              ),
+                              maxLines: 1,
+                            ),
+                          ],
+                        )
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            if (_currentCursorOffset != null)
-              Builder(
-                builder: (context) {
-                  Offset cursorOffset = draggingStartPortOffset;
-                  if (isDraggingStartPortFromAnotherPort) {
-                    cursorOffset = widget.inputsOffsets[inputPortInfo!.portIndex] - _dragOffset;
+              if (_currentCursorOffset != null)
+                Builder(
+                  builder: (context) {
+                    Offset cursorOffset = draggingStartPortOffset;
+                    if (isDraggingStartPortFromAnotherPort) {
+                      cursorOffset = widget.inputsOffsets[inputPortInfo!.portIndex];
+                    }
+                    return CustomPaint(
+                      painter: CurvedLinePainter(
+                        start: draggingStartPortOffset,
+                        end: _currentCursorOffset! + cursorOffset,
+                        color: isSelected ? DefaultAppColors.blue.color : widget.theme.onSurface,
+                        plusSignColor: widget.theme.onSurface,
+                        isHoveringANodePort: widget.getSelectedPort() != null
+                      ),
+                    );
                   }
-                  return CustomPaint(
-                    painter: CurvedLinePainter(
-                      start: draggingStartPortOffset,
-                      end: _currentCursorOffset! + cursorOffset,
-                      color: widget.theme.onSurface,
-                      isHoveringANodePort: widget.getSelectedPort() != null
-                    ),
-                  );
-                }
-              ),
-          ],
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -563,7 +701,9 @@ class NodePortWidget extends StatefulWidget {
     required this.getIsDragging,
     required this.setIsDragging,
     required this.getNodesConnections,
-    required this.updateConnections
+    required this.updateConnections, 
+    required this.setOffset,
+    required this.saveState
   });
 
   final NodePortInfo portInfo;
@@ -577,6 +717,8 @@ class NodePortWidget extends StatefulWidget {
   final Function(bool) setIsDragging;
   final List<NodeConnection> Function() getNodesConnections;
   final Function updateConnections;
+  final Function(Offset, NodePortInfo) setOffset;
+  final Function saveState;
 
   @override
   State<NodePortWidget> createState() => _NodePortWidgetState();
@@ -585,6 +727,8 @@ class NodePortWidget extends StatefulWidget {
 class _NodePortWidgetState extends State<NodePortWidget> {
   bool isHovering = false;
   bool startedIsDragging = false;
+
+  bool isDraggingWithMouse = true;
 
   Offset _cursorDragOffset = const Offset(0, 0);
   NodeConnection? connection;
@@ -607,8 +751,23 @@ class _NodePortWidgetState extends State<NodePortWidget> {
     return connection;
   }
 
+  Offset _calculatePosition(BuildContext context) {
+    RenderBox child = context.findRenderObject() as RenderBox;
+    Offset childOffset = child.localToGlobal(Offset.zero);
+    //convert
+    RenderBox parent = (widget.portInfo.node.key as GlobalKey).currentContext!.findRenderObject() as RenderBox;
+    Offset childRelativeToParent = parent.globalToLocal(childOffset);
+
+    childRelativeToParent = childRelativeToParent.translate(4, 4);
+
+    return childRelativeToParent;
+  }
+
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.setOffset(_calculatePosition(context), widget.portInfo);
+    });
     return MouseRegion(
       onEnter: (event) {
         setState(() {
@@ -620,7 +779,7 @@ class _NodePortWidgetState extends State<NodePortWidget> {
       },
       onExit: (event) {
         setState(() {
-          if (widget.getIsDragging() && !startedIsDragging) {
+          if (widget.getIsDragging() && !startedIsDragging || isHovering) {
             widget.setSelectedPort(null);
             isHovering = false;
           }
@@ -628,6 +787,12 @@ class _NodePortWidgetState extends State<NodePortWidget> {
       },
       child: GestureDetector(
         onPanStart: (details) {
+          if (details.kind != PointerDeviceKind.mouse) {
+            isDraggingWithMouse = false;
+            return;
+          } else {
+            isDraggingWithMouse = true;
+          }
           connection = _isAlreadyConnected();
           if (connection != null && widget.portInfo.type == NodePortType.input) {
             widget.setIsDragging(true);
@@ -642,7 +807,6 @@ class _NodePortWidgetState extends State<NodePortWidget> {
             connection!.startNode.node.targets.removeWhere((target) => target.node.id == widget.portInfo.node.node.id && target.inputIndex == widget.portInfo.portIndex);
 
             widget.updateConnections();
-
           } else {
             widget.setDragStartingPort(widget.portInfo.portIndex, widget.portInfo.type);
             widget.setIsDragging(true);
@@ -650,27 +814,34 @@ class _NodePortWidgetState extends State<NodePortWidget> {
           }
         },
         onPanUpdate: (details) {
-          _cursorDragOffset += details.delta;
-          widget.setCursorPosition(_cursorDragOffset);
+          if (isDraggingWithMouse) {
+            _cursorDragOffset += details.delta;
+            widget.setCursorPosition(_cursorDragOffset);
+          }
         },
         onPanEnd: (details) async {
-          if (connection != null) {
-            await widget.finalizeConnection(
-              NodePortInfo(
-                node: connection!.startNode, 
-                type: NodePortType.output, 
-                portIndex: connection!.startOutputIndex
-              )
-            );
+          if (isDraggingWithMouse) {
+            if (connection != null) {
+              await widget.finalizeConnection(
+                NodePortInfo(
+                  node: connection!.startNode, 
+                  type: NodePortType.output, 
+                  portIndex: connection!.startOutputIndex
+                )
+              );
+            } else {
+              await widget.finalizeConnection(widget.portInfo);
+            }
+            widget.setCursorPosition(null);
+            widget.setDragStartingPort(null, null);
+            widget.setIsDragging(false);
+            startedIsDragging = false;
+            _cursorDragOffset = const Offset(0, 0);
+            setState(() {isHovering = false;});
+            widget.saveState();
           } else {
-            await widget.finalizeConnection(widget.portInfo);
+            isDraggingWithMouse = true;
           }
-          widget.setCursorPosition(null);
-          widget.setDragStartingPort(null, null);
-          widget.setIsDragging(false);
-          startedIsDragging = false;
-          _cursorDragOffset = const Offset(0, 0);
-          setState(() {isHovering = false;});
         },
         child: Container(
           width: 8,
@@ -684,11 +855,4 @@ class _NodePortWidgetState extends State<NodePortWidget> {
       ),
     );
   }
-}
-
-Offset substractOffset(Offset offset) {
-  double dx = offset.dx - 3;
-  double dy = offset.dy + 90;
-
-  return Offset(dx, dy);
 }

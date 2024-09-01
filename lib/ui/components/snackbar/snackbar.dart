@@ -28,11 +28,13 @@ void showBottomSnackBar(BuildContext context, String message, String actionLabel
       )
     );
     overlay.insert(overlayEntry);
-  }catch(e) {
+  } catch(e) {
     AppLogs.writeError(e, "snackbar.dart - showBottomSnackbar");
     return;
   }
 }
+
+// TODO : Faire un systeme de stream builder avec une classe statique qui recoit des notifs et les envois comme snackbar -> tester.
 
 class _CustomSnackbar extends StatefulWidget {
   const _CustomSnackbar({

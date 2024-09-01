@@ -26,7 +26,7 @@ class AppEncrypter {
       }
       return generatedKeyEncrypter;
     } catch (e) {
-      await _handleError(e);
+      await _handleError(e, "initializeKeyEncrypter");
       return false;
     }
   }
@@ -66,7 +66,7 @@ class AppEncrypter {
       _keyIv = encrypt.IV.fromUtf8(hashedPassword.substring(0, 15));
       return true;
     } catch (e) {
-      await _handleError(e);
+      await _handleError(e, "_generateKeyEncrypter");
       return false;
     }
   }
@@ -95,7 +95,7 @@ class AppEncrypter {
       await _saveDataIv(dataIv.base64);
       return true;
     } catch (e) {
-      await _handleError(e);
+      await _handleError(e, "createDataEncryptionKey");
       return false;
     }
   }
@@ -103,7 +103,7 @@ class AppEncrypter {
   static Future<String?> _saveDataKey(final keyToSave) async {
     final encryptedKey = await _encryptKey(keyToSave);
     if (encryptedKey == null) {
-      await _handleEncryptionError("An error occurred while encrypting the data key");
+      await _handleEncryptionError("An error occurred while encrypting the data key", "_saveDataKey");
       return null;
     } else {
       await SecuredStorage.write("minddy_encrypted_key", encryptedKey);
@@ -114,7 +114,7 @@ class AppEncrypter {
   static Future<String?> _saveDataIv(final ivToSave) async {
     final encryptedIv = await _encryptKey(ivToSave);
     if (encryptedIv == null) {
-      await _handleEncryptionError("An error occurred while encrypting the data iv");
+      await _handleEncryptionError("An error occurred while encrypting the data iv", "_saveDataIv");
       return null;
     } else {
       await SecuredStorage.write("minddy_encrypted_iv", encryptedIv);
@@ -127,7 +127,7 @@ class AppEncrypter {
       final encryptedKey = _keyEncrypter.encrypt(keyToEncrypt, iv: _keyIv);
       return encryptedKey.base64;
     } catch (e) {
-      await _handleError(e);
+      await _handleError(e, "_encryptKey");
       return null;
     }
   }
@@ -137,7 +137,7 @@ class AppEncrypter {
       final decryptedKey = _keyEncrypter.decrypt64(keyToDecrypt, iv: _keyIv);
       return decryptedKey;
     } catch (e) {
-      await _handleError(e);
+      await _handleError(e, "_decryptKey");
       return null;
     }
   }
@@ -160,7 +160,7 @@ class AppEncrypter {
       final encryptedData = openedEncrypter!.encrypter.encrypt(dataToEncrypt, iv: openedEncrypter.iv);
       return encryptedData.base64;
     } catch(e) {
-      await _handleEncryptionError(e);
+      await _handleEncryptionError(e, "encryptData");
       return null;
     }
   }
@@ -191,16 +191,16 @@ class AppEncrypter {
         return null;
       }
     } catch (e) {
-      await _handleError(e);
+      await _handleError(e, "_openDataEncrypter");
       return null;
     }
   }
 
-  static Future<void> _handleError(error) async {
-    await AppLogs.writeError(error, "encryption.dart - _handleError");
+  static Future<void> _handleError(error, String functionName) async {
+    await AppLogs.writeError(error, "encryption.dart - $functionName");
   }
 
-  static Future<void> _handleEncryptionError(error) async {
+  static Future<void> _handleEncryptionError(error, String functionName) async {
     await AppLogs.writeError(error, "encryption.dart - _handleEncryptionError");
   }
   
@@ -225,13 +225,3 @@ class EncrypterModel {
 
   EncrypterModel({required this.encrypter, required this.iv});
 }
-
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   String data = "Hello, my name is clément and this is my encryption system !";
-//   await initializeApp();
-//   var encryptedData = await AppEncrypter.encryptData(data);
-//   print(encryptedData);
-//   var decryptedData = await AppEncrypter.decryptData(encryptedData);
-//   print(decryptedData);
-// }
