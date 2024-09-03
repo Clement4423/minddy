@@ -22,6 +22,7 @@ class CreatePasswordView extends StatelessWidget {
     StylesGetters theme = StylesGetters(context);
     return SafeArea(
       child: Scaffold(
+        backgroundColor: theme.primary,
         appBar: CustomAppBar(
           CustomAppBarController(
             S.of(context).welcome_appbar,
@@ -61,6 +62,7 @@ class CreatePasswordView extends StatelessWidget {
                     onChanged: (value) {
                       _viewmodel.password = value;
                     },
+                    contentBottomPadding: 0,
                     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18), 
                     width: 500,
                     height: 70,
@@ -73,6 +75,7 @@ class CreatePasswordView extends StatelessWidget {
                     onChanged: (value) {
                       _viewmodel.confirmedPassword = value;
                     }, 
+                    contentBottomPadding: 0,
                     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18), 
                     width: 500,
                     height: 70,

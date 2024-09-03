@@ -3,15 +3,14 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/custom_appbar_button_model.dart';
 import 'package:minddy/system/model/projects_modules.dart';
+import 'package:minddy/system/shortcuts/shortcuts_activators.dart';
 import 'package:minddy/system/utils/debouncer.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar_controller.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_buttons_components/articles_menu_button.dart';
-import 'package:minddy/ui/components/articles/articles_view/articles_view.dart';
 import 'package:minddy/ui/components/calendar/calendar_button.dart';
 import 'package:minddy/ui/components/custom_components/current_page_indicator_view.dart';
 import 'package:minddy/ui/components/projects/toolbar/projects_toolbar.dart';
@@ -19,38 +18,6 @@ import 'package:minddy/ui/components/settings/settings_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:minddy/ui/view_models/project_viewmodel.dart';
 
-
-ShortcutActivator nextPageActivator = SingleActivator(
-  LogicalKeyboardKey.arrowRight, 
-  meta: Platform.isMacOS 
-    ? true 
-    : false,
-  control: Platform.isWindows || Platform.isLinux
-    ? true
-    : false
-);
-
-ShortcutActivator previousPageActivator = SingleActivator(
-  LogicalKeyboardKey.arrowLeft, 
-  meta: Platform.isMacOS 
-    ? true 
-    : false,
-  control: Platform.isWindows || Platform.isLinux
-    ? true
-    : false
-);
-
-class NextPageIntent extends Intent {
-  const NextPageIntent();
-}
-
-class PreviousPageIntent extends Intent {
-  const PreviousPageIntent();
-}
-
-class SaveProjectIntent extends Intent {
-  const SaveProjectIntent();
-}
 
 class ProjectView extends StatefulWidget {
   const ProjectView(this._viewmodel, {super.key});
@@ -89,7 +56,7 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
       shortcuts: <ShortcutActivator, Intent>{
         nextPageActivator: const NextPageIntent(),
         previousPageActivator: const PreviousPageIntent(),
-        saveActivator: const SaveProjectIntent()
+        saveActivator: const SaveIntent()
       },
       child: Actions(
         actions: {
@@ -113,7 +80,7 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
               }
             },
           ),
-          SaveProjectIntent: CallbackAction<SaveProjectIntent>(
+          SaveIntent: CallbackAction<SaveIntent>(
             onInvoke: (intent) async => {
               await widget._viewmodel.saveProject()
             }
@@ -388,8 +355,12 @@ class SwitchPageButton extends StatelessWidget {
               width: 40,
               height: 90,
               decoration: BoxDecoration(
+                color: theme.primaryContainer,
                 borderRadius: BorderRadius.circular(10),
-                color: theme.primaryContainer
+                border: Border.all(
+                  color: theme.onPrimary.withOpacity(0.2),
+                  width: 0.5
+                )
               ),
               child: IconButton(
                 onPressed: () {

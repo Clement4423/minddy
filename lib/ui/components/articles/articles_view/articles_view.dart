@@ -1,9 +1,9 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/shortcuts/shortcuts_activators.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_buttons_components/articles_back_button.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_buttons_components/articles_bookmark_button.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_buttons_components/articles_action_button.dart';
@@ -13,16 +13,6 @@ import 'package:minddy/ui/components/articles/articles_pages_controllers/article
 import 'package:minddy/ui/components/articles/articles_components/articles_bottom_menu/articles_bottom_menu.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/theme/theme.dart';
-
-ShortcutActivator saveActivator = SingleActivator(
-  LogicalKeyboardKey.keyS, 
-  meta: Platform.isMacOS 
-    ? true 
-    : false,
-  control: Platform.isWindows || Platform.isLinux
-    ? true
-    : false
-);
 
 ShortcutActivator _closeArticle = const SingleActivator(LogicalKeyboardKey.escape);
 
@@ -85,7 +75,7 @@ Future<dynamic> showArticle(ArticlesViewController controller, BuildContext cont
                           // Top bar with actions and title;
                           CallbackShortcuts(
                             bindings: <ShortcutActivator, VoidCallback>{
-                              saveActivator:() async {
+                              saveActivator: () async {
                                 await controller.saveArticle();
                               },
                               _closeArticle:() async {

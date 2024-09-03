@@ -3,7 +3,7 @@ import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class CustomPasswordTextField extends StatefulWidget {
-  const CustomPasswordTextField({super.key, required this.hintText, required this.onChanged, required this.padding, required this.width, required this.height, required this.margin, required this.borderRadius, required this.style});
+  const CustomPasswordTextField({super.key, required this.hintText, required this.onChanged, required this.padding, required this.width, required this.height, required this.margin, required this.borderRadius, required this.style, this.contentBottomPadding = 16});
 
   final String hintText;
 
@@ -14,6 +14,7 @@ class CustomPasswordTextField extends StatefulWidget {
   final EdgeInsets margin;
   final BorderRadius borderRadius;
   final TextStyle style;
+  final double contentBottomPadding;
 
 
   @override
@@ -51,7 +52,7 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
               keyboardType: TextInputType.visiblePassword,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: const EdgeInsets.only(bottom: 15),
+                contentPadding: EdgeInsets.only(bottom: widget.contentBottomPadding),
                 hintText: widget.hintText,
               ),
             ),

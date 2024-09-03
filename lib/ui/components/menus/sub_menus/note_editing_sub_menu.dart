@@ -39,6 +39,10 @@ class _NoteEditingSubMenuState extends State<NoteEditingSubMenu> {
           decoration: BoxDecoration(
             color: theme.primaryContainer,
             borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: theme.onPrimary.withOpacity(0.2),
+              width: 0.5
+            )
           ),
           child: Column(
             children: [

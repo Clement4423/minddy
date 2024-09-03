@@ -51,13 +51,11 @@ class NodeTarget {
 // TODO : Revoir les façons de sauvegarder les Objets et de les retrouver
 
 enum NodeDataType {
-  int,
-  float,
+  number,
   string,
   boolean,
   list,
   color,
-  widget,
   any
 }
 
@@ -90,11 +88,8 @@ class NodeData {
 
         dynamic value;
         switch (type) {
-          case NodeDataType.int:
-            value = int.tryParse(valueString);
-            break;
-          case NodeDataType.float:
-            value = double.tryParse(valueString);
+          case NodeDataType.number:
+            value = num.tryParse(valueString);
             break;
           case NodeDataType.boolean:
             value = (valueString.toLowerCase() == 'true');
@@ -106,9 +101,6 @@ class NodeData {
             value = valueString.split(',').map((e) => e.trim()).toList();
             break;
           case NodeDataType.color:
-            value = null;
-            break;
-          case NodeDataType.widget:
             value = null;
             break;
           default:

@@ -23,14 +23,10 @@ class CalendarButton extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: theme.shadow.withOpacity(0.05),
-                  spreadRadius: 2,
-                  blurRadius: 3,
-                  offset: const Offset(5, 5)
-                )
-              ]
+              border: Border.all(
+                color: theme.onPrimary.withOpacity(0.2),
+                width: 0.5
+              ),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),

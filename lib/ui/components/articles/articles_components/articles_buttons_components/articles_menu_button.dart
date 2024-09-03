@@ -20,8 +20,15 @@ class ArticlesMenuButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: SizedBox(
+            child: Container(
               height: 35,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: theme.onPrimary.withOpacity(0.2),
+                  width: 0.5
+                )
+              ),
               child: ElevatedButton.icon(
                 onPressed: () {showArticles(context);}, 
                 // ignore: deprecated_member_use

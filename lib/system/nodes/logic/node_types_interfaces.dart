@@ -7,18 +7,75 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:minddy/system/model/node_connection.dart';
 import 'package:minddy/system/model/node_port_info.dart';
-import 'package:minddy/system/nodes/all_nodes/comparison_node.dart';
-import 'package:minddy/system/nodes/all_nodes/math_node.dart';
-import 'package:minddy/system/nodes/all_nodes/outputs_nodes/boolean_output_node.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
-import 'package:minddy/system/nodes/logic/node_tree.dart';
-import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/ui/theme/theme.dart';
+
+
+/// A [`NodeTreeVariable`] is used for storing values from the tree, and make them accessible for every tree.
+/// 
+/// 
+///  ### Explanation:
+/// 
+/// When using a plugin, the plugin itself will hold every variable in its memory. 
+/// Then, the variables are shared across all [`NodeTree`], and each [`NodeTree`] can modify each variable, 
+/// changes that will be available for every [`NodeTree`].
+class NodeTreeVariable {
+  /// The name of `this` variable
+  String name;
+  
+  /// The type of `this` variable
+  NodeDataType type;
+
+  /// The unique id of `this` variable. 
+  /// 
+  /// Must be unique
+  int id;
+
+  /// The value of `this` variable. 
+  /// 
+  /// Must respect the `type`
+  dynamic value;
+
+  /// Returns a json representation of `this`
+  String toJson() {
+    return jsonEncode(
+      {
+        'name': name,
+        'type': type.index,
+        'id': id
+      }
+    );
+  }
+
+  /// Create a new [`NodeTreeVariable`] from a json string
+  static NodeTreeVariable? fromJson(String json) {
+    try {
+      Map? map = jsonDecode(json);
+
+      if (map != null) {
+        String? name = map['name'];
+
+        NodeDataType? type = NodeDataType.values[map['type']];
+
+        int? id = map['id'];
+
+        if (name != null && id != null ) {
+          return NodeTreeVariable(name: name, type: type, id: id);
+        }
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  NodeTreeVariable({required this.name, required this.type, required this.id});
+}
 
 // Process to create a new node: 
 // -> Create a new class that extends INode, provide inputs types, outputs types, targets and ids, which is ([automaticly created if not provided]) -> REALLY IMPORTANT
 // -> Create a [main] method that is going to be set as a getter for the execute method, this main method will modify the outputs.
-// -> Add it's type to the [nodeTypeConstructors] in the node_tree.dart file at line 223.
+// -> Add its type to the [nodeTypeConstructors] in the node_tree.dart file at line 261.
 // -> Test it.
 
 /// This class is basicly the same as INode, but it extends it to make widgets out of notes
@@ -195,12 +252,9 @@ class INode {
   static NodeData? evaluateData(NodeData data, NodeDataType attended) {
     if (data.type == attended || attended == NodeDataType.any) {
       return data;
-    } else if (data.type == NodeDataType.int && attended == NodeDataType.float) {
-      // Convert int to float if expected type is float
-      return NodeData(type: NodeDataType.float, value: (data.value as num).toDouble());
-    } else if (data.type == NodeDataType.float && attended == NodeDataType.int) {
-      // Convert float to int if expected type is int
-      return NodeData(type: NodeDataType.int, value: (data.value as num).toInt());
+    } else if (data.type == NodeDataType.number && attended == NodeDataType.number) {
+      // Convert number to the appropriate type (int or double)
+      return NodeData(type: NodeDataType.number, value: (data.value as num));
     } else if (data.type == NodeDataType.string && attended == NodeDataType.boolean) {
       // Convert string to boolean if possible
       if (data.value.toString().toLowerCase() == 'true') {
@@ -212,7 +266,7 @@ class INode {
       // Convert boolean to string
       return NodeData(type: NodeDataType.string, value: data.value.toString());
     }
-    
+
     return null;
   }
 
@@ -303,20 +357,20 @@ class IOutputNode implements INode {
   }
 }
 
-void main() async {
-  MathNode nodeD = MathNode()..inputs = [NodeData(type: NodeDataType.int, value: 20)];
-  MathNode nodeA = MathNode();
-  ComparisonNode nodeB = ComparisonNode(comparisonType: ComparisonNodeType.greatherThan);
-  BooleanOutputNode nodeC = BooleanOutputNode();
+// void main() async {
+//   MathNode nodeD = MathNode()..inputs = [NodeData(type: NodeDataType.int, value: 20)];
+//   MathNode nodeA = MathNode();
+//   ComparisonNode nodeB = ComparisonNode(comparisonType: ComparisonNodeType.greatherThan);
+//   BooleanOutputNode nodeC = BooleanOutputNode();
 
-  nodeA.targets = [NodeTarget(node: nodeB, inputIndex: 0, outputIndex: 0)];
-  nodeB.targets = [NodeTarget(node: nodeC, inputIndex: 0, outputIndex: 0)];
-  nodeD.targets = [NodeTarget(node: nodeA, inputIndex: 0, outputIndex: 0), NodeTarget(node: nodeA, inputIndex: 1, outputIndex: 0), NodeTarget(node: nodeB, inputIndex: 1, outputIndex: 0)];
+//   nodeA.targets = [NodeTarget(node: nodeB, inputIndex: 0, outputIndex: 0)];
+//   nodeB.targets = [NodeTarget(node: nodeC, inputIndex: 0, outputIndex: 0)];
+//   nodeD.targets = [NodeTarget(node: nodeA, inputIndex: 0, outputIndex: 0), NodeTarget(node: nodeA, inputIndex: 1, outputIndex: 0), NodeTarget(node: nodeB, inputIndex: 1, outputIndex: 0)];
 
-  NodeTree tree = NodeTree(nodes: [nodeA, nodeB, nodeC, nodeD], id: createUniqueId());
+//   NodeTree tree = NodeTree(nodes: [nodeA, nodeB, nodeC, nodeD], id: createUniqueId(), variables: []);
   
-  String treeAsString = tree.toString();
-  NodeTree? treeFromString = NodeTree.fromString(treeAsString);
-  NodeData? data = await treeFromString?.run();
-  print(data);
-}
+//   String treeAsString = tree.toString();
+//   NodeTree? treeFromString = NodeTree.fromString(treeAsString, []);
+//   NodeData? data = await treeFromString?.run();
+//   print(data);
+// }

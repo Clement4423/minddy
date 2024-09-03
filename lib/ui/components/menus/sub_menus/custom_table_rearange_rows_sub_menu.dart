@@ -35,6 +35,10 @@ class _CustomTableRearangeRowsSubMenuState extends State<CustomTableRearangeRows
       decoration: BoxDecoration(
         color: theme.primaryContainer,
         borderRadius: BorderRadius.circular(25),
+        border: Border.all(
+          color: theme.onPrimary.withOpacity(0.2),
+          width: 0.5
+        )
       ),
       child: AnimatedBuilder(
         animation: widget.controller,

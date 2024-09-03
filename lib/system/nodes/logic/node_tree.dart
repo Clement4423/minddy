@@ -37,7 +37,9 @@ class NodeTree {
   final NodeGraph _graph = NodeGraph();
   INode? outputNode;
 
-  NodeTree({required this.nodes, required this.id}) {
+  List<NodeTreeVariable> variables;
+
+  NodeTree({required this.nodes, required this.variables, required this.id}) {
     originalNodes = nodes.map((node) => node.copy()).toList();
     for (var node in nodes) {
       _graph.addNode(node);
@@ -54,7 +56,6 @@ class NodeTree {
         );
       }
     );
-    print(outputNode.runtimeType);
   }
 
 
@@ -89,7 +90,7 @@ class NodeTree {
     return null;
   }
 
-  bool isNodeBefore(INode first, INode second) {;
+  bool isNodeBefore(INode first, INode second) {
     if (first.targets.isEmpty && second.targets.isEmpty) {
       return false;
     }
@@ -142,17 +143,13 @@ class NodeTree {
     switch (type) {
       case NodeDataType.boolean:
         return false;      
-      case NodeDataType.int:
+      case NodeDataType.number:
         return 1;
-      case NodeDataType.float:
-        return 1.0;
       case NodeDataType.string:
         return '';
       case NodeDataType.list:
         return [];
       case NodeDataType.color:
-        return null;
-      case NodeDataType.widget:
         return null;
       case NodeDataType.any: 
         return true;
@@ -231,7 +228,7 @@ class NodeTree {
     return jsonEncode(map);
   }
 
-  static NodeTree? fromString(String string) {
+  static NodeTree? fromString(String string, List<NodeTreeVariable> variables) {
     Map map = jsonDecode(string);
     Map<int, List<String>> targetsMap = {};
     List<INode> allNodes = [];
@@ -252,7 +249,7 @@ class NodeTree {
         for (var node in allNodes) {
           node.targets = INode.initializeTargets(allNodes, targetsMap, node.id);
         }
-        return NodeTree(nodes: allNodes, id: map['id'] ?? createUniqueId());
+        return NodeTree(nodes: allNodes, id: map['id'] ?? createUniqueId(), variables: variables);
       }
     }
     return null;

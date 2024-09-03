@@ -32,34 +32,58 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(username) => "Buenos días ${username}";
 
-  static String m5(totalNotesCount) =>
+  static String m5(length) =>
+      "${Intl.plural(length, one: 'Copiar nodo seleccionado (⌘ + c)', other: 'Copiar nodos seleccionados (⌘ + c)')}";
+
+  static String m6(length) =>
+      "${Intl.plural(length, one: 'Copiar nodo seleccionado (ctrl + c)', other: 'Copiar nodos seleccionados (ctrl + c)')}";
+
+  static String m7(length) =>
+      "${Intl.plural(length, one: 'Eliminar nodo seleccionado (⌘ + ⌫)', other: 'Eliminar nodos seleccionados (⌘ + ⌫)')}";
+
+  static String m8(length) =>
+      "${Intl.plural(length, one: 'Eliminar nodo seleccionado (ctrl + ⌫)', other: 'Eliminar nodos seleccionados (ctrl + ⌫)')}";
+
+  static String m9(length) =>
+      "${Intl.plural(length, one: 'Duplicar nodo seleccionado (⌘ + d)', other: 'Duplicar nodos seleccionados (⌘ + d)')}";
+
+  static String m10(length) =>
+      "${Intl.plural(length, one: 'Duplicar nodo seleccionado (ctrl + d)', other: 'Duplicar nodos seleccionados (ctrl + d)')}";
+
+  static String m11(length) =>
+      "${Intl.plural(length, one: 'Pegar nodo copiado (⌘ + v)', other: 'Pegar nodos copiados (⌘ + v)')}";
+
+  static String m12(length) =>
+      "${Intl.plural(length, one: 'Pegar nodo copiado (ctrl + v)', other: 'Pegar nodos copiados (ctrl + v)')}";
+
+  static String m13(totalNotesCount) =>
       "${Intl.plural(totalNotesCount, zero: 'Sin notas', one: '1 nota', other: '${totalNotesCount} notas')}";
 
-  static String m6(optionName) =>
+  static String m14(optionName) =>
       "Dos opciones no pueden tener el mismo nombre (${optionName})";
 
-  static String m7(totalTasksCount, checkedTasks) =>
+  static String m15(totalTasksCount, checkedTasks) =>
       "${Intl.plural(totalTasksCount, zero: 'Sin tareas', one: '${checkedTasks}/${totalTasksCount} tarea completada', other: '${checkedTasks}/${totalTasksCount} tareas completadas')}";
 
-  static String m8(websiteName) => "Abrir ${websiteName}";
+  static String m16(websiteName) => "Abrir ${websiteName}";
 
-  static String m9(actualMonth, actualDay) =>
+  static String m17(actualMonth, actualDay) =>
       "Esta opción pondrá el mes antes del día. Así: ${actualMonth}/${actualDay}";
 
-  static String m10(element) => "¿Eliminar ${element}?";
+  static String m18(element) => "¿Eliminar ${element}?";
 
-  static String m11(user) => "Encantado de verte de nuevo ${user}";
+  static String m19(user) => "Encantado de verte de nuevo ${user}";
 
-  static String m12(duration) =>
+  static String m20(duration) =>
       "${Intl.plural(duration, zero: 'Pomodoro - Es hora de un descanso', one: 'Pomodoro - Es hora de un descanso por ${duration} minuto', other: 'Pomodoro - Es hora de un descanso por ${duration} minutos')}";
 
-  static String m13(duration) =>
+  static String m21(duration) =>
       "La sesión de pomodoro ha terminado, has trabajado ${Intl.plural(duration, one: '1 minuto', other: '${duration} minutos')}. ¡Es hora de descansar!";
 
-  static String m14(duration) =>
+  static String m22(duration) =>
       "${Intl.plural(duration, zero: 'Pomodoro - Es hora de volver al trabajo', one: 'Pomodoro - Es hora de volver al trabajo por ${duration} minuto', other: 'Pomodoro - Es hora de volver al trabajo por ${duration} minutos')}";
 
-  static String m15(accountSettingName) =>
+  static String m23(accountSettingName) =>
       "Aún podrás ingresar tu nombre en la configuración - ${accountSettingName}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -277,6 +301,50 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Descubrir minddy"),
         "home_pick_up":
             MessageLookupByLibrary.simpleMessage("Continúa donde lo dejaste"),
+        "node_editor_view_bottom_toolbar_copy_tooltip_mac": m5,
+        "node_editor_view_bottom_toolbar_copy_tooltip_windows": m6,
+        "node_editor_view_bottom_toolbar_delete_tooltip_mac": m7,
+        "node_editor_view_bottom_toolbar_delete_tooltip_windows": m8,
+        "node_editor_view_bottom_toolbar_duplicate_tooltip_mac": m9,
+        "node_editor_view_bottom_toolbar_duplicate_tooltip_windows": m10,
+        "node_editor_view_bottom_toolbar_paste_tooltip_mac": m11,
+        "node_editor_view_bottom_toolbar_paste_tooltip_windows": m12,
+        "node_editor_view_bottom_toolbar_redo_tooltip_mac":
+            MessageLookupByLibrary.simpleMessage("Rehacer (⇧ + ⌘ + z)"),
+        "node_editor_view_bottom_toolbar_redo_tooltip_windows":
+            MessageLookupByLibrary.simpleMessage("Rehacer (⇧ + ctrl + z)"),
+        "node_editor_view_bottom_toolbar_undo_tooltip_mac":
+            MessageLookupByLibrary.simpleMessage("Deshacer (⌘ + z)"),
+        "node_editor_view_bottom_toolbar_undo_tooltip_windows":
+            MessageLookupByLibrary.simpleMessage("Deshacer (ctrl + z)"),
+        "node_editor_view_close_node_panel_tooltip":
+            MessageLookupByLibrary.simpleMessage("Cerrar panel de nodos"),
+        "node_editor_view_close_side_panel_tooltip":
+            MessageLookupByLibrary.simpleMessage("Cerrar panel lateral"),
+        "node_editor_view_new_node_tooltip":
+            MessageLookupByLibrary.simpleMessage("Nuevo nodo"),
+        "node_editor_view_open_node_panel_tooltip":
+            MessageLookupByLibrary.simpleMessage("Abrir panel de nodos"),
+        "node_editor_view_open_side_panel_tooltip":
+            MessageLookupByLibrary.simpleMessage("Abrir panel lateral"),
+        "node_editor_view_side_panel_node_trees_add_button_tooltip":
+            MessageLookupByLibrary.simpleMessage("Nuevo árbol"),
+        "node_editor_view_side_panel_node_trees_title":
+            MessageLookupByLibrary.simpleMessage("Árboles de nodos"),
+        "node_editor_view_side_panel_variables_add_button_tooltip":
+            MessageLookupByLibrary.simpleMessage("Nueva variable"),
+        "node_editor_view_side_panel_variables_title":
+            MessageLookupByLibrary.simpleMessage("Variables"),
+        "node_editor_view_side_panel_variables_variable_type_boolean":
+            MessageLookupByLibrary.simpleMessage("Booleano"),
+        "node_editor_view_side_panel_variables_variable_type_color":
+            MessageLookupByLibrary.simpleMessage("Color"),
+        "node_editor_view_side_panel_variables_variable_type_list":
+            MessageLookupByLibrary.simpleMessage("Lista"),
+        "node_editor_view_side_panel_variables_variable_type_number":
+            MessageLookupByLibrary.simpleMessage("Número"),
+        "node_editor_view_side_panel_variables_variable_type_text":
+            MessageLookupByLibrary.simpleMessage("Texto"),
         "project_card_delete": MessageLookupByLibrary.simpleMessage("Eliminar"),
         "project_card_duplicate":
             MessageLookupByLibrary.simpleMessage("Duplicar"),
@@ -286,7 +354,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nuevo módulo"),
         "projects_module_help_text":
             MessageLookupByLibrary.simpleMessage("Ayuda"),
-        "projects_module_notes_category_note_count": m5,
+        "projects_module_notes_category_note_count": m13,
         "projects_module_notes_editing_note_sub_menu_move_tooltip":
             MessageLookupByLibrary.simpleMessage("Mover"),
         "projects_module_notes_editing_note_sub_menu_save_tooltip":
@@ -473,7 +541,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Dos opciones no pueden tener el mismo color"),
         "projects_module_spreadsheet_selection_sub_menu_error_message_redundant_option_name":
-            m6,
+            m14,
         "projects_module_spreadsheet_selection_sub_menu_error_message_unnamed_option":
             MessageLookupByLibrary.simpleMessage(
                 "Por favor nombre todas las opciones"),
@@ -483,7 +551,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sin nombre"),
         "projects_module_tasks_add_task_tooltip":
             MessageLookupByLibrary.simpleMessage("Agregar una nueva tarea"),
-        "projects_module_tasks_completed": m7,
+        "projects_module_tasks_completed": m15,
         "projects_module_tasks_task_add_subtask_tooltip":
             MessageLookupByLibrary.simpleMessage("Agregar una subtarea"),
         "projects_module_tasks_task_title_hint":
@@ -491,16 +559,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "projects_module_tasks_title":
             MessageLookupByLibrary.simpleMessage("Tareas"),
         "projects_next_page_shortcut_tooltip":
-            MessageLookupByLibrary.simpleMessage("Página siguiente ctrl + ⭢"),
+            MessageLookupByLibrary.simpleMessage("Página siguiente (ctrl + ⭢)"),
         "projects_next_page_shortcut_tooltip_mac":
-            MessageLookupByLibrary.simpleMessage("Página siguiente ⌘ + ⭢"),
+            MessageLookupByLibrary.simpleMessage("Página siguiente (⌘ + ⭢)"),
         "projects_previous_page_shortcut_tooltip":
-            MessageLookupByLibrary.simpleMessage("Página anterior ctrl + ⭠"),
+            MessageLookupByLibrary.simpleMessage("Página anterior (ctrl + ⭠)"),
         "projects_previous_page_shortcut_tooltip_mac":
-            MessageLookupByLibrary.simpleMessage("Página anterior ⌘ + ⭠"),
+            MessageLookupByLibrary.simpleMessage("Página anterior (⌘ + ⭠)"),
         "projects_save_project_button_tooltip":
             MessageLookupByLibrary.simpleMessage("Guardar"),
-        "projetcs_module_spreadsheet_open_website": m8,
+        "projetcs_module_spreadsheet_open_website": m16,
         "settings_accessibility_title":
             MessageLookupByLibrary.simpleMessage("Accesibilidad"),
         "settings_account_title":
@@ -509,7 +577,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Prefiero el formato de fecha MM/dd"),
         "settings_date_format_subtitle":
             MessageLookupByLibrary.simpleMessage("Formato de fecha"),
-        "settings_date_format_tooltip": m9,
+        "settings_date_format_tooltip": m17,
         "settings_language_subtitle":
             MessageLookupByLibrary.simpleMessage("Idioma"),
         "settings_need_to_quit_project_to_change_language":
@@ -554,7 +622,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Cerrar"),
         "snackbar_delete_button":
             MessageLookupByLibrary.simpleMessage("Eliminar"),
-        "snackbar_delete_element_text": m10,
+        "snackbar_delete_element_text": m18,
         "snackbar_reset_button":
             MessageLookupByLibrary.simpleMessage("Restablecer"),
         "snackbar_reset_text":
@@ -565,7 +633,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Debes reiniciar la aplicación para aplicar los cambios"),
         "snackbar_welcome_back_button":
             MessageLookupByLibrary.simpleMessage("Gracias"),
-        "snackbar_welcome_back_text": m11,
+        "snackbar_welcome_back_text": m19,
         "submenu_artilces_image_description_button":
             MessageLookupByLibrary.simpleMessage("Validar"),
         "submenu_artilces_image_description_hint":
@@ -619,8 +687,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Duración de la sesión de descanso"),
         "tool_pomodoro_break_session":
             MessageLookupByLibrary.simpleMessage("Romper"),
-        "tool_pomodoro_break_snackbar": m12,
-        "tool_pomodoro_end_session": m13,
+        "tool_pomodoro_break_snackbar": m20,
+        "tool_pomodoro_end_session": m21,
         "tool_pomodoro_focus_timer":
             MessageLookupByLibrary.simpleMessage("Temporizador de enfoque"),
         "tool_pomodoro_repetition_count":
@@ -633,7 +701,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Duración de la sesión de trabajo"),
         "tool_pomodoro_work_session":
             MessageLookupByLibrary.simpleMessage("Trabajo"),
-        "tool_pomodoro_work_snackbar": m14,
+        "tool_pomodoro_work_snackbar": m22,
         "welcome_appbar": MessageLookupByLibrary.simpleMessage("Bienvenido"),
         "welcome_because": MessageLookupByLibrary.simpleMessage(
             "Para personalizar tu experiencia"),
@@ -649,7 +717,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Siguiente página"),
         "welcome_pass_default_username":
             MessageLookupByLibrary.simpleMessage("Usuario"),
-        "welcome_pass_tooltip": m15,
+        "welcome_pass_tooltip": m23,
         "welcome_pass_username": MessageLookupByLibrary.simpleMessage("Pasar"),
         "welcome_password_creation_confirm_hint":
             MessageLookupByLibrary.simpleMessage("Confirma tu contraseña"),

@@ -1806,40 +1806,40 @@ class S {
     );
   }
 
-  /// `Next page ⌘ + ⭢`
+  /// `Next page (⌘ + ⭢)`
   String get projects_next_page_shortcut_tooltip_mac {
     return Intl.message(
-      'Next page ⌘ + ⭢',
+      'Next page (⌘ + ⭢)',
       name: 'projects_next_page_shortcut_tooltip_mac',
       desc: '',
       args: [],
     );
   }
 
-  /// `Previous page ⌘ + ⭠`
+  /// `Previous page (⌘ + ⭠)`
   String get projects_previous_page_shortcut_tooltip_mac {
     return Intl.message(
-      'Previous page ⌘ + ⭠',
+      'Previous page (⌘ + ⭠)',
       name: 'projects_previous_page_shortcut_tooltip_mac',
       desc: '',
       args: [],
     );
   }
 
-  /// `Next page ctrl + ⭢`
+  /// `Next page (ctrl + ⭢)`
   String get projects_next_page_shortcut_tooltip {
     return Intl.message(
-      'Next page ctrl + ⭢',
+      'Next page (ctrl + ⭢)',
       name: 'projects_next_page_shortcut_tooltip',
       desc: '',
       args: [],
     );
   }
 
-  /// `Previous page ctrl + ⭠`
+  /// `Previous page (ctrl + ⭠)`
   String get projects_previous_page_shortcut_tooltip {
     return Intl.message(
-      'Previous page ctrl + ⭠',
+      'Previous page (ctrl + ⭠)',
       name: 'projects_previous_page_shortcut_tooltip',
       desc: '',
       args: [],
@@ -2903,6 +2903,282 @@ class S {
       name: 'custom_chart_grid_extend_chart',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `New node`
+  String get node_editor_view_new_node_tooltip {
+    return Intl.message(
+      'New node',
+      name: 'node_editor_view_new_node_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close node panel`
+  String get node_editor_view_close_node_panel_tooltip {
+    return Intl.message(
+      'Close node panel',
+      name: 'node_editor_view_close_node_panel_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open node panel`
+  String get node_editor_view_open_node_panel_tooltip {
+    return Intl.message(
+      'Open node panel',
+      name: 'node_editor_view_open_node_panel_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close side panel`
+  String get node_editor_view_close_side_panel_tooltip {
+    return Intl.message(
+      'Close side panel',
+      name: 'node_editor_view_close_side_panel_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open side panel`
+  String get node_editor_view_open_side_panel_tooltip {
+    return Intl.message(
+      'Open side panel',
+      name: 'node_editor_view_open_side_panel_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Variables`
+  String get node_editor_view_side_panel_variables_title {
+    return Intl.message(
+      'Variables',
+      name: 'node_editor_view_side_panel_variables_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New variable`
+  String get node_editor_view_side_panel_variables_add_button_tooltip {
+    return Intl.message(
+      'New variable',
+      name: 'node_editor_view_side_panel_variables_add_button_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number`
+  String get node_editor_view_side_panel_variables_variable_type_number {
+    return Intl.message(
+      'Number',
+      name: 'node_editor_view_side_panel_variables_variable_type_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Text`
+  String get node_editor_view_side_panel_variables_variable_type_text {
+    return Intl.message(
+      'Text',
+      name: 'node_editor_view_side_panel_variables_variable_type_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Boolean`
+  String get node_editor_view_side_panel_variables_variable_type_boolean {
+    return Intl.message(
+      'Boolean',
+      name: 'node_editor_view_side_panel_variables_variable_type_boolean',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `List`
+  String get node_editor_view_side_panel_variables_variable_type_list {
+    return Intl.message(
+      'List',
+      name: 'node_editor_view_side_panel_variables_variable_type_list',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Color`
+  String get node_editor_view_side_panel_variables_variable_type_color {
+    return Intl.message(
+      'Color',
+      name: 'node_editor_view_side_panel_variables_variable_type_color',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Node trees`
+  String get node_editor_view_side_panel_node_trees_title {
+    return Intl.message(
+      'Node trees',
+      name: 'node_editor_view_side_panel_node_trees_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New node tree`
+  String get node_editor_view_side_panel_node_trees_add_button_tooltip {
+    return Intl.message(
+      'New node tree',
+      name: 'node_editor_view_side_panel_node_trees_add_button_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Undo (ctrl + z)`
+  String get node_editor_view_bottom_toolbar_undo_tooltip_windows {
+    return Intl.message(
+      'Undo (ctrl + z)',
+      name: 'node_editor_view_bottom_toolbar_undo_tooltip_windows',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Undo (⌘ + z)`
+  String get node_editor_view_bottom_toolbar_undo_tooltip_mac {
+    return Intl.message(
+      'Undo (⌘ + z)',
+      name: 'node_editor_view_bottom_toolbar_undo_tooltip_mac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Redo (⇧ + ctrl + z)`
+  String get node_editor_view_bottom_toolbar_redo_tooltip_windows {
+    return Intl.message(
+      'Redo (⇧ + ctrl + z)',
+      name: 'node_editor_view_bottom_toolbar_redo_tooltip_windows',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Redo (⇧ + ⌘ + z)`
+  String get node_editor_view_bottom_toolbar_redo_tooltip_mac {
+    return Intl.message(
+      'Redo (⇧ + ⌘ + z)',
+      name: 'node_editor_view_bottom_toolbar_redo_tooltip_mac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{length, plural, =1{Copy selected node (ctrl + c)} other{Copy selected nodes (ctrl + c)}}`
+  String node_editor_view_bottom_toolbar_copy_tooltip_windows(num length) {
+    return Intl.plural(
+      length,
+      one: 'Copy selected node (ctrl + c)',
+      other: 'Copy selected nodes (ctrl + c)',
+      name: 'node_editor_view_bottom_toolbar_copy_tooltip_windows',
+      desc: '',
+      args: [length],
+    );
+  }
+
+  /// `{length, plural, =1{Copy selected node (⌘ + c)} other{Copy selected nodes (⌘ + c)}}`
+  String node_editor_view_bottom_toolbar_copy_tooltip_mac(num length) {
+    return Intl.plural(
+      length,
+      one: 'Copy selected node (⌘ + c)',
+      other: 'Copy selected nodes (⌘ + c)',
+      name: 'node_editor_view_bottom_toolbar_copy_tooltip_mac',
+      desc: '',
+      args: [length],
+    );
+  }
+
+  /// `{length, plural, =1{Paste copied node (ctrl + v)} other{Paste copied nodes (ctrl + v)}}`
+  String node_editor_view_bottom_toolbar_paste_tooltip_windows(num length) {
+    return Intl.plural(
+      length,
+      one: 'Paste copied node (ctrl + v)',
+      other: 'Paste copied nodes (ctrl + v)',
+      name: 'node_editor_view_bottom_toolbar_paste_tooltip_windows',
+      desc: '',
+      args: [length],
+    );
+  }
+
+  /// `{length, plural, =1{Paste copied node (⌘ + v)} other{Paste copied nodes (⌘ + v)}}`
+  String node_editor_view_bottom_toolbar_paste_tooltip_mac(num length) {
+    return Intl.plural(
+      length,
+      one: 'Paste copied node (⌘ + v)',
+      other: 'Paste copied nodes (⌘ + v)',
+      name: 'node_editor_view_bottom_toolbar_paste_tooltip_mac',
+      desc: '',
+      args: [length],
+    );
+  }
+
+  /// `{length, plural, one {Duplicate selected node (ctrl + d)} other {Duplicate selected nodes (ctrl + d)}}`
+  String node_editor_view_bottom_toolbar_duplicate_tooltip_windows(num length) {
+    return Intl.plural(
+      length,
+      one: 'Duplicate selected node (ctrl + d)',
+      other: 'Duplicate selected nodes (ctrl + d)',
+      name: 'node_editor_view_bottom_toolbar_duplicate_tooltip_windows',
+      desc: '',
+      args: [length],
+    );
+  }
+
+  /// `{length, plural, one {Duplicate selected node (⌘ + d)} other {Duplicate selected nodes (⌘ + d)}}`
+  String node_editor_view_bottom_toolbar_duplicate_tooltip_mac(num length) {
+    return Intl.plural(
+      length,
+      one: 'Duplicate selected node (⌘ + d)',
+      other: 'Duplicate selected nodes (⌘ + d)',
+      name: 'node_editor_view_bottom_toolbar_duplicate_tooltip_mac',
+      desc: '',
+      args: [length],
+    );
+  }
+
+  /// `{length, plural, one {Delete selected node (ctrl + ⌫)} other {Delete selected nodes (ctrl + ⌫)}}`
+  String node_editor_view_bottom_toolbar_delete_tooltip_windows(num length) {
+    return Intl.plural(
+      length,
+      one: 'Delete selected node (ctrl + ⌫)',
+      other: 'Delete selected nodes (ctrl + ⌫)',
+      name: 'node_editor_view_bottom_toolbar_delete_tooltip_windows',
+      desc: '',
+      args: [length],
+    );
+  }
+
+  /// `{length, plural, one {Delete selected node (⌘ + ⌫)} other {Delete selected nodes (⌘ + ⌫)}}`
+  String node_editor_view_bottom_toolbar_delete_tooltip_mac(num length) {
+    return Intl.plural(
+      length,
+      one: 'Delete selected node (⌘ + ⌫)',
+      other: 'Delete selected nodes (⌘ + ⌫)',
+      name: 'node_editor_view_bottom_toolbar_delete_tooltip_mac',
+      desc: '',
+      args: [length],
     );
   }
 

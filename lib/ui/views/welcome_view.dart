@@ -17,6 +17,7 @@ class WelcomeView extends StatelessWidget {
     StylesGetters theme = StylesGetters(context);
     return SafeArea(
       child: Scaffold(
+        backgroundColor: theme.primary,
         appBar: CustomAppBar(
           CustomAppBarController(
             S.of(context).welcome_appbar,

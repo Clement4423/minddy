@@ -112,17 +112,19 @@ class _CustomChartState extends State<CustomChart> {
           shouldOffsetUp: false,
           shouldOffsetDownIfNegative: false,
           borderRadius: 
-            values.indexOf(data) == 0 
-            ? BorderRadius.only(
-              bottomLeft: Radius.circular(minSize / 7), 
-              bottomRight: Radius.circular(minSize / 7)
-            )
-            : values.indexOf(data) == values.length - 1
-              ? BorderRadius.only(
-                topLeft: Radius.circular(minSize / 7),
-                topRight: Radius.circular(minSize / 7)
-            )
-            : BorderRadius.zero,
+            values.length == 1 
+              ? BorderRadius.circular(minSize / 7)
+              : values.indexOf(data) == 0 
+                ? BorderRadius.only(
+                  bottomLeft: Radius.circular(minSize / 7), 
+                  bottomRight: Radius.circular(minSize / 7)
+                )
+                : values.indexOf(data) == values.length - 1
+                  ? BorderRadius.only(
+                    topLeft: Radius.circular(minSize / 7),
+                    topRight: Radius.circular(minSize / 7)
+                )
+                : BorderRadius.zero,
         );
       }).toList();
 

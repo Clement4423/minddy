@@ -23,6 +23,10 @@ class _ArticlesImporterImagesImportSubMenuState extends State<ArticlesImporterIm
       decoration: BoxDecoration(
         color: theme.primaryContainer,
         borderRadius: BorderRadius.circular(25),
+        border: Border.all(
+          color: theme.onPrimary.withOpacity(0.2),
+          width: 0.5
+        )
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

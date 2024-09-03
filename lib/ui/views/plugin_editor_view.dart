@@ -754,7 +754,7 @@ class _NodePortWidgetState extends State<NodePortWidget> {
   Offset _calculatePosition(BuildContext context) {
     RenderBox child = context.findRenderObject() as RenderBox;
     Offset childOffset = child.localToGlobal(Offset.zero);
-    //convert
+
     RenderBox parent = (widget.portInfo.node.key as GlobalKey).currentContext!.findRenderObject() as RenderBox;
     Offset childRelativeToParent = parent.globalToLocal(childOffset);
 

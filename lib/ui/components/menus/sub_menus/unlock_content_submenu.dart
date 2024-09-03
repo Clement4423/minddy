@@ -79,7 +79,11 @@ class _UnlockContentSubmenuState extends State<_UnlockContentSubmenu> {
           height: 430,
           decoration: BoxDecoration(
             color: theme.primaryContainer,
-            borderRadius: BorderRadius.circular(20)
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: theme.onPrimary.withOpacity(0.10),
+              width: 0.5
+            )
           ),
           // Main column
           child: Stack(

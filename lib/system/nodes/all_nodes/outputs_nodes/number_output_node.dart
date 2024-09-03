@@ -18,7 +18,7 @@ class NumberOutputNode implements IOutputNode {
   List<NodeData> inputs = [];
 
   @override
-  List<NodeDataType> inputsTypes = [NodeDataType.float];
+  List<NodeDataType> inputsTypes = [NodeDataType.number];
 
   @override
   List<NodeDataType> outputsTypes = []; 
@@ -39,7 +39,7 @@ class NumberOutputNode implements IOutputNode {
 
   Future<NodeData?> main() async {
     return NodeData(
-      type: NodeDataType.float, 
+      type: NodeDataType.number, 
       value: inputs.firstOrNull
     );
   }

@@ -50,10 +50,10 @@ class MathNode implements INode {
   List<NodeData> inputs = [];
 
   @override
-  List<NodeDataType> inputsTypes = [NodeDataType.float, NodeDataType.float];
+  List<NodeDataType> inputsTypes = [NodeDataType.number, NodeDataType.number];
 
   @override
-  List<NodeDataType> outputsTypes = [NodeDataType.float];
+  List<NodeDataType> outputsTypes = [NodeDataType.number];
 
   @override
   List<NodeOutput> outputs = [];
@@ -158,7 +158,7 @@ class MathNode implements INode {
         break;
     }
 
-    _addDataToOutputs(NodeData(type: NodeDataType.float, value: result));
+    _addDataToOutputs(NodeData(type: NodeDataType.number, value: result));
   }
 
   num getDivision(num num1, num num2) {

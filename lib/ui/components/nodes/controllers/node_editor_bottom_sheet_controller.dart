@@ -8,78 +8,18 @@ import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/nodes/logic/node_tree.dart';
 import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
+import 'package:minddy/ui/components/nodes/controllers/node_editor_state.dart';
 import 'package:minddy/ui/components/nodes/node_widget_tree.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:minddy/ui/views/plugin_editor_view.dart';
 
-class NodeEditorState {
-  List<NodeEditorHistoryElement> _history = [];
-  int _currentIndex = -1;
-
-  List<NodeEditorHistoryElement> get history => _history;
-  int get historyMaxLength => 32;
-
-  void clearHistory() {
-    _history.clear();
-  }
-
-  NodeEditorHistoryElement? getCurrentState() {
-    return _currentIndex >= 0 && _currentIndex < _history.length
-        ? _history[_currentIndex]
-        : null;
-  }
-
-  void addHistoryElement(NodeEditorHistoryElement element) {  
-      // If we're not at the end of the history (meaning we've undone), truncate the history
-      if (_currentIndex < _history.length - 1) {
-          _history = _history.sublist(0, _currentIndex + 1);
-      }
-
-      // Add new element to history
-      _history.add(element);
-      _currentIndex = _history.length - 1;
-
-      // Limit history size
-      if (_history.length > historyMaxLength) {
-          _history.removeAt(0);
-          _currentIndex = _history.length - 1;  // Ensure index is correct after removal
-      }
-  }
-
-  bool canUndo() {
-    return _currentIndex > 0;
-  }
-
-  bool canRedo() {
-    return _currentIndex < _history.length - 1;
-  }
-
-  NodeEditorHistoryElement? undo() {
-    if (canUndo()) {
-      _currentIndex--;
-      return _history[_currentIndex];
-    }
-    return null;
-  }
-
-  NodeEditorHistoryElement? redo() {
-    if (canRedo()) {
-      _currentIndex++;
-      return _history[_currentIndex];
-    }
-    return null;
-  }
-}
-
-class NodeEditorHistoryElement {
-  final int id;
-  final List<INodeWidget> nodes;
-  final List<INodeWidget> selectedNodes;
-
-  NodeEditorHistoryElement({required this.nodes, required this.selectedNodes, required this.id});
-}
-
 class NodeConnectionUpdater extends ChangeNotifier {
+  notify() {
+    notifyListeners();
+  }
+}
+
+class BottomToolbarUpdater extends ChangeNotifier {
   notify() {
     notifyListeners();
   }
@@ -90,6 +30,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
   bool nodeTreeChanged = false;
 
   NodeConnectionUpdater nodeConnectionUpdater = NodeConnectionUpdater();
+  BottomToolbarUpdater bottomToolbarUpdater = BottomToolbarUpdater();
 
   Map<INodeWidget, GlobalKey> globalKeys = {};
 
@@ -107,6 +48,8 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
   TransformationController viewPositionController = TransformationController();
 
   List<INodeWidget> nodesWidgets = [];
+
+  List<NodeTreeVariable> variables = [];
 
   bool isDragging = false;
 
@@ -129,6 +72,9 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
     }
 
     if (selectedNodeTreeId != null) {
+      if (views.isEmpty) {
+        views.add(NodeEditorBottomSheetView(tree: NodeWidgetTree(nodesWidgets: [], id: createUniqueId()), viewPositionController: TransformationController()));
+      }
       NodeEditorBottomSheetView selectedView = views.firstWhere((v) => v.tree.id == selectedNodeTreeId);
       nodesWidgets = selectedView.tree.nodesWidgets;
       viewPositionController = selectedView.viewPositionController;
@@ -142,6 +88,75 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
   }
 
   NodeEditorState state = NodeEditorState();
+
+  void copySelectedNodes() {
+    List<INodeWidget> nodesToCopy = [];
+    for (INodeWidget widget in selectedNodes) {
+      nodesToCopy.add(widget.copy(GlobalKey()));
+      nodesToCopy.last.node.targets = [];
+    }
+    state.addCopiedNodes(nodesToCopy);
+    bottomToolbarUpdater.notify();
+  }
+
+  void pasteCopiedNodes() {
+    List<INodeWidget> nodesToPaste = state.getCopiedNodes().map((n) => n.copy(GlobalKey())).toList();
+
+    for (INodeWidget widget in nodesToPaste) {
+      globalKeys[widget] = widget.key as GlobalKey;
+      widget.node.id = createUniqueId(); // Redefine a new id otherwise deleting the original node will delete the copy
+      Offset offsetToAdd = const Offset(25, 25);
+      if (widget.position + Offset(widget.width, widget.height) >= widget.maxOffset) {
+        widget.position -= offsetToAdd;
+      } else {
+        widget.position += offsetToAdd;
+      }
+      
+    }
+
+    List<INodeWidget> nodesToUpdate = List.from(selectedNodes);
+
+    nodesToUpdate.addAll(nodesToPaste);
+
+    selectedNodes.clear();
+    selectedNodesConnections.clear();
+
+    selectedNodes.addAll(nodesToPaste);
+
+    for (INodeWidget widget in nodesToUpdate) {
+      updateNode(widget);
+    }
+
+    nodesWidgets.addAll(nodesToPaste);
+    saveState();
+    nodeConnectionUpdater.notify();
+    notifyListeners();
+  }
+
+  void deleteSelectedNodes() {
+    try {
+      for (INodeWidget widget in selectedNodes) {
+        nodesWidgets.removeWhere((w) => w.node.id == widget.node.id);
+        globalKeys.removeWhere((w, k) => w.node.id == widget.node.id);
+      }
+
+      selectedNodes.clear();
+      selectedNodesConnections.clear();
+
+      for (NodeWidgetTree widgetTree in views.map((v) => v.tree).toList()) {
+        if (widgetTree.id == selectedNodeTreeId) {
+          widgetTree.nodesWidgets = nodesWidgets;
+        }
+      }
+
+      nodeConnectionUpdater.notify();
+      bottomToolbarUpdater.notify();
+      saveState();
+      notifyListeners();
+    } catch (e) {
+      return;
+    }
+  }
 
   void saveState() {
     List<INodeWidget> savedNodes = nodesWidgets.map((n) {return n.copy(GlobalKey());}).toList();
@@ -173,21 +188,23 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
     );
   }
 
-    void undo(StylesGetters theme) {
+    void undo() {
       NodeEditorHistoryElement? previousState = state.undo();
       if (previousState != null) {
-        _applyState(previousState, theme);
+        _applyState(previousState);
       }
+      bottomToolbarUpdater.notify();
     }
 
-    void redo(StylesGetters theme) {
+    void redo() {
       NodeEditorHistoryElement? nextState = state.redo();
       if (nextState != null) {
-        _applyState(nextState, theme);
+        _applyState(nextState);
       }
+      bottomToolbarUpdater.notify();
     }
 
-  void _applyState(NodeEditorHistoryElement historyElement, StylesGetters theme) {
+  void _applyState(NodeEditorHistoryElement historyElement) {
     globalKeys.clear();
     selectedNodesConnections.clear();
     nodesConnections.clear();
@@ -223,6 +240,20 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addNodeTreeVariable(NodeTreeVariable variable) {
+    variables.add(variable);
+    notifyListeners();
+  }
+
+  void deleteNodeTreeVariable(int id) {
+    try {
+      variables.removeWhere((v) => v.id == id);
+      notifyListeners();
+    } catch (e) {
+      return;
+    }
+  }
+
   List<INodeWidget> selectedNodes = [];
 
   List<NodeConnection> selectedNodesConnections = [];
@@ -246,6 +277,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
 
     saveState();
     nodeConnectionUpdater.notify();
+    bottomToolbarUpdater.notify();
   }
 
   void updateNode(INodeWidget widget) {
@@ -299,12 +331,16 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
         return;
       } else {
         NodeTarget targetToAdd = NodeTarget(outputIndex: selectedPortInfo!.portIndex, node: firstPort.node.node, inputIndex: firstPort.portIndex);
-        if (_isNodeContainingTarget(selectedPortInfo!.node.node, targetToAdd)) {
-          return;
-        } else {
-          print("Adding input to output");
-          selectedPortInfo!.node.node.targets.add(targetToAdd);
-        }        
+        INodeWidget? nodeThatAlreadyContainsThisTarget = _isNodesContainingTarget(targetToAdd);
+        if (nodeThatAlreadyContainsThisTarget != null) {
+          nodeThatAlreadyContainsThisTarget.node.targets.removeWhere((t) => 
+            t.node.id == targetToAdd.node.id && 
+            t.inputIndex == targetToAdd.inputIndex && 
+            t.outputIndex == targetToAdd.outputIndex
+          );
+        }
+        print("Adding input to output");
+        selectedPortInfo!.node.node.targets.add(targetToAdd);
       }
     } else if (firstPort.type == NodePortType.output && selectedPortInfo!.type == NodePortType.input) {
       if (nodeTree.isNodeBefore(selectedPortInfo!.node.node, firstPort.node.node)) {
@@ -312,14 +348,20 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
         return;
       } else {
         NodeTarget targetToAdd = NodeTarget(outputIndex: firstPort.portIndex, node: selectedPortInfo!.node.node, inputIndex: selectedPortInfo!.portIndex);
-        if (_isNodeContainingTarget(firstPort.node.node, targetToAdd)) {
-          return;
-        } else {
-          print("Adding output to input");
-          firstPort.node.node.targets.add(targetToAdd);
+        INodeWidget? nodeThatAlreadyContainsThisTarget = _isNodesContainingTarget(targetToAdd);
+        if (nodeThatAlreadyContainsThisTarget != null) {
+          nodeThatAlreadyContainsThisTarget.node.targets.removeWhere((t) => 
+            t.node.id == targetToAdd.node.id && 
+            t.inputIndex == targetToAdd.inputIndex && 
+            t.outputIndex == targetToAdd.outputIndex
+          );
         }
+        print("Adding output to input");
+        firstPort.node.node.targets.add(targetToAdd);
       }
     }
+
+    print("Finish");
     selectedPortInfo = null;
     getNodesConnections();
     getSelectedNodesConnections();
@@ -327,18 +369,19 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
     saveState();
   }
 
-  bool _isNodeContainingTarget(INode node, NodeTarget target) {
-    if (node.targets.map(
-      (t) => 
-      t.node.id == target.node.id &&
-      t.inputIndex == target.inputIndex && 
-      t.outputIndex == target.outputIndex
-    ).toList().contains(true)) {
-      print("Node already contains target");
-      return true;
-    } else {
-      return false;
+  INodeWidget? _isNodesContainingTarget(NodeTarget target) {
+    for (INodeWidget widget in nodesWidgets) {
+      if (widget.node.targets.map(
+        (t) => 
+        t.node.id == target.node.id &&
+        t.inputIndex == target.inputIndex && 
+        t.outputIndex == target.outputIndex
+      ).toList().contains(true)) {
+        print("Nodes already contains target");
+        return widget;
+      }
     }
+    return null;
   }
 
   eraseNodesWidgets(StylesGetters theme) {
@@ -363,11 +406,16 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
       nodeTreeChanged = true;
     }
 
-    views.firstWhere((v) => v.tree.id == selectedNodeTreeId).tree.nodesWidgets = nodesWidgets.map((n) => n.copy(GlobalKey())).toList();
-
+    if (views.isNotEmpty) {
+      try {
+        views.firstWhere((v) => v.tree.id == selectedNodeTreeId).tree.nodesWidgets = nodesWidgets.map((n) => n.copy(GlobalKey())).toList();
+        viewPositionController = views.firstWhere((v) => v.tree.id == id).viewPositionController;
+      } catch (e) {
+        null; 
+      }
+    }
+    
     selectedNodeTreeId = id;
-
-    viewPositionController = views.firstWhere((v) => v.tree.id == id).viewPositionController;
 
     if (refresh) {
       notifyListeners();
@@ -471,7 +519,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
         nodes.add(widget.node);
       }
 
-      return NodeTree(nodes: nodes, id: createUniqueId());
+      return NodeTree(nodes: nodes, id: createUniqueId(), variables: []); // TODO : Ajouter les variables
     } catch (e) {
       return null;
     }
@@ -490,6 +538,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
     
     Map<String, dynamic> map = {
       'views': views.map((v) => v.toJson()).toList(),
+      'variables': variables.map((v) => v.toJson()).toList(),
       'selected_node_tree_id': selectedNodeTreeId,
       'isSidePanelClosed': isSidePanelClosed
     };
@@ -499,9 +548,9 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
 
   static NodeEditorBottomSheetController? fromJson(Map<String, dynamic> map, Offset maxOffset, StylesGetters theme, Function save) {
     try {
-      List<NodeEditorBottomSheetView> views = [];
-
       NodeEditorBottomSheetController controller = NodeEditorBottomSheetController(views: [], maxOffset: maxOffset, save: save);
+      
+      List<NodeEditorBottomSheetView> views = [];
 
       if (map['views'] is List) {
         for (String viewAsJson in map['views']) {
@@ -514,6 +563,19 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
 
       controller.views = views;
 
+      List<NodeTreeVariable> variables = [];
+
+      if (map['variables'] is List) {
+        for (String variableAsJson in map['variables']) {
+          NodeTreeVariable? variable = NodeTreeVariable.fromJson(variableAsJson);
+          if (variable != null) {
+            variables.add(variable);
+          }
+        }
+      }
+
+      controller.variables = variables;
+
       if (map['isSidePanelClosed'] != null && map['isSidePanelClosed'] is bool) {
         controller.isSidePanelClosed = map['isSidePanelClosed'];
       }
@@ -523,8 +585,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
       } 
 
       return controller;
-    } catch (e, s) {
-      print("ERROR $e, \n stack trace: $s");
+    } catch (e) {
       return null;
     }
   }

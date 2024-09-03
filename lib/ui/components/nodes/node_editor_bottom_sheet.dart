@@ -1,46 +1,18 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
+import 'package:minddy/system/shortcuts/shortcuts_activators.dart';
 import 'package:minddy/ui/components/nodes/controllers/node_editor_bottom_sheet_controller.dart';
+import 'package:minddy/ui/components/nodes/node_editor_bottom_sheet_bottom_toolbox.dart';
+import 'package:minddy/ui/components/nodes/node_editor_bottom_sheet_side_panel.dart';
 import 'package:minddy/ui/components/nodes/node_editor_grid_painter.dart';
-import 'package:minddy/ui/components/nodes/node_widget_tree.dart';
 import 'package:minddy/ui/components/nodes/nodes_connections_painter.dart';
+import 'package:minddy/ui/components/nodes/selection_rect_painter.dart';
 import 'package:minddy/ui/theme/theme.dart';
-
-
-ShortcutActivator undoActivator = SingleActivator(
-  LogicalKeyboardKey.keyZ,
-  control: Platform.isWindows || Platform.isLinux 
-    ? true 
-    : false,
-  meta: Platform.isMacOS 
-    ? true 
-    : false
-);
-
-class UndoPressIntent extends Intent {
-  const UndoPressIntent();
-}
-
-ShortcutActivator redoActivator = SingleActivator(
-  LogicalKeyboardKey.keyZ,
-  control: Platform.isWindows || Platform.isLinux 
-    ? true 
-    : false,
-  meta: Platform.isMacOS 
-    ? true 
-    : false,
-  shift: true
-);
-
-class RedoPressIntent extends Intent {
-  const RedoPressIntent();
-}
 
 class NodeEditorBottomSheet extends StatefulWidget {
   const NodeEditorBottomSheet({
@@ -139,20 +111,46 @@ void _selectNodesWithinRect() {
               child: Shortcuts(
                 shortcuts: {
                   undoActivator: const UndoPressIntent(),
-                  redoActivator: const RedoPressIntent()
+                  redoActivator: const RedoPressIntent(),
+                  copyActivator: const CopyPressIntent(),
+                  pasteActivator: const PastePressIntent(),
+                  duplicateActivator: const DuplicatePressIntent(),
+                  deleteActivator: const DeletePressIntent()
                 },
                 child: Actions(
                   actions: {
                     UndoPressIntent: CallbackAction<UndoPressIntent>(
                       onInvoke: (intent) => {
-                        widget.controller.undo(widget.theme)
+                        widget.controller.undo()
                       }
                     ),
                     RedoPressIntent: CallbackAction<RedoPressIntent>(
                       onInvoke: (intent) => {
-                        widget.controller.redo(widget.theme)
+                        widget.controller.redo()
                       }
                     ),
+                    CopyPressIntent: CallbackAction<CopyPressIntent>(
+                      onInvoke: (intent) => {
+                        widget.controller.copySelectedNodes()
+                      }
+                    ),
+                    PastePressIntent: CallbackAction<PastePressIntent>(
+                      onInvoke: (intent) => {
+                        widget.controller.pasteCopiedNodes()
+                      }
+                    ),
+                    DuplicatePressIntent: CallbackAction<DuplicatePressIntent>(
+                      onInvoke: (intent) => {
+                        widget.controller.copySelectedNodes(),
+                        widget.controller.pasteCopiedNodes(),
+                        widget.controller.state.copiedNodes.clear()
+                      }
+                    ),
+                    DeletePressIntent: CallbackAction<DeletePressIntent>(
+                      onInvoke: (intent) => {
+                        widget.controller.deleteSelectedNodes()
+                      }
+                    )
                   },
                   child: Focus(
                     autofocus: true,
@@ -288,6 +286,20 @@ void _selectNodesWithinRect() {
                                   controller: widget.controller,
                                 )
                               ),
+                              // Bottom toolbar
+                              Positioned(
+                                bottom: 5,
+                                left: (appWindowSize.width / 2) - 112.5,
+                                child: AnimatedBuilder(
+                                  animation: widget.controller.bottomToolbarUpdater,
+                                  builder: (context, child) {
+                                    return NodeEditorBottomSheetBottomToolbox(
+                                      controller: widget.controller, 
+                                      theme: widget.theme
+                                    );
+                                  }
+                                )
+                              ),
                               // Top bar
                               Positioned(
                                 top: 0,
@@ -312,24 +324,28 @@ void _selectNodesWithinRect() {
                                             cursor: widget.controller.isClosed
                                                 ? SystemMouseCursors.resizeUp
                                                 : SystemMouseCursors.resizeDown,
-                                            child: Container(
-                                              width: appWindowSize.width * 0.02,
-                                              height: appWindowSize.height * 0.005,
-                                              constraints: const BoxConstraints(
-                                                minWidth: 40,
-                                                minHeight: 5
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: widget.theme.onSurface.withOpacity(0.8),
-                                                borderRadius: BorderRadius.circular((appWindowSize.height * 0.005) / 2),
+                                            child: Tooltip(
+                                              message: widget.controller.isClosed ? S.of(context).node_editor_view_open_node_panel_tooltip : S.of(context).node_editor_view_close_node_panel_tooltip,
+                                              child: Container(
+                                                width: appWindowSize.width * 0.02,
+                                                height: appWindowSize.height * 0.005,
+                                                constraints: const BoxConstraints(
+                                                  minWidth: 40,
+                                                  minHeight: 5
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: widget.theme.onSurface.withOpacity(0.8),
+                                                  borderRadius: BorderRadius.circular((appWindowSize.height * 0.005) / 2),
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
                                         // New node button
                                         IconButton(
-                                          onPressed: () async {},
+                                          onPressed: () {},
                                           style: ButtonThemes.secondaryButtonStyle(context),
+                                          tooltip: S.of(context).node_editor_view_new_node_tooltip,
                                           icon: Icon(Icons.add_rounded, color: widget.theme.onPrimary),
                                         ),
                                       ],
@@ -353,433 +369,10 @@ void _selectNodesWithinRect() {
   }
 }
 
-class SelectionRectPainter extends CustomPainter {
-  final Rect rect;
-  final Color color;
-  double borderRadius;
-
-  SelectionRectPainter(this.rect, this.color, {this.borderRadius = 5.0});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-
-    if (rect.width < borderRadius) {
-      borderRadius = rect.width / 2;
-    } else if (rect.height < borderRadius) {
-      borderRadius = rect.height / 2;
-    }
-
-    final paint = Paint()
-      ..color = color.withOpacity(0.3)
-      ..style = PaintingStyle.fill;
-
-    final borderPaint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5;
-
-    // Create RRect for rounded rectangle
-    final rrect = RRect.fromRectAndRadius(rect, Radius.circular(borderRadius));
-
-    // Draw the rounded rectangle
-    canvas.drawRRect(rrect, paint);
-    canvas.drawRRect(rrect, borderPaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
 Future<void> waitNextFrame() async {
   Completer completer = Completer();
 
   WidgetsBinding.instance.addPostFrameCallback((_) => completer.complete());
 
   return completer.future;
-}
-
-
-class NodeEditorBottomSheetSidePanel extends StatefulWidget {
-  const NodeEditorBottomSheetSidePanel({super.key, required this.height, required this.theme, required this.isClosedInitially, required this.setIsClosed, required this.controller});
-
-  final double height;
-  final StylesGetters theme;
-  final bool isClosedInitially;
-  final Function(bool) setIsClosed;
-  final NodeEditorBottomSheetController controller;
-
-  @override
-  State<NodeEditorBottomSheetSidePanel> createState() => _NodeEditorBottomSheetSidePanelState();
-}
-
-class _NodeEditorBottomSheetSidePanelState extends State<NodeEditorBottomSheetSidePanel> {
-
-  bool isClosed = false;
-
-  void toggleSidePanel() {
-    setState(() {
-      isClosed = !isClosed;
-      widget.setIsClosed(isClosed);
-    });
-  }
-
-  void setSelectedNodeTree(int id) {
-    widget.controller.setSelectedNodeTree(id);
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    isClosed = widget.isClosedInitially;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder(
-      duration: const Duration(milliseconds: 700),
-      curve: Curves.fastEaseInToSlowEaseOut,
-      tween: Tween(
-        begin: isClosed ? 0.0 : 255.0,
-        end: isClosed ? 255.0 : 0.0,
-      ),
-      builder: (context, translate, child) {
-        return Transform.translate(
-          offset: Offset(-translate, 0),
-          child: SizedBox(
-            width: 295,
-            height: widget.height,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Visibility(
-                  visible: isClosed ? translate >= 255 ? false : true : true,
-                  child: SizedBox(
-                    width: 250,
-                    height: widget.height,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Variabe container
-                        NodeEditorBottomSheetSidePanelBox(
-                          panel: widget, 
-                          title: "Variables", 
-                          buttonTooltip: "New variable",
-                          buttonAction: () {},
-                          child: SizedBox()
-                        ),
-                        NodeEditorBottomSheetSidePanelBox(
-                          key: UniqueKey(),
-                          panel: widget, 
-                          title: "Node trees", 
-                          buttonTooltip: "New node tree",
-                          buttonAction: () {
-                            widget.controller.addNodeTree();
-                          },
-                          child: ListView.builder(
-                            key: UniqueKey(),
-                            itemCount: widget.controller.views.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 5),
-                                child: NodeEditorBottomSheetSidePanelNodeTreeContainer(
-                                  index: index,
-                                  trees: widget.controller.views.map((v) => v.tree).toList(),
-                                  theme: widget.theme,
-                                  canBeDeleted: widget.controller.views.length > 1,
-                                  isSelected: widget.controller.views[index].tree.id == widget.controller.selectedNodeTreeId,
-                                  deleteNodeTree: widget.controller.deleteNodeTree,
-                                  setSelectedNodeTree: widget.controller.setSelectedNodeTree,
-                                ),
-                              );
-                            }
-                          )
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                // Close / Open panel button
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(13),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                    child: Tooltip(
-                      message: isClosed ? "Open side panel" : "Close side panel",
-                      preferBelow: true,
-                      verticalOffset: (widget.height / 5) / 2,
-                      child: Container(
-                        width: 40,
-                        height: widget.height / 5,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(13),
-                          color: widget.theme.primaryContainer,
-                          border: Border.all(
-                            color: widget.theme.onSurface.withOpacity(0.2),
-                            width: 0.5
-                          )
-                        ),
-                        child: IconButton(
-                          onPressed: () => toggleSidePanel(),
-                          style: ButtonStyle(
-                            shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)))
-                          ),
-                          icon: Center(
-                            child: AnimatedRotation(
-                              duration: const Duration(milliseconds: 250),
-                              turns: isClosed 
-                              ? 0
-                              : -0.5,
-                              child: Icon(Icons.arrow_forward_ios_rounded,
-                                color: widget.theme.onSurface, 
-                                ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      }
-    );
-  }
-}
-
-class NodeEditorBottomSheetSidePanelNodeTreeContainer extends StatefulWidget {
-  const NodeEditorBottomSheetSidePanelNodeTreeContainer({
-    super.key,
-    required this.index,
-    required this.trees,
-    required this.theme,
-    required this.canBeDeleted,
-    required this.isSelected,
-    required this.deleteNodeTree,
-    required this.setSelectedNodeTree
-  });
-
-  final List<NodeWidgetTree> trees;
-  final StylesGetters theme;
-  final int index;
-  final bool isSelected;
-  final bool canBeDeleted;
-  final Function(int id) deleteNodeTree;
-  final Function(int id) setSelectedNodeTree;
-
-  @override
-  State<NodeEditorBottomSheetSidePanelNodeTreeContainer> createState() => _NodeEditorBottomSheetSidePanelNodeTreeContainerState();
-}
-
-class _NodeEditorBottomSheetSidePanelNodeTreeContainerState extends State<NodeEditorBottomSheetSidePanelNodeTreeContainer> {
-
-  late final int id;
-
-  bool canEdit = false;
-
-  FocusNode focusNode = FocusNode();
-
-  setCanEdit(bool value) {
-    setState(() {
-      canEdit = value;
-    });
-
-    if (value == true) {
-      focusNode.requestFocus();
-    } else if (focusNode.hasFocus) {
-      focusNode.unfocus();
-    }
-  }
-
-  @override
-  void dispose() {
-    focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    id = widget.trees[widget.index].id;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 240,
-      height: 40,
-      decoration: BoxDecoration(
-        color: widget.isSelected 
-        ? widget.theme.secondary
-        : widget.theme.primary,
-        borderRadius: BorderRadius.circular(12)
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onDoubleTap: () {
-                setCanEdit(true);
-              },
-              child: TextField(
-                onChanged: (value) {
-                  widget.trees[widget.index].name = value;
-                },
-                onEditingComplete: () {
-                  setCanEdit(false);
-                },
-                focusNode: focusNode,
-                controller: TextEditingController(text: widget.trees[widget.index].name),
-                cursorColor: widget.isSelected 
-                  ? widget.theme.onSecondary
-                  : widget.theme.onPrimary,
-                mouseCursor: canEdit 
-                  ? SystemMouseCursors.text 
-                  : widget.trees.length > 1 
-                    ? SystemMouseCursors.click 
-                    : SystemMouseCursors.basic,
-                style: widget.theme.bodyMedium
-                .copyWith(
-                  color: widget.isSelected 
-                  ? widget.theme.onSecondary
-                  : widget.theme.onPrimary,
-                  fontWeight: FontWeight.w500
-                ),
-                readOnly: canEdit ? false : true,
-                onTap: () {
-                  if (canEdit) {
-                    return;
-                  }
-                  if (widget.trees.length > 1) {
-                    widget.setSelectedNodeTree(id);
-                  }
-                },
-                onTapOutside: (event) {
-                  setCanEdit(false);
-                },
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.only(bottom: 7, left: 15),
-                  hintText: S.of(context).projects_module_spreadsheet_value_unnamed
-                ),
-              ),
-            ),
-          ),
-          if (widget.canBeDeleted)
-            Padding(
-              padding: const EdgeInsets.only(right: 2),
-              child: SizedBox(
-                width: 35,
-                height: 35,
-                child: IconButton(
-                  onPressed: () {
-                    widget.deleteNodeTree(id);
-                  },
-                  style: ButtonThemes.secondaryButtonStyle(context),
-                  tooltip: S.of(context).snackbar_delete_button,
-                  icon: Icon(
-                    Icons.delete_outline_rounded, 
-                    size: 20,
-                    color: widget.theme.error
-                  )
-                ),
-              ),
-            )
-        ],
-      ),
-    );
-  }
-}
-
-class NodeEditorBottomSheetSidePanelBox extends StatefulWidget {
-  const NodeEditorBottomSheetSidePanelBox({super.key, required this.panel, required this.title, required this.buttonAction, required this.buttonTooltip, required this.child});
-
-  final NodeEditorBottomSheetSidePanel panel;
-  final String title;
-  final String buttonTooltip;
-  final Function buttonAction;
-  final Widget child;
-
-  @override
-  State<NodeEditorBottomSheetSidePanelBox> createState() => _NodeEditorBottomSheetSidePanelBoxState();
-}
-
-class _NodeEditorBottomSheetSidePanelBoxState extends State<NodeEditorBottomSheetSidePanelBox> {
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-        child: Container(
-          width: 250,
-          height: (widget.panel.height / 2) - 2.5, // Here we remove 5 for padding between containers,
-          decoration: BoxDecoration(
-            color: widget.panel.theme.primaryContainer,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: widget.panel.theme.onSurface.withOpacity(0.2),
-              width: 0.5
-            )
-          ),
-          child: Column(
-            children: [
-              // Top with title and button
-              Padding(
-                padding: const EdgeInsets.only(top: 5, left: 5),
-                child: SizedBox(
-                  width: 230,
-                  height: 40,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Title
-                      Text(
-                        widget.title,
-                        style: widget.panel.theme.titleMedium
-                          .copyWith(
-                            color: widget.panel.theme.onSurface,
-                            fontSize: 20
-                          ),
-                      ),
-                      // Button
-                      SizedBox(
-                        width: 35,
-                        height: 35,
-                        child: IconButton(
-                          onPressed: () async {
-                            await widget.buttonAction();
-                          }, 
-                          tooltip: widget.buttonTooltip,
-                          style: ButtonThemes.primaryButtonStyle(context),
-                          icon: Icon(Icons.add_rounded, color: widget.panel.theme.onSecondary, size: 19)
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: SizedBox(
-                    width: 240,
-                    height: ((widget.panel.height / 2) - 2.5) - 56, // I don't know why 56 but it's the minimal for it to not create overflows
-                    child: widget.child
-                  )
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
