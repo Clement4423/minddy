@@ -10,8 +10,8 @@ import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart
 import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_types.dart';
 import 'package:minddy/ui/components/custom_components/custom_dropdown_button.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_view.dart';
-import 'package:minddy/ui/components/menus/popup_menu/popup_menu_button.dart';
-import 'package:minddy/ui/components/menus/popup_menu/popup_menu_item_model.dart';
+import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_button.dart';
+import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_item_model.dart';
 import 'package:minddy/ui/components/projects/modules/spreadsheet/chart_tab_widget.dart';
 import 'package:minddy/ui/components/projects/modules/spreadsheet/custom_projects_spreadsheet_module_column_dropdown_selector.dart';
 import 'package:minddy/ui/components/projects/modules/spreadsheet/project_spreadsheet_module_view_controller.dart';

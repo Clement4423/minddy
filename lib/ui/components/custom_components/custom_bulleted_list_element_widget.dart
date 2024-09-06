@@ -12,9 +12,13 @@ class CustomBulletedListElementWidget extends StatefulWidget {
     required this.initialText,
     required this.controller,
     required this.maxWidth,
+    this.maxheight,
     required this.index,
     required this.focusNode,
     required this.isNew,
+    required this.readOnly,
+    this.padding,
+    this.maxLines
   });
 
   final String initialText;
@@ -22,7 +26,11 @@ class CustomBulletedListElementWidget extends StatefulWidget {
   final int index;
   final bool isNew;
   final double maxWidth;
+  final double? maxheight;
   final FocusNode focusNode;
+  final bool readOnly;
+  final EdgeInsetsGeometry? padding;
+  final int? maxLines;
 
   String text = "";
 
@@ -69,9 +77,10 @@ class _ElementWidgetState extends State<CustomBulletedListElementWidget> {
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
     return Padding(
-      padding: const EdgeInsets.all(3),
+      padding: widget.padding ?? const EdgeInsets.all(3),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.baseline,
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         textBaseline: TextBaseline.alphabetic,
         children: [
@@ -90,6 +99,7 @@ class _ElementWidgetState extends State<CustomBulletedListElementWidget> {
           ),
           SizedBox(
             width: widget.maxWidth,
+            height: widget.maxheight,
             child: CallbackShortcuts(
               bindings: {
                 const SingleActivator(LogicalKeyboardKey.enter): () {
@@ -115,7 +125,8 @@ class _ElementWidgetState extends State<CustomBulletedListElementWidget> {
                   },
                   focusNode: widget.focusNode,
                   controller: _textEditingController,
-                  style: theme.bodyMedium.copyWith(color: theme.onPrimary),
+                  style: theme.bodyMedium
+                    .copyWith(color: theme.onPrimary, overflow: TextOverflow.ellipsis),
                   onTap: () {
                     widget.controller.content.map((e) => {
                       if (e.index != widget.index)
@@ -130,10 +141,13 @@ class _ElementWidgetState extends State<CustomBulletedListElementWidget> {
                   cursorColor: theme.onPrimary,
                   autofocus: widget.isNew,
                   minLines: 1,
-                  maxLines : null,
+                  mouseCursor: widget.readOnly ? SystemMouseCursors.basic : SystemMouseCursors.text,
+                  readOnly: widget.readOnly,
+                  maxLines : widget.maxLines,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     isDense: true,
+                    isCollapsed: true,
                     hintText: S.of(context).articles_text_hint,
                   ),
                 ),

@@ -24,7 +24,7 @@ class _ArticlesImporterImagesImportSubMenuState extends State<ArticlesImporterIm
         color: theme.primaryContainer,
         borderRadius: BorderRadius.circular(25),
         border: Border.all(
-          color: theme.onPrimary.withOpacity(0.2),
+          color: theme.onPrimary.withOpacity(theme.brightness == Brightness.light ? 1 : 0.2),
           width: 0.5
         )
       ),
@@ -48,33 +48,39 @@ class _ArticlesImporterImagesImportSubMenuState extends State<ArticlesImporterIm
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               SizedBox(
-                width: 175,
+                width: 170,
                 height: 60,
-                child: CustomTextButton(
-                  S.of(context).articles_importer_dont_import_images_button,
-                  () {
-                    Navigator.pop(context);
-                  },
-                  false,
-                  false,
-                  isSecondary: true,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: CustomTextButton(
+                    S.of(context).articles_importer_dont_import_images_button,
+                    () {
+                      Navigator.pop(context);
+                    },
+                    false,
+                    false,
+                    isSecondary: true,
+                  ),
                 )
               ),
               SizedBox(
-                width: 175,
+                width: 170,
                 height: 60,
-                child: CustomTextButton(
-                  S.of(context).articles_importer_import_images_button, 
-                  () async {
-                    for (String path in widget.imagesPathsList) {
-                      await AppImages.saveImage(path, path.split('/').last);
-                    }
-                    if (context.mounted) {
-                      Navigator.pop(context);
-                    }
-                  }, 
-                  false, 
-                  false
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: CustomTextButton(
+                    S.of(context).articles_importer_import_images_button, 
+                    () async {
+                      for (String path in widget.imagesPathsList) {
+                        await AppImages.saveImage(path, path.split('/').last);
+                      }
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
+                    }, 
+                    false, 
+                    false
+                  ),
                 ),
               )
             ],

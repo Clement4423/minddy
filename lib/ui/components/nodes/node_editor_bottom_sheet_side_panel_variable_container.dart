@@ -75,7 +75,7 @@ class _NodeEditorBottomSheetSidePanelVariableContainerState extends State<NodeEd
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      _getCorrectNameBasedOnType(t),
+                      getCorrectNameBasedOnNodeDataType(t),
                       style: widget.theme.bodyMedium
                       .copyWith(
                         color: widget.variable.type == t 
@@ -147,7 +147,7 @@ class _NodeEditorBottomSheetSidePanelVariableContainerState extends State<NodeEd
   }
 }
 
-String _getCorrectNameBasedOnType(NodeDataType type) {
+String getCorrectNameBasedOnNodeDataType(NodeDataType type) {
   switch (type) {
     case NodeDataType.any:
       return "ERROR";

@@ -148,7 +148,7 @@ INodeWidget? _getCorrectNodeWidgetType(String type, String json, Offset maxOffse
   GlobalKey key = GlobalKey();
   switch (type) {
     case 'MathNodeWidget':
-      return MathNodeWidget.fromJson(key, json, maxOffset, theme, controller.setSelectedPort, controller.getIsDragging, controller.setIsDragging, controller.addConnection, controller.getSelectedPort, controller.passNodesConnections, controller.nodeConnectionUpdater.notify, controller.getSelectedNodes, controller.setSelectedNode, controller.updateNode, controller.saveState);
+      return MathNodeWidget.fromJson(key, json, maxOffset, theme, controller.widgetFunctions);
     default:
   }
   return null;

@@ -15,17 +15,17 @@ class ArticlesImporter {
 
     dynamic result = await StaticVariables.filePicker.pickFiles(allowMultiplesFiles: true);
     if (result != null) {
-      String documentDirectoryPath = await StaticVariables.fileSource.getAppDirectoryPath();
+      String documentDirectoryPath = StaticVariables.fileSource.documentDirectoryPath;
       if (result is List) {
         for (String path in result) {
           if (path.split('.').last.toLowerCase() != 'json') {
-            break;
+            return false;
           }
           ArticleCategory? category = await _openArticleAndGetCategory(path);
           await _saveBasedOnCategory(category ?? ArticleCategory.creativity, path, documentDirectoryPath);
         }
 
-        List<String> imagesPathsList = _checkIfThereIsAnImage(result.first);
+        List<String> imagesPathsList = await _checkIfThereIsAnImage(result.first);
 
         if (imagesPathsList.isNotEmpty) {
           if (context.mounted) {
@@ -87,7 +87,7 @@ class ArticlesImporter {
     "jpeg"
   ];
 
-  static List<String> _checkIfThereIsAnImage(String singleFilePath) {
+  static Future<List<String>> _checkIfThereIsAnImage(String singleFilePath) async {
     try {File file = File(singleFilePath);
     Directory parentDirectory = file.parent;
 
@@ -117,7 +117,7 @@ class ArticlesImporter {
 
     return imagesPathList;
     } catch(e) {
-      AppLogs.writeError(e, "articles_importer.dart - _checkIfThereIsAnImage");
+      await AppLogs.writeError(e, "articles_importer.dart - _checkIfThereIsAnImage");
       return [];
     }
   }

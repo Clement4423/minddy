@@ -91,7 +91,7 @@ class NodeTree {
   }
 
   bool isNodeBefore(INode first, INode second) {
-    if (first.targets.isEmpty && second.targets.isEmpty) {
+    if (first.targets.isEmpty && second.targets.isEmpty || first.targets.isEmpty) {
       return false;
     }
 

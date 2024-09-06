@@ -3182,6 +3182,70 @@ class S {
     );
   }
 
+  /// `Types`
+  String get node_editor_add_sub_menu_types {
+    return Intl.message(
+      'Types',
+      name: 'node_editor_add_sub_menu_types',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{length, plural, one {Input} other {Inputs}}`
+  String node_editor_add_sub_menu_inputs_subtitle(num length) {
+    return Intl.plural(
+      length,
+      one: 'Input',
+      other: 'Inputs',
+      name: 'node_editor_add_sub_menu_inputs_subtitle',
+      desc: '',
+      args: [length],
+    );
+  }
+
+  /// `{length, plural, one {Output} other {Outputs}}`
+  String node_editor_add_sub_menu_outputs_subtitle(num length) {
+    return Intl.plural(
+      length,
+      one: 'Output',
+      other: 'Outputs',
+      name: 'node_editor_add_sub_menu_outputs_subtitle',
+      desc: '',
+      args: [length],
+    );
+  }
+
+  /// `Note: Inputs and outputs may vary depending on the options chosen for the node`
+  String get node_editor_add_sub_menu_note {
+    return Intl.message(
+      'Note: Inputs and outputs may vary depending on the options chosen for the node',
+      name: 'node_editor_add_sub_menu_note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No nodes found.`
+  String get node_editor_add_sub_menu_no_nodes_found {
+    return Intl.message(
+      'No nodes found.',
+      name: 'node_editor_add_sub_menu_no_nodes_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get node_editor_add_sub_menu_add_button {
+    return Intl.message(
+      'Add',
+      name: 'node_editor_add_sub_menu_add_button',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Change color`
   String get default_app_colors_change_color {
     return Intl.message(

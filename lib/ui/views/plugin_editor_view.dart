@@ -108,17 +108,7 @@ class MathNodeWidget extends StatefulWidget implements INodeWidget {
     required this.position,
     required this.maxOffset,
     required this.theme,
-    required this.getIsDragging,
-    required this.setSelectedPort,
-    required this.getSelectedPort,
-    required this.setIsDragging,
-    required this.addConnection,
-    required this.getConnections,
-    required this.updateConnections,
-    required this.getSelectedNodes,
-    required this.setSelectedNode,
-    required this.updateNode,
-    required this.saveState
+    required this.functions
   });
 
   @override
@@ -147,17 +137,7 @@ class MathNodeWidget extends StatefulWidget implements INodeWidget {
       position: Offset(position.dx, position.dy), 
       maxOffset: maxOffset, 
       theme: theme, 
-      getIsDragging: getIsDragging, 
-      setSelectedPort: setSelectedPort, 
-      getSelectedPort: getSelectedPort, 
-      setIsDragging: setIsDragging, 
-      addConnection: addConnection, 
-      getConnections: getConnections, 
-      updateConnections: updateConnections, 
-      getSelectedNodes: getSelectedNodes, 
-      setSelectedNode: setSelectedNode, 
-      updateNode: updateNode, 
-      saveState: saveState
+      functions: functions
     );
   }
 
@@ -172,26 +152,16 @@ class MathNodeWidget extends StatefulWidget implements INodeWidget {
   }
 
   // Static method to deserialize from JSON
-  static MathNodeWidget fromJson(GlobalKey key, String json, Offset maxOffset, StylesGetters theme, Function(NodePortInfo? info) setSelectedPort, bool Function() getIsDragging, Function(bool) setIsDragging, Function(NodePortInfo) addConnection, NodePortInfo? Function() getSelectedPort, List<NodeConnection> Function() getConnections, Function updateConnections, List<INodeWidget> Function() getSelectedNodes, Function(List<INodeWidget>) setSelectedNode, Function(INodeWidget) updateNode, Function saveState) {
+  static MathNodeWidget fromJson(GlobalKey key, String json, Offset maxOffset, StylesGetters theme, NodeWidgetFunctions functions) {
     final Map<String, dynamic> data = jsonDecode(json);
 
     return MathNodeWidget(
       key: key,
+      theme: theme,
       node: MathNode().fromJson(data['node']) as MathNode,
       position: Offset(data['positionX'], data['positionY']),
       maxOffset: maxOffset,
-      setSelectedPort: setSelectedPort,
-      getSelectedPort: getSelectedPort,
-      getIsDragging: getIsDragging,
-      setIsDragging: setIsDragging,
-      addConnection: addConnection,
-      getConnections: getConnections,
-      updateConnections: updateConnections,
-      setSelectedNode: setSelectedNode,
-      getSelectedNodes: getSelectedNodes,
-      saveState: saveState,
-      updateNode: updateNode,
-      theme: theme,
+      functions: functions
     );
   }
   
@@ -218,39 +188,10 @@ class MathNodeWidget extends StatefulWidget implements INodeWidget {
 
   @override
   State<MathNodeWidget> createState() => _MathNodeWidgetState();
+
+  @override
+  NodeWidgetFunctions functions;
   
-  @override
-  bool Function() getIsDragging;
-  
-  @override
-  Function(NodePortInfo? info) setSelectedPort;
-  
-  @override
-  Function(NodePortInfo info) addConnection;
-  
-  @override
-  Function(bool isDragging) setIsDragging;
-
-  @override
-  NodePortInfo? Function() getSelectedPort;
-
-  @override
-  List<NodeConnection> Function() getConnections;
-
-  @override
-  List<INodeWidget> Function() getSelectedNodes;
-
-  @override
-  Function(List<INodeWidget>) setSelectedNode;
-
-  @override
-  Function updateConnections;
-
-  @override
-  Function saveState;
-
-  @override
-  Function(INodeWidget) updateNode;
 }
 
 class _MathNodeWidgetState extends State<MathNodeWidget> {
@@ -299,20 +240,24 @@ class _MathNodeWidgetState extends State<MathNodeWidget> {
 
     Offset clampedPosition = Offset(dx, dy);
     w.position = clampedPosition;
-    widget.updateNode(w);
+    widget.functions.updateNode(w);
   }
 
   void _onDragUpdate(DragUpdateDetails details) {
     if (!isDraggingWithMouse) {
       return;
     }
-    List<INodeWidget> selectedNodes = widget.getSelectedNodes();
+    List<INodeWidget> selectedNodes = widget.functions.getSelectedNodes();
     Offset delta = details.delta;
 
     for (INodeWidget w in selectedNodes) {
       w.position += delta;
       verifyPosition(w);
     }
+  }
+
+  Offset? getDraggingStartPortOffset() {
+    return _draggingStartPort;
   }
 
   void _setStartDraggingPoint(int? index, NodePortType? portType, [INodeWidget? otherNode, NodePortInfo? inputPort]) {
@@ -340,7 +285,7 @@ class _MathNodeWidgetState extends State<MathNodeWidget> {
   }
 
   void _handleTapDown() {
-    List<INodeWidget> selectedNodes = widget.getSelectedNodes();
+    List<INodeWidget> selectedNodes = widget.functions.getSelectedNodes();
     bool isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
     if (!selectedNodes.contains(widget) && selectedNodes.length == 1 && !isShiftPressed) {
       selectedNodes.clear();
@@ -355,11 +300,11 @@ class _MathNodeWidgetState extends State<MathNodeWidget> {
         selectedNodes.add(widget);
       }
     }
-    widget.setSelectedNode(selectedNodes);
+    widget.functions.setSelectedNode(selectedNodes);
   }
 
   void _handleTapUp() {
-    List<INodeWidget> selectedNodes = widget.getSelectedNodes();
+    List<INodeWidget> selectedNodes = widget.functions.getSelectedNodes();
     bool isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
 
     if (!selectedNodes.contains(widget) && !isShiftPressed) {
@@ -373,11 +318,11 @@ class _MathNodeWidgetState extends State<MathNodeWidget> {
       selectedNodes.add(widget);
     }
 
-    widget.setSelectedNode(selectedNodes);
+    widget.functions.setSelectedNode(selectedNodes);
   }
 
   _setAsSelectedIfNotAlready() {
-    List<INodeWidget> selectedNodes = widget.getSelectedNodes();
+    List<INodeWidget> selectedNodes = widget.functions.getSelectedNodes();
     bool isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
     if (!selectedNodes.contains(widget)) {
 
@@ -386,13 +331,13 @@ class _MathNodeWidgetState extends State<MathNodeWidget> {
       }
 
       selectedNodes.add(widget);
-      widget.setSelectedNode(selectedNodes);
+      widget.functions.setSelectedNode(selectedNodes);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<INodeWidget> selectedNodesList = widget.getSelectedNodes(); 
+    List<INodeWidget> selectedNodesList = widget.functions.getSelectedNodes(); 
     isSelected = selectedNodesList.contains(widget);
     isLastSelected = isSelected ? selectedNodesList.last == widget : false;
     Offset draggingStartPortOffset = _draggingStartPort?.translate(-widget.position.dx, -widget.position.dy) ?? const Offset(0, 0);
@@ -420,7 +365,7 @@ class _MathNodeWidgetState extends State<MathNodeWidget> {
             setState(() {
               isDraggingWithMouse = true;
               isDragging = false;  
-              widget.saveState();            
+              widget.functions.saveState();            
             });
           },
           onTapDown: (details) {_handleTapDown();},
@@ -503,18 +448,20 @@ class _MathNodeWidgetState extends State<MathNodeWidget> {
                                 portInfo: NodePortInfo(node: widget, type: NodePortType.output, portIndex: 0), 
                                 color: DefaultAppColors.mintGreen.color,
                                 onHoveredColor: widget.theme.onSurface,
-                                setSelectedPort: widget.setSelectedPort,
-                                getNodesConnections: widget.getConnections,
-                                updateConnections: widget.updateConnections,
+                                setSelectedPort: widget.functions.setSelectedPort,
+                                getSelectedPort: widget.functions.getSelectedPort,
+                                setIsDragging: widget.functions.setIsDragging,
+                                getNodesConnections: widget.functions.getConnections,
+                                updateConnections: widget.functions.updateConnections,
+                                saveState: widget.functions.saveState,
                                 setOffset: setOffset,
-                                saveState: widget.saveState,
-                                setIsDragging: widget.setIsDragging,
                                 setDragStartingPort: _setStartDraggingPoint,
+                                getDraggingStartPortOffset: getDraggingStartPortOffset,
                                 setCursorPosition: (offset) {setState(() {
                                   _currentCursorOffset = offset;
                                 });}, 
-                                finalizeConnection: widget.addConnection,
-                                getIsDragging: widget.getIsDragging,
+                                addConnection: widget.functions.addConnection,
+                                getIsDragging: widget.functions.getIsDragging,
                               )
                             )
                           ],
@@ -546,7 +493,7 @@ class _MathNodeWidgetState extends State<MathNodeWidget> {
                         borderRadius: BorderRadius.circular(13),
                         menuMaxHeight: widget.height * 2,
                         menuWidth: widget.width * 2,
-                        onChanged: (type) => setState(() {widget.node.operationType = type ?? MathNodeType.addition; widget.saveState();}),
+                        onChanged: (type) => setState(() {widget.node.operationType = type ?? MathNodeType.addition; widget.functions.saveState();}),
                         underline: const SizedBox(),
                         icon: Icon(Icons.arrow_drop_down_rounded, color: widget.theme.onSurface),
                         dropdownColor: widget.theme.primary,
@@ -586,18 +533,20 @@ class _MathNodeWidgetState extends State<MathNodeWidget> {
                                 portInfo: NodePortInfo(node: widget, type: NodePortType.input, portIndex: 0), 
                                 color: DefaultAppColors.mintGreen.color,
                                 onHoveredColor: widget.theme.onSurface,
-                                getNodesConnections: widget.getConnections,
-                                updateConnections: widget.updateConnections,
+                                setSelectedPort: widget.functions.setSelectedPort,
+                                getSelectedPort: widget.functions.getSelectedPort,
+                                setIsDragging: widget.functions.setIsDragging,
+                                getNodesConnections: widget.functions.getConnections,
+                                updateConnections: widget.functions.updateConnections,
+                                saveState: widget.functions.saveState,
                                 setOffset: setOffset,
-                                saveState: widget.saveState,
-                                setSelectedPort: widget.setSelectedPort,
-                                setIsDragging: widget.setIsDragging,
                                 setDragStartingPort: _setStartDraggingPoint,
+                                getDraggingStartPortOffset: getDraggingStartPortOffset,
                                 setCursorPosition: (offset) {setState(() {
                                   _currentCursorOffset = offset;
                                 });}, 
-                                finalizeConnection: widget.addConnection,
-                                getIsDragging: widget.getIsDragging,
+                                addConnection: widget.functions.addConnection,
+                                getIsDragging: widget.functions.getIsDragging,
                               )
                             ),
                             Text(
@@ -627,18 +576,20 @@ class _MathNodeWidgetState extends State<MathNodeWidget> {
                                 portInfo: NodePortInfo(node: widget, type: NodePortType.input, portIndex: 1), 
                                 color: DefaultAppColors.mintGreen.color,
                                 onHoveredColor: widget.theme.onSurface,
-                                setSelectedPort: widget.setSelectedPort,
-                                setIsDragging: widget.setIsDragging,
-                                getNodesConnections: widget.getConnections,
-                                updateConnections: widget.updateConnections,
-                                saveState: widget.saveState,
+                                setSelectedPort: widget.functions.setSelectedPort,
+                                getSelectedPort: widget.functions.getSelectedPort,
+                                setIsDragging: widget.functions.setIsDragging,
+                                getNodesConnections: widget.functions.getConnections,
+                                updateConnections: widget.functions.updateConnections,
+                                saveState: widget.functions.saveState,
                                 setOffset: setOffset,
                                 setDragStartingPort: _setStartDraggingPoint,
+                                getDraggingStartPortOffset: getDraggingStartPortOffset,
                                 setCursorPosition: (offset) {setState(() {
                                   _currentCursorOffset = offset;
                                 });}, 
-                                finalizeConnection: widget.addConnection,
-                                getIsDragging: widget.getIsDragging,
+                                addConnection: widget.functions.addConnection,
+                                getIsDragging: widget.functions.getIsDragging,
                               )
                             ),
                             Text(
@@ -669,8 +620,8 @@ class _MathNodeWidgetState extends State<MathNodeWidget> {
                         start: draggingStartPortOffset,
                         end: _currentCursorOffset! + cursorOffset,
                         color: isSelected ? DefaultAppColors.blue.color : widget.theme.onSurface,
-                        plusSignColor: widget.theme.onSurface,
-                        isHoveringANodePort: widget.getSelectedPort() != null
+                        plusSignColor: isDraggingStartPortFromAnotherPort ? Colors.transparent : widget.theme.onSurface,
+                        isHoveringANodePort: widget.functions.getSelectedPort() != null
                       ),
                     );
                   }
@@ -696,8 +647,10 @@ class NodePortWidget extends StatefulWidget {
     required this.onHoveredColor,
     required this.setCursorPosition,
     required this.setDragStartingPort,
-    required this.finalizeConnection, 
+    required this.getDraggingStartPortOffset,
+    required this.addConnection, 
     required this.setSelectedPort, 
+    required this.getSelectedPort,
     required this.getIsDragging,
     required this.setIsDragging,
     required this.getNodesConnections,
@@ -711,8 +664,10 @@ class NodePortWidget extends StatefulWidget {
   final Color onHoveredColor;
   final Function(Offset?) setCursorPosition;
   final Function(int?, NodePortType?, [INodeWidget?, NodePortInfo?]) setDragStartingPort;
-  final Function(NodePortInfo) finalizeConnection;
+  final Offset? Function() getDraggingStartPortOffset;
+  final Function(NodePortInfo, [Offset? cursorPosition]) addConnection;
   final Function(NodePortInfo?) setSelectedPort;
+  final NodePortInfo? Function() getSelectedPort;
   final bool Function() getIsDragging;
   final Function(bool) setIsDragging;
   final List<NodeConnection> Function() getNodesConnections;
@@ -821,17 +776,33 @@ class _NodePortWidgetState extends State<NodePortWidget> {
         },
         onPanEnd: (details) async {
           if (isDraggingWithMouse) {
+            Offset draggingStartPortOffset = widget.getDraggingStartPortOffset()!;
             if (connection != null) {
-              await widget.finalizeConnection(
-                NodePortInfo(
-                  node: connection!.startNode, 
-                  type: NodePortType.output, 
-                  portIndex: connection!.startOutputIndex
-                )
-              );
+              if (widget.getSelectedPort() != null && widget.portInfo.type != NodePortType.output) { 
+                // This ensure that no connection is added and that the add menu is not shown 
+                // if the user simply disconnected a node from another.
+                widget.addConnection(
+                  NodePortInfo(
+                    node: connection!.startNode, 
+                    type: NodePortType.output, 
+                    portIndex: connection!.startOutputIndex
+                  ),
+                  _cursorDragOffset + draggingStartPortOffset
+                );
+              } else if (widget.portInfo.type == NodePortType.output) {
+                widget.addConnection(
+                  NodePortInfo(
+                    node: widget.portInfo.node, 
+                    type: NodePortType.output, 
+                    portIndex: widget.portInfo.portIndex
+                  ),
+                  _cursorDragOffset + draggingStartPortOffset
+                );
+              }
             } else {
-              await widget.finalizeConnection(widget.portInfo);
+              widget.addConnection(widget.portInfo, _cursorDragOffset + draggingStartPortOffset);
             }
+
             widget.setCursorPosition(null);
             widget.setDragStartingPort(null, null);
             widget.setIsDragging(false);

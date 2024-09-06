@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interface/projects_modules_controller_interface.dart';
 import 'package:minddy/system/interface/projects_modules_interface.dart';
-import 'package:minddy/ui/components/menus/popup_menu/popup_menu_button.dart';
-import 'package:minddy/ui/components/menus/popup_menu/popup_menu_item_model.dart';
+import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_button.dart';
+import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_item_model.dart';
 import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 

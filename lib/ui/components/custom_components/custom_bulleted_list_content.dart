@@ -4,9 +4,14 @@ import 'package:minddy/ui/components/custom_components/custom_bulleted_list_cont
 import 'package:minddy/ui/components/custom_components/custom_bulleted_list_element_widget.dart';
 
 class CustomBulletedListContent extends StatefulWidget {
-  const CustomBulletedListContent({super.key, required this.controller});
+  const CustomBulletedListContent({super.key, required this.controller, this.readOnly = false, this.maxWidth = 500, this.padding, this.maxHeight, this.maxLines});
 
   final CustomBulletedListController controller;
+  final bool readOnly;
+  final double maxWidth;
+  final double? maxHeight;
+  final int? maxLines;
+  final EdgeInsetsGeometry? padding;
 
   @override
   State<CustomBulletedListContent> createState() => _ElementContentState();
@@ -19,7 +24,7 @@ class _ElementContentState extends State<CustomBulletedListContent> {
       animation: widget.controller,
       builder: (context, child) {
         widget.controller.content = widget.controller.buildListElementsModels(widget.controller.stringContent);
-        _buildListElements(widget.controller, widget.controller.content, context);
+        _buildListElements(widget.controller, widget.controller.content, context, widget.readOnly, widget.maxWidth, widget.maxHeight, widget.padding, widget.maxLines);
         return Column(children: widget.controller.widgetContent);
       },
     );
@@ -27,8 +32,7 @@ class _ElementContentState extends State<CustomBulletedListContent> {
 }
 
 
-void _buildListElements(CustomBulletedListController controller, List<CustomBulletedListElementModel> list, BuildContext context) {
-  double maxWidth = 500;
+void _buildListElements(CustomBulletedListController controller, List<CustomBulletedListElementModel> list, BuildContext context, bool readOnly, double maxWidth, double? maxHeight, EdgeInsetsGeometry? padding, int? maxLines) {
   List<CustomBulletedListElementWidget> listElementsList = [];
   for (int i = 0; i < list.length; i++) {
     listElementsList.add(
@@ -40,6 +44,10 @@ void _buildListElements(CustomBulletedListController controller, List<CustomBull
         controller: controller,
         isNew: list[i].isNew,
         maxWidth: maxWidth,
+        readOnly: readOnly,
+        padding: padding,
+        maxLines: maxLines,
+        maxheight: maxHeight,
       ),
     );
   }

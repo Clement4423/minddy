@@ -105,7 +105,7 @@ class _NodeEditorBottomSheetBottomToolboxState extends State<NodeEditorBottomShe
                 width: 35,
                 height: 35,
                 child: IconButton(
-                  onPressed: widget.controller.state.copiedNodes.isNotEmpty
+                  onPressed: widget.controller.copiedNodes.isNotEmpty
                     ? () {widget.controller.pasteCopiedNodes();} 
                     : null,
                   style: ButtonThemes.secondaryButtonStyle(context),
@@ -114,7 +114,7 @@ class _NodeEditorBottomSheetBottomToolboxState extends State<NodeEditorBottomShe
                       : S.of(context).node_editor_view_bottom_toolbar_paste_tooltip_windows(widget.controller.state.copiedNodes.length),
                   icon: Icon(
                     Icons.paste_rounded, 
-                    color: widget.controller.state.copiedNodes.isNotEmpty
+                    color: widget.controller.copiedNodes.isNotEmpty
                       ? widget.theme.onPrimary 
                       : widget.theme.onPrimary.withOpacity(0.5),
                     size: 19,

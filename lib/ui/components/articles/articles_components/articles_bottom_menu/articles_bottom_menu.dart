@@ -38,27 +38,31 @@ class _ArticlesBottomMenuState extends State<ArticlesBottomMenu> {
         child: AnimatedBuilder(
           animation: widget.controller,
           builder: (context, child) {
-            return AnimatedContainer(
-              constraints: const BoxConstraints(
-                maxWidth: 350
-              ),
-              duration: const Duration(milliseconds: 400),
-              curve: Curves.easeInOutCubicEmphasized,
-              width: _isClosed ? screenWidth / 5 : 350,
-              height: _isClosed ? 56 : 300,
-              decoration: BoxDecoration(
-                color: theme.primaryContainer,
-                borderRadius: BorderRadius.circular(18)
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(18),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 5,
-                    sigmaY: 5
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(18),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 5,
+                  sigmaY: 5
+                ),
+                child: AnimatedContainer(
+                  constraints: const BoxConstraints(
+                    maxWidth: 350
+                  ),
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOutCubicEmphasized,
+                  width: _isClosed ? screenWidth / 5 : 350,
+                  height: _isClosed ? 56 : 300,
+                  decoration: BoxDecoration(
+                    color: theme.primaryContainer,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                      color: theme.onPrimary.withOpacity(theme.brightness == Brightness.light ? 1 : 0.2),
+                      width: 0.5
+                    )
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(7.5),
                     child: Column(
                       children: [
                         // Top bar
@@ -172,7 +176,8 @@ class _ArticlesBottomMenuState extends State<ArticlesBottomMenu> {
                                     ? 0
                                     : -0.5,
                                     child: Icon(Icons.keyboard_arrow_up_rounded,
-                                        color: theme.secondary, 
+                                        color: theme.onPrimary, 
+                                        size: 24,
                                         semanticLabel: _isClosed 
                                           ? S.of(context).articles_bottom_menu_open_semantic_text
                                           : S.of(context).articles_bottom_menu_close_semantic_text,

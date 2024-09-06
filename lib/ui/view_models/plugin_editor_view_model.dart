@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:minddy/system/nodes/all_nodes/math_node.dart';
 import 'package:minddy/ui/components/nodes/controllers/node_editor_bottom_sheet_controller.dart';
+import 'package:minddy/ui/components/nodes/controllers/node_editor_state.dart';
 import 'package:minddy/ui/components/nodes/node_widget_tree.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:path/path.dart' as p;
@@ -29,7 +30,7 @@ class PluginEditorViewModel {
       pluginData['nodes_controller'] = jsonDecode(pluginData['nodes_controller']);
     }
 
-    bottomSheetController = NodeEditorBottomSheetController.fromJson(pluginData?['nodes_controller']??{}, maxOffset, theme, savePlugin) ?? NodeEditorBottomSheetController(views: [NodeEditorBottomSheetView(tree: NodeWidgetTree(nodesWidgets: [MathNodeWidget(key: GlobalKey(), node: MathNode(), updateConnections: bottomSheetController.nodeConnectionUpdater.notify, saveState: bottomSheetController.saveState, updateNode: bottomSheetController.updateNode, theme: theme, getSelectedNodes: bottomSheetController.getSelectedNodes, setSelectedNode: bottomSheetController.setSelectedNode, setIsDragging: bottomSheetController.setIsDragging, getIsDragging: bottomSheetController.getIsDragging, getConnections: bottomSheetController.passNodesConnections, addConnection: bottomSheetController.addConnection, setSelectedPort: bottomSheetController.setSelectedPort, getSelectedPort: bottomSheetController.getSelectedPort, position: const Offset(900, 300), maxOffset: maxOffset)], id: 1), viewPositionController: TransformationController())], maxOffset: maxOffset, save: savePlugin);
+    bottomSheetController = NodeEditorBottomSheetController.fromJson(pluginData?['nodes_controller']??{}, maxOffset, theme, savePlugin) ?? NodeEditorBottomSheetController(views: [NodeEditorBottomSheetView(state: NodeEditorState(), tree: NodeWidgetTree(nodesWidgets: [MathNodeWidget(key: GlobalKey(), theme: theme, node: MathNode(), functions: bottomSheetController.widgetFunctions, position: const Offset(900, 300), maxOffset: maxOffset)], id: 1), viewPositionController: TransformationController())], maxOffset: maxOffset, save: savePlugin);
 
     return;
   }

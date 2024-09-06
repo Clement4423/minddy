@@ -173,8 +173,11 @@ class ButtonThemes {
     return ButtonStyle(
       backgroundColor: WidgetStateProperty.all(theme.secondary),
       textStyle: WidgetStateProperty.all(theme.bodyMedium.copyWith(color: theme.onSecondary)),
-      shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-      elevation: WidgetStateProperty.all(7),
+      shape: WidgetStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10)
+        )
+      ),
       shadowColor: WidgetStateProperty.all(theme.shadow),
     );
   }
@@ -184,8 +187,11 @@ class ButtonThemes {
     return ButtonStyle(
       backgroundColor: WidgetStateProperty.all(theme.primary),
       textStyle: WidgetStateProperty.all(theme.bodyMedium.copyWith(color: theme.onPrimary)),
-      shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-      elevation: WidgetStateProperty.all(7),
+      shape: WidgetStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10)
+        )
+      ),
       shadowColor: WidgetStateProperty.all(theme.shadow),
     );
   }
@@ -194,8 +200,11 @@ class ButtonThemes {
     final StylesGetters theme = StylesGetters(context);
     return ButtonStyle(
       backgroundColor: WidgetStateProperty.all(theme.error),
-      shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-      elevation: WidgetStateProperty.all(7),
+      shape: WidgetStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10)
+        )
+      ),
       shadowColor: WidgetStateProperty.all(theme.shadow),
     );
   }

@@ -148,7 +148,14 @@ class _ArticlesBottomMenuContentViewState extends State<ArticlesBottomMenuConten
               ),
               onSelected: (value) async {
                 await widget.articleController.saveArticle();
-                String exportsDirectoryPath = "${await StaticVariables.fileSource.getAppDirectoryPath()}/ressources/exports";
+                String exportsDirectoryPath = 
+                  "${await StaticVariables.fileSource.getAppDirectoryPath()}/ressources/exports/${widget.articleController.articleTitle.substring(
+                    0, 
+                    widget.articleController.articleTitle.length > 10 
+                      ? 10 
+                      : widget.articleController.articleTitle.length
+                    )
+                  }";
                 bool isArticleExported = await ArticlesExporter.export(widget.articleController.articleInfos.path, value, exportsDirectoryPath);
                 if (isArticleExported && context.mounted) {
                   showBottomSnackBar(

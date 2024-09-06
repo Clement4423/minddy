@@ -7,6 +7,7 @@ import 'package:minddy/ui/components/custom_components/custom_bulleted_list_cont
 class CustomBulletedList extends StatefulWidget implements IArticlesWriteElement {
   final List<dynamic>? initialContent;
   late final CustomBulletedListController controller;
+  final bool readOnly;
 
   @override
   dynamic get data => controller.stringContent;
@@ -14,6 +15,7 @@ class CustomBulletedList extends StatefulWidget implements IArticlesWriteElement
   CustomBulletedList({
     super.key,
     this.initialContent,
+    this.readOnly = false
   }) {
     controller =  CustomBulletedListController(initialContent ?? []);
   }
@@ -37,7 +39,7 @@ class _CustomBulletedListState extends State<CustomBulletedList> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 25, bottom: 25),
-      child: CustomBulletedListContent(controller: widget.controller),
+      child: CustomBulletedListContent(controller: widget.controller, readOnly: widget.readOnly),
     );
   }
 }

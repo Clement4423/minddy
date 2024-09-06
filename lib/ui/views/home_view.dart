@@ -4,10 +4,14 @@ import 'package:minddy/system/articles/defaults_articles/default_articles_list.d
 import 'package:minddy/system/initialize/login_state.dart';
 import 'package:minddy/system/model/custom_appbar_button_model.dart';
 import 'package:minddy/system/model/plugin_info.dart';
+import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
+import 'package:minddy/system/nodes/nodes_add_menu_models.dart';
 import 'package:minddy/system/router/app_router.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar_controller.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_buttons_components/articles_menu_button.dart';
+import 'package:minddy/ui/components/menus/sub_menus/node_editor_new_node_sub_menu.dart';
+import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
 import 'package:minddy/ui/components/settings/settings_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:minddy/ui/view_models/home_viewmodel.dart';
@@ -39,6 +43,16 @@ class HomeView extends StatelessWidget {
           S.of(context).home_appbar,
           false,
               [
+                CustomAppBarButtonModel(
+                  icon: Icons.apple_rounded, 
+                  semanticText: "Show add node menu",
+                  isPrimary: false, 
+                  action: () async {
+                    NodeWidgetFunctions f = NodeWidgetFunctions(getIsDragging: () {return false;}, setIsDragging: (t) {}, addConnection: (t, [s]) {}, setSelectedPort: (t) {}, getSelectedPort: () {return null;}, getConnections: () {return [];}, getSelectedNodes: () {return [];}, setSelectedNode: (t) {}, updateNode: (t) {}, updateConnections: () {}, saveState: () {});
+                    NodesAddMenuModels models = NodesAddMenuModels(functions: f, maxOffset: Offset(2, 2), theme: theme);
+                    showSubMenu(context, NodeEditorNewNodeSubMenu(onClosed: () {}, autosearch: false, onSelected: (p0) {} ,theme: theme, nodesToShow: models.asList));
+                  }
+                ),
                 CustomAppBarButtonModel(
                   icon: Icons.star_border_rounded, 
                   semanticText: "Node editor",

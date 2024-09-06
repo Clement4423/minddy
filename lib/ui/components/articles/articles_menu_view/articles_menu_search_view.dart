@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_menu_search_view_controller.dart';
 import 'package:minddy/ui/components/cards/articles_card.dart';
 import 'package:minddy/ui/components/cards/articles_card_controller.dart';
@@ -47,7 +48,7 @@ class _ArticleMenuSearchViewState extends State<ArticleMenuSearchView> {
                   Expanded(
                     child: TextSelectionTheme(
                       data: TextSelectionThemeData(
-                        selectionColor: Colors.blue.withAlpha(120)
+                        selectionColor: DefaultAppColors.blue.color.withOpacity(0.8)
                       ),
                       child: CallbackShortcuts(
                         bindings: {

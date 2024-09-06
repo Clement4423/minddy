@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +9,7 @@ import 'package:minddy/ui/components/nodes/controllers/node_editor_bottom_sheet_
 import 'package:minddy/ui/components/nodes/node_editor_bottom_sheet_bottom_toolbox.dart';
 import 'package:minddy/ui/components/nodes/node_editor_bottom_sheet_side_panel.dart';
 import 'package:minddy/ui/components/nodes/node_editor_grid_painter.dart';
+import 'package:minddy/ui/components/nodes/node_editor_show_node_add_menu.dart';
 import 'package:minddy/ui/components/nodes/nodes_connections_painter.dart';
 import 'package:minddy/ui/components/nodes/selection_rect_painter.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -243,6 +243,8 @@ void _selectNodesWithinRect() {
                                           animation: widget.controller.nodeConnectionUpdater,
                                           builder: (context, child) {
                                             widget.controller.getNodesConnections();
+                                            widget.controller.context = context;
+                                            widget.controller.getSelectedNodesConnections();
                                             if (widget.controller.nodesConnections.isEmpty) {
                                               return const SizedBox();
                                             } else {
@@ -343,7 +345,18 @@ void _selectNodesWithinRect() {
                                         ),
                                         // New node button
                                         IconButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            showNodeEditorAddMenu(
+                                              context, 
+                                              widget.controller.nodes.asList, 
+                                              widget.theme, 
+                                              (node) {
+                                                widget.controller.addNode(node, true);
+                                              }, 
+                                              true
+                                            );
+                                            
+                                          },
                                           style: ButtonThemes.secondaryButtonStyle(context),
                                           tooltip: S.of(context).node_editor_view_new_node_tooltip,
                                           icon: Icon(Icons.add_rounded, color: widget.theme.onPrimary),

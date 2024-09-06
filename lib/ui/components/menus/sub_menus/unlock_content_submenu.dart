@@ -81,7 +81,7 @@ class _UnlockContentSubmenuState extends State<_UnlockContentSubmenu> {
             color: theme.primaryContainer,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: theme.onPrimary.withOpacity(0.10),
+              color: theme.onPrimary.withOpacity(theme.brightness == Brightness.light ? 1 : 0.2),
               width: 0.5
             )
           ),

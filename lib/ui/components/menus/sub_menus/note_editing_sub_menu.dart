@@ -11,8 +11,8 @@ import 'package:minddy/ui/components/custom_components/custom_bulleted_list.dart
 import 'package:minddy/ui/components/custom_components/custom_code_display.dart';
 import 'package:minddy/ui/components/custom_components/custom_image_display.dart';
 import 'package:minddy/ui/components/custom_components/custom_text_area.dart';
-import 'package:minddy/ui/components/menus/popup_menu/popup_menu_button.dart';
-import 'package:minddy/ui/components/menus/popup_menu/popup_menu_item_model.dart';
+import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_button.dart';
+import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_item_model.dart';
 import 'package:minddy/ui/components/menus/sub_menus_controllers/note_editing_submenu_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -40,7 +40,7 @@ class _NoteEditingSubMenuState extends State<NoteEditingSubMenu> {
             color: theme.primaryContainer,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: theme.onPrimary.withOpacity(0.2),
+              color: theme.onPrimary.withOpacity(theme.brightness == Brightness.light ? 1 : 0.2),
               width: 0.5
             )
           ),

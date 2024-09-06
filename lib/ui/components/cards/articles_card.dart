@@ -4,8 +4,8 @@ import 'package:minddy/ui/components/articles/articles_pages_controllers/article
 import 'package:minddy/ui/components/articles/articles_view/articles_view.dart';
 import 'package:minddy/ui/components/cards/articles_card_controller.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
-import 'package:minddy/ui/components/menus/popup_menu/popup_menu_button.dart';
-import 'package:minddy/ui/components/menus/popup_menu/popup_menu_item_model.dart';
+import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_button.dart';
+import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_item_model.dart';
 import 'package:minddy/ui/components/snackbar/snackbar.dart';
 import 'package:minddy/ui/theme/theme.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minddy/ui/components/menus/popup_menu/popup_menu_item_model.dart';
+import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_item_model.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class CustomPopupMenuButton extends StatelessWidget {
@@ -11,8 +11,8 @@ class CustomPopupMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
     return PopupMenuButton<CustomPopupItemModel>(
-      elevation: 12,
       color: theme.primary,
+      elevation: 7,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(13),
       ),

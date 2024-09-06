@@ -33,57 +33,63 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m4(username) => "Good morning ${username}";
 
   static String m5(length) =>
-      "${Intl.plural(length, one: 'Copy selected node (⌘ + c)', other: 'Copy selected nodes (⌘ + c)')}";
+      "${Intl.plural(length, one: 'Input', other: 'Inputs')}";
 
   static String m6(length) =>
-      "${Intl.plural(length, one: 'Copy selected node (ctrl + c)', other: 'Copy selected nodes (ctrl + c)')}";
+      "${Intl.plural(length, one: 'Output', other: 'Outputs')}";
 
   static String m7(length) =>
-      "${Intl.plural(length, one: 'Delete selected node (⌘ + ⌫)', other: 'Delete selected nodes (⌘ + ⌫)')}";
+      "${Intl.plural(length, one: 'Copy selected node (⌘ + c)', other: 'Copy selected nodes (⌘ + c)')}";
 
   static String m8(length) =>
-      "${Intl.plural(length, one: 'Delete selected node (ctrl + ⌫)', other: 'Delete selected nodes (ctrl + ⌫)')}";
+      "${Intl.plural(length, one: 'Copy selected node (ctrl + c)', other: 'Copy selected nodes (ctrl + c)')}";
 
   static String m9(length) =>
-      "${Intl.plural(length, one: 'Duplicate selected node (⌘ + d)', other: 'Duplicate selected nodes (⌘ + d)')}";
+      "${Intl.plural(length, one: 'Delete selected node (⌘ + ⌫)', other: 'Delete selected nodes (⌘ + ⌫)')}";
 
   static String m10(length) =>
-      "${Intl.plural(length, one: 'Duplicate selected node (ctrl + d)', other: 'Duplicate selected nodes (ctrl + d)')}";
+      "${Intl.plural(length, one: 'Delete selected node (ctrl + ⌫)', other: 'Delete selected nodes (ctrl + ⌫)')}";
 
   static String m11(length) =>
-      "${Intl.plural(length, one: 'Paste copied node (⌘ + v)', other: 'Paste copied nodes (⌘ + v)')}";
+      "${Intl.plural(length, one: 'Duplicate selected node (⌘ + d)', other: 'Duplicate selected nodes (⌘ + d)')}";
 
   static String m12(length) =>
+      "${Intl.plural(length, one: 'Duplicate selected node (ctrl + d)', other: 'Duplicate selected nodes (ctrl + d)')}";
+
+  static String m13(length) =>
+      "${Intl.plural(length, one: 'Paste copied node (⌘ + v)', other: 'Paste copied nodes (⌘ + v)')}";
+
+  static String m14(length) =>
       "${Intl.plural(length, one: 'Paste copied node (ctrl + v)', other: 'Paste copied nodes (ctrl + v)')}";
 
-  static String m13(totalNotesCount) =>
+  static String m15(totalNotesCount) =>
       "${Intl.plural(totalNotesCount, zero: 'No note', one: '1 note', other: '${totalNotesCount} notes')}";
 
-  static String m14(optionName) =>
+  static String m16(optionName) =>
       "Two options can\'t have the same name (${optionName})";
 
-  static String m15(totalTasksCount, checkedTasks) =>
+  static String m17(totalTasksCount, checkedTasks) =>
       "${Intl.plural(totalTasksCount, zero: 'No tasks', one: '${checkedTasks}/${totalTasksCount} task completed', other: '${checkedTasks}/${totalTasksCount} tasks completed')}";
 
-  static String m16(websiteName) => "Open ${websiteName}";
+  static String m18(websiteName) => "Open ${websiteName}";
 
-  static String m17(actualMonth, actualDay) =>
+  static String m19(actualMonth, actualDay) =>
       "This option will put the month before the day. Like this : ${actualMonth}/${actualDay}";
 
-  static String m18(element) => "Delete ${element} ?";
+  static String m20(element) => "Delete ${element} ?";
 
-  static String m19(user) => "Welcome back ${user}";
-
-  static String m20(duration) =>
-      "${Intl.plural(duration, zero: 'Pomodoro - It\'s time for a break', one: 'Pomodoro - It\'s time for a break for ${duration} minute', other: 'Pomodoro - It\'s time for a break for ${duration} minutes')}";
-
-  static String m21(duration) =>
-      "Pomodoro session is over, you worked ${Intl.plural(duration, one: '1 minute', other: '${duration} minutes')}. Time to take a rest !";
+  static String m21(user) => "Welcome back ${user}";
 
   static String m22(duration) =>
+      "${Intl.plural(duration, zero: 'Pomodoro - It\'s time for a break', one: 'Pomodoro - It\'s time for a break for ${duration} minute', other: 'Pomodoro - It\'s time for a break for ${duration} minutes')}";
+
+  static String m23(duration) =>
+      "Pomodoro session is over, you worked ${Intl.plural(duration, one: '1 minute', other: '${duration} minutes')}. Time to take a rest !";
+
+  static String m24(duration) =>
       "${Intl.plural(duration, zero: 'Pomodoro - It\'s time to get back to work', one: 'Pomodoro - It\'s time to get back to work for ${duration} minute', other: 'Pomodoro - It\'s time to get back to work for ${duration} minutes')}";
 
-  static String m23(accountSettingName) =>
+  static String m25(accountSettingName) =>
       "You will still be able to enter your first name in settings / ${accountSettingName}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -299,14 +305,24 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Discover minddy"),
         "home_pick_up":
             MessageLookupByLibrary.simpleMessage("Pick up where you left off"),
-        "node_editor_view_bottom_toolbar_copy_tooltip_mac": m5,
-        "node_editor_view_bottom_toolbar_copy_tooltip_windows": m6,
-        "node_editor_view_bottom_toolbar_delete_tooltip_mac": m7,
-        "node_editor_view_bottom_toolbar_delete_tooltip_windows": m8,
-        "node_editor_view_bottom_toolbar_duplicate_tooltip_mac": m9,
-        "node_editor_view_bottom_toolbar_duplicate_tooltip_windows": m10,
-        "node_editor_view_bottom_toolbar_paste_tooltip_mac": m11,
-        "node_editor_view_bottom_toolbar_paste_tooltip_windows": m12,
+        "node_editor_add_sub_menu_add_button":
+            MessageLookupByLibrary.simpleMessage("Add"),
+        "node_editor_add_sub_menu_inputs_subtitle": m5,
+        "node_editor_add_sub_menu_no_nodes_found":
+            MessageLookupByLibrary.simpleMessage("No nodes found."),
+        "node_editor_add_sub_menu_note": MessageLookupByLibrary.simpleMessage(
+            "Note: Inputs and outputs may vary depending on the options chosen for the node"),
+        "node_editor_add_sub_menu_outputs_subtitle": m6,
+        "node_editor_add_sub_menu_types":
+            MessageLookupByLibrary.simpleMessage("Types"),
+        "node_editor_view_bottom_toolbar_copy_tooltip_mac": m7,
+        "node_editor_view_bottom_toolbar_copy_tooltip_windows": m8,
+        "node_editor_view_bottom_toolbar_delete_tooltip_mac": m9,
+        "node_editor_view_bottom_toolbar_delete_tooltip_windows": m10,
+        "node_editor_view_bottom_toolbar_duplicate_tooltip_mac": m11,
+        "node_editor_view_bottom_toolbar_duplicate_tooltip_windows": m12,
+        "node_editor_view_bottom_toolbar_paste_tooltip_mac": m13,
+        "node_editor_view_bottom_toolbar_paste_tooltip_windows": m14,
         "node_editor_view_bottom_toolbar_redo_tooltip_mac":
             MessageLookupByLibrary.simpleMessage("Redo (⇧ + ⌘ + z)"),
         "node_editor_view_bottom_toolbar_redo_tooltip_windows":
@@ -352,7 +368,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("New module"),
         "projects_module_help_text":
             MessageLookupByLibrary.simpleMessage("Help"),
-        "projects_module_notes_category_note_count": m13,
+        "projects_module_notes_category_note_count": m15,
         "projects_module_notes_editing_note_sub_menu_move_tooltip":
             MessageLookupByLibrary.simpleMessage("Move"),
         "projects_module_notes_editing_note_sub_menu_save_tooltip":
@@ -536,7 +552,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Two options can\'t have the same color"),
         "projects_module_spreadsheet_selection_sub_menu_error_message_redundant_option_name":
-            m14,
+            m16,
         "projects_module_spreadsheet_selection_sub_menu_error_message_unnamed_option":
             MessageLookupByLibrary.simpleMessage("Please, name all options"),
         "projects_module_spreadsheet_title":
@@ -545,7 +561,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Unnamed"),
         "projects_module_tasks_add_task_tooltip":
             MessageLookupByLibrary.simpleMessage("Add a new task"),
-        "projects_module_tasks_completed": m15,
+        "projects_module_tasks_completed": m17,
         "projects_module_tasks_task_add_subtask_tooltip":
             MessageLookupByLibrary.simpleMessage("Add a subtask"),
         "projects_module_tasks_task_title_hint":
@@ -562,7 +578,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Previous page (⌘ + ⭠)"),
         "projects_save_project_button_tooltip":
             MessageLookupByLibrary.simpleMessage("Save"),
-        "projetcs_module_spreadsheet_open_website": m16,
+        "projetcs_module_spreadsheet_open_website": m18,
         "settings_accessibility_title":
             MessageLookupByLibrary.simpleMessage("Accessibility"),
         "settings_account_title":
@@ -571,7 +587,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Prefer MM/dd date format"),
         "settings_date_format_subtitle":
             MessageLookupByLibrary.simpleMessage("Date format"),
-        "settings_date_format_tooltip": m17,
+        "settings_date_format_tooltip": m19,
         "settings_language_subtitle":
             MessageLookupByLibrary.simpleMessage("Language"),
         "settings_need_to_quit_project_to_change_language":
@@ -617,7 +633,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "snackbar_cancel_button": MessageLookupByLibrary.simpleMessage("Close"),
         "snackbar_delete_button":
             MessageLookupByLibrary.simpleMessage("Delete"),
-        "snackbar_delete_element_text": m18,
+        "snackbar_delete_element_text": m20,
         "snackbar_reset_button": MessageLookupByLibrary.simpleMessage("Reset"),
         "snackbar_reset_text":
             MessageLookupByLibrary.simpleMessage("Reset settings ?"),
@@ -627,7 +643,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "You will need to restart the app to apply changes"),
         "snackbar_welcome_back_button":
             MessageLookupByLibrary.simpleMessage("Thank\'s"),
-        "snackbar_welcome_back_text": m19,
+        "snackbar_welcome_back_text": m21,
         "submenu_artilces_image_description_button":
             MessageLookupByLibrary.simpleMessage("Validate"),
         "submenu_artilces_image_description_hint":
@@ -676,8 +692,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Break session duration"),
         "tool_pomodoro_break_session":
             MessageLookupByLibrary.simpleMessage("Break"),
-        "tool_pomodoro_break_snackbar": m20,
-        "tool_pomodoro_end_session": m21,
+        "tool_pomodoro_break_snackbar": m22,
+        "tool_pomodoro_end_session": m23,
         "tool_pomodoro_focus_timer":
             MessageLookupByLibrary.simpleMessage("Focus timer"),
         "tool_pomodoro_repetition_count":
@@ -690,7 +706,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Work session duration"),
         "tool_pomodoro_work_session":
             MessageLookupByLibrary.simpleMessage("Work"),
-        "tool_pomodoro_work_snackbar": m22,
+        "tool_pomodoro_work_snackbar": m24,
         "welcome_appbar": MessageLookupByLibrary.simpleMessage("Welcome"),
         "welcome_because": MessageLookupByLibrary.simpleMessage(
             "To personalize your experience"),
@@ -706,7 +722,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Next page"),
         "welcome_pass_default_username":
             MessageLookupByLibrary.simpleMessage("User"),
-        "welcome_pass_tooltip": m23,
+        "welcome_pass_tooltip": m25,
         "welcome_pass_username": MessageLookupByLibrary.simpleMessage("Skip"),
         "welcome_password_creation_confirm_hint":
             MessageLookupByLibrary.simpleMessage("Confirm your password"),

@@ -107,38 +107,7 @@ abstract class INodeWidget extends Widget {
   /// Theme is used as an argument, so that only one instance of StylesGetters is used by every node.
   late StylesGetters theme;
 
-  /// This function will return if there the user is dragging a node port to create NodeConnections.
-  late bool Function() getIsDragging;
-
-  /// This will set the is dragging value
-  late Function(bool) setIsDragging;
-
-  /// This will add a node connection
-  late Function(NodePortInfo) addConnection;
-
-  /// This function serves as setting the selected port, in the case [``getDragging``] is true
-  late Function(NodePortInfo?) setSelectedPort;
-
-  /// This function will return the selected port. Returns null if no port is selected
-  late NodePortInfo? Function() getSelectedPort;
-
-  /// This will allow the node to correctly unplug nodes that are connected to it
-  late List<NodeConnection> Function() getConnections;
-
-  /// This will return the node that is actually selected
-  late List<INodeWidget> Function() getSelectedNodes;
-
-  /// This will serve to set the selected nodes list
-  late Function(List<INodeWidget>) setSelectedNode;
-
-  late Function(INodeWidget) updateNode;
-
-  /// This will serve as updating visually the connections between nodes
-  late Function updateConnections;
-
-  /// This will allow to save the current state of the node board, allowing usage of cmd+z
-  late Function saveState;
-
+  late NodeWidgetFunctions functions;
   /// This will return a string representatin of this object  
   String toJson() {
     throw UnimplementedError();
@@ -162,6 +131,55 @@ abstract class INodeWidget extends Widget {
   ) {
     throw UnimplementedError();
   }
+}
+
+class NodeWidgetFunctions {
+  /// This function will return if there the user is dragging a node port to create NodeConnections.
+  late bool Function() getIsDragging;
+
+  /// This will set the is dragging value
+  late Function(bool) setIsDragging;
+
+  /// This will add a node connection
+  late void Function(NodePortInfo, [Offset? cursorOffset]) addConnection;
+
+  /// This function serves as setting the selected port, in the case [``getDragging``] is true
+  late Function(NodePortInfo?) setSelectedPort;
+
+  /// This function will return the selected port. Returns null if no port is selected
+  late NodePortInfo? Function() getSelectedPort;
+
+  /// This will allow the node to correctly unplug nodes that are connected to it
+  late List<NodeConnection> Function() getConnections;
+
+  /// This will return the node that is actually selected
+  late List<INodeWidget> Function() getSelectedNodes;
+
+  /// This will serve to set the selected nodes list
+  late Function(List<INodeWidget>) setSelectedNode;
+
+  /// This serves as updating the node widget
+  late Function(INodeWidget) updateNode;
+
+  /// This will serve as updating visually the connections between nodes
+  late Function updateConnections;
+
+  /// This will allow to save the current state of the node board, allowing usage of cmd+z
+  late Function saveState;
+
+  NodeWidgetFunctions({
+    required this.getIsDragging,
+    required this.setIsDragging,
+    required this.addConnection,
+    required this.setSelectedPort,
+    required this.getSelectedPort,
+    required this.getConnections,
+    required this.getSelectedNodes,
+    required this.setSelectedNode,
+    required this.updateNode,
+    required this.updateConnections,
+    required this.saveState,
+  });
 }
 
 /// This is a class that each Node must implement, it contains all the variables that a Node will require to work well.

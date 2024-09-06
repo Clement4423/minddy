@@ -7,8 +7,10 @@ import 'package:minddy/system/nodes/all_nodes/math_node.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/nodes/logic/node_tree.dart';
 import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
+import 'package:minddy/system/nodes/nodes_add_menu_models.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/ui/components/nodes/controllers/node_editor_state.dart';
+import 'package:minddy/ui/components/nodes/node_editor_show_node_add_menu.dart';
 import 'package:minddy/ui/components/nodes/node_widget_tree.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:minddy/ui/views/plugin_editor_view.dart';
@@ -26,6 +28,10 @@ class BottomToolbarUpdater extends ChangeNotifier {
 }
 
 class NodeEditorBottomSheetController extends ChangeNotifier {
+
+  late NodesAddMenuModels nodes = NodesAddMenuModels(functions: widgetFunctions, maxOffset: maxOffset, theme: StylesGetters(context));
+  late NodeWidgetFunctions widgetFunctions;
+  late BuildContext context;
 
   bool nodeTreeChanged = false;
 
@@ -57,6 +63,19 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
   
   NodeEditorBottomSheetController({this.isClosed = false, required this.views, required this.maxOffset, required this.save}) {
     selectedNodeTreeId = views.firstOrNull?.tree.id;
+    widgetFunctions = NodeWidgetFunctions(
+      getIsDragging: getIsDragging, 
+      setIsDragging: setIsDragging, 
+      addConnection: addConnection, 
+      setSelectedPort: setSelectedPort, 
+      getSelectedPort: getSelectedPort, 
+      getConnections: passNodesConnections, 
+      getSelectedNodes: getSelectedNodes, 
+      setSelectedNode: setSelectedNode, 
+      updateNode: updateNode, 
+      updateConnections: nodeConnectionUpdater.notify,
+      saveState: saveState
+    );
   }
 
   bool isInitialized = false;
@@ -73,11 +92,18 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
 
     if (selectedNodeTreeId != null) {
       if (views.isEmpty) {
-        views.add(NodeEditorBottomSheetView(tree: NodeWidgetTree(nodesWidgets: [], id: createUniqueId()), viewPositionController: TransformationController()));
+        views.add(
+          NodeEditorBottomSheetView(
+            tree: NodeWidgetTree(nodesWidgets: [], id: createUniqueId()), 
+            viewPositionController: TransformationController(), 
+            state: NodeEditorState()
+          )
+        );
       }
       NodeEditorBottomSheetView selectedView = views.firstWhere((v) => v.tree.id == selectedNodeTreeId);
       nodesWidgets = selectedView.tree.nodesWidgets;
       viewPositionController = selectedView.viewPositionController;
+      selectedNodes = selectedView.selectedNodes;
       globalKeys.clear();
 
       for (INodeWidget widget in nodesWidgets) {
@@ -89,18 +115,21 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
 
   NodeEditorState state = NodeEditorState();
 
+  List<INodeWidget> copiedNodes = [];
+
   void copySelectedNodes() {
     List<INodeWidget> nodesToCopy = [];
     for (INodeWidget widget in selectedNodes) {
       nodesToCopy.add(widget.copy(GlobalKey()));
       nodesToCopy.last.node.targets = [];
     }
-    state.addCopiedNodes(nodesToCopy);
+    copiedNodes.clear();
+    copiedNodes.addAll(nodesToCopy);
     bottomToolbarUpdater.notify();
   }
 
   void pasteCopiedNodes() {
-    List<INodeWidget> nodesToPaste = state.getCopiedNodes().map((n) => n.copy(GlobalKey())).toList();
+    List<INodeWidget> nodesToPaste = List.from(copiedNodes);
 
     for (INodeWidget widget in nodesToPaste) {
       globalKeys[widget] = widget.key as GlobalKey;
@@ -158,25 +187,70 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
     }
   }
 
+  INodeWidget? addNode(INodeWidget? nodeToAdd, [bool changePosition = false]) {
+    if (nodeToAdd == null) {
+      return null;
+    }
+
+    if (changePosition) {
+      nodeToAdd.position = calculateCenterOffset() - Offset(nodeToAdd.width / 2, nodeToAdd.height / 2);
+    }
+
+
+    nodesWidgets.add(nodeToAdd);
+
+    List<INodeWidget> nodesToUpdate = List.from(selectedNodes);
+
+    selectedNodes.clear();
+
+    selectedNodes.add(nodeToAdd);
+
+    for (NodeWidgetTree widgetTree in views.map((v) => v.tree).toList()) {
+      if (widgetTree.id == selectedNodeTreeId) {
+        widgetTree.nodesWidgets = nodesWidgets;
+      }
+    }
+
+    globalKeys[nodeToAdd] = nodeToAdd.key as GlobalKey;
+
+    for (INodeWidget widget in nodesToUpdate) {
+      updateNode(widget);
+    }
+
+    nodeConnectionUpdater.notify();
+    bottomToolbarUpdater.notify();
+    saveState();
+    notifyListeners();
+    return nodeToAdd;
+  }
+
   void saveState() {
     List<INodeWidget> savedNodes = nodesWidgets.map((n) {return n.copy(GlobalKey());}).toList();
 
     // Here we need to copy the targets, as they are no longer pointing to the correct nodes.
     for (INodeWidget widget in savedNodes) {
-      widget.node.targets = widget.node.targets.map((target) {
+      try {
+        widget.node.targets = widget.node.targets.map((target) {
         return NodeTarget(
           outputIndex: target.outputIndex, 
           node: savedNodes.firstWhere((n) => n.node.id == target.node.id).node, 
           inputIndex: target.inputIndex
         );
       }).toList();
+      } catch (e) {
+        return;
+      }
     }
 
     List<INodeWidget> savedSelectedNodes = [];
 
     for (INodeWidget node in selectedNodes) {
-      var matchingNode = savedNodes.firstWhere((n) => n.node.id == node.node.id);
-      savedSelectedNodes.add(matchingNode);
+      try {
+        var matchingNode = savedNodes.firstWhere((n) => n.node.id == node.node.id);
+        savedSelectedNodes.add(matchingNode);
+      } catch (e) {
+        break;
+      }
     }
 
     state.addHistoryElement(
@@ -302,8 +376,59 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
     return selectedPortInfo;
   }
 
-  Future<void> addConnection(NodePortInfo firstPort) async {
-    if (selectedPortInfo == null || firstPort.type == selectedPortInfo?.type) {
+  Offset calculateCenterOffset() {
+    final Matrix4 matrix = viewPositionController.value;
+    final Offset translation = Offset(matrix.getTranslation().x, matrix.getTranslation().y);
+    final double scale = matrix.getMaxScaleOnAxis();
+
+    // Calculate the center of the viewport in the coordinate system of the child
+    final Size viewportSize = MediaQuery.of(context).size;
+    final Offset viewportCenter = Offset(viewportSize.width / 2, (viewportSize.height / 1.8) / 2);
+    
+    // Transform the viewport center to the child's coordinate system
+    final Offset centerInChildCoords = (viewportCenter - translation) / scale;
+
+    return centerInChildCoords;
+  }
+
+  Future<void> addConnection(NodePortInfo firstPort, [Offset? cursorPosition]) async {
+    print("Received pointer position: $cursorPosition");
+    if (selectedPortInfo == null) {
+      if (firstPort.type == NodePortType.input) {
+        INodeWidget? nodeToAdd = await showNodeEditorAddMenu(context, nodes.asList, StylesGetters(context), (n) {}, true);
+        if (nodeToAdd != null) {
+          if (cursorPosition != null) {
+            nodeToAdd.position = cursorPosition - Offset(nodeToAdd.width / 2, nodeToAdd.height / 2);
+          } 
+          nodeToAdd.node.targets.add(
+            NodeTarget(
+              outputIndex: nodeToAdd.node.outputsTypes.indexOf(firstPort.node.node.inputsTypes.elementAt(firstPort.portIndex)), 
+              node: firstPort.node.node, 
+              inputIndex: firstPort.portIndex
+            )
+          );
+          addNode(nodeToAdd);
+        }
+      } else {
+        INodeWidget? nodeToAdd = await showNodeEditorAddMenu(context, [nodes.mathNode], StylesGetters(context), (n) {}, true);
+        if (nodeToAdd != null) {
+          if (cursorPosition != null) {
+            nodeToAdd.position = cursorPosition - Offset(nodeToAdd.width / 2, nodeToAdd.height / 2);
+          } 
+          firstPort.node.node.targets.add(
+            NodeTarget(
+              outputIndex: firstPort.portIndex, 
+              node: nodeToAdd.node, 
+              inputIndex: nodeToAdd.node.outputsTypes.indexOf(firstPort.node.node.inputsTypes.elementAt(firstPort.portIndex))
+            )
+          );
+          addNode(nodeToAdd);
+        }
+      }
+      return;
+    }
+
+    if (firstPort.type == selectedPortInfo?.type) {
       print("Same type: $selectedPortInfo");
       return;
     }
@@ -361,7 +486,6 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
       }
     }
 
-    print("Finish");
     selectedPortInfo = null;
     getNodesConnections();
     getSelectedNodesConnections();
@@ -385,8 +509,8 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
   }
 
   eraseNodesWidgets(StylesGetters theme) {
-    MathNodeWidget nodeA = MathNodeWidget(key: GlobalKey(), node: MathNode(), position: const Offset(100, 100), maxOffset: maxOffset, theme: theme, saveState: saveState, setSelectedNode: setSelectedNode, getSelectedNodes: getSelectedNodes, getIsDragging: getIsDragging, getConnections: passNodesConnections, setSelectedPort: setSelectedPort, getSelectedPort: getSelectedPort, setIsDragging: setIsDragging, addConnection: addConnection, updateConnections: nodeConnectionUpdater.notify, updateNode: updateNode);
-    MathNodeWidget nodeB = MathNodeWidget(key: GlobalKey(), node: MathNode(), position: const Offset(300, 100), maxOffset: maxOffset, theme: theme, saveState: saveState, setSelectedNode: setSelectedNode, getSelectedNodes: getSelectedNodes, getIsDragging: getIsDragging, getConnections: passNodesConnections, setSelectedPort: setSelectedPort, getSelectedPort: getSelectedPort, setIsDragging: setIsDragging, addConnection: addConnection, updateConnections: nodeConnectionUpdater.notify, updateNode: updateNode);
+    MathNodeWidget nodeA = MathNodeWidget(key: GlobalKey(), node: MathNode(), position: const Offset(100, 100), maxOffset: maxOffset, theme: theme, functions: widgetFunctions);
+    MathNodeWidget nodeB = MathNodeWidget(key: GlobalKey(), node: MathNode(), position: const Offset(300, 100), maxOffset: maxOffset, theme: theme, functions: widgetFunctions);
 
     nodeA.node.targets.add(NodeTarget(outputIndex: 0, node: nodeB.node, inputIndex: 0));
 
@@ -408,8 +532,17 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
 
     if (views.isNotEmpty) {
       try {
-        views.firstWhere((v) => v.tree.id == selectedNodeTreeId).tree.nodesWidgets = nodesWidgets.map((n) => n.copy(GlobalKey())).toList();
-        viewPositionController = views.firstWhere((v) => v.tree.id == id).viewPositionController;
+        NodeEditorBottomSheetView previousView = views.firstWhere((v) => v.tree.id == selectedNodeTreeId);
+        previousView.tree.nodesWidgets = nodesWidgets.map((n) => n.copy(GlobalKey())).toList();
+        previousView.selectedNodes = previousView.tree.nodesWidgets.where(
+          (w) => selectedNodes.map(
+            (e) => e.node.id
+          ).toList().contains(w.node.id)
+        ).toList();
+
+        NodeEditorBottomSheetView selectedView = views.firstWhere((v) => v.tree.id == id);
+        viewPositionController = selectedView.viewPositionController;
+        state = selectedView.state;
       } catch (e) {
         null; 
       }
@@ -426,7 +559,8 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
     views.add(
       NodeEditorBottomSheetView(
         tree: NodeWidgetTree(nodesWidgets: [], id: createUniqueId()), 
-        viewPositionController: TransformationController()
+        viewPositionController: TransformationController(),
+        state: NodeEditorState()
       )
     );
     setSelectedNodeTree(views.last.tree.id, false);
@@ -519,7 +653,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
         nodes.add(widget.node);
       }
 
-      return NodeTree(nodes: nodes, id: createUniqueId(), variables: []); // TODO : Ajouter les variables
+      return NodeTree(nodes: nodes, id: createUniqueId(), variables: variables);
     } catch (e) {
       return null;
     }
@@ -593,9 +727,11 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
 
 class NodeEditorBottomSheetView {
   NodeWidgetTree tree;
+  List<INodeWidget> selectedNodes = [];
+  NodeEditorState state;
   TransformationController viewPositionController;
 
-  NodeEditorBottomSheetView({required this.tree, required this.viewPositionController});
+  NodeEditorBottomSheetView({required this.tree, required this.viewPositionController, required this.state});
 
   String toJson() {
     return jsonEncode({
@@ -624,7 +760,7 @@ class NodeEditorBottomSheetView {
         transformationController.value = Matrix4.fromList(transformationListAsDoubles);
 
         if (tree != null) {
-          return NodeEditorBottomSheetView(tree: tree, viewPositionController: transformationController);
+          return NodeEditorBottomSheetView(tree: tree, viewPositionController: transformationController, state: NodeEditorState());
         }
       }
     }

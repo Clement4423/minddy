@@ -77,6 +77,10 @@ class _ToolContainerState extends State<ToolContainer> {
                   decoration: BoxDecoration(
                     color: theme.primaryContainer,
                     borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                      color: theme.onPrimary.withOpacity(0.1),
+                      width: 0.7
+                    ), 
                   ),
                   child: actualWidget,
                 ),
