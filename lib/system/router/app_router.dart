@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/model/plugin_info.dart';
 import 'package:minddy/system/model/project_info.dart';
+import 'package:minddy/system/router/animated_route_builder.dart';
 import 'package:minddy/ui/view_models/create_password_viewmodel.dart';
 import 'package:minddy/ui/view_models/home_viewmodel.dart';
 import 'package:minddy/ui/view_models/plugin_editor_view_model.dart';
@@ -41,16 +42,16 @@ class AppRouter {
   Future<dynamic> showProject(BuildContext context, ProjectInfo projectInfo) {
     StaticVariables.currentProjectInfo = projectInfo;
     return Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ProjectView(ProjectViewModel(projectInfo: projectInfo)),
+      AnimatedRouteBuilder(
+        page: ProjectView(ProjectViewModel(projectInfo: projectInfo)),
       ),
     );
   }
 
   Future<dynamic> showPlugin(BuildContext context, PluginInfo pluginInfo) {
     return Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => PluginEditorView(viewModel: PluginEditorViewModel(pluginInfo: pluginInfo)),
+      AnimatedRouteBuilder(
+        page: PluginEditorView(viewModel: PluginEditorViewModel(pluginInfo: pluginInfo)),
       ),
     );
   }

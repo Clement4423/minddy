@@ -82,8 +82,8 @@ class _SwitchTileState extends State<SwitchTile> {
                 ),
                 Switch(
                   activeColor: widget.enabled ? theme.primary : Colors.grey,
-                  thumbColor: WidgetStatePropertyAll(widget.enabled ? theme.secondary : const Color.fromARGB(255, 120, 120, 120)),
-                  trackColor: WidgetStatePropertyAll(widget.enabled ? theme.primary : Colors.grey),
+                  thumbColor: WidgetStatePropertyAll(widget.enabled ? _isSwitched ? theme.onSecondary : theme.secondary : const Color.fromARGB(255, 120, 120, 120)),
+                  trackColor: WidgetStatePropertyAll(widget.enabled ? _isSwitched ? theme.secondary : theme.primary : Colors.grey),
                   trackOutlineColor: WidgetStatePropertyAll(widget.enabled ? theme.secondary : const Color.fromARGB(255, 120, 120, 120)),
                   overlayColor: const WidgetStatePropertyAll(Colors.transparent),
                   activeTrackColor: widget.enabled ? theme.secondary : const Color.fromARGB(255, 120, 120, 120),

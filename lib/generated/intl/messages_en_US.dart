@@ -94,6 +94,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "app_name": MessageLookupByLibrary.simpleMessage("minddy"),
+        "app_slogan":
+            MessageLookupByLibrary.simpleMessage("Everything happens here."),
         "appbar_go_home": MessageLookupByLibrary.simpleMessage("Go back home"),
         "articles_add_code_semantic_text":
             MessageLookupByLibrary.simpleMessage("Add a code block"),

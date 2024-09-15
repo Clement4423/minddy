@@ -185,10 +185,18 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
 
     Future<bool> moveProjectNote(NoteModel noteModel, String destinationCategory) async {
     try {
-      bool added = await AppNotes.addNote(noteModel, destinationCategory);
-      if (added) {
-        bool deleted = await deleteProjectNote(noteModel);
-        return deleted;
+      if (noteModel.category == 'PROJECT') {
+        bool added = await AppNotes.addNote(noteModel, destinationCategory);
+        if (added) {
+          bool deleted = await deleteProjectNote(noteModel);
+          return deleted;
+        }
+      } else if (destinationCategory == 'PROJECT') {
+        bool added = await addProjectNote(noteModel);
+        if (added) {
+          bool deleted = await AppNotes.deleteNote(noteModel, noteModel.category);
+          return deleted;
+        }
       }
       return false;
     } catch (e) {

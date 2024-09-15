@@ -27,6 +27,8 @@ class _NodeEditorBottomSheetSidePanelState extends State<NodeEditorBottomSheetSi
 
   bool isClosed = false;
 
+  bool isFirstCreation = true;
+
   void toggleSidePanel() {
     setState(() {
       isClosed = !isClosed;
@@ -51,10 +53,13 @@ class _NodeEditorBottomSheetSidePanelState extends State<NodeEditorBottomSheetSi
       duration: const Duration(milliseconds: 700),
       curve: Curves.fastEaseInToSlowEaseOut,
       tween: Tween(
-        begin: isClosed ? 0.0 : 255.0,
-        end: isClosed ? 255.0 : 0.0,
+        begin: isFirstCreation ? 255.0 : isClosed ? 0.0 : 255.0,
+        end: isFirstCreation ? 255.0 : isClosed ? 255.0 : 0.0,
       ),
       builder: (context, translate, child) {
+        if (isFirstCreation) {
+          isFirstCreation = false;
+        }
         return Transform.translate(
           offset: Offset(-translate, 0),
           child: SizedBox(

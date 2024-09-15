@@ -95,7 +95,7 @@ class _UnlockSubMenuState extends State<UnlockSubMenu> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(10),
-                            child: SvgPicture.asset("assets/logo/Logo.svg", width: 35, height: 35,),
+                            child: SvgPicture.asset("assets/logo/Logo.svg", width: 35, height: 35)
                           )
                         ],
                       )

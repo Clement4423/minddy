@@ -17,9 +17,6 @@ class ArticlesBackButton extends StatelessWidget {
           if (action != null) {
             await action!();
           }
-          if (context.mounted) {
-            Navigator.pop(context);
-          }
         }, 
         tooltip: S.of(context).articles_go_back_semantic_text,
         icon: Icon(Icons.arrow_back_rounded, color: theme.onPrimary, semanticLabel: S.of(context).articles_go_back_semantic_text,),

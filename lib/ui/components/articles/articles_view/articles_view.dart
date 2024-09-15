@@ -14,18 +14,18 @@ import 'package:minddy/ui/components/articles/articles_components/articles_botto
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-ShortcutActivator _closeArticle = const SingleActivator(LogicalKeyboardKey.escape);
+ShortcutActivator _closeArticleActivator = const SingleActivator(LogicalKeyboardKey.escape);
 
 // Width limit before the article content is shifted on the left
 double _widthTreshold = 1000;
 
 Future<dynamic> showArticle(ArticlesViewController controller, BuildContext context) async {
 
-  
   bool isContentInitalized = await controller.initialize(context);
   if (!isContentInitalized) {
     return;
   }
+
   if (context.mounted) {
     SavingController savingController = SavingController();
     controller.savingController = savingController;
@@ -55,186 +55,241 @@ Future<dynamic> showArticle(ArticlesViewController controller, BuildContext cont
                 controller.sizeChanged(context);
                 StylesGetters theme = StylesGetters(context);
                 double screenWidth = MediaQuery.of(context).size.width;
-                return AnimatedBuilder(
-                  animation: controller,
-                  builder: (context, child) {
-                    return Material(
-                      type: MaterialType.transparency,
-                      elevation: 12,
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                              child: Container(
-                                color: theme.secondaryContainer.withOpacity(0.70),
-                                child: Container(),
-                              ),
-                            ),
-                          ),
-                          // Top bar with actions and title;
-                          CallbackShortcuts(
-                            bindings: <ShortcutActivator, VoidCallback>{
-                              saveActivator: () async {
-                                await controller.saveArticle();
-                              },
-                              _closeArticle:() async {
-                                await controller.saveArticle();
-                                if (context.mounted) {
-                                  Navigator.pop(context);
-                                }
-                              }
-                            },
-                            child: Column(
-                              crossAxisAlignment: screenWidth > _widthTreshold ? CrossAxisAlignment.center : CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 170,
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          // Back button
-                                          ArticlesBackButton(
-                                            action: () {
-                                              controller.saveArticle(isClosingArticle: true);
-                                               controller.resetFunction();
-                                              },
-                                          ),
-                                          // Actions Row
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              AnimatedBuilder(
-                                                animation: savingController,
-                                                builder: (context, child) {
-                                                  if (savingController.isSaving) {
-                                                    return Padding(
-                                                      padding: const EdgeInsets.only(right: 10),
-                                                      child: SizedBox(
-                                                        width: 25,
-                                                        height: 25,
-                                                        child: CircularProgressIndicator(
-                                                          color: theme.onPrimary,
-                                                          strokeWidth: 3,
-                                                        ),
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    return const SizedBox();
-                                                  }
-                                                }
-                                              ),
-                                              ..._getActionRow(!controller.readOnly, controller)
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: screenWidth > _widthTreshold ? MainAxisAlignment.center : MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          // Title and info box
-                                          Padding(
-                                            padding: EdgeInsets.only(left: screenWidth > _widthTreshold ? 0 : screenWidth / 7),
-                                            child: SizedBox(
-                                              width: controller.contentWidth,
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  CustomTooltip(
-                                                    message: controller.articleTitle,
-                                                    child: TextField(
-                                                        onChanged: (value) => controller.articleTitleChanged(value),
-                                                        readOnly: controller.readOnly,
-                                                        controller: TextEditingController(text: controller.articleTitle == "" ? null : controller.articleTitle),
-                                                        style: theme.titleLarge.copyWith(color: theme.onPrimary, fontSize: 30, overflow: TextOverflow.ellipsis),
-                                                        cursorColor: theme.onPrimary,
-                                                        decoration: InputDecoration(
-                                                          border: InputBorder.none,
-                                                          hintText: S.of(context).articles_title_hint
-                                                        ),
-                                                        maxLines: 2,
-                                                        minLines: 1,
-                                                      ),
-                                                  ),
-                                                  Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [
-                                                      MouseRegion(
-                                                        cursor: controller.readOnly 
-                                                          ? SystemMouseCursors.basic
-                                                          : SystemMouseCursors.click,
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            if (controller.readOnly) {
-                                                              return;
-                                                            }
-                                                            controller.calculateArticleReadingTime(); 
-                                                            controller.orderChanged();
-                                                          },
-                                                          child: Tooltip(
-                                                            message: controller.readOnly 
-                                                              ? ''
-                                                              : S.of(context).articles_calculate_reading_time,
-                                                            child: Text(
-                                                              "${controller.articleReadingTime} min",
-                                                              style: theme.headlineSmall.copyWith(color: theme.onPrimary),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.all(8.0),
-                                                        child: Container(
-                                                          width: 3,
-                                                          height: 3,
-                                                          decoration: BoxDecoration(
-                                                            color: theme.onPrimary,
-                                                            borderRadius: BorderRadius.circular(2),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        controller.articleInfos.author,
-                                                        style: theme.bodySmall.copyWith(color: theme.onPrimary),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                // Article content
-                                _ArticleContentList(controller: controller),
-                              ],
-                            ),
-                          ),
-                          // Bottom menu
-                          Positioned(
-                            bottom: 0,
-                            right: 0, 
-                            child: controller.readOnly 
-                            ? const SizedBox()
-                            : ArticlesBottomMenu(controller: ArticlesBottomMenuController(articleController: controller)),
-                          ), 
-                        ],
-                      ),
-                    );
-                  }
-                );
+                return ArticleView(theme: theme, screenWidth: screenWidth, savingController: savingController, controller: controller);
               }
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class ArticleView extends StatefulWidget {
+  const ArticleView({
+    super.key,
+    required this.theme,
+    required this.screenWidth,
+    required this.savingController,
+    required this.controller
+  });
+
+  final StylesGetters theme;
+  final double screenWidth;
+  final SavingController savingController;
+  final ArticlesViewController controller;
+
+  @override
+  State<ArticleView> createState() => _ArticleViewState();
+}
+
+class _ArticleViewState extends State<ArticleView> {
+
+  bool _isClosing = false;
+
+  void _closeArticle(BuildContext context) {
+    if (context.mounted) {
+      setState(() {
+        _isClosing = true;
+      });
+      Future.delayed(Duration(milliseconds: _isClosing ? 150 : 250), () {
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder(
+      duration: Duration(milliseconds: _isClosing ? 150 : 250),
+      curve: Curves.easeInOut,
+      tween: Tween(
+        begin: _isClosing ? 1.0 : 0.0,
+        end: _isClosing ? 0.0 : 1.0
+      ),
+      builder: (context, opacity, child) {
+        return AnimatedBuilder(
+          animation: widget.controller,
+          builder: (context, child) {
+            return Opacity(
+              opacity: opacity,
+              child: Material(
+                type: MaterialType.transparency,
+                elevation: 12,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                        child: Container(
+                          color: widget.theme.secondaryContainer.withOpacity(0.70),
+                          child: Container(),
+                        ),
+                      ),
+                    ),
+                    // Top bar with actions and title;
+                    CallbackShortcuts(
+                      bindings: <ShortcutActivator, VoidCallback>{
+                        saveActivator: () async {
+                          await widget.controller.saveArticle();
+                        },
+                        _closeArticleActivator:() async {
+                          await widget.controller.saveArticle();
+                          if (context.mounted) {
+                            _closeArticle(context);
+                          }
+                        }
+                      },
+                      child: Column(
+                        crossAxisAlignment: widget.screenWidth > _widthTreshold ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 170,
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    // Back button
+                                    ArticlesBackButton(
+                                      action: () {
+                                        widget.controller.saveArticle(isClosingArticle: true);
+                                         _closeArticle(context);
+                                         widget.controller.resetFunction(); 
+                                        },
+                                    ),
+                                    // Actions Row
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        AnimatedBuilder(
+                                          animation: widget.savingController,
+                                          builder: (context, child) {
+                                            if (widget.savingController.isSaving) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(right: 10),
+                                                child: SizedBox(
+                                                  width: 25,
+                                                  height: 25,
+                                                  child: CircularProgressIndicator(
+                                                    color: widget.theme.onPrimary,
+                                                    strokeWidth: 3,
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              return const SizedBox();
+                                            }
+                                          }
+                                        ),
+                                        ..._getActionRow(!widget.controller.readOnly, widget.controller)
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: widget.screenWidth > _widthTreshold ? MainAxisAlignment.center : MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Title and info box
+                                    Padding(
+                                      padding: EdgeInsets.only(left: widget.screenWidth > _widthTreshold ? 0 : widget.screenWidth / 7),
+                                      child: SizedBox(
+                                        width: widget.controller.contentWidth,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            CustomTooltip(
+                                              message: widget.controller.articleTitle,
+                                              child: TextField(
+                                                  onChanged: (value) => widget.controller.articleTitleChanged(value),
+                                                  readOnly: widget.controller.readOnly,
+                                                  controller: TextEditingController(text: widget.controller.articleTitle == "" ? null : widget.controller.articleTitle),
+                                                  style: widget.theme.titleLarge.copyWith(color: widget.theme.onPrimary, fontSize: 30, overflow: TextOverflow.ellipsis),
+                                                  cursorColor: widget.theme.onPrimary,
+                                                  decoration: InputDecoration(
+                                                    border: InputBorder.none,
+                                                    hintText: S.of(context).articles_title_hint
+                                                  ),
+                                                  maxLines: 2,
+                                                  minLines: 1,
+                                                ),
+                                            ),
+                                            Row(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                MouseRegion(
+                                                  cursor: widget.controller.readOnly 
+                                                    ? SystemMouseCursors.basic
+                                                    : SystemMouseCursors.click,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      if (widget.controller.readOnly) {
+                                                        return;
+                                                      }
+                                                      widget.controller.calculateArticleReadingTime(); 
+                                                      widget.controller.orderChanged();
+                                                    },
+                                                    child: Tooltip(
+                                                      message: widget.controller.readOnly 
+                                                        ? ''
+                                                        : S.of(context).articles_calculate_reading_time,
+                                                      child: Text(
+                                                        "${widget.controller.articleReadingTime} min",
+                                                        style: widget.theme.headlineSmall.copyWith(color: widget.theme.onPrimary),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    width: 3,
+                                                    height: 3,
+                                                    decoration: BoxDecoration(
+                                                      color: widget.theme.onPrimary,
+                                                      borderRadius: BorderRadius.circular(2),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  widget.controller.articleInfos.author,
+                                                  style: widget.theme.bodySmall.copyWith(color: widget.theme.onPrimary),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Article content
+                          _ArticleContentList(controller: widget.controller),
+                        ],
+                      ),
+                    ),
+                    // Bottom menu
+                    Positioned(
+                      bottom: 0,
+                      right: 0, 
+                      child: widget.controller.readOnly 
+                      ? const SizedBox()
+                      : ArticlesBottomMenu(controller: ArticlesBottomMenuController(articleController: widget.controller)),
+                    ), 
+                  ],
+                ),
+              ),
+            );
+          }
+        );
+      }
     );
   }
 }

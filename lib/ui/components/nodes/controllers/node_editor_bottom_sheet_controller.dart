@@ -9,6 +9,8 @@ import 'package:minddy/system/nodes/logic/node_tree.dart';
 import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
 import 'package:minddy/system/nodes/nodes_add_menu_models.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
+import 'package:minddy/system/utils/move_element_to_end_of_list.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_port_widget.dart';
 import 'package:minddy/ui/components/nodes/controllers/node_editor_state.dart';
 import 'package:minddy/ui/components/nodes/node_editor_show_node_add_menu.dart';
 import 'package:minddy/ui/components/nodes/node_widget_tree.dart';
@@ -167,6 +169,14 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
       for (INodeWidget widget in selectedNodes) {
         nodesWidgets.removeWhere((w) => w.node.id == widget.node.id);
         globalKeys.removeWhere((w, k) => w.node.id == widget.node.id);
+        for (NodeTarget target in widget.node.targets) {
+          if (selectedNodes.map((n) => n.node.id == target.node.id).contains(true)) {
+            continue;
+          } else {
+              INodeWidget nodeToUpdate = nodesWidgets.firstWhere((n) => n.node.id == target.node.id);
+              updateNode(nodeToUpdate);
+          }
+        }
       }
 
       selectedNodes.clear();
@@ -349,9 +359,18 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
       updateNode(widget);
     }
 
+    nodesWidgets = moveElementsToEndOfList(nodesWidgets, nodes);
+
+    for (NodeWidgetTree widgetTree in views.map((v) => v.tree).toList()) {
+      if (widgetTree.id == selectedNodeTreeId) {
+        widgetTree.nodesWidgets = nodesWidgets;
+      }
+    } 
+
     saveState();
     nodeConnectionUpdater.notify();
     bottomToolbarUpdater.notify();
+    notifyListeners();
   }
 
   void updateNode(INodeWidget widget) {
@@ -392,10 +411,15 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
   }
 
   Future<void> addConnection(NodePortInfo firstPort, [Offset? cursorPosition]) async {
-    print("Received pointer position: $cursorPosition");
     if (selectedPortInfo == null) {
       if (firstPort.type == NodePortType.input) {
-        INodeWidget? nodeToAdd = await showNodeEditorAddMenu(context, nodes.asList, StylesGetters(context), (n) {}, true);
+        INodeWidget? nodeToAdd = await showNodeEditorAddMenu(
+          context, 
+          nodes.filterList(nodes.asList, firstPort.type, firstPort.node.node.inputsTypes.elementAt(firstPort.portIndex)), 
+          StylesGetters(context), 
+          (n) {}, 
+          true
+        );
         if (nodeToAdd != null) {
           if (cursorPosition != null) {
             nodeToAdd.position = cursorPosition - Offset(nodeToAdd.width / 2, nodeToAdd.height / 2);
@@ -410,7 +434,13 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
           addNode(nodeToAdd);
         }
       } else {
-        INodeWidget? nodeToAdd = await showNodeEditorAddMenu(context, [nodes.mathNode], StylesGetters(context), (n) {}, true);
+        INodeWidget? nodeToAdd = await showNodeEditorAddMenu(
+          context, 
+          nodes.filterList(nodes.asList, firstPort.type, firstPort.node.node.outputsTypes.elementAt(firstPort.portIndex)), 
+          StylesGetters(context), 
+          (n) {}, 
+          true
+        );
         if (nodeToAdd != null) {
           if (cursorPosition != null) {
             nodeToAdd.position = cursorPosition - Offset(nodeToAdd.width / 2, nodeToAdd.height / 2);
@@ -425,6 +455,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
           addNode(nodeToAdd);
         }
       }
+      updateNode(firstPort.node);
       return;
     }
 
@@ -456,6 +487,11 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
         return;
       } else {
         NodeTarget targetToAdd = NodeTarget(outputIndex: selectedPortInfo!.portIndex, node: firstPort.node.node, inputIndex: firstPort.portIndex);
+        bool isTypesCompatible = _checkTypesCompatibilyty(selectedPortInfo!.node, targetToAdd);
+        if (!isTypesCompatible) {
+          print("Types are not compatible");
+          return;
+        }
         INodeWidget? nodeThatAlreadyContainsThisTarget = _isNodesContainingTarget(targetToAdd);
         if (nodeThatAlreadyContainsThisTarget != null) {
           nodeThatAlreadyContainsThisTarget.node.targets.removeWhere((t) => 
@@ -465,6 +501,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
           );
         }
         print("Adding input to output");
+        resetInputValues(targetToAdd);
         selectedPortInfo!.node.node.targets.add(targetToAdd);
       }
     } else if (firstPort.type == NodePortType.output && selectedPortInfo!.type == NodePortType.input) {
@@ -473,6 +510,11 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
         return;
       } else {
         NodeTarget targetToAdd = NodeTarget(outputIndex: firstPort.portIndex, node: selectedPortInfo!.node.node, inputIndex: selectedPortInfo!.portIndex);
+        bool isTypesCompatible = _checkTypesCompatibilyty(firstPort.node, targetToAdd);
+        if (!isTypesCompatible) {
+          print("Types are not compatible");
+          return;
+        }
         INodeWidget? nodeThatAlreadyContainsThisTarget = _isNodesContainingTarget(targetToAdd);
         if (nodeThatAlreadyContainsThisTarget != null) {
           nodeThatAlreadyContainsThisTarget.node.targets.removeWhere((t) => 
@@ -482,15 +524,30 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
           );
         }
         print("Adding output to input");
+        resetInputValues(targetToAdd);
         firstPort.node.node.targets.add(targetToAdd);
       }
     }
 
+    updateNode(firstPort.node);
+    updateNode(selectedPortInfo!.node);
     selectedPortInfo = null;
     getNodesConnections();
     getSelectedNodesConnections();
     nodeConnectionUpdater.notify();
     saveState();
+  }
+
+  bool _checkTypesCompatibilyty(INodeWidget outputNode, NodeTarget target) {
+    NodeDataType outputType = outputNode.node.outputsTypes.elementAt(target.outputIndex);
+    NodeDataType inputType = target.node.inputsTypes.elementAt(target.inputIndex);
+    NodeData? evaluatedData = INode.evaluateData(NodeData(type: outputType, value: getDefaultNodeDataTypeValue(outputType)), inputType);
+
+    if (evaluatedData != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   INodeWidget? _isNodesContainingTarget(NodeTarget target) {
@@ -506,6 +563,11 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
       }
     }
     return null;
+  }
+
+  void resetInputValues(NodeTarget target) {
+    NodeDataType inputType = target.node.inputsTypes[target.inputIndex];
+    target.node.inputs[target.inputIndex] = NodeData(type: inputType, value: getDefaultNodeDataTypeValue(inputType));
   }
 
   eraseNodesWidgets(StylesGetters theme) {

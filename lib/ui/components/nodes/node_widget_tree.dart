@@ -150,6 +150,6 @@ INodeWidget? _getCorrectNodeWidgetType(String type, String json, Offset maxOffse
     case 'MathNodeWidget':
       return MathNodeWidget.fromJson(key, json, maxOffset, theme, controller.widgetFunctions);
     default:
+      return null;
   }
-  return null;
 }

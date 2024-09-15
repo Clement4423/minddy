@@ -37,8 +37,6 @@ class _NodeEditorBottomSheetState extends State<NodeEditorBottomSheet> {
 
   bool savedFirstState = false;
 
-  bool isShiftPressed = false;
-
   Offset _globalToLocal(Offset globalPosition) {
     // Apply the inverse of the current transformation matrix to convert the global position to local
     final Matrix4 transform = widget.controller.viewPositionController.value;
@@ -46,35 +44,35 @@ class _NodeEditorBottomSheetState extends State<NodeEditorBottomSheet> {
     return MatrixUtils.transformPoint(inverseMatrix, globalPosition);
   }
 
-void _selectNodesWithinRect() {
-  if (_selectionRect == null) return;
+  void _selectNodesWithinRect() {
+    if (_selectionRect == null) return;
 
-  final Rect localSelectionRect = Rect.fromLTWH(
-    _selectionRect!.topLeft.dx,
-    _selectionRect!.topLeft.dy,
-    _selectionRect!.width,
-    _selectionRect!.height
-  );
-
-  List<INodeWidget> selectedNodes = widget.controller.getSelectedNodes();
-
-  for (var nodeWidget in widget.controller.nodesWidgets) {
-    final Rect nodeRect = Rect.fromLTRB(
-      nodeWidget.position.dx,
-      nodeWidget.position.dy,
-      nodeWidget.position.dx + nodeWidget.width,
-      nodeWidget.position.dy + nodeWidget.height
+    final Rect localSelectionRect = Rect.fromLTWH(
+      _selectionRect!.topLeft.dx,
+      _selectionRect!.topLeft.dy,
+      _selectionRect!.width,
+      _selectionRect!.height
     );
 
-    bool overlaps = localSelectionRect.overlaps(nodeRect);
+    List<INodeWidget> selectedNodes = widget.controller.getSelectedNodes();
 
-    if (overlaps) {
-      selectedNodes.add(nodeWidget);
+    for (var nodeWidget in widget.controller.nodesWidgets) {
+      final Rect nodeRect = Rect.fromLTRB(
+        nodeWidget.position.dx,
+        nodeWidget.position.dy,
+        nodeWidget.position.dx + nodeWidget.width,
+        nodeWidget.position.dy + nodeWidget.height
+      );
+
+      bool overlaps = localSelectionRect.overlaps(nodeRect);
+
+      if (overlaps) {
+        selectedNodes.add(nodeWidget);
+      }
     }
-  }
 
-  widget.controller.setSelectedNode(selectedNodes);
-}
+    widget.controller.setSelectedNode(selectedNodes);
+  }
 
   @override
   void dispose() {
@@ -194,12 +192,12 @@ void _selectNodesWithinRect() {
                                   }
                                 },
                                 onPanStart: (details) {
-                                  isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
+                                  bool isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
                                   if (isShiftPressed) {
                                     _isDragging = true;
                                     _dragStartPosition = _globalToLocal(details.localPosition);
                                     _currentDragPosition = _dragStartPosition;
-                                  }
+                                  } 
                                 },
                                 onPanUpdate: (details) {
                                   if (_isDragging) {
@@ -221,57 +219,59 @@ void _selectNodesWithinRect() {
                                     });
                                   }
                                 },
-                                child: InteractiveViewer(
-                                  transformationController: widget.controller.viewPositionController,
-                                  maxScale: 3,
-                                  minScale: 0.4,
-                                  constrained: false,
-                                  child: SizedBox(
-                                    width: 4000,
-                                    height: 1500,
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        CustomPaint(
-                                          size: const Size(4000, 1500), // Size of the node board
-                                          painter: NodeEditorGridPainter(
-                                            theme: widget.theme,
-                                            scale: 1.0,
-                                          ),
-                                        ),
-                                        AnimatedBuilder(
-                                          animation: widget.controller.nodeConnectionUpdater,
-                                          builder: (context, child) {
-                                            widget.controller.getNodesConnections();
-                                            widget.controller.context = context;
-                                            widget.controller.getSelectedNodesConnections();
-                                            if (widget.controller.nodesConnections.isEmpty) {
-                                              return const SizedBox();
-                                            } else {
-                                              return FutureBuilder(
-                                                future: waitNextFrame(),
-                                                builder: (context, snapshot) {
-                                                  return CustomPaint(
-                                                    key: UniqueKey(),
-                                                    size: const Size(4000, 1500), // Size of the node board
-                                                    painter: NodeConnectionPainter(
-                                                      connections: widget.controller.nodesConnections, 
-                                                      selectedConnections: widget.controller.selectedNodesConnections,
-                                                      theme: widget.theme
-                                                    ),
-                                                  );
-                                                }
-                                              );
-                                            }   
-                                          }
-                                        ),
-                                        ...widget.controller.nodesWidgets,
-                                        if (_isDragging && _selectionRect != null)
-                                            CustomPaint(
-                                              size: const Size(4000, 1500), // Size of the node board
-                                              painter: SelectionRectPainter(_selectionRect!, widget.theme.secondary),
+                                child: ClipRRect(
+                                  child: InteractiveViewer(
+                                    transformationController: widget.controller.viewPositionController,
+                                    maxScale: 3,
+                                    minScale: 0.4,
+                                    constrained: false,
+                                    child: SizedBox(
+                                      width: 3500,
+                                      height: 1000,
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          CustomPaint(
+                                            size: const Size(3500, 1000), // Size of the node board
+                                            painter: NodeEditorGridPainter(
+                                              theme: widget.theme,
+                                              scale: 1.0,
                                             ),
-                                      ],
+                                          ),
+                                          AnimatedBuilder(
+                                            animation: widget.controller.nodeConnectionUpdater,
+                                            builder: (context, child) {
+                                              widget.controller.getNodesConnections();
+                                              widget.controller.context = context;
+                                              widget.controller.getSelectedNodesConnections();
+                                              if (widget.controller.nodesConnections.isEmpty) {
+                                                return const SizedBox();
+                                              } else {
+                                                return FutureBuilder(
+                                                  future: waitNextFrame(),
+                                                  builder: (context, snapshot) {
+                                                    return CustomPaint(
+                                                      key: UniqueKey(),
+                                                      size: const Size(3500, 1000), // Size of the node board
+                                                      painter: NodeConnectionPainter(
+                                                        connections: widget.controller.nodesConnections, 
+                                                        selectedConnections: widget.controller.selectedNodesConnections,
+                                                        theme: widget.theme
+                                                      ),
+                                                    );
+                                                  }
+                                                );
+                                              }   
+                                            }
+                                          ),
+                                          ...widget.controller.nodesWidgets,
+                                          if (_isDragging && _selectionRect != null)
+                                              CustomPaint(
+                                                size: const Size(3500, 1000), // Size of the node board
+                                                painter: SelectionRectPainter(_selectionRect!, widget.theme.secondary),
+                                              ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -355,7 +355,6 @@ void _selectNodesWithinRect() {
                                               }, 
                                               true
                                             );
-                                            
                                           },
                                           style: ButtonThemes.secondaryButtonStyle(context),
                                           tooltip: S.of(context).node_editor_view_new_node_tooltip,

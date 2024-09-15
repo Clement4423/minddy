@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/projects_tasks_module_task_model.dart';
+import 'package:minddy/ui/components/custom_components/custom_checkbox.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -59,25 +60,13 @@ class _ProjectSubTaskElementState extends State<ProjectSubTaskElement> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: Transform.scale(
-                        scale: 1.3,
-                        child: Checkbox(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)
-                          ),
-                          checkColor: theme.onSecondary,
-                          materialTapTargetSize: MaterialTapTargetSize.padded,
-                          side: BorderSide.none,
-                          overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-                          fillColor: widget.data.isChecked ? WidgetStatePropertyAll(theme.secondary) : WidgetStatePropertyAll(theme.onSecondary),
-                          value: widget.data.isChecked,
-                          onChanged: (value) {
-                            setState(() {
-                              widget.data.isChecked = value ?? false;
-                            });
-                            widget.controller.completedOneTask();
-                          }
-                        ),
+                      child: CustomCheckbox(
+                        value: widget.data.isChecked,
+                        onChanged: (value) async {
+                          widget.data.isChecked = !widget.data.isChecked;
+                          await widget.controller.completedOneTask();
+                        },
+                        theme: theme,
                       ),
                     ),
                     Expanded(

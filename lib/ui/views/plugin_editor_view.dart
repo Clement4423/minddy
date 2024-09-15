@@ -1,20 +1,21 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/custom_appbar_button_model.dart';
-import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/system/model/node_connection.dart';
 import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/nodes/all_nodes/math_node.dart';
 import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar_controller.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_port_widget.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_body.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_dropdown.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_informations.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_input.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_output.dart';
 import 'package:minddy/ui/components/nodes/node_editor_bottom_sheet.dart';
-import 'package:minddy/ui/components/nodes/nodes_connections_painter.dart';
 import 'package:minddy/ui/components/settings/settings_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:minddy/ui/view_models/plugin_editor_view_model.dart';
@@ -191,639 +192,160 @@ class MathNodeWidget extends StatefulWidget implements INodeWidget {
 
   @override
   NodeWidgetFunctions functions;
-  
 }
 
 class _MathNodeWidgetState extends State<MathNodeWidget> {
-  Offset? _draggingStartPort;  // Start port position
-  Offset? _currentCursorOffset; // Current cursor position
 
-  final int _outputOffsetsMaxLength = 1;
+  late NodeWidgetInformations widgetInformations;
 
-  final int _inputsOffsetsMaxLength = 2;
+  final List<MathNodeType> typesThatOnlyNeedOneInput = [
+    MathNodeType.squareRoot,
+    MathNodeType.sign,
+    MathNodeType.round,
+    MathNodeType.floor,
+    MathNodeType.ceil,
+    MathNodeType.truncate,
+    MathNodeType.sin,
+    MathNodeType.cos,
+    MathNodeType.tan,
+    MathNodeType.asin,
+    MathNodeType.acos,
+    MathNodeType.atan,
+    MathNodeType.sinh,
+    MathNodeType.cosh,
+    MathNodeType.tanh,
+    MathNodeType.asinh,
+    MathNodeType.acosh,
+    MathNodeType.atanh,
+    MathNodeType.ln,
+    MathNodeType.log10,
+    MathNodeType.abs,
+  ];
 
-  bool isDraggingWithMouse = true;
+  final List<int> inputsThatAreNoLongerNeeded = [1];
 
-  bool isDraggingStartPortFromAnotherPort = false;
-  NodePortInfo? inputPortInfo;
+  void onSelectionChanged(MathNodeType? newType) {
+    setState(() {
+      widget.node.operationType = newType ?? MathNodeType.addition;
 
-  bool isSelected = false;
-  bool isLastSelected = false;
+      // Ensure to remove unnecessary inputs from the node targets
+      if (typesThatOnlyNeedOneInput.contains(newType)) {
+        final List<NodeConnection> connections = widget.functions.getConnections();
+        widget.functions.resetUnnecessaryInputs(widget, inputsThatAreNoLongerNeeded, connections);
 
-  bool isDragging = false;
-
-  void setOffset(Offset offset, NodePortInfo portInfo) {
-    if (portInfo.type == NodePortType.input && !initializedInputsOffsets) {
-      widget.inputsOffsets.add(offset);
-
-      if (widget.inputsOffsets.length == _inputsOffsetsMaxLength) {
-        initializedInputsOffsets = true;
-      }
-    } else if (!initializedOutputsOffsets) {
-      widget.outputsOffsets.add(offset);
-
-      if (widget.outputsOffsets.length == _outputOffsetsMaxLength) {
-        initializedOutputsOffsets = true;
-      }
-    }
-  }
-
-  bool initializedOutputsOffsets = false;
-  bool initializedInputsOffsets = false;
-
-  void verifyPosition(INodeWidget w) {
-    double maxDx = (w.maxOffset.dx - w.width).clamp(0.0, double.infinity);
-    double maxDy = (w.maxOffset.dy - w.height).clamp(0.0, double.infinity);
-
-    double dx = w.position.dx.clamp(0.0, maxDx);
-    double dy = w.position.dy.clamp(0.0, maxDy);
-
-    Offset clampedPosition = Offset(dx, dy);
-    w.position = clampedPosition;
-    widget.functions.updateNode(w);
-  }
-
-  void _onDragUpdate(DragUpdateDetails details) {
-    if (!isDraggingWithMouse) {
-      return;
-    }
-    List<INodeWidget> selectedNodes = widget.functions.getSelectedNodes();
-    Offset delta = details.delta;
-
-    for (INodeWidget w in selectedNodes) {
-      w.position += delta;
-      verifyPosition(w);
-    }
-  }
-
-  Offset? getDraggingStartPortOffset() {
-    return _draggingStartPort;
-  }
-
-  void _setStartDraggingPoint(int? index, NodePortType? portType, [INodeWidget? otherNode, NodePortInfo? inputPort]) {
-    if (index == null || portType == null) {
-      return;
-    }
-
-    INodeWidget nodeWidget = otherNode ?? widget;
-
-    if (inputPort != null) {
-      inputPortInfo = inputPort;
-      isDraggingStartPortFromAnotherPort = true;
-    } else {
-      isDraggingStartPortFromAnotherPort = false;
-    }
-
-    switch (portType) {
-      case NodePortType.input:
-        _draggingStartPort = nodeWidget.inputsOffsets[index] + nodeWidget.position;
-        break;
-      case NodePortType.output:
-        _draggingStartPort = nodeWidget.outputsOffsets[index] + nodeWidget.position;
-        break;
-    }
-  }
-
-  void _handleTapDown() {
-    List<INodeWidget> selectedNodes = widget.functions.getSelectedNodes();
-    bool isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
-    if (!selectedNodes.contains(widget) && selectedNodes.length == 1 && !isShiftPressed) {
-      selectedNodes.clear();
-      selectedNodes.add(widget);
-    } else if (!selectedNodes.contains(widget) && isShiftPressed) {
-      selectedNodes.add(widget);
-    } else if (isShiftPressed) {
-      if (selectedNodes.indexOf(widget) == selectedNodes.length - 1) {
-        selectedNodes.remove(widget);
-      } else {
-        selectedNodes.remove(widget);
-        selectedNodes.add(widget);
-      }
-    }
-    widget.functions.setSelectedNode(selectedNodes);
-  }
-
-  void _handleTapUp() {
-    List<INodeWidget> selectedNodes = widget.functions.getSelectedNodes();
-    bool isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
-
-    if (!selectedNodes.contains(widget) && !isShiftPressed) {
-      if (!isShiftPressed) {
-        selectedNodes.clear();
-      }
-      selectedNodes.add(widget);
-      isSelected = true;
-    } else if (selectedNodes.contains(widget) && selectedNodes.length > 1 && !isShiftPressed) {
-      selectedNodes.clear();
-      selectedNodes.add(widget);
-    }
-
-    widget.functions.setSelectedNode(selectedNodes);
-  }
-
-  _setAsSelectedIfNotAlready() {
-    List<INodeWidget> selectedNodes = widget.functions.getSelectedNodes();
-    bool isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
-    if (!selectedNodes.contains(widget)) {
-
-      if (!isShiftPressed) {
-        selectedNodes.clear();
+        widget.functions.updateConnections();
       }
 
-      selectedNodes.add(widget);
-      widget.functions.setSelectedNode(selectedNodes);
-    }
-  }
+      widgetInformations.needToBeSmaller = typesThatOnlyNeedOneInput.contains(newType);
 
-  @override
-  Widget build(BuildContext context) {
-    List<INodeWidget> selectedNodesList = widget.functions.getSelectedNodes(); 
-    isSelected = selectedNodesList.contains(widget);
-    isLastSelected = isSelected ? selectedNodesList.last == widget : false;
-    Offset draggingStartPortOffset = _draggingStartPort?.translate(-widget.position.dx, -widget.position.dy) ?? const Offset(0, 0);
-    return Positioned(
-      top: widget.position.dy,
-      left: widget.position.dx,
-      child: MouseRegion(
-        cursor: isDragging 
-          ? Platform.isMacOS 
-            ? SystemMouseCursors.grabbing 
-            : SystemMouseCursors.move 
-          : SystemMouseCursors.basic,
-        child: GestureDetector(
-          onPanStart: (details) {
-            if (details.kind == PointerDeviceKind.mouse) {
-              isDragging = true;
-              isDraggingWithMouse = true;
-              _setAsSelectedIfNotAlready();
-            } else {
-              isDraggingWithMouse = false;
-            }
-          },
-          onPanUpdate: _onDragUpdate,
-          onPanEnd: (details) {
-            setState(() {
-              isDraggingWithMouse = true;
-              isDragging = false;  
-              widget.functions.saveState();            
-            });
-          },
-          onTapDown: (details) {_handleTapDown();},
-          onTapUp: (details) {_handleTapUp();},
-          // Whole node
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                width: widget.width,
-                height: widget.height,
-                decoration: BoxDecoration(
-                  color: widget.theme.primary,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: widget.theme.shadow.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4)
-                    )
-                  ],
-                  border: Border.all(
-                    color: isSelected 
-                      ? isLastSelected 
-                        ? DefaultAppColors.blue.color
-                        : DefaultAppColors.yellow.color
-                      : Colors.transparent, 
-                    width: 1.2,
-                    strokeAlign: BorderSide.strokeAlignOutside
-                  ),
-                ),
-                // Node body
-                child: Column(
-                  children: [
-                    // Node top part, with title
-                    Container(
-                      height: 15,
-                      width: widget.width,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)
-                        ),
-                        color: DefaultAppColors.mintGreen.color
-                      ),
-                      child: Center(
-                        // Node title
-                        child: Text(
-                          "Math operation", 
-                          style: widget.theme.titleMedium.copyWith(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 8,
-                            color: Colors.white
-                          ),
-                          maxLines: 1,
-                        ),
-                      ),
-                    ),
-                    // Output.s
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: SizedBox(
-                        height: 15,
-                        width: widget.width,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              "Value", 
-                              style: widget.theme.titleMedium.copyWith(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 8,
-                                color: widget.theme.onPrimary
-                              ),
-                              maxLines: 1,
-                            ),
-                            Transform.translate(
-                              offset: const Offset(4, 0),
-                              child: NodePortWidget(
-                                portInfo: NodePortInfo(node: widget, type: NodePortType.output, portIndex: 0), 
-                                color: DefaultAppColors.mintGreen.color,
-                                onHoveredColor: widget.theme.onSurface,
-                                setSelectedPort: widget.functions.setSelectedPort,
-                                getSelectedPort: widget.functions.getSelectedPort,
-                                setIsDragging: widget.functions.setIsDragging,
-                                getNodesConnections: widget.functions.getConnections,
-                                updateConnections: widget.functions.updateConnections,
-                                saveState: widget.functions.saveState,
-                                setOffset: setOffset,
-                                setDragStartingPort: _setStartDraggingPoint,
-                                getDraggingStartPortOffset: getDraggingStartPortOffset,
-                                setCursorPosition: (offset) {setState(() {
-                                  _currentCursorOffset = offset;
-                                });}, 
-                                addConnection: widget.functions.addConnection,
-                                getIsDragging: widget.functions.getIsDragging,
-                              )
-                            )
-                          ],
-                        )
-                      ),
-                    ),
-                    // Math operation selector
-                    Container(
-                      height: 20,
-                      width: widget.width - 10,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: widget.theme.surface
-                      ),
-                      margin: const EdgeInsets.only(top: 5),
-                      padding: const EdgeInsets.only(left: 5),
-                      child: DropdownButton(
-                        hint: Text(
-                          widget.node.operationType.name, 
-                          style: widget.theme.titleMedium.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 8,
-                            color: widget.theme.onPrimary
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                        iconSize: 18,
-                        borderRadius: BorderRadius.circular(13),
-                        menuMaxHeight: widget.height * 2,
-                        menuWidth: widget.width * 2,
-                        onChanged: (type) => setState(() {widget.node.operationType = type ?? MathNodeType.addition; widget.functions.saveState();}),
-                        underline: const SizedBox(),
-                        icon: Icon(Icons.arrow_drop_down_rounded, color: widget.theme.onSurface),
-                        dropdownColor: widget.theme.primary,
-                        isExpanded: true,
-                        items: [
-                          ...MathNodeType.values.map((type) {
-                            return DropdownMenuItem(
-                              value: type,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                child: Text(
-                                  type.name,
-                                  style: widget.theme.bodyMedium
-                                  .copyWith(
-                                    color: widget.theme.onPrimary, 
-                                    fontWeight: FontWeight.w500
-                                  ),
-                                ),
-                              )
-                            );
-                          })
-                        ], 
-                      ),
-                    ),
-                    // Input.s
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: SizedBox(
-                        height: 15,
-                        width: widget.width,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Transform.translate(
-                              offset: const Offset(-4, 0),
-                              child: NodePortWidget(
-                                portInfo: NodePortInfo(node: widget, type: NodePortType.input, portIndex: 0), 
-                                color: DefaultAppColors.mintGreen.color,
-                                onHoveredColor: widget.theme.onSurface,
-                                setSelectedPort: widget.functions.setSelectedPort,
-                                getSelectedPort: widget.functions.getSelectedPort,
-                                setIsDragging: widget.functions.setIsDragging,
-                                getNodesConnections: widget.functions.getConnections,
-                                updateConnections: widget.functions.updateConnections,
-                                saveState: widget.functions.saveState,
-                                setOffset: setOffset,
-                                setDragStartingPort: _setStartDraggingPoint,
-                                getDraggingStartPortOffset: getDraggingStartPortOffset,
-                                setCursorPosition: (offset) {setState(() {
-                                  _currentCursorOffset = offset;
-                                });}, 
-                                addConnection: widget.functions.addConnection,
-                                getIsDragging: widget.functions.getIsDragging,
-                              )
-                            ),
-                            Text(
-                              "Value", 
-                              style: widget.theme.titleMedium.copyWith(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 8,
-                                color: widget.theme.onPrimary
-                              ),
-                              maxLines: 1,
-                            ),
-                          ],
-                        )
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: SizedBox(
-                        height: 15,
-                        width: widget.width,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Transform.translate(
-                              offset: const Offset(-4, 0),
-                              child: NodePortWidget(
-                                portInfo: NodePortInfo(node: widget, type: NodePortType.input, portIndex: 1), 
-                                color: DefaultAppColors.mintGreen.color,
-                                onHoveredColor: widget.theme.onSurface,
-                                setSelectedPort: widget.functions.setSelectedPort,
-                                getSelectedPort: widget.functions.getSelectedPort,
-                                setIsDragging: widget.functions.setIsDragging,
-                                getNodesConnections: widget.functions.getConnections,
-                                updateConnections: widget.functions.updateConnections,
-                                saveState: widget.functions.saveState,
-                                setOffset: setOffset,
-                                setDragStartingPort: _setStartDraggingPoint,
-                                getDraggingStartPortOffset: getDraggingStartPortOffset,
-                                setCursorPosition: (offset) {setState(() {
-                                  _currentCursorOffset = offset;
-                                });}, 
-                                addConnection: widget.functions.addConnection,
-                                getIsDragging: widget.functions.getIsDragging,
-                              )
-                            ),
-                            Text(
-                              "Value", 
-                              style: widget.theme.titleMedium.copyWith(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 8,
-                                color: widget.theme.onPrimary
-                              ),
-                              maxLines: 1,
-                            ),
-                          ],
-                        )
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              if (_currentCursorOffset != null)
-                Builder(
-                  builder: (context) {
-                    Offset cursorOffset = draggingStartPortOffset;
-                    if (isDraggingStartPortFromAnotherPort) {
-                      cursorOffset = widget.inputsOffsets[inputPortInfo!.portIndex];
-                    }
-                    return CustomPaint(
-                      painter: CurvedLinePainter(
-                        start: draggingStartPortOffset,
-                        end: _currentCursorOffset! + cursorOffset,
-                        color: isSelected ? DefaultAppColors.blue.color : widget.theme.onSurface,
-                        plusSignColor: isDraggingStartPortFromAnotherPort ? Colors.transparent : widget.theme.onSurface,
-                        isHoveringANodePort: widget.functions.getSelectedPort() != null
-                      ),
-                    );
-                  }
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-enum NodePortType {
-  input,
-  output
-}
-
-class NodePortWidget extends StatefulWidget {
-  const NodePortWidget({
-    super.key, 
-    required this.portInfo, 
-    required this.color,
-    required this.onHoveredColor,
-    required this.setCursorPosition,
-    required this.setDragStartingPort,
-    required this.getDraggingStartPortOffset,
-    required this.addConnection, 
-    required this.setSelectedPort, 
-    required this.getSelectedPort,
-    required this.getIsDragging,
-    required this.setIsDragging,
-    required this.getNodesConnections,
-    required this.updateConnections, 
-    required this.setOffset,
-    required this.saveState
-  });
-
-  final NodePortInfo portInfo;
-  final Color color;
-  final Color onHoveredColor;
-  final Function(Offset?) setCursorPosition;
-  final Function(int?, NodePortType?, [INodeWidget?, NodePortInfo?]) setDragStartingPort;
-  final Offset? Function() getDraggingStartPortOffset;
-  final Function(NodePortInfo, [Offset? cursorPosition]) addConnection;
-  final Function(NodePortInfo?) setSelectedPort;
-  final NodePortInfo? Function() getSelectedPort;
-  final bool Function() getIsDragging;
-  final Function(bool) setIsDragging;
-  final List<NodeConnection> Function() getNodesConnections;
-  final Function updateConnections;
-  final Function(Offset, NodePortInfo) setOffset;
-  final Function saveState;
-
-  @override
-  State<NodePortWidget> createState() => _NodePortWidgetState();
-}
-
-class _NodePortWidgetState extends State<NodePortWidget> {
-  bool isHovering = false;
-  bool startedIsDragging = false;
-
-  bool isDraggingWithMouse = true;
-
-  Offset _cursorDragOffset = const Offset(0, 0);
-  NodeConnection? connection;
-
-  NodeConnection? _isAlreadyConnected() {
-    NodeConnection? connection;
-    if (widget.portInfo.type == NodePortType.input) {
-      for (NodeConnection c in widget.getNodesConnections()) {
-        if (c.endNode == widget.portInfo.node && c.endInputIndex == widget.portInfo.portIndex) {
-          connection = c;
-        }
-      }
-    } else {
-      for (NodeConnection c in widget.getNodesConnections()) {
-        if (c.startNode == widget.portInfo.node && c.startOutputIndex == widget.portInfo.portIndex) {
-          connection = c;
-        }
-      }
-    }
-    return connection;
-  }
-
-  Offset _calculatePosition(BuildContext context) {
-    RenderBox child = context.findRenderObject() as RenderBox;
-    Offset childOffset = child.localToGlobal(Offset.zero);
-
-    RenderBox parent = (widget.portInfo.node.key as GlobalKey).currentContext!.findRenderObject() as RenderBox;
-    Offset childRelativeToParent = parent.globalToLocal(childOffset);
-
-    childRelativeToParent = childRelativeToParent.translate(4, 4);
-
-    return childRelativeToParent;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.setOffset(_calculatePosition(context), widget.portInfo);
+      widget.functions.saveState();
     });
-    return MouseRegion(
-      onEnter: (event) {
-        setState(() {
-          if (widget.getIsDragging() && !startedIsDragging) {
-            widget.setSelectedPort(widget.portInfo);
-            isHovering = true;
-          }
-        });
-      },
-      onExit: (event) {
-        setState(() {
-          if (widget.getIsDragging() && !startedIsDragging || isHovering) {
-            widget.setSelectedPort(null);
-            isHovering = false;
-          }
-        });
-      },
-      child: GestureDetector(
-        onPanStart: (details) {
-          if (details.kind != PointerDeviceKind.mouse) {
-            isDraggingWithMouse = false;
-            return;
-          } else {
-            isDraggingWithMouse = true;
-          }
-          connection = _isAlreadyConnected();
-          if (connection != null && widget.portInfo.type == NodePortType.input) {
-            widget.setIsDragging(true);
+  }
 
-            widget.setDragStartingPort(
-              connection!.startOutputIndex,
-              NodePortType.output,
-              connection!.startNode,
-              widget.portInfo
-            );
+  @override
+  void initState() {
+    widgetInformations = NodeWidgetInformations(widget: widget, setState: setState);
+    widget.functions.verifyPosition(widget);
+    widget.functions.verifyInputs(widget);
+    widgetInformations.needToBeSmaller = typesThatOnlyNeedOneInput.contains(widget.node.operationType);
+    super.initState();
+  }
 
-            connection!.startNode.node.targets.removeWhere((target) => target.node.id == widget.portInfo.node.node.id && target.inputIndex == widget.portInfo.portIndex);
-
-            widget.updateConnections();
-          } else {
-            widget.setDragStartingPort(widget.portInfo.portIndex, widget.portInfo.type);
-            widget.setIsDragging(true);
-            startedIsDragging = true;
-          }
-        },
-        onPanUpdate: (details) {
-          if (isDraggingWithMouse) {
-            _cursorDragOffset += details.delta;
-            widget.setCursorPosition(_cursorDragOffset);
-          }
-        },
-        onPanEnd: (details) async {
-          if (isDraggingWithMouse) {
-            Offset draggingStartPortOffset = widget.getDraggingStartPortOffset()!;
-            if (connection != null) {
-              if (widget.getSelectedPort() != null && widget.portInfo.type != NodePortType.output) { 
-                // This ensure that no connection is added and that the add menu is not shown 
-                // if the user simply disconnected a node from another.
-                widget.addConnection(
-                  NodePortInfo(
-                    node: connection!.startNode, 
-                    type: NodePortType.output, 
-                    portIndex: connection!.startOutputIndex
-                  ),
-                  _cursorDragOffset + draggingStartPortOffset
-                );
-              } else if (widget.portInfo.type == NodePortType.output) {
-                widget.addConnection(
-                  NodePortInfo(
-                    node: widget.portInfo.node, 
-                    type: NodePortType.output, 
-                    portIndex: widget.portInfo.portIndex
-                  ),
-                  _cursorDragOffset + draggingStartPortOffset
-                );
-              }
-            } else {
-              widget.addConnection(widget.portInfo, _cursorDragOffset + draggingStartPortOffset);
-            }
-
-            widget.setCursorPosition(null);
-            widget.setDragStartingPort(null, null);
-            widget.setIsDragging(false);
-            startedIsDragging = false;
-            _cursorDragOffset = const Offset(0, 0);
-            setState(() {isHovering = false;});
-            widget.saveState();
-          } else {
-            isDraggingWithMouse = true;
-          }
-        },
-        child: Container(
-          width: 8,
-          height: 8,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(color: isHovering ? widget.onHoveredColor : Colors.black, width: 1.0),
-            color: isHovering ? widget.onHoveredColor : widget.color
-          ),
-        ),
+  @override
+  Widget build(BuildContext context) {
+    Offset draggingStartPortOffset = widgetInformations.draggingStartPort?.translate(-widget.position.dx, -widget.position.dy) ?? const Offset(0, 0);
+    return NodeWidgetBody(
+      nodeTitle: 'Math operation', 
+      theme: widget.theme, 
+      nodeWidget: widget, 
+      needToBeSmaller: widgetInformations.needToBeSmaller, 
+      inputsThatAreNoLongerNeeded: inputsThatAreNoLongerNeeded, 
+      isDraggingStartPortFromAnotherPort: widgetInformations.isDraggingStartPortFromAnotherPort, 
+      draggingStartPortOffset: draggingStartPortOffset, 
+      currentCursorOffset: widgetInformations.currentCursorOffset,
+      inputPortInfo: widgetInformations.inputPortInfo, 
+      children: [
+        // Output.s
+      Padding(
+        padding: const EdgeInsets.only(top: 5),
+        child: NodeWidgetOutput(
+          portInfo: NodePortInfo(
+            node: widget, 
+            type: NodePortType.output, 
+            portIndex: 0
+          ), 
+          setCursorPosition: (offset) {setState(() {
+            widgetInformations.currentCursorOffset = offset;
+          });}, 
+          theme: widget.theme, 
+          label: "Value", 
+          type: widget.node.outputsTypes.elementAt(0),
+          setDragStartingPort: widgetInformations.setStartDraggingPoint, 
+          getDraggingStartPortOffset: widgetInformations.getDraggingStartPortOffset, 
+          setOffset: widgetInformations.setNodePortOffset, 
+          functions: widget.functions
+        )
       ),
+      // Math operation selector
+      NodeWidgetDropdown<MathNodeType>(
+        value: widget.node.operationType,
+        items: MathNodeType.values,
+        onChanged: onSelectionChanged,
+        width: widget.width,
+        height: widget.height,
+        theme: widget.theme,
+        itemToString: (type) {
+          String firstLetter = type.name.characters.first;
+          return '${firstLetter.toUpperCase()}${type.name.substring(1).toLowerCase()}';
+        },
+      ),
+      // Input.s
+      Padding(
+        padding: const EdgeInsets.only(top: 5),
+        child: NodeWidgetInput(
+          portInfo: NodePortInfo(
+            node: widget, 
+            type: NodePortType.input, 
+            portIndex: 0
+          ), 
+          setCursorPosition: (offset) {setState(() {
+            widgetInformations.currentCursorOffset = offset;
+          });}, 
+          theme: widget.theme, 
+          isConnected: widget.functions.isPortAlreadyHaveConnection(0, NodePortType.input, widget),
+          connectedLabel: "Value", 
+          type: widget.node.inputsTypes.elementAt(0), 
+          setDragStartingPort: widgetInformations.setStartDraggingPoint, 
+          getDraggingStartPortOffset: widgetInformations.getDraggingStartPortOffset, 
+          setOffset: widgetInformations.setNodePortOffset, 
+          onValueChanged: widget.functions.changeValueForPort, 
+          functions: widget.functions
+        )
+      ),
+      if (!typesThatOnlyNeedOneInput.contains(widget.node.operationType))
+        Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: NodeWidgetInput(
+            portInfo: NodePortInfo(
+              node: widget, 
+              type: NodePortType.input, 
+              portIndex: 1
+            ), 
+            setCursorPosition: (offset) {setState(() {
+              widgetInformations.currentCursorOffset = offset;
+            });}, 
+            theme: widget.theme, 
+            isConnected: widget.functions.isPortAlreadyHaveConnection(1, NodePortType.input, widget), 
+            connectedLabel: "Value", 
+            type: widget.node.inputsTypes.elementAt(1), 
+            setDragStartingPort: widgetInformations.setStartDraggingPoint, 
+            getDraggingStartPortOffset: widgetInformations.getDraggingStartPortOffset, 
+            setOffset: widgetInformations.setNodePortOffset, 
+            onValueChanged: widget.functions.changeValueForPort, 
+            functions: widget.functions
+          )
+        )
+      ]
     );
   }
 }

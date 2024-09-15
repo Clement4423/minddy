@@ -6,8 +6,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/initialize/app_state.dart';
 import 'package:minddy/system/initialize/initialize.dart';
+import 'package:minddy/system/router/animated_route_builder.dart';
 import 'package:minddy/system/router/app_router.dart';
 import 'package:minddy/ui/theme/theme.dart';
+import 'package:minddy/ui/views/loading_screen.dart';
 import 'package:window_size/window_size.dart';
 
 late ThemeMode _currentThemeMode;
@@ -40,13 +42,15 @@ class MainApp extends StatelessWidget {
   // TODO : Documenter tout le code
   // TODO : Faire les tests
   // TODO : Implémenter une fonctionnalitée de recherche à l'interieur d'un article pour chercher un mot clé
+  // TODO : Tools note rapide ?
   // TODO : Ajouter tous les articles de base
   // TODO : Faire les articles 'aide' pour les modules
+  // TODO : Refaire le systeme des articles
   // TODO : Faire l'écran d'erreur au lancement
   // TODO : Faire thème high contrast et l'ajouter au main
   // TODO : Terminer les paramètres
   // TODO : Faire en sorte de pouvoir mettre un projet en privé, pour nécessiter le mot de passe pour l'ouvrir
-  // TODO : Tools note rapide ?
+  // TODO : Changer le format de stockage des dates pour utiliser le format ISO8601
   // TODO : Terminer la page des projets
   // TODO : Pouvoir changer l'icone des categories de notes
   // TODO : Ajouter une fonction pour sauvagarder le projet avant de fermer l'app
@@ -87,10 +91,12 @@ class MainApp extends StatelessWidget {
                 navigatorKey: AppRouter.router.navigatorKey,
                 onGenerateRoute: (settings) {
                   final builder = AppRouter.router.routes[settings.name];
-                  return MaterialPageRoute(builder: (context) => builder!(context));
+                  if (builder == null) {
+                    return AnimatedRouteBuilder(page: LoadingScreen(routeName: _routeName));
+                  }
+                  return AnimatedRouteBuilder(page: builder(context));
                 },
-                initialRoute: _routeName,
-                home: const LoadingScreen(),
+                home: const SizedBox()
               );
             }
 
@@ -102,25 +108,16 @@ class MainApp extends StatelessWidget {
   }
 }
 
-// Loading Screen Widget
-class LoadingScreen extends StatelessWidget {
-  const LoadingScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
-}
-
 class ErrorScreen extends StatelessWidget {
   const ErrorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LoadingScreen(),
+    return MaterialApp(
+      themeMode: ThemeMode.system,
+      theme: AppTheme.getLightTheme,
+      darkTheme: AppTheme.getDarkTheme,
+      home: const LoadingScreen(routeName: ''),
     );
   }
 }

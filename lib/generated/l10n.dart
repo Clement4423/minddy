@@ -50,6 +50,26 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `minddy`
+  String get app_name {
+    return Intl.message(
+      'minddy',
+      name: 'app_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Everything happens here.`
+  String get app_slogan {
+    return Intl.message(
+      'Everything happens here.',
+      name: 'app_slogan',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Copy`
   String get system_files_copy_text {
     return Intl.message(

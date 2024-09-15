@@ -1,5 +1,7 @@
 {
     "@@locale": "en_US",
+    "app_name": "minddy",
+    "app_slogan": "Everything happens here.",
     "system_files_copy_text" : "Copy",
     "appbar_go_home": "Go back home",
     "welcome_appbar" : "Welcome",

@@ -311,6 +311,7 @@ _showCategoriesDestinationMenu(BuildContext context, StylesGetters theme, NoteEd
             await controller.saveNote();
             await controller.moveNote(category.categoryName);
             if (context.mounted) {
+              controller.onClosed!();
               Navigator.pop(context);
             }
           },

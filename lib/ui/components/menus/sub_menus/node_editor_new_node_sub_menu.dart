@@ -475,22 +475,23 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           // Note
-                                          Tooltip(
-                                            message: S.of(context).node_editor_add_sub_menu_note,
-                                            child: Container(
-                                              padding: const EdgeInsets.only(left: 10),
-                                              width: 300,
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  S.of(context).node_editor_add_sub_menu_note,
-                                                  style: widget.theme.bodyMedium.copyWith(color: widget.theme.onPrimary),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 2
+                                          if (selectedNode!.typesCanChange)
+                                            Tooltip(
+                                              message: S.of(context).node_editor_add_sub_menu_note,
+                                              child: Container(
+                                                padding: const EdgeInsets.only(left: 10),
+                                                width: 300,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    S.of(context).node_editor_add_sub_menu_note,
+                                                    style: widget.theme.bodyMedium.copyWith(color: widget.theme.onPrimary),
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 2
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
                                           // Add button
                                           Container(
                                             width: 110,
@@ -574,6 +575,7 @@ class NodeEditorNewNodeSubMenuNodeModel {
   String description;
   List<NodeDataType> inputsTypes;
   List<NodeDataType> outputsTypes;
+  bool typesCanChange;
 
   NodeCategory category;
 
@@ -585,7 +587,8 @@ class NodeEditorNewNodeSubMenuNodeModel {
     required this.inputsTypes, 
     required this.outputsTypes, 
     required this.category, 
-    required this.create
+    required this.create,
+    required this.typesCanChange
   });
 }
 
@@ -600,7 +603,7 @@ String _getNodeCategoryTranslatedName(NodeCategory category) {
   }
 }
 
-Color _getCorrectColorBasedOnType(NodeDataType type) {
+Color getCorrectColorBasedOnNodeDataType(NodeDataType type) {
   switch (type) {
     case NodeDataType.any:
       return DefaultAppColors.grey.color;
@@ -636,7 +639,7 @@ List<Widget> _createIndexedInputsOutputsList(List<NodeDataType> types, StylesGet
             height: 8,
             margin: const EdgeInsets.only(left: 10, right: 10),
             decoration: BoxDecoration(
-              color: _getCorrectColorBasedOnType(type),
+              color: getCorrectColorBasedOnNodeDataType(type),
               borderRadius: BorderRadius.circular(4)
             ),
           ),

@@ -6,13 +6,13 @@ import 'package:minddy/ui/components/nodes/controllers/node_editor_bottom_sheet_
 import 'package:minddy/ui/components/nodes/controllers/node_editor_state.dart';
 import 'package:minddy/ui/components/nodes/node_widget_tree.dart';
 import 'package:minddy/ui/theme/theme.dart';
+import 'package:minddy/ui/views/plugin_editor_view.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:flutter/cupertino.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/model/plugin_info.dart';
-import 'package:minddy/ui/views/plugin_editor_view.dart';
 
 class PluginEditorViewModel {
 

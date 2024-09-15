@@ -33,9 +33,19 @@ class NodeConnectionPainter extends CustomPainter {
       startPoint += connection.startNode.position;
       endPoint += connection.endNode.position;
 
-      // Calculate control points for the curve
-      final controlPoint1 = Offset(startPoint.dx + (endPoint.dx - startPoint.dx) / 2, startPoint.dy);
-      final controlPoint2 = Offset(endPoint.dx - (endPoint.dx - startPoint.dx) / 2, endPoint.dy);
+      final dx = (endPoint.dx - startPoint.dx).abs().clamp(0, 150);
+      final dy = (endPoint.dy - startPoint.dy).abs().clamp(0, 1);
+
+      const bendFactor = 0.5;
+
+      Offset controlPoint1, controlPoint2;
+      if (startPoint.dx < endPoint.dx) {
+        controlPoint1 = Offset((startPoint.dx + dx * 0.5), startPoint.dy);
+        controlPoint2 = Offset((endPoint.dx - dx * 0.5), endPoint.dy);
+      } else {
+        controlPoint1 = Offset(startPoint.dx + dx * bendFactor, startPoint.dy - dy * bendFactor);
+        controlPoint2 = Offset(endPoint.dx - dx * bendFactor, endPoint.dy + dy * bendFactor);
+      }
 
       final path = Path()
         ..moveTo(startPoint.dx, startPoint.dy)
@@ -82,8 +92,20 @@ class CurvedLinePainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
-    final controlPoint1 = Offset(start.dx + (end.dx - start.dx) / 2, start.dy);
-    final controlPoint2 = Offset(end.dx - (end.dx - start.dx) / 2, end.dy);
+    // Calculate the distance between the start and end points
+    final dx = (end.dx - start.dx).abs().clamp(0, 150);
+    final dy = (end.dy - start.dy).abs().clamp(0, 1);
+
+    const bendFactor = 0.5;
+
+    Offset controlPoint1, controlPoint2;
+    if (start.dx < end.dx) {
+      controlPoint1 = Offset(start.dx + dx * 0.5, start.dy);
+      controlPoint2 = Offset(end.dx - dx * 0.5, end.dy);
+    } else {
+      controlPoint1 = Offset(start.dx + dx * bendFactor, start.dy - dy * bendFactor);
+      controlPoint2 = Offset(end.dx - dx * bendFactor, end.dy + dy * bendFactor);
+    }
 
     final path = Path()
       ..moveTo(start.dx, start.dy)
@@ -102,7 +124,6 @@ class CurvedLinePainter extends CustomPainter {
     canvas.drawCircle(start, 3, circlePainter);
 
     if (!isHoveringANodePort) {
-      // Draw a plus sign at the end of the line
       final plusPaint = Paint()
         ..color = plusSignColor
         ..strokeCap = StrokeCap.round
@@ -110,17 +131,15 @@ class CurvedLinePainter extends CustomPainter {
 
       const double plusSize = 3;
 
-      // Draw horizontal line of the plus sign
       canvas.drawLine(
-        Offset(end.dx - plusSize, (end.dy - 10)),
-        Offset(end.dx + plusSize, (end.dy - 10)),
+        Offset(end.dx - plusSize, end.dy - 10),
+        Offset(end.dx + plusSize, end.dy - 10),
         plusPaint,
       );
 
-      // Draw vertical line of the plus sign
       canvas.drawLine(
-        Offset(end.dx, (end.dy - 10) - plusSize),
-        Offset(end.dx, (end.dy - 10) + plusSize),
+        Offset(end.dx, end.dy - 10 - plusSize),
+        Offset(end.dx, end.dy - 10 + plusSize),
         plusPaint,
       );
     }

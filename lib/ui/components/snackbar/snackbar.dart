@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
@@ -120,60 +121,66 @@ class _CustomSnackbarState extends State<_CustomSnackbar> with SingleTickerProvi
               color: Colors.transparent,
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: Container(
-                  width: 550,
-                  height: 65,
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: theme.surface,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: theme.shadow.withOpacity(0.10),
-                        blurRadius: 10,
-                        offset: const Offset(5, 5)
-                      )
-                    ]
-                  ),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 12),
-                        child: IconButton(
-                          tooltip: S.of(context).snackbar_cancel_button,
-                          style: ButtonThemes.secondaryButtonStyle(context),
-                          onPressed: () {
-                            _startCloseAnimation();
-                            _hasBeenClosed = true;
-                            return;
-                          }, 
-                          icon: Icon(Icons.close_rounded, color: theme.onPrimary),
-                        ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                    child: Container(
+                      width: 550,
+                      height: 65,
+                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: theme.primaryContainer,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: theme.shadow.withOpacity(0.10),
+                            blurRadius: 10,
+                            offset: const Offset(5, 5)
+                          )
+                        ]
                       ),
-                      Expanded(
-                        child: Text(
-                          widget.message,
-                          style: theme.bodyMedium.copyWith(color: theme.onSurface),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: IconButton(
+                              tooltip: S.of(context).snackbar_cancel_button,
+                              style: ButtonThemes.secondaryButtonStyle(context),
+                              onPressed: () {
+                                _startCloseAnimation();
+                                _hasBeenClosed = true;
+                                return;
+                              }, 
+                              icon: Icon(Icons.close_rounded, color: theme.onPrimary),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              widget.message,
+                              style: theme.bodyMedium.copyWith(color: theme.onSurface),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          TextButton(
+                            style: ButtonThemes.primaryButtonStyle(context),
+                            onPressed: () async {
+                              widget.argument != null 
+                                ? await widget.action(widget.argument) 
+                                : await widget.action();
+                              _startCloseAnimation();
+                              _hasBeenClosed = true;
+                              return;
+                            },
+                            child: Text(
+                              widget.actionLabel,
+                              style: theme.bodyMedium.copyWith(color: theme.onSecondary),
+                            ),
+                          ),
+                        ],
                       ),
-                      TextButton(
-                        style: ButtonThemes.primaryButtonStyle(context),
-                        onPressed: () async {
-                          widget.argument != null 
-                            ? await widget.action(widget.argument) 
-                            : await widget.action();
-                          _startCloseAnimation();
-                          _hasBeenClosed = true;
-                          return;
-                        },
-                        child: Text(
-                          widget.actionLabel,
-                          style: theme.bodyMedium.copyWith(color: theme.onSecondary),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),

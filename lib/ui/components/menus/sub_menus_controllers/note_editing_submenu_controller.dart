@@ -74,7 +74,7 @@ class NoteEditingSubMenuController extends ChangeNotifier {
 
   Future<bool> moveNote(String destinationCategory) async {
     try {
-      if (noteModel.category == 'PROJECT') {
+      if (noteModel.category == 'PROJECT' || destinationCategory == 'PROJECT') {
         bool isProjectNoteMoved = await notesModuleController.moveProjectNote(noteModel, destinationCategory);
         return isProjectNoteMoved;
       } else {

@@ -117,7 +117,7 @@ class NodeTree {
       if (nextNode.inputs.length < nextNode.inputsTypes.length) {
         nextNode.inputs = List.generate(nextNode.inputsTypes.length, (i) {
           NodeDataType type = nextNode.inputsTypes[i];
-          return NodeData(type: type, value: getDefultTypeValue(type));
+          return NodeData(type: type, value: getDefaultNodeDataTypeValue(type));
         });
       }
 
@@ -136,23 +136,6 @@ class NodeTree {
       } catch (e) {
         return;
       }
-    }
-  }
-
-  dynamic getDefultTypeValue(NodeDataType type) {
-    switch (type) {
-      case NodeDataType.boolean:
-        return false;      
-      case NodeDataType.number:
-        return 1;
-      case NodeDataType.string:
-        return '';
-      case NodeDataType.list:
-        return [];
-      case NodeDataType.color:
-        return null;
-      case NodeDataType.any: 
-        return true;
     }
   }
 
@@ -289,3 +272,20 @@ List<String> convertListToListString(List list) {
 
   return stringList;
 }
+
+dynamic getDefaultNodeDataTypeValue(NodeDataType type) {
+    switch (type) {
+      case NodeDataType.boolean:
+        return false;      
+      case NodeDataType.number:
+        return 1.00;
+      case NodeDataType.string:
+        return '';
+      case NodeDataType.list:
+        return [];
+      case NodeDataType.color:
+        return null;
+      case NodeDataType.any: 
+        return true;
+    }
+  }
