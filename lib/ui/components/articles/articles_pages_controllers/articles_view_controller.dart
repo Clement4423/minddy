@@ -7,13 +7,14 @@ import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/model/article_info.dart';
 import 'package:minddy/system/model/articles_elements.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_code.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_text.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_image.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_list.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_subtitle.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_saving_controller.dart';
-import 'package:minddy/ui/components/snackbar/snackbar.dart';
+import 'package:minddy/ui/components/notifications/notification_widget.dart';
 
 class ArticlesViewController extends ChangeNotifier {
   final ArticleInfo articleInfos;
@@ -67,12 +68,13 @@ class ArticlesViewController extends ChangeNotifier {
       return true;
     } else {
       if (context.mounted) {
-        showBottomSnackBar(
-          context,
-          S.current.articles_corrupted_file,
-          S.current.snacbar_close_button,
-          () {},
-          10,
+        NotificationHandler.addNotification(
+          NotificationModel(
+            content: S.of(context).articles_corrupted_file,
+            action: null, 
+            actionLabel: S.of(context).snacbar_close_button, 
+            duration: NotificationDuration.long
+          )
         );
       }
       return false;
@@ -106,12 +108,13 @@ class ArticlesViewController extends ChangeNotifier {
         }
         notifyListeners();
       } else {
-        showBottomSnackBar(
-          context, 
-          S.current.articles_impossible_to_load_content,
-          S.current.snacbar_close_button, 
-          () {}, 
-          8
+        NotificationHandler.addNotification(
+          NotificationModel(
+            content: S.current.articles_impossible_to_load_content,
+            action: null, 
+            actionLabel: S.current.snacbar_close_button, 
+            duration: NotificationDuration.long
+          )
         );
         Navigator.pop(context);
       }

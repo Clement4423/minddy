@@ -120,24 +120,6 @@ class ArticlesExporter {
     return imagesPathList;
   }
 
-  static Future<String?> _getArticleContentWithNewCategory(String articlePath, int categoryIndex) async {
-    try {
-      Map<String, dynamic>? articleFileContent = await StaticVariables.fileSource.readJsonFile(articlePath);
-
-      if (articleFileContent != null) {
-        articleFileContent['category'] = categoryIndex;
-
-        String encodedFile = jsonEncode(articleFileContent);
-        return encodedFile;
-
-      }
-      return null;
-    } catch(e) {
-      await AppLogs.writeError(e, "articles_exporter.dart - _getArticleContentWithNewCategory");
-      return null;
-    }
-  }
-
   static Future<String?> _getArticleTitle(String articlePath) async {
     try {
       Map<String, dynamic>? articleFileContent = await StaticVariables.fileSource.readJsonFile(articlePath);

@@ -5,7 +5,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/articles/articles_maker/article_maker_create_article_file.dart';
 import 'package:minddy/system/initialize/initialize.dart';
-import 'package:minddy/ui/components/snackbar/snackbar.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
+import 'package:minddy/ui/components/notifications/notification_widget.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:window_size/window_size.dart';
 
@@ -108,13 +109,14 @@ class _ArticlesMakerHomeViewState extends State<ArticlesMakerHomeView> {
                         onPressed: () async {
                           bool isArticleCreated = await ArticleMaker.createArticle(jsonContent);
                           if (isArticleCreated && context.mounted) {
-                            showBottomSnackBar(
-                              context, 
-                              "Article has been created", 
-                              "Perfect", 
-                              () {}, 
-                              12
-                            ); 
+                            NotificationHandler.addNotification(
+                              NotificationModel(
+                                content: "Article has been created", 
+                                action: null, 
+                                actionLabel: "Perfect", 
+                                duration: NotificationDuration.long
+                              )
+                            );
                             setState(() {
                               _textEditingController.clear();
                             });

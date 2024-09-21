@@ -24,6 +24,9 @@ class NodeWidgetCursorConnectionPainter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isDraggingFromAnInput = draggingStartPortOffset.dx < 5 && !isDraggingStartPortFromAnotherPort;
+
     return Builder(
       builder: (context) {
         Offset cursorOffset = draggingStartPortOffset;
@@ -32,11 +35,12 @@ class NodeWidgetCursorConnectionPainter extends StatelessWidget {
         }
         return CustomPaint(
           painter: CurvedLinePainter(
-            start: draggingStartPortOffset,
-            end: _currentCursorOffset! + cursorOffset,
+            portOffset: draggingStartPortOffset,
+            cursorOffset: _currentCursorOffset! + cursorOffset,
+            isDraggingFromAnInput: isDraggingFromAnInput,
             color: isSelected ? DefaultAppColors.blue.color : widget.theme.onSurface,
             plusSignColor: isDraggingStartPortFromAnotherPort ? Colors.transparent : widget.theme.onSurface,
-            isHoveringANodePort: widget.functions.getSelectedPort() != null
+            isHoveringANodePort: widget.functions.getSelectedPort() != null,
           ),
         );
       }

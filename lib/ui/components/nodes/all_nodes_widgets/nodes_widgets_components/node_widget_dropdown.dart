@@ -56,20 +56,40 @@ class _NodeWidgetDropdownState<T> extends State<NodeWidgetDropdown<T>> {
           menuMaxHeight: widget.height * 2,
           onChanged: widget.onChanged,
           icon: Icon(Icons.arrow_drop_down_rounded, color: widget.theme.onSurface),
-          dropdownColor: widget.theme.primary,
+          dropdownColor: widget.theme.surface,
+          itemHeight: kMinInteractiveDimension,
           isExpanded: true,
           items: [
             ...widget.items.map((item) {
               return DropdownMenuItem<T>(
                 value: item,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    widget.itemToString(item),
-                    style: widget.theme.bodyMedium.copyWith(
-                      color: widget.theme.onPrimary,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  height: kMinInteractiveDimension,
+                  width: widget.width * 2,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: widget.items.indexOf(item) == 0 
+                        ? BorderSide.none 
+                        : BorderSide(
+                        color: widget.theme.onSurface, 
+                        width: 0.5
+                      )
+                    )
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.itemToString(item),
+                        style: widget.theme.bodyMedium.copyWith(
+                          color: widget.theme.onPrimary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                 ),
               );

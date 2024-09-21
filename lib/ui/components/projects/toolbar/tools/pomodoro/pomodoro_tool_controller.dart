@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
 import 'package:minddy/system/projects/tools/countdown_timer.dart';
+import 'package:minddy/ui/components/notifications/notification_widget.dart';
 import 'package:minddy/ui/components/projects/toolbar/tools/pomodoro/pomodoro_tool_focus_timer_view.dart';
 import 'package:minddy/ui/components/projects/toolbar/tools/pomodoro/pomodoro_tool_setup_view.dart';
 import 'package:minddy/ui/components/projects/toolbar/tools/pomodoro/pomodoro_tool_timer_view.dart';
-import 'package:minddy/ui/components/snackbar/snackbar.dart';
 
 enum PomodoroSession {
   working,
@@ -43,11 +44,9 @@ class PomodoroToolController {
   static bool get useFocusTimer => _useFocusTimer;
   static Widget get actualView => _actualView;
 
-  static bool _lastSend = false;
 
   static void _notify() {
-    _lastSend = !_lastSend;
-    _controller.add(_lastSend);
+    _controller.add(true);
   }
 
   static void nextRound(BuildContext context, [bool showMessage = true]) {
@@ -60,14 +59,13 @@ class PomodoroToolController {
           if (showMessage) {
             int totalWorkingDuration = _workingDuration * _doneRepetitions;
             PomodoroToolController.showMessage(
-              context, 
               S.current.tool_pomodoro_end_session(totalWorkingDuration)
             );
           }
         }
 
         if (showMessage) {
-          PomodoroToolController.showMessage(context, S.current.tool_pomodoro_break_snackbar(_breakDuration ~/ 60));
+          PomodoroToolController.showMessage(S.current.tool_pomodoro_break_snackbar(_breakDuration ~/ 60));
         }
 
         currentSession = PomodoroSession.pause;
@@ -77,7 +75,7 @@ class PomodoroToolController {
         break;
       case PomodoroSession.pause:
         if (showMessage) {
-          PomodoroToolController.showMessage(context, S.current.tool_pomodoro_work_snackbar(_workingDuration ~/ 60));
+          PomodoroToolController.showMessage(S.current.tool_pomodoro_work_snackbar(_workingDuration ~/ 60));
         }
         currentSession = PomodoroSession.working;
         timer = CountdownTimer(durationInSeconds: _workingDuration);
@@ -95,16 +93,15 @@ class PomodoroToolController {
     }
   } 
 
-  static void showMessage(BuildContext context, String message) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-        showBottomSnackBar(
-          context, 
-          message, 
-          S.current.snacbar_close_button, 
-          () {}, 
-          10
-        );
-      });
+  static void showMessage(String message) {
+      NotificationHandler.addNotification(
+        NotificationModel(
+          content: message,
+          action: null,
+          actionLabel: S.current.snacbar_close_button, 
+          duration: NotificationDuration.long
+        )
+      );
   } 
 
   static void startTimer() {

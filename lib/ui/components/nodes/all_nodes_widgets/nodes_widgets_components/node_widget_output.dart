@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
@@ -12,7 +11,6 @@ class NodeWidgetOutput extends StatefulWidget {
     super.key, 
     required this.theme, 
     required this.label,
-    required this.type, 
     required this.portInfo,
     required this.setCursorPosition, 
     required this.setDragStartingPort, 
@@ -25,7 +23,6 @@ class NodeWidgetOutput extends StatefulWidget {
   final NodeWidgetFunctions functions;
   /// The text that will before the node port to explicit the output action.
   final String label;
-  final NodeDataType type;
   final NodePortInfo portInfo;
   final Function(Offset?) setCursorPosition;
   final Function(int?, NodePortType?, [INodeWidget?, NodePortInfo?]) setDragStartingPort;
@@ -37,6 +34,15 @@ class NodeWidgetOutput extends StatefulWidget {
 }
 
 class _NodeWidgetOutputState extends State<NodeWidgetOutput> {
+
+  late final NodeDataType type;
+
+  @override
+  void initState() {
+    type = widget.portInfo.node.node.outputsTypes.elementAt(widget.portInfo.portIndex);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -58,7 +64,7 @@ class _NodeWidgetOutputState extends State<NodeWidgetOutput> {
             offset: const Offset(4, 0),
             child: NodePortWidget(
               portInfo: widget.portInfo, 
-              color: getCorrectColorBasedOnNodeDataType(widget.type), 
+              color: getCorrectColorBasedOnNodeDataType(type), 
               onHoveredColor: widget.theme.onSurface, 
               setCursorPosition: widget.setCursorPosition, 
               setDragStartingPort: widget.setDragStartingPort, 

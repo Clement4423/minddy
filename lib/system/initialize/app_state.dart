@@ -1,10 +1,10 @@
 import 'dart:async';
 
 class AppState {
-  static StreamController<void> streamController = StreamController();
+  static StreamController<String> streamController = StreamController<String>();
 
   static void stateChanged() {
-    void event = '';
+    String event = 'new';
     streamController.add(event);
   }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
 import 'package:minddy/ui/components/custom_components/switch_tile.dart';
-import 'package:minddy/ui/components/snackbar/snackbar.dart';
+import 'package:minddy/ui/components/notifications/notification_widget.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class CustomDropdownButton extends StatelessWidget {
@@ -55,12 +56,13 @@ class CustomDropdownButton extends StatelessWidget {
         onChanged: (value) async {
           await action(value);
           if (needToRestart && context.mounted) {
-            showBottomSnackBar(
-              context, 
-              S.of(context).snackbar_restart_needed_text, 
-              S.of(context).snackbar_restart_button, 
-              closeApp,
-              7
+            NotificationHandler.addNotification(
+              NotificationModel(
+                content: S.of(context).snackbar_restart_needed_text,
+                action: closeApp, 
+                actionLabel: S.of(context).snackbar_restart_button, 
+                duration: NotificationDuration.long
+              )
             );
           }
         },

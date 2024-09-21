@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/project_info.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
 import 'package:minddy/system/projects/app_project.dart';
 import 'package:minddy/system/router/app_router.dart';
 import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_button.dart';
 import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_item_model.dart';
+import 'package:minddy/ui/components/notifications/notification_widget.dart';
 import 'package:minddy/ui/components/settings/settings_menu.dart';
-import 'package:minddy/ui/components/snackbar/snackbar.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class ProjectCard extends StatelessWidget {
@@ -92,12 +93,16 @@ class ProjectCard extends StatelessWidget {
                 text: Text(S.of(context).project_card_delete, style: theme.bodyMedium.copyWith(color: theme.error)),
                 icon: Icon(Icons.delete_outline_rounded, color: theme.error,), 
                 action: () {
-                  showBottomSnackBar(
-                    context, 
-                    S.of(context).snackbar_delete_element_text(projectInfo.name), 
-                    S.of(context).snackbar_delete_button, 
-                    () async {await AppProject.removeProject(projectInfo.path); function();},
-                    12,
+                  NotificationHandler.addNotification(
+                    NotificationModel(
+                      content: S.of(context).snackbar_delete_element_text(projectInfo.name),
+                      action: () async {
+                        await AppProject.removeProject(projectInfo.path);
+                        function();
+                      }, 
+                      actionLabel: S.of(context).snackbar_delete_button, 
+                      duration: NotificationDuration.long
+                    )
                   );
                 },
               ),

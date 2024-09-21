@@ -362,6 +362,100 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Number"),
         "node_editor_view_side_panel_variables_variable_type_text":
             MessageLookupByLibrary.simpleMessage("Text"),
+        "node_widgets_boolean_node_options_and":
+            MessageLookupByLibrary.simpleMessage("And"),
+        "node_widgets_boolean_node_options_equal":
+            MessageLookupByLibrary.simpleMessage("Equal"),
+        "node_widgets_boolean_node_options_imply":
+            MessageLookupByLibrary.simpleMessage("Imply"),
+        "node_widgets_boolean_node_options_not":
+            MessageLookupByLibrary.simpleMessage("Not"),
+        "node_widgets_boolean_node_options_notAnd":
+            MessageLookupByLibrary.simpleMessage("Not And"),
+        "node_widgets_boolean_node_options_notEqual":
+            MessageLookupByLibrary.simpleMessage("Not Equal"),
+        "node_widgets_boolean_node_options_notOr":
+            MessageLookupByLibrary.simpleMessage("Not Or"),
+        "node_widgets_boolean_node_options_or":
+            MessageLookupByLibrary.simpleMessage("Or"),
+        "node_widgets_boolean_node_options_subtract":
+            MessageLookupByLibrary.simpleMessage("Subtract"),
+        "node_widgets_boolean_node_title":
+            MessageLookupByLibrary.simpleMessage("Logic Operations"),
+        "node_widgets_comparison_node_options_equal":
+            MessageLookupByLibrary.simpleMessage("Equal to"),
+        "node_widgets_comparison_node_options_greatherThan":
+            MessageLookupByLibrary.simpleMessage("Greater than"),
+        "node_widgets_comparison_node_options_greatherThanOrEqual":
+            MessageLookupByLibrary.simpleMessage("Greater than or equal to"),
+        "node_widgets_comparison_node_options_lessThan":
+            MessageLookupByLibrary.simpleMessage("Less than"),
+        "node_widgets_comparison_node_options_lessThanOrEqual":
+            MessageLookupByLibrary.simpleMessage("Less than or equal to"),
+        "node_widgets_comparison_node_title":
+            MessageLookupByLibrary.simpleMessage("Comparison"),
+        "node_widgets_math_node_options_abs":
+            MessageLookupByLibrary.simpleMessage("Absolute Value"),
+        "node_widgets_math_node_options_acos":
+            MessageLookupByLibrary.simpleMessage("Arccosine"),
+        "node_widgets_math_node_options_acosh":
+            MessageLookupByLibrary.simpleMessage("Inverse Hyperbolic Cosine"),
+        "node_widgets_math_node_options_addition":
+            MessageLookupByLibrary.simpleMessage("Addition"),
+        "node_widgets_math_node_options_asin":
+            MessageLookupByLibrary.simpleMessage("Arcsine"),
+        "node_widgets_math_node_options_asinh":
+            MessageLookupByLibrary.simpleMessage("Inverse Hyperbolic Sine"),
+        "node_widgets_math_node_options_atan":
+            MessageLookupByLibrary.simpleMessage("Arctangent"),
+        "node_widgets_math_node_options_atanh":
+            MessageLookupByLibrary.simpleMessage("Inverse Hyperbolic Tangent"),
+        "node_widgets_math_node_options_ceil":
+            MessageLookupByLibrary.simpleMessage("Ceil"),
+        "node_widgets_math_node_options_cos":
+            MessageLookupByLibrary.simpleMessage("Cosine"),
+        "node_widgets_math_node_options_cosh":
+            MessageLookupByLibrary.simpleMessage("Hyperbolic Cosine"),
+        "node_widgets_math_node_options_division":
+            MessageLookupByLibrary.simpleMessage("Division"),
+        "node_widgets_math_node_options_floor":
+            MessageLookupByLibrary.simpleMessage("Floor"),
+        "node_widgets_math_node_options_ln":
+            MessageLookupByLibrary.simpleMessage("Natural Logarithm"),
+        "node_widgets_math_node_options_log10":
+            MessageLookupByLibrary.simpleMessage("Logarithm Base 10"),
+        "node_widgets_math_node_options_max":
+            MessageLookupByLibrary.simpleMessage("Max"),
+        "node_widgets_math_node_options_min":
+            MessageLookupByLibrary.simpleMessage("Min"),
+        "node_widgets_math_node_options_multiplication":
+            MessageLookupByLibrary.simpleMessage("Multiplication"),
+        "node_widgets_math_node_options_power":
+            MessageLookupByLibrary.simpleMessage("Power"),
+        "node_widgets_math_node_options_round":
+            MessageLookupByLibrary.simpleMessage("Round"),
+        "node_widgets_math_node_options_sign":
+            MessageLookupByLibrary.simpleMessage("Sign"),
+        "node_widgets_math_node_options_sin":
+            MessageLookupByLibrary.simpleMessage("Sine"),
+        "node_widgets_math_node_options_sinh":
+            MessageLookupByLibrary.simpleMessage("Hyperbolic Sine"),
+        "node_widgets_math_node_options_squareRoot":
+            MessageLookupByLibrary.simpleMessage("Square Root"),
+        "node_widgets_math_node_options_substraction":
+            MessageLookupByLibrary.simpleMessage("Substraction"),
+        "node_widgets_math_node_options_tan":
+            MessageLookupByLibrary.simpleMessage("Tangent"),
+        "node_widgets_math_node_options_tanh":
+            MessageLookupByLibrary.simpleMessage("Hyperbolic Tangent"),
+        "node_widgets_math_node_options_truncate":
+            MessageLookupByLibrary.simpleMessage("Truncate"),
+        "node_widgets_math_node_title":
+            MessageLookupByLibrary.simpleMessage("Calculations"),
+        "node_widgets_treshold_text":
+            MessageLookupByLibrary.simpleMessage("Treshold"),
+        "node_widgets_value_text":
+            MessageLookupByLibrary.simpleMessage("Value"),
         "project_card_delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "project_card_duplicate":
             MessageLookupByLibrary.simpleMessage("Duplicate"),

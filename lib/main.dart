@@ -6,8 +6,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/initialize/app_state.dart';
 import 'package:minddy/system/initialize/initialize.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
 import 'package:minddy/system/router/animated_route_builder.dart';
 import 'package:minddy/system/router/app_router.dart';
+import 'package:minddy/ui/components/notifications/notifications_builder.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:minddy/ui/views/loading_screen.dart';
 import 'package:window_size/window_size.dart';
@@ -61,49 +63,87 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<void>(
+    return StreamBuilder<Object>(
       stream: AppState.streamController.stream,
-      builder: (context, snapshot) {
-        return FutureBuilder<bool>(
+      builder: (context, streamSnapshot) {
+        return FutureBuilder(
           future: initializeState(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const ErrorScreen();
-            }
-
-            if (snapshot.hasData) {
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                localizationsDelegates: const [
-                  S.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: S.delegate.supportedLocales,
-                locale: _currentLocale,
-                themeMode: _currentThemeMode,
-                theme: AppTheme.getLightTheme,
-                darkTheme: AppTheme.getDarkTheme,
-                highContrastTheme: AppTheme.getBWLightTheme,
-                highContrastDarkTheme: AppTheme.getBWDarkThemeData,
-                title: "minddy",
-                navigatorKey: AppRouter.router.navigatorKey,
-                onGenerateRoute: (settings) {
-                  final builder = AppRouter.router.routes[settings.name];
-                  if (builder == null) {
-                    return AnimatedRouteBuilder(page: LoadingScreen(routeName: _routeName));
+          builder: (context, initSnapshot) {
+            return Stack(
+              alignment: Alignment.topLeft,
+              children: [
+                // Main app
+                Builder(
+                  builder: (context) {
+                    if (initSnapshot.hasError) {
+                      return const ErrorScreen();
+                    }
+            
+                    if (initSnapshot.hasData) {
+                      return MaterialApp(
+                        navigatorKey: AppRouter.router.navigatorKey,
+                        debugShowCheckedModeBanner: false,
+                        localizationsDelegates: const [
+                          S.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
+                        ],
+                        supportedLocales: S.delegate.supportedLocales,
+                        locale: _currentLocale,
+                        themeMode: _currentThemeMode,
+                        theme: AppTheme.getLightTheme,
+                        darkTheme: AppTheme.getDarkTheme,
+                        highContrastTheme: AppTheme.getBWLightTheme,
+                        highContrastDarkTheme: AppTheme.getBWDarkThemeData,
+                        title: "minddy",
+                        initialRoute: _routeName,
+                        onGenerateRoute: (settings) {
+                          final builder = AppRouter.router.routes[settings.name];
+                          if (builder == null) {
+                            return AnimatedRouteBuilder(page: LoadingScreen(routeName: _routeName));
+                          }
+                          return AnimatedRouteBuilder(page: builder(context));
+                        },
+                        home: Container(
+                          color: Colors.transparent,
+                        )
+                      );
+                    }
+            
+                    return const ErrorScreen();
                   }
-                  return AnimatedRouteBuilder(page: builder(context));
-                },
-                home: const SizedBox()
-              );
-            }
-
-            return const ErrorScreen();
-          },
+                ),
+                // Notification builder
+                StreamBuilder(
+                  stream: NotificationHandler.notifications,
+                  initialData: const <NotificationState>[],
+                  builder: (context, notificationSnapshot) {
+                    if (initSnapshot.hasData && notificationSnapshot.hasData) {
+                      ThemeMode themeMode = ThemeMode.system;
+                      return Theme(
+                        data: themeMode == ThemeMode.dark 
+                          ? AppTheme.getDarkTheme 
+                          : AppTheme.getLightTheme,
+                        child: Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: NotificationsBuilder(
+                            notifications: notificationSnapshot.data as List<NotificationState>
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Container(
+                        color: Colors.transparent,
+                      );
+                    }
+                  }
+                ),
+              ],
+            );
+          }
         );
-      },
+      }
     );
   }
 }
@@ -117,7 +157,7 @@ class ErrorScreen extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: AppTheme.getLightTheme,
       darkTheme: AppTheme.getDarkTheme,
-      home: const LoadingScreen(routeName: ''),
+      home: const LoadingScreen(routeName: '', redirect: false),
     );
   }
 }

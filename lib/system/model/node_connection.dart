@@ -10,6 +10,11 @@ class NodeConnection {
   NodeConnection(this.startNode, this.startOutputIndex, this.endNode, this.endInputIndex);
 
   @override
+  String toString() {
+    return "Start node: $startNode - End node $endNode - Start output index $startOutputIndex - End input index: $endInputIndex";
+  }
+
+  @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 

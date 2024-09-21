@@ -60,6 +60,7 @@ flutter:
   assets:
     - assets/logo/articles/
     - assets/logo/calendar/
+    - assets/logo/app_logo/
     - assets/logo/
     - assets/background/
     - assets/custom_icons/

@@ -29,10 +29,10 @@ class BooleanNode implements INode {
   List<NodeData> inputs = [];
 
   @override
-  List<NodeDataType> inputsTypes = []; // TODO : Fill inputs types
+  List<NodeDataType> inputsTypes = [NodeDataType.boolean, NodeDataType.boolean];
 
   @override
-  List<NodeDataType> outputsTypes = []; // TODO : Fill outputs types;
+  List<NodeDataType> outputsTypes = [NodeDataType.boolean];
 
   @override
   List<NodeOutput> outputs = [];
@@ -94,11 +94,11 @@ class BooleanNode implements INode {
   BooleanNode copy() {
     return BooleanNode()
       ..id = id
-      ..inputs = inputs
+      ..inputs = List.from(inputs)
       ..inputsTypes = inputsTypes
       ..outputs = outputs
       ..outputsTypes = outputsTypes
-      ..targets = targets
+      ..targets = List.from(targets)
       ..booleanType = booleanType;
   }
 
@@ -111,7 +111,7 @@ class BooleanNode implements INode {
       'inputsTypes': inputsTypes.map((e) => e.name).toList(),
       'outputsTypes': outputsTypes.map((e) => e.name).toList(),
       'targets': targets.map((e) => e.toString()).toList(),
-      'booleanType': booleanType
+      'booleanType': booleanType.index
     };
     return jsonEncode(map);
   }

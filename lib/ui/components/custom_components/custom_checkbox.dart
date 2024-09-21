@@ -7,13 +7,17 @@ class CustomCheckbox extends StatefulWidget {
     required this.value,
     required this.onChanged,
     required this.theme,
-    this.scale = 1.4
+    this.scale = 1.4, 
+    this.backgroundColor, 
+    this.checkedColor
   });
 
   final bool value;
   final Function(bool) onChanged;
   final StylesGetters theme;
   final double scale;
+  final Color? backgroundColor;
+  final Color? checkedColor;
 
   @override
   State<CustomCheckbox> createState() => _CustomCheckboxState();
@@ -36,16 +40,13 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
         checkColor: widget.theme.onSecondary,
         fillColor: WidgetStatePropertyAll(
           isChecked 
-            ? widget.theme.secondary 
-            : widget.theme.primary
+            ? widget.checkedColor ?? widget.theme.secondary 
+            : widget.backgroundColor ?? widget.theme.primary
         ),
         hoverColor: widget.theme.onPrimary.withOpacity(0.8),
         splashRadius: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        side: const BorderSide(
-          color: Colors.black,
-          width: 0.0
-        ),
+        side: BorderSide.none,
         value: isChecked,
         onChanged: (bool? value) {
           setState(() {

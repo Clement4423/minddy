@@ -110,7 +110,7 @@ class _UnlockContentSubmenuState extends State<_UnlockContentSubmenu> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(10),
-                            child: SvgPicture.asset("assets/logo/Logo.svg", width: 35, height: 35,),
+                            child: SvgPicture.asset("assets/logo/app_logo/logo_minddy.svg", width: 35, height: 35),
                           )
                         ],
                       )

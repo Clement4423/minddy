@@ -179,11 +179,11 @@ class MathNode implements INode {
   MathNode copy() {
     return MathNode()
       ..id = id
-      ..inputs = inputs
+      ..inputs = List.from(inputs)
       ..inputsTypes = inputsTypes
       ..outputs = outputs
       ..outputsTypes = outputsTypes
-      ..targets = targets
+      ..targets = List.from(targets)
       ..operationType = operationType;
   }
 

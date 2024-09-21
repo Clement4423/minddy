@@ -20,5 +20,5 @@ class AnimatedRouteBuilder extends PageRouteBuilder {
           child: child,
         );
       },
-      );
+    );
 }

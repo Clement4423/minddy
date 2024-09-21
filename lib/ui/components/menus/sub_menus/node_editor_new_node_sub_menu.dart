@@ -83,11 +83,13 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
             cursor: SystemMouseCursors.click,
             child: GestureDetector(
               onTap: () {
-                selectedNode = node;
+                setState(() {
+                  selectedNode = node;
+                });
               },
               child: Container(
                 margin: const EdgeInsets.only(bottom: 4.0),
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(top: 8.0, left: 8.0, bottom: 8.0),
                 decoration: BoxDecoration(
                   color: node == selectedNode ? widget.theme.secondary : widget.theme.primary,
                   borderRadius: BorderRadius.circular(8.0),
@@ -102,6 +104,7 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                       padding: const EdgeInsets.only(left: 5),
                       child: Text(
                         node.name,
+                        overflow: TextOverflow.ellipsis,
                         style: widget.theme.bodyMedium
                         .copyWith(
                           color: node == selectedNode ? widget.theme.onSecondary : widget.theme.onPrimary,
@@ -471,7 +474,7 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                                       height: 60,
                                       width: 440,
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.end,
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
                                           // Note
@@ -479,7 +482,7 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                                             Tooltip(
                                               message: S.of(context).node_editor_add_sub_menu_note,
                                               child: Container(
-                                                padding: const EdgeInsets.only(left: 10),
+                                                padding: const EdgeInsets.only(right: 10),
                                                 width: 300,
                                                 child: Padding(
                                                   padding: const EdgeInsets.all(8.0),
@@ -593,13 +596,25 @@ class NodeEditorNewNodeSubMenuNodeModel {
 }
 
 enum NodeCategory {
-  math
+  math,
+  logic
 }
 
 String _getNodeCategoryTranslatedName(NodeCategory category) {
   switch (category) {
     case NodeCategory.math:
       return "Math";
+    case NodeCategory.logic:
+      return 'Logic';
+  }
+}
+
+IconData _getNodeCategoryIcon(NodeCategory category) {
+  switch (category) {
+    case NodeCategory.math:
+      return Icons.calculate_outlined;
+    case NodeCategory.logic:
+      return Icons.settings_outlined;
   }
 }
 
@@ -617,13 +632,6 @@ Color getCorrectColorBasedOnNodeDataType(NodeDataType type) {
       return DefaultAppColors.lightPurple.color;
     case NodeDataType.color:
       return DefaultAppColors.pink.color;
-  }
-}
-
-IconData _getNodeCategoryIcon(NodeCategory category) {
-  switch (category) {
-    case NodeCategory.math:
-      return Icons.calculate_outlined;
   }
 }
 

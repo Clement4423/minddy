@@ -48,11 +48,11 @@ class NumberOutputNode implements IOutputNode {
   NumberOutputNode copy() {
     return NumberOutputNode()
       ..id = id
-      ..inputs = inputs
+      ..inputs = List.from(inputs)
       ..inputsTypes = inputsTypes
       ..outputs = outputs
       ..outputsTypes = outputsTypes
-      ..targets = targets;
+      ..targets = List.from(targets);
   }
 
   @override

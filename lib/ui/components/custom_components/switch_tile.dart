@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/ui/components/snackbar/snackbar.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
+import 'package:minddy/ui/components/notifications/notification_widget.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class SwitchTile extends StatefulWidget {
@@ -35,12 +36,13 @@ class _SwitchTileState extends State<SwitchTile> {
     
     await widget.action(_isSwitched);
     if (widget.needToRestart && mounted) {
-      showBottomSnackBar(
-        context, 
-        S.of(context).snackbar_restart_needed_text, 
-        S.of(context).snackbar_restart_button, 
-        closeApp,
-        7
+      NotificationHandler.addNotification(
+        NotificationModel(
+          content: S.of(context).snackbar_restart_needed_text,
+          action: closeApp, 
+          actionLabel: S.of(context).snackbar_restart_button, 
+          duration: NotificationDuration.long
+        )
       );
     } 
   }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/project_info.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
 import 'package:minddy/system/projects/app_project.dart';
-import 'package:minddy/ui/components/snackbar/snackbar.dart';
+import 'package:minddy/ui/components/notifications/notification_widget.dart';
 
 class ProjectSettingsViewModel extends ChangeNotifier {
   final ProjectInfo projectInfo;
@@ -45,12 +46,18 @@ class ProjectSettingsViewModel extends ChangeNotifier {
   }
 
   void deleteProject(BuildContext context) async {
-    showBottomSnackBar(
-      context, 
-      S.of(context).snackbar_delete_element_text(_projectName), 
-      S.of(context).snackbar_delete_button, 
-      () {AppProject.removeProject(projectInfo.path); Navigator.pop(context);},
-      12,
+    NotificationHandler.addNotification(
+      NotificationModel(
+        content: S.of(context).snackbar_delete_element_text(projectInfo.name),
+        action: () async {
+          await AppProject.removeProject(projectInfo.name);
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+        },
+        actionLabel: S.of(context).snackbar_delete_button, 
+        duration: NotificationDuration.long
+      )
     );
   }
 }

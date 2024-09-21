@@ -16,7 +16,7 @@ class ComparisonNode implements INode {
 
   ComparisonNodeType comparisonType;
 
-  ComparisonNode({this.comparisonType = ComparisonNodeType.equal});
+  ComparisonNode({this.comparisonType = ComparisonNodeType.lessThan});
 
   @override
   int id = createUniqueId();
@@ -25,7 +25,7 @@ class ComparisonNode implements INode {
   List<NodeData> inputs = [];
 
   @override
-  List<NodeDataType> inputsTypes = [NodeDataType.any, NodeDataType.any];
+  List<NodeDataType> inputsTypes = [NodeDataType.number, NodeDataType.number];
 
   @override
   List<NodeDataType> outputsTypes = [NodeDataType.boolean];
@@ -80,11 +80,11 @@ class ComparisonNode implements INode {
   ComparisonNode copy() {
     return ComparisonNode()
       ..id = id
-      ..inputs = inputs
+      ..inputs = List.from(inputs)
       ..inputsTypes = inputsTypes
       ..outputs = outputs
       ..outputsTypes = outputsTypes
-      ..targets = targets
+      ..targets = List.from(targets)
       ..comparisonType = comparisonType;
   }
 

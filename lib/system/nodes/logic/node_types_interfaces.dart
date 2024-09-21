@@ -146,6 +146,7 @@ class NodeWidgetFunctions {
   final List<INodeWidget> Function() getSelectedNodes;
   final Function(List<INodeWidget>) setSelectedNode;
   final Function(INodeWidget) updateNode;
+  final Function updateAllNodes;
   final Function updateConnections;
   final Function saveState;
 
@@ -159,6 +160,7 @@ class NodeWidgetFunctions {
     required this.getSelectedNodes,
     required this.setSelectedNode,
     required this.updateNode,
+    required this.updateAllNodes,
     required this.updateConnections,
     required this.saveState,
   });

@@ -3266,6 +3266,476 @@ class S {
     );
   }
 
+  /// `Value`
+  String get node_widgets_value_text {
+    return Intl.message(
+      'Value',
+      name: 'node_widgets_value_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Treshold`
+  String get node_widgets_treshold_text {
+    return Intl.message(
+      'Treshold',
+      name: 'node_widgets_treshold_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calculations`
+  String get node_widgets_math_node_title {
+    return Intl.message(
+      'Calculations',
+      name: 'node_widgets_math_node_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Addition`
+  String get node_widgets_math_node_options_addition {
+    return Intl.message(
+      'Addition',
+      name: 'node_widgets_math_node_options_addition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Substraction`
+  String get node_widgets_math_node_options_substraction {
+    return Intl.message(
+      'Substraction',
+      name: 'node_widgets_math_node_options_substraction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Division`
+  String get node_widgets_math_node_options_division {
+    return Intl.message(
+      'Division',
+      name: 'node_widgets_math_node_options_division',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Multiplication`
+  String get node_widgets_math_node_options_multiplication {
+    return Intl.message(
+      'Multiplication',
+      name: 'node_widgets_math_node_options_multiplication',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Square Root`
+  String get node_widgets_math_node_options_squareRoot {
+    return Intl.message(
+      'Square Root',
+      name: 'node_widgets_math_node_options_squareRoot',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Power`
+  String get node_widgets_math_node_options_power {
+    return Intl.message(
+      'Power',
+      name: 'node_widgets_math_node_options_power',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Min`
+  String get node_widgets_math_node_options_min {
+    return Intl.message(
+      'Min',
+      name: 'node_widgets_math_node_options_min',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Max`
+  String get node_widgets_math_node_options_max {
+    return Intl.message(
+      'Max',
+      name: 'node_widgets_math_node_options_max',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign`
+  String get node_widgets_math_node_options_sign {
+    return Intl.message(
+      'Sign',
+      name: 'node_widgets_math_node_options_sign',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Round`
+  String get node_widgets_math_node_options_round {
+    return Intl.message(
+      'Round',
+      name: 'node_widgets_math_node_options_round',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Floor`
+  String get node_widgets_math_node_options_floor {
+    return Intl.message(
+      'Floor',
+      name: 'node_widgets_math_node_options_floor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ceil`
+  String get node_widgets_math_node_options_ceil {
+    return Intl.message(
+      'Ceil',
+      name: 'node_widgets_math_node_options_ceil',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Truncate`
+  String get node_widgets_math_node_options_truncate {
+    return Intl.message(
+      'Truncate',
+      name: 'node_widgets_math_node_options_truncate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sine`
+  String get node_widgets_math_node_options_sin {
+    return Intl.message(
+      'Sine',
+      name: 'node_widgets_math_node_options_sin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cosine`
+  String get node_widgets_math_node_options_cos {
+    return Intl.message(
+      'Cosine',
+      name: 'node_widgets_math_node_options_cos',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tangent`
+  String get node_widgets_math_node_options_tan {
+    return Intl.message(
+      'Tangent',
+      name: 'node_widgets_math_node_options_tan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Arcsine`
+  String get node_widgets_math_node_options_asin {
+    return Intl.message(
+      'Arcsine',
+      name: 'node_widgets_math_node_options_asin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Arccosine`
+  String get node_widgets_math_node_options_acos {
+    return Intl.message(
+      'Arccosine',
+      name: 'node_widgets_math_node_options_acos',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Arctangent`
+  String get node_widgets_math_node_options_atan {
+    return Intl.message(
+      'Arctangent',
+      name: 'node_widgets_math_node_options_atan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hyperbolic Sine`
+  String get node_widgets_math_node_options_sinh {
+    return Intl.message(
+      'Hyperbolic Sine',
+      name: 'node_widgets_math_node_options_sinh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hyperbolic Cosine`
+  String get node_widgets_math_node_options_cosh {
+    return Intl.message(
+      'Hyperbolic Cosine',
+      name: 'node_widgets_math_node_options_cosh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hyperbolic Tangent`
+  String get node_widgets_math_node_options_tanh {
+    return Intl.message(
+      'Hyperbolic Tangent',
+      name: 'node_widgets_math_node_options_tanh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inverse Hyperbolic Sine`
+  String get node_widgets_math_node_options_asinh {
+    return Intl.message(
+      'Inverse Hyperbolic Sine',
+      name: 'node_widgets_math_node_options_asinh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inverse Hyperbolic Cosine`
+  String get node_widgets_math_node_options_acosh {
+    return Intl.message(
+      'Inverse Hyperbolic Cosine',
+      name: 'node_widgets_math_node_options_acosh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inverse Hyperbolic Tangent`
+  String get node_widgets_math_node_options_atanh {
+    return Intl.message(
+      'Inverse Hyperbolic Tangent',
+      name: 'node_widgets_math_node_options_atanh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Natural Logarithm`
+  String get node_widgets_math_node_options_ln {
+    return Intl.message(
+      'Natural Logarithm',
+      name: 'node_widgets_math_node_options_ln',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logarithm Base 10`
+  String get node_widgets_math_node_options_log10 {
+    return Intl.message(
+      'Logarithm Base 10',
+      name: 'node_widgets_math_node_options_log10',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Absolute Value`
+  String get node_widgets_math_node_options_abs {
+    return Intl.message(
+      'Absolute Value',
+      name: 'node_widgets_math_node_options_abs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Comparison`
+  String get node_widgets_comparison_node_title {
+    return Intl.message(
+      'Comparison',
+      name: 'node_widgets_comparison_node_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Less than`
+  String get node_widgets_comparison_node_options_lessThan {
+    return Intl.message(
+      'Less than',
+      name: 'node_widgets_comparison_node_options_lessThan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Less than or equal to`
+  String get node_widgets_comparison_node_options_lessThanOrEqual {
+    return Intl.message(
+      'Less than or equal to',
+      name: 'node_widgets_comparison_node_options_lessThanOrEqual',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Greater than`
+  String get node_widgets_comparison_node_options_greatherThan {
+    return Intl.message(
+      'Greater than',
+      name: 'node_widgets_comparison_node_options_greatherThan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Greater than or equal to`
+  String get node_widgets_comparison_node_options_greatherThanOrEqual {
+    return Intl.message(
+      'Greater than or equal to',
+      name: 'node_widgets_comparison_node_options_greatherThanOrEqual',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Equal to`
+  String get node_widgets_comparison_node_options_equal {
+    return Intl.message(
+      'Equal to',
+      name: 'node_widgets_comparison_node_options_equal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logic Operations`
+  String get node_widgets_boolean_node_title {
+    return Intl.message(
+      'Logic Operations',
+      name: 'node_widgets_boolean_node_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `And`
+  String get node_widgets_boolean_node_options_and {
+    return Intl.message(
+      'And',
+      name: 'node_widgets_boolean_node_options_and',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Or`
+  String get node_widgets_boolean_node_options_or {
+    return Intl.message(
+      'Or',
+      name: 'node_widgets_boolean_node_options_or',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not`
+  String get node_widgets_boolean_node_options_not {
+    return Intl.message(
+      'Not',
+      name: 'node_widgets_boolean_node_options_not',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not And`
+  String get node_widgets_boolean_node_options_notAnd {
+    return Intl.message(
+      'Not And',
+      name: 'node_widgets_boolean_node_options_notAnd',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not Or`
+  String get node_widgets_boolean_node_options_notOr {
+    return Intl.message(
+      'Not Or',
+      name: 'node_widgets_boolean_node_options_notOr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Equal`
+  String get node_widgets_boolean_node_options_equal {
+    return Intl.message(
+      'Equal',
+      name: 'node_widgets_boolean_node_options_equal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not Equal`
+  String get node_widgets_boolean_node_options_notEqual {
+    return Intl.message(
+      'Not Equal',
+      name: 'node_widgets_boolean_node_options_notEqual',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Imply`
+  String get node_widgets_boolean_node_options_imply {
+    return Intl.message(
+      'Imply',
+      name: 'node_widgets_boolean_node_options_imply',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Subtract`
+  String get node_widgets_boolean_node_options_subtract {
+    return Intl.message(
+      'Subtract',
+      name: 'node_widgets_boolean_node_options_subtract',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Change color`
   String get default_app_colors_change_color {
     return Intl.message(

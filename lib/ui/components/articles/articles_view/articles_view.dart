@@ -209,6 +209,7 @@ class _ArticleViewState extends State<ArticleView> {
                                                   readOnly: widget.controller.readOnly,
                                                   controller: TextEditingController(text: widget.controller.articleTitle == "" ? null : widget.controller.articleTitle),
                                                   style: widget.theme.titleLarge.copyWith(color: widget.theme.onPrimary, fontSize: 30, overflow: TextOverflow.ellipsis),
+                                                  mouseCursor: widget.controller.readOnly ? SystemMouseCursors.basic : SystemMouseCursors.text,
                                                   cursorColor: widget.theme.onPrimary,
                                                   decoration: InputDecoration(
                                                     border: InputBorder.none,

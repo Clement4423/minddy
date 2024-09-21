@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:minddy/system/nodes/logic/node_tree.dart';
 import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/boolean_node_widget.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/comparison_node_widget.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/math_node_widget.dart';
 import 'package:minddy/ui/components/nodes/controllers/node_editor_bottom_sheet_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
-import 'package:minddy/ui/views/plugin_editor_view.dart';
 
 class NodeWidgetGraph {
   Map<INodeWidget, List<INodeWidget>> adjacencyList = {};
@@ -149,6 +151,10 @@ INodeWidget? _getCorrectNodeWidgetType(String type, String json, Offset maxOffse
   switch (type) {
     case 'MathNodeWidget':
       return MathNodeWidget.fromJson(key, json, maxOffset, theme, controller.widgetFunctions);
+    case 'ComparisonNodeWidget':
+      return ComparisonNodeWidget.fromJson(key, json, maxOffset, theme, controller.widgetFunctions);
+    case 'BooleanNodeWidget':
+      return BooleanNodeWidget.fromJson(key, json, maxOffset, theme, controller.widgetFunctions);
     default:
       return null;
   }

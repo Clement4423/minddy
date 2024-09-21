@@ -5,9 +5,10 @@ import 'package:minddy/system/articles/article_categories.dart';
 import 'package:minddy/system/articles/articles_importer/articles_importer.dart';
 import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/model/article_info.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_view_controller.dart';
 import 'package:minddy/ui/components/articles/articles_view/articles_view.dart';
-import 'package:minddy/ui/components/snackbar/snackbar.dart';
+import 'package:minddy/ui/components/notifications/notification_widget.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class ArticlesPagebar extends StatelessWidget {
@@ -43,22 +44,24 @@ class ArticlesPagebar extends StatelessWidget {
                      bool? isArticleImported =  await ArticlesImporter.import(context);
                      if (context.mounted) {
                       if (isArticleImported != null && isArticleImported) {
-                        showBottomSnackBar(
-                          context, 
-                          S.of(context).articles_imported, 
-                          S.of(context).snacbar_close_button, 
-                          () {}, 
-                          12
+                        NotificationHandler.addNotification(
+                          NotificationModel(
+                            content: S.of(context).articles_imported,
+                            action: null, 
+                            actionLabel: S.of(context).snacbar_close_button, 
+                            duration: NotificationDuration.long
+                          )
                         );
                         resetFunction();
                       }
                       else {
-                        showBottomSnackBar(
-                          context, 
-                          S.of(context).articles_not_imported, 
-                          S.of(context).snacbar_close_button, 
-                          () {}, 
-                          12
+                        NotificationHandler.addNotification(
+                          NotificationModel(
+                            content: S.of(context).articles_not_imported,
+                            action: null, 
+                            actionLabel: S.of(context).snacbar_close_button, 
+                            duration: NotificationDuration.long
+                          )
                         );
                       }
                      }

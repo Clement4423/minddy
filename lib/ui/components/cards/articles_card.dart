@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_view_controller.dart';
 import 'package:minddy/ui/components/articles/articles_view/articles_view.dart';
 import 'package:minddy/ui/components/cards/articles_card_controller.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_button.dart';
 import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_item_model.dart';
-import 'package:minddy/ui/components/snackbar/snackbar.dart';
+import 'package:minddy/ui/components/notifications/notification_widget.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class ArticleCard extends StatefulWidget {
@@ -103,13 +104,15 @@ class _ArticleCardState extends State<ArticleCard> {
                           ),
                           icon: Icon(Icons.delete_outline_rounded, color: theme.error),
                           action: () {
-                            showBottomSnackBar(
-                              context,
-                              S.of(context).snackbar_delete_element_text(S.of(context).articles_card_delete_this_article),
-                              S.of(context).snackbar_delete_button,
-                              widget._controller.deleteArticle,
-                              12,
-                              argument: widget.refreshMethod
+                            NotificationHandler.addNotification(
+                              NotificationModel(
+                                content: S.of(context).snackbar_delete_element_text(S.of(context).articles_card_delete_this_article),
+                                action: () async {
+                                  await widget._controller.deleteArticle(widget.refreshMethod);
+                                },
+                                actionLabel: S.of(context).snackbar_delete_button, 
+                                duration: NotificationDuration.long
+                              )
                             );
                           },
                         ),

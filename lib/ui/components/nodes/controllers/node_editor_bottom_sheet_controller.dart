@@ -10,12 +10,12 @@ import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
 import 'package:minddy/system/nodes/nodes_add_menu_models.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/system/utils/move_element_to_end_of_list.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/math_node_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_port_widget.dart';
 import 'package:minddy/ui/components/nodes/controllers/node_editor_state.dart';
 import 'package:minddy/ui/components/nodes/node_editor_show_node_add_menu.dart';
 import 'package:minddy/ui/components/nodes/node_widget_tree.dart';
 import 'package:minddy/ui/theme/theme.dart';
-import 'package:minddy/ui/views/plugin_editor_view.dart';
 
 class NodeConnectionUpdater extends ChangeNotifier {
   notify() {
@@ -75,6 +75,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
       getSelectedNodes: getSelectedNodes, 
       setSelectedNode: setSelectedNode, 
       updateNode: updateNode, 
+      updateAllNodes: updateAllNodes,
       updateConnections: nodeConnectionUpdater.notify,
       saveState: saveState
     );
@@ -131,7 +132,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
   }
 
   void pasteCopiedNodes() {
-    List<INodeWidget> nodesToPaste = List.from(copiedNodes);
+    List<INodeWidget> nodesToPaste = copiedNodes.map((n) => n.copy(GlobalKey())).toList();
 
     for (INodeWidget widget in nodesToPaste) {
       globalKeys[widget] = widget.key as GlobalKey;
@@ -449,7 +450,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
             NodeTarget(
               outputIndex: firstPort.portIndex, 
               node: nodeToAdd.node, 
-              inputIndex: nodeToAdd.node.outputsTypes.indexOf(firstPort.node.node.inputsTypes.elementAt(firstPort.portIndex))
+              inputIndex: nodeToAdd.node.inputsTypes.indexOf(firstPort.node.node.outputsTypes.elementAt(firstPort.portIndex))
             )
           );
           addNode(nodeToAdd);
@@ -482,11 +483,11 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
     }
 
     if (firstPort.type == NodePortType.input && selectedPortInfo!.type == NodePortType.output) {
-      if (nodeTree.isNodeBefore(firstPort.node.node, selectedPortInfo!.node.node)) {
+      NodeTarget targetToAdd = NodeTarget(outputIndex: selectedPortInfo!.portIndex, node: firstPort.node.node, inputIndex: firstPort.portIndex);
+      if (nodeTree.isInputNodeBefore(selectedPortInfo!.node.node, firstPort.node.node, targetToAdd)) {
         print("Node is before");
         return;
       } else {
-        NodeTarget targetToAdd = NodeTarget(outputIndex: selectedPortInfo!.portIndex, node: firstPort.node.node, inputIndex: firstPort.portIndex);
         bool isTypesCompatible = _checkTypesCompatibilyty(selectedPortInfo!.node, targetToAdd);
         if (!isTypesCompatible) {
           print("Types are not compatible");
@@ -505,11 +506,11 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
         selectedPortInfo!.node.node.targets.add(targetToAdd);
       }
     } else if (firstPort.type == NodePortType.output && selectedPortInfo!.type == NodePortType.input) {
-      if (nodeTree.isNodeBefore(selectedPortInfo!.node.node, firstPort.node.node)) {
+      NodeTarget targetToAdd = NodeTarget(outputIndex: firstPort.portIndex, node: selectedPortInfo!.node.node, inputIndex: selectedPortInfo!.portIndex);
+      if (nodeTree.isInputNodeBefore(firstPort.node.node, selectedPortInfo!.node.node, targetToAdd)) {
         print("Node is before");
         return;
       } else {
-        NodeTarget targetToAdd = NodeTarget(outputIndex: firstPort.portIndex, node: selectedPortInfo!.node.node, inputIndex: selectedPortInfo!.portIndex);
         bool isTypesCompatible = _checkTypesCompatibilyty(firstPort.node, targetToAdd);
         if (!isTypesCompatible) {
           print("Types are not compatible");
@@ -529,8 +530,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
       }
     }
 
-    updateNode(firstPort.node);
-    updateNode(selectedPortInfo!.node);
+    updateAllNodes();
     selectedPortInfo = null;
     getNodesConnections();
     getSelectedNodesConnections();
@@ -563,6 +563,12 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
       }
     }
     return null;
+  }
+
+  void updateAllNodes() {
+    for (INodeWidget widget in nodesWidgets) {
+      updateNode(widget);
+    }
   }
 
   void resetInputValues(NodeTarget target) {

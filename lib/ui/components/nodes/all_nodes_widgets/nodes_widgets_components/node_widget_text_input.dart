@@ -70,6 +70,14 @@ class _NodeWidgetTextInputState extends State<NodeWidgetTextInput> {
     super.dispose();
   }
 
+  _truncateText(String text, int treshold) {
+    if (text.length > treshold) {
+      return text.substring(0, treshold);
+    } else {
+      return text;
+    }
+  }
+
   @override
   void initState() {
     String defaultValue = widget.defaultText ?? '';
@@ -88,7 +96,7 @@ class _NodeWidgetTextInputState extends State<NodeWidgetTextInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: widget.type == NodeDataType.number ? 80 : 85,
+      width: 87,
       height: 15,
       decoration: BoxDecoration(
         color: widget.theme.onPrimary.withOpacity(0.1),
@@ -132,72 +140,95 @@ class _NodeWidgetTextInputState extends State<NodeWidgetTextInput> {
               ),
             ),
           Expanded(
-            child: TextField(
-              onChanged: (value) {
-                if (widget.type == NodeDataType.number) {
-                  final dashCommaRegex = RegExp(r'[,]');
-
-                  controller.text = value.replaceAll(dashCommaRegex, '');
-
-                  // Handle empty input
-                  if (value.isEmpty) {
-                    controller.text = '0';
-                    _performOnChange('0');
-                    return;
-                  }
-
-                  final dotCommaRegex = RegExp(r'[.]');
-
-                  int dotCommaCount = dotCommaRegex.allMatches(value).length;
-
-                  bool endsWithDotComma = value.characters.last == '.' || value.characters.last == ',';
-
-                  if (dotCommaCount > 1 || (endsWithDotComma && dotCommaCount > 1)) {
-                    controller.text = value.substring(0, value.length - 1);
-                    controller.selection = TextSelection.fromPosition(
-                      TextPosition(offset: controller.text.length)
-                    );
-                  } 
-                  else if (endsWithDotComma && dotCommaCount == 1) {
-                    // Do nothing, allow the dot or comma
-                  }
-                  else {
-                    String sanitizedValue = value.replaceAll(RegExp(r'[^\d.,]'), '');
-                    if (sanitizedValue != value) {
-                      controller.text = sanitizedValue;
-                      controller.selection = TextSelection.fromPosition(
-                        TextPosition(offset: sanitizedValue.length)
-                      );
-                    }
-                  }
-                }
-
-                _performOnChange(controller.text);
-              },
-              keyboardType: widget.type == NodeDataType.number ? TextInputType.number : TextInputType.text,
-              controller: controller,
-              maxLines: 1,
-              cursorColor: widget.theme.onPrimary,
-              cursorWidth: 1,
-              cursorHeight: 10,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^[0-9,.]+$'))
-              ],
-              style: widget.theme.titleMedium.copyWith(
-                fontWeight: FontWeight.w500,
-                fontSize: 8,
-                color: widget.theme.onPrimary
-              ),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: widget.hint,
-                contentPadding: const EdgeInsets.only(bottom: 18, left: 5),
-                hintStyle: widget.theme.titleMedium.copyWith(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 8,
-                  color: widget.theme.onPrimary.withOpacity(0.5)
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (widget.type == NodeDataType.number)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 2),
+                    child: Tooltip(
+                      message: widget.hint.length > 8 ? widget.hint : '',
+                      child: Text(
+                        _truncateText(widget.hint, 8),
+                        style: widget.theme.titleMedium.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 8,
+                        color: widget.theme.onPrimary.withOpacity(0.4)
+                      ),
+                      ),
+                    ),
+                  ),
+                Expanded(
+                  child: TextField(
+                    onChanged: (value) {
+                      if (widget.type == NodeDataType.number) {
+                        final dashCommaRegex = RegExp(r'[,]');
+                  
+                        controller.text = value.replaceAll(dashCommaRegex, '');
+                  
+                        // Handle empty input
+                        if (value.isEmpty) {
+                          controller.text = '0';
+                          _performOnChange('0');
+                          return;
+                        }
+                  
+                        final dotCommaRegex = RegExp(r'[.]');
+                  
+                        int dotCommaCount = dotCommaRegex.allMatches(value).length;
+                  
+                        bool endsWithDotComma = value.characters.last == '.' || value.characters.last == ',';
+                  
+                        if (dotCommaCount > 1 || (endsWithDotComma && dotCommaCount > 1)) {
+                          controller.text = value.substring(0, value.length - 1);
+                          controller.selection = TextSelection.fromPosition(
+                            TextPosition(offset: controller.text.length)
+                          );
+                        } 
+                        else if (endsWithDotComma && dotCommaCount == 1) {
+                          // Do nothing, allow the dot or comma
+                        }
+                        else {
+                          String sanitizedValue = value.replaceAll(RegExp(r'[^\d.,]'), '');
+                          if (sanitizedValue != value) {
+                            controller.text = sanitizedValue;
+                            controller.selection = TextSelection.fromPosition(
+                              TextPosition(offset: sanitizedValue.length)
+                            );
+                          }
+                        }
+                      }
+                  
+                      _performOnChange(controller.text);
+                    },
+                    keyboardType: widget.type == NodeDataType.number ? TextInputType.number : TextInputType.text,
+                    controller: controller,
+                    maxLines: 1,
+                    cursorColor: widget.theme.onPrimary,
+                    cursorWidth: 1,
+                    cursorHeight: 10,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^[0-9,.]+$'))
+                    ],
+                    style: widget.theme.titleMedium.copyWith(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 8,
+                      color: widget.theme.onPrimary
+                    ),
+                    textAlign: widget.type == NodeDataType.number ? TextAlign.end : TextAlign.start,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: widget.hint,
+                      contentPadding: const EdgeInsets.only(bottom: 18, left: 5),
+                      hintStyle: widget.theme.titleMedium.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 8,
+                        color: widget.theme.onPrimary.withOpacity(0.5)
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
           if (widget.type == NodeDataType.number)

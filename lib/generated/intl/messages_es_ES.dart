@@ -363,6 +363,100 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Número"),
         "node_editor_view_side_panel_variables_variable_type_text":
             MessageLookupByLibrary.simpleMessage("Texto"),
+        "node_widgets_boolean_node_options_and":
+            MessageLookupByLibrary.simpleMessage("Y"),
+        "node_widgets_boolean_node_options_equal":
+            MessageLookupByLibrary.simpleMessage("Igual"),
+        "node_widgets_boolean_node_options_imply":
+            MessageLookupByLibrary.simpleMessage("Implicar"),
+        "node_widgets_boolean_node_options_not":
+            MessageLookupByLibrary.simpleMessage("No"),
+        "node_widgets_boolean_node_options_notAnd":
+            MessageLookupByLibrary.simpleMessage("No Y"),
+        "node_widgets_boolean_node_options_notEqual":
+            MessageLookupByLibrary.simpleMessage("No Igual"),
+        "node_widgets_boolean_node_options_notOr":
+            MessageLookupByLibrary.simpleMessage("No O"),
+        "node_widgets_boolean_node_options_or":
+            MessageLookupByLibrary.simpleMessage("O"),
+        "node_widgets_boolean_node_options_subtract":
+            MessageLookupByLibrary.simpleMessage("Restar"),
+        "node_widgets_boolean_node_title":
+            MessageLookupByLibrary.simpleMessage("Operaciones lógicas"),
+        "node_widgets_comparison_node_options_equal":
+            MessageLookupByLibrary.simpleMessage("Igual a"),
+        "node_widgets_comparison_node_options_greatherThan":
+            MessageLookupByLibrary.simpleMessage("Mayor que"),
+        "node_widgets_comparison_node_options_greatherThanOrEqual":
+            MessageLookupByLibrary.simpleMessage("Mayor o igual que"),
+        "node_widgets_comparison_node_options_lessThan":
+            MessageLookupByLibrary.simpleMessage("Menor que"),
+        "node_widgets_comparison_node_options_lessThanOrEqual":
+            MessageLookupByLibrary.simpleMessage("Menor o igual que"),
+        "node_widgets_comparison_node_title":
+            MessageLookupByLibrary.simpleMessage("Comparación"),
+        "node_widgets_math_node_options_abs":
+            MessageLookupByLibrary.simpleMessage("Valor absoluto"),
+        "node_widgets_math_node_options_acos":
+            MessageLookupByLibrary.simpleMessage("Arco coseno"),
+        "node_widgets_math_node_options_acosh":
+            MessageLookupByLibrary.simpleMessage("Arco cosh"),
+        "node_widgets_math_node_options_addition":
+            MessageLookupByLibrary.simpleMessage("Suma"),
+        "node_widgets_math_node_options_asin":
+            MessageLookupByLibrary.simpleMessage("Arco seno"),
+        "node_widgets_math_node_options_asinh":
+            MessageLookupByLibrary.simpleMessage("Arco sinh"),
+        "node_widgets_math_node_options_atan":
+            MessageLookupByLibrary.simpleMessage("Arco tangente"),
+        "node_widgets_math_node_options_atanh":
+            MessageLookupByLibrary.simpleMessage("Arco tanh"),
+        "node_widgets_math_node_options_ceil":
+            MessageLookupByLibrary.simpleMessage("Techo"),
+        "node_widgets_math_node_options_cos":
+            MessageLookupByLibrary.simpleMessage("Coseno"),
+        "node_widgets_math_node_options_cosh":
+            MessageLookupByLibrary.simpleMessage("Cosh"),
+        "node_widgets_math_node_options_division":
+            MessageLookupByLibrary.simpleMessage("División"),
+        "node_widgets_math_node_options_floor":
+            MessageLookupByLibrary.simpleMessage("Piso"),
+        "node_widgets_math_node_options_ln":
+            MessageLookupByLibrary.simpleMessage("Logaritmo natural"),
+        "node_widgets_math_node_options_log10":
+            MessageLookupByLibrary.simpleMessage("Logaritmo en base 10"),
+        "node_widgets_math_node_options_max":
+            MessageLookupByLibrary.simpleMessage("Máximo"),
+        "node_widgets_math_node_options_min":
+            MessageLookupByLibrary.simpleMessage("Mínimo"),
+        "node_widgets_math_node_options_multiplication":
+            MessageLookupByLibrary.simpleMessage("Multiplicación"),
+        "node_widgets_math_node_options_power":
+            MessageLookupByLibrary.simpleMessage("Potencia"),
+        "node_widgets_math_node_options_round":
+            MessageLookupByLibrary.simpleMessage("Redondear"),
+        "node_widgets_math_node_options_sign":
+            MessageLookupByLibrary.simpleMessage("Signo"),
+        "node_widgets_math_node_options_sin":
+            MessageLookupByLibrary.simpleMessage("Seno"),
+        "node_widgets_math_node_options_sinh":
+            MessageLookupByLibrary.simpleMessage("Sinh"),
+        "node_widgets_math_node_options_squareRoot":
+            MessageLookupByLibrary.simpleMessage("Raíz cuadrada"),
+        "node_widgets_math_node_options_substraction":
+            MessageLookupByLibrary.simpleMessage("Resta"),
+        "node_widgets_math_node_options_tan":
+            MessageLookupByLibrary.simpleMessage("Tangente"),
+        "node_widgets_math_node_options_tanh":
+            MessageLookupByLibrary.simpleMessage("Tanh"),
+        "node_widgets_math_node_options_truncate":
+            MessageLookupByLibrary.simpleMessage("Truncar"),
+        "node_widgets_math_node_title":
+            MessageLookupByLibrary.simpleMessage("Cálculos"),
+        "node_widgets_treshold_text":
+            MessageLookupByLibrary.simpleMessage("Límite"),
+        "node_widgets_value_text":
+            MessageLookupByLibrary.simpleMessage("Valor"),
         "project_card_delete": MessageLookupByLibrary.simpleMessage("Eliminar"),
         "project_card_duplicate":
             MessageLookupByLibrary.simpleMessage("Duplicar"),

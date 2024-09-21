@@ -365,6 +365,100 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nombre"),
         "node_editor_view_side_panel_variables_variable_type_text":
             MessageLookupByLibrary.simpleMessage("Texte"),
+        "node_widgets_boolean_node_options_and":
+            MessageLookupByLibrary.simpleMessage("Et"),
+        "node_widgets_boolean_node_options_equal":
+            MessageLookupByLibrary.simpleMessage("Égal"),
+        "node_widgets_boolean_node_options_imply":
+            MessageLookupByLibrary.simpleMessage("Impliquer"),
+        "node_widgets_boolean_node_options_not":
+            MessageLookupByLibrary.simpleMessage("Non"),
+        "node_widgets_boolean_node_options_notAnd":
+            MessageLookupByLibrary.simpleMessage("Non Et"),
+        "node_widgets_boolean_node_options_notEqual":
+            MessageLookupByLibrary.simpleMessage("Non Égal"),
+        "node_widgets_boolean_node_options_notOr":
+            MessageLookupByLibrary.simpleMessage("Non Ou"),
+        "node_widgets_boolean_node_options_or":
+            MessageLookupByLibrary.simpleMessage("Ou"),
+        "node_widgets_boolean_node_options_subtract":
+            MessageLookupByLibrary.simpleMessage("Soustraire"),
+        "node_widgets_boolean_node_title":
+            MessageLookupByLibrary.simpleMessage("Opérations logiques"),
+        "node_widgets_comparison_node_options_equal":
+            MessageLookupByLibrary.simpleMessage("Égal à"),
+        "node_widgets_comparison_node_options_greatherThan":
+            MessageLookupByLibrary.simpleMessage("Supérieur à"),
+        "node_widgets_comparison_node_options_greatherThanOrEqual":
+            MessageLookupByLibrary.simpleMessage("Supérieur ou égal à"),
+        "node_widgets_comparison_node_options_lessThan":
+            MessageLookupByLibrary.simpleMessage("Inférieur à"),
+        "node_widgets_comparison_node_options_lessThanOrEqual":
+            MessageLookupByLibrary.simpleMessage("Inférieur ou égal à"),
+        "node_widgets_comparison_node_title":
+            MessageLookupByLibrary.simpleMessage("Comparaison"),
+        "node_widgets_math_node_options_abs":
+            MessageLookupByLibrary.simpleMessage("Valeur absolue"),
+        "node_widgets_math_node_options_acos":
+            MessageLookupByLibrary.simpleMessage("Arc cosinus"),
+        "node_widgets_math_node_options_acosh":
+            MessageLookupByLibrary.simpleMessage("Arc cosh"),
+        "node_widgets_math_node_options_addition":
+            MessageLookupByLibrary.simpleMessage("Addition"),
+        "node_widgets_math_node_options_asin":
+            MessageLookupByLibrary.simpleMessage("Arc sinus"),
+        "node_widgets_math_node_options_asinh":
+            MessageLookupByLibrary.simpleMessage("Arc sinh"),
+        "node_widgets_math_node_options_atan":
+            MessageLookupByLibrary.simpleMessage("Arc tangente"),
+        "node_widgets_math_node_options_atanh":
+            MessageLookupByLibrary.simpleMessage("Arc tanh"),
+        "node_widgets_math_node_options_ceil":
+            MessageLookupByLibrary.simpleMessage("Plafond"),
+        "node_widgets_math_node_options_cos":
+            MessageLookupByLibrary.simpleMessage("Cosinus"),
+        "node_widgets_math_node_options_cosh":
+            MessageLookupByLibrary.simpleMessage("Cosh"),
+        "node_widgets_math_node_options_division":
+            MessageLookupByLibrary.simpleMessage("Division"),
+        "node_widgets_math_node_options_floor":
+            MessageLookupByLibrary.simpleMessage("Plancher"),
+        "node_widgets_math_node_options_ln":
+            MessageLookupByLibrary.simpleMessage("Logarithme népérien"),
+        "node_widgets_math_node_options_log10":
+            MessageLookupByLibrary.simpleMessage("Logarithme en base 10"),
+        "node_widgets_math_node_options_max":
+            MessageLookupByLibrary.simpleMessage("Maximum"),
+        "node_widgets_math_node_options_min":
+            MessageLookupByLibrary.simpleMessage("Minimum"),
+        "node_widgets_math_node_options_multiplication":
+            MessageLookupByLibrary.simpleMessage("Multiplication"),
+        "node_widgets_math_node_options_power":
+            MessageLookupByLibrary.simpleMessage("Puissance"),
+        "node_widgets_math_node_options_round":
+            MessageLookupByLibrary.simpleMessage("Arrondi"),
+        "node_widgets_math_node_options_sign":
+            MessageLookupByLibrary.simpleMessage("Signe"),
+        "node_widgets_math_node_options_sin":
+            MessageLookupByLibrary.simpleMessage("Sinus"),
+        "node_widgets_math_node_options_sinh":
+            MessageLookupByLibrary.simpleMessage("Sinh"),
+        "node_widgets_math_node_options_squareRoot":
+            MessageLookupByLibrary.simpleMessage("Racine carrée"),
+        "node_widgets_math_node_options_substraction":
+            MessageLookupByLibrary.simpleMessage("Soustraction"),
+        "node_widgets_math_node_options_tan":
+            MessageLookupByLibrary.simpleMessage("Tangente"),
+        "node_widgets_math_node_options_tanh":
+            MessageLookupByLibrary.simpleMessage("Tanh"),
+        "node_widgets_math_node_options_truncate":
+            MessageLookupByLibrary.simpleMessage("Tronquer"),
+        "node_widgets_math_node_title":
+            MessageLookupByLibrary.simpleMessage("Calculs"),
+        "node_widgets_treshold_text":
+            MessageLookupByLibrary.simpleMessage("Limite"),
+        "node_widgets_value_text":
+            MessageLookupByLibrary.simpleMessage("Valeur"),
         "project_card_delete":
             MessageLookupByLibrary.simpleMessage("Supprimer"),
         "project_card_duplicate":

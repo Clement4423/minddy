@@ -4,13 +4,14 @@ import 'package:minddy/system/articles/article_categories.dart';
 import 'package:minddy/system/articles/articles_exporter/articles_exporter.dart';
 import 'package:minddy/system/files/open_file_explorer.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_code.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_image.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_list.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_subtitle.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_text.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_view_controller.dart';
-import 'package:minddy/ui/components/snackbar/snackbar.dart';
+import 'package:minddy/ui/components/notifications/notification_widget.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class ArticlesBottomMenuContentView extends StatefulWidget {
@@ -158,22 +159,24 @@ class _ArticlesBottomMenuContentViewState extends State<ArticlesBottomMenuConten
                   }";
                 bool isArticleExported = await ArticlesExporter.export(widget.articleController.articleInfos.path, value, exportsDirectoryPath);
                 if (isArticleExported && context.mounted) {
-                  showBottomSnackBar(
-                    context, 
-                    S.of(context).articles_export_confirmed, 
-                    S.of(context).articles_export_confirmed_button, 
-                    () async {
-                      openFileExplorerAt("${await StaticVariables.fileSource.getAppDirectoryPath()}/ressources/exports");
-                    }, 
-                    10
+                  NotificationHandler.addNotification(
+                    NotificationModel(
+                      content: S.of(context).articles_export_confirmed,
+                      action: () async {
+                        openFileExplorerAt("${await StaticVariables.fileSource.getAppDirectoryPath()}/ressources/exports");
+                      }, 
+                      actionLabel: S.of(context).articles_export_confirmed_button, 
+                      duration: NotificationDuration.long
+                    )
                   );
                 } else if (context.mounted) {
-                  showBottomSnackBar(
-                    context, 
-                    S.of(context).articles_export_canceled, 
-                    S.of(context).snacbar_close_button, 
-                    () {}, 
-                    10
+                  NotificationHandler.addNotification(
+                    NotificationModel(
+                      content: S.of(context).articles_export_canceled,
+                      action: null,
+                      actionLabel: S.of(context).snacbar_close_button, 
+                      duration: NotificationDuration.long
+                    )
                   );
                 }
               },

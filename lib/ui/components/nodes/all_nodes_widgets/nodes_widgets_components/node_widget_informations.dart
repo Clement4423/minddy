@@ -7,12 +7,12 @@ class NodeWidgetInformations {
   final INodeWidget widget;
   final Function setState;
 
-  NodeWidgetInformations({required this.widget, required this.setState});
+  NodeWidgetInformations({required this.widget, required this.setState, required this.inputsOffsetsMaxLength, required this.outputOffsetsMaxLength, this.inputsThatAreNoLongerNeeded = const []});
 
   Offset? draggingStartPort;  // Start port position
   Offset? currentCursorOffset; // Current cursor position
-  int outputOffsetsMaxLength = 1;
-  int inputsOffsetsMaxLength = 2;
+  final int outputOffsetsMaxLength;
+  final int inputsOffsetsMaxLength;
   bool isDraggingStartPortFromAnotherPort = false;
   NodePortInfo? inputPortInfo;
   bool initializedOutputsOffsets = false;
@@ -20,7 +20,7 @@ class NodeWidgetInformations {
 
   // Those variables are only useful if the widget has options that can modify the needed inputs.
   bool needToBeSmaller = false; // Particular cases only.
-  final List<int> inputsThatAreNoLongerNeeded = [1];
+  List<int> inputsThatAreNoLongerNeeded;
 
   void setNodePortOffset(Offset offset, NodePortInfo portInfo) {
     if (portInfo.type == NodePortType.input && !initializedInputsOffsets) {

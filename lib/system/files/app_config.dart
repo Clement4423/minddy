@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
-import 'package:minddy/ui/components/snackbar/snackbar.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
+import 'package:minddy/ui/components/notifications/notification_widget.dart';
 
 class AppConfig {
 
@@ -71,12 +72,15 @@ class AppConfig {
     try {
       await StaticVariables.fileSource.writeJsonFile(_configFilePath, await _getResetConfigData(), encrypt: false);
       if (context.mounted) {
-        showBottomSnackBar(
-          context, 
-          S.current.snackbar_restart_needed_text, 
-          S.current.snackbar_restart_button, 
-          () {SystemNavigator.pop();}, 
-          20,
+        NotificationHandler.addNotification(
+          NotificationModel(
+            content: S.of(context).snackbar_restart_needed_text, 
+            action: () {
+              SystemNavigator.pop();
+            }, 
+            actionLabel: S.of(context).snackbar_restart_button, 
+            duration: NotificationDuration.long
+          )
         );
       }
     } catch (e) {

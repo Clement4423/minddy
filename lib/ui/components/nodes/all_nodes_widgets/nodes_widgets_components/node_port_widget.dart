@@ -116,7 +116,8 @@ class _NodePortWidgetState extends State<NodePortWidget> {
             );
 
             connection!.startNode.node.targets.removeWhere((target) => target.node.id == widget.portInfo.node.node.id && target.inputIndex == widget.portInfo.portIndex);
-
+            
+            widget.functions.updateAllNodes();
             widget.functions.updateConnections();
           } else {
             widget.setDragStartingPort(widget.portInfo.portIndex, widget.portInfo.type);

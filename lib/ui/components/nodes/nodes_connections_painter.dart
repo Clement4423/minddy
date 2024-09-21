@@ -23,6 +23,15 @@ class NodeConnectionPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     for (var connection in connections) {
+      if (connection.startOutputIndex < 0 ||
+          connection.endInputIndex < 0 ||
+          connection.startOutputIndex >= connection.startNode.outputsOffsets.length ||
+          connection.endInputIndex >= connection.endNode.inputsOffsets.length ||
+          connection.startNode.outputsOffsets.isEmpty ||
+          connection.endNode.inputsOffsets.isEmpty) {
+        return;
+      }
+
       Offset startPoint = connection.startNode.outputsOffsets.elementAtOrNull(connection.startOutputIndex) ?? const Offset(0, 0);
       Offset endPoint = connection.endNode.inputsOffsets.elementAtOrNull(connection.endInputIndex) ?? const Offset(0, 0);
 
@@ -68,16 +77,18 @@ class NodeConnectionPainter extends CustomPainter {
 }
 
 class CurvedLinePainter extends CustomPainter {
-  final Offset start;
-  final Offset end;
+  final Offset portOffset;
+  final Offset cursorOffset;
+  final bool isDraggingFromAnInput;
   final Color color;
   final double strokeWidth;
   final bool isHoveringANodePort;
   final Color plusSignColor;
 
   CurvedLinePainter({
-    required this.start,
-    required this.end,
+    required this.portOffset,
+    required this.cursorOffset,
+    required this.isDraggingFromAnInput,
     required this.isHoveringANodePort,
     this.color = Colors.black,
     this.plusSignColor = Colors.black,
@@ -86,6 +97,11 @@ class CurvedLinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+
+    // To make sure the start is always where the output is supposed to be, and the end the input.
+    Offset start = isDraggingFromAnInput ? cursorOffset : portOffset;
+    Offset end = isDraggingFromAnInput ? portOffset : cursorOffset;
+
     final paint = Paint()
       ..color = color
       ..strokeWidth = strokeWidth
@@ -121,7 +137,7 @@ class CurvedLinePainter extends CustomPainter {
       ..color = color
       ..strokeWidth = 4;
 
-    canvas.drawCircle(start, 3, circlePainter);
+    canvas.drawCircle(portOffset, 3, circlePainter);
 
     if (!isHoveringANodePort) {
       final plusPaint = Paint()
@@ -132,14 +148,14 @@ class CurvedLinePainter extends CustomPainter {
       const double plusSize = 3;
 
       canvas.drawLine(
-        Offset(end.dx - plusSize, end.dy - 10),
-        Offset(end.dx + plusSize, end.dy - 10),
+        Offset(cursorOffset.dx - plusSize, cursorOffset.dy - 10),
+        Offset(cursorOffset.dx + plusSize, cursorOffset.dy - 10),
         plusPaint,
       );
 
       canvas.drawLine(
-        Offset(end.dx, end.dy - 10 - plusSize),
-        Offset(end.dx, end.dy - 10 + plusSize),
+        Offset(cursorOffset.dx, cursorOffset.dy - 10 - plusSize),
+        Offset(cursorOffset.dx, cursorOffset.dy - 10 + plusSize),
         plusPaint,
       );
     }

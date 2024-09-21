@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
@@ -15,7 +14,6 @@ class NodeWidgetInput extends StatefulWidget {
     required this.theme, 
     required this.isConnected, 
     required this.connectedLabel,
-    required this.type, 
     required this.portInfo,
     required this.setCursorPosition, 
     required this.setDragStartingPort, 
@@ -30,7 +28,6 @@ class NodeWidgetInput extends StatefulWidget {
   /// The text that will appear next to the port when connected and as hint.
   final String connectedLabel;
   final bool isConnected;
-  final NodeDataType type;
   final Function(dynamic, NodePortInfo, INodeWidget) onValueChanged;
   final NodePortInfo portInfo;
   final Function(Offset?) setCursorPosition;
@@ -43,6 +40,8 @@ class NodeWidgetInput extends StatefulWidget {
 }
 
 class _NodeWidgetInputState extends State<NodeWidgetInput> {
+
+  late final NodeDataType type;
 
   String? _getDefaultValueAsString() {
     return widget.portInfo.node.node.inputs.elementAtOrNull(widget.portInfo.portIndex)?.value.toString();
@@ -58,6 +57,12 @@ class _NodeWidgetInputState extends State<NodeWidgetInput> {
   }
 
   @override
+  void initState() {
+    type = widget.portInfo.node.node.inputsTypes.elementAt(widget.portInfo.portIndex);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: widget.portInfo.node.width,
@@ -68,7 +73,7 @@ class _NodeWidgetInputState extends State<NodeWidgetInput> {
             offset: const Offset(-4, 0),
             child: NodePortWidget(
               portInfo: widget.portInfo, 
-              color: getCorrectColorBasedOnNodeDataType(widget.type), 
+              color: getCorrectColorBasedOnNodeDataType(type), 
               onHoveredColor: widget.theme.onSurface, 
               setCursorPosition: widget.setCursorPosition, 
               setDragStartingPort: widget.setDragStartingPort, 
@@ -87,23 +92,44 @@ class _NodeWidgetInputState extends State<NodeWidgetInput> {
               ),
               maxLines: 1,
             )
-          else if (widget.type == NodeDataType.boolean)
-            CustomCheckbox(
-              value: _getDefaultValueAsBoolean() ?? false, 
-              onChanged: (bool newValue) {
-                widget.onValueChanged(
-                  newValue, 
-                  widget.portInfo, 
-                  widget.portInfo.node
-                );
-              }, 
-              theme: widget.theme
+          else if (type == NodeDataType.boolean)
+            Row(
+              children: [
+                Transform.translate(
+                  offset: const Offset(-10, 0),
+                  child: CustomCheckbox(
+                    value: _getDefaultValueAsBoolean() ?? false, 
+                    onChanged: (bool newValue) {
+                      widget.onValueChanged(
+                        newValue, 
+                        widget.portInfo, 
+                        widget.portInfo.node
+                      );
+                    }, 
+                    backgroundColor: widget.theme.onPrimary.withOpacity(0.3),
+                    scale: 0.7,
+                    theme: widget.theme
+                  ),
+                ),
+                Transform.translate(
+                  offset: const 
+                  Offset(-15, 0),
+                  child: Text(
+                    widget.connectedLabel,
+                    style: widget.theme.titleMedium.copyWith(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 8,
+                      color: widget.theme.onPrimary
+                    ),
+                  ),
+                )
+              ],
             )
           else 
             NodeWidgetTextInput(
               onChange: widget.onValueChanged, 
               theme: widget.theme, 
-              type: widget.type, 
+              type: type, 
               portInfo: widget.portInfo,
               hint: widget.connectedLabel, 
               defaultText: _getDefaultValueAsString()

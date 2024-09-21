@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:minddy/system/nodes/all_nodes/boolean_node.dart';
 import 'package:minddy/system/nodes/all_nodes/comparison_node.dart';
 import 'package:minddy/system/nodes/all_nodes/math_node.dart';
@@ -52,17 +51,91 @@ class NodeTree {
       orElse: () {
         return nodes.firstWhere(
           (node) => _graph.getDependencies(node)?.isEmpty ?? true,
-          orElse: () {return topologicalSort().last;}
+          orElse: () {return topologicalSort()!.last;}
         );
       }
     );
   }
 
+  bool isInputNodeBefore(INode outputNode, INode inputNode, NodeTarget targetToAdd) {
+
+    if (outputNode.targets.isEmpty && inputNode.targets.isEmpty) {
+      print("No targets");
+      return false;
+    }
+
+    List<INode> nodesCopy = nodes.map((e) => e.copy()).toList();
+
+    for (INode node in nodesCopy) {
+      node.targets = node.targets.map((target) {
+        return NodeTarget(
+          outputIndex: target.outputIndex,
+          node: nodesCopy.firstWhere((n) => n.id == target.node.id),
+          inputIndex: target.inputIndex
+        );
+      }).toList();
+    }
+
+    NodeTarget targetToAddCopy = NodeTarget(
+      outputIndex: targetToAdd.outputIndex,
+       node: nodesCopy.firstWhere((e) => e.id == targetToAdd.node.id),
+      inputIndex: targetToAdd.inputIndex
+    );
+
+    nodesCopy.firstWhere((e) => e.id == outputNode.id).targets.add(targetToAddCopy); 
+
+    INode outputCopy = nodesCopy.firstWhere((n) => n.id == outputNode.id);
+    INode inputCopy = nodesCopy.firstWhere((n) => n.id == inputNode.id);
+
+    List<INode>? sortedNodes = _buildGraph(nodesCopy);
+
+    if (sortedNodes == null) {
+      return true;
+    }
+
+    int outputIndex = sortedNodes.indexOf(outputCopy);
+    int inputIndex = sortedNodes.indexOf(inputCopy);
+
+    if (outputIndex == -1 || inputIndex == -1) {
+      print("null");
+      return true;
+    }
+
+    print("Indexes: $outputIndex, $inputIndex, Length: ${sortedNodes.length}");
+
+    return outputIndex > inputIndex;
+  }
+
+  void _propagateDataToNextNodes(INode currentNode) {
+    for (var target in currentNode.targets) {
+      INode nextNode = target.node;
+
+      // Ensure the target node's inputs are prepared
+      if (nextNode.inputs.length < nextNode.inputsTypes.length) {
+        nextNode.inputs = List.generate(nextNode.inputsTypes.length, (i) {
+          NodeDataType type = nextNode.inputsTypes[i];
+          return NodeData(type: type, value: getDefaultNodeDataTypeValue(type));
+        });
+      }
+
+      // Propagate data from current node's outputs to the next node's inputs
+      try {
+        NodeOutput matchingOutput = currentNode.outputs.firstWhere((output) =>
+            output.target == nextNode && output.inputIndex == target.inputIndex);
+
+        // Set the data to the correct input index of the next node
+        if (target.inputIndex < nextNode.inputsTypes.length) {
+          nextNode.inputs[target.inputIndex] = matchingOutput.data;
+        }
+      } catch (e) {
+        print("Error during data propagation: $e");
+        return;
+      }
+    }
+  }
 
   Future<NodeData?> run() async {
-    List<INode> sortedNodes = topologicalSort();
-
-    print(sortedNodes.length);
+    List<INode> sortedNodes = topologicalSort() ?? [];
 
     // Ensure the output node is executed last
     if (outputNode != null) {
@@ -71,119 +144,73 @@ class NodeTree {
     }
 
     for (int i = 0; i < sortedNodes.length; i++) {
-
       await sortedNodes[i].execute();
 
+      // After executing, propagate data to connected nodes
       if (i < sortedNodes.length - 1) {
-        _addDataToNextNode(sortedNodes, i);
-      } else if (i == sortedNodes.length - 1) {
-        if (outputNode != null) {
-          if (outputNode is IOutputNode) {
-            IOutputNode lastNode = outputNode as IOutputNode;
-            print(lastNode.toJson());
-            return await lastNode.getResult();
-          }
-        }
+        _propagateDataToNextNodes(sortedNodes[i]);
       }
+    }
+
+    // Return output node's result
+    if (outputNode is IOutputNode) {
+      return (outputNode as IOutputNode).getResult();
     }
 
     return null;
   }
 
-  bool isNodeBefore(INode first, INode second) {
-    if (first.targets.isEmpty && second.targets.isEmpty || first.targets.isEmpty) {
-      return false;
-    }
-
-    List<INode> sortedNodes = topologicalSort();
-
-    int firstIndex = sortedNodes.indexOf(first);
-    int secondIndex = sortedNodes.indexOf(second);
-
-    if (firstIndex == -1 || secondIndex == -1) {
-      return true;
-    }
-
-    return firstIndex < secondIndex;
-  }
-
-  void _addDataToNextNode(List<INode> sortedNodes, int index) {
-    INode currentNode = sortedNodes[index];
-
-    for (var target in currentNode.targets) {
-      INode nextNode = target.node;
-
-      // Ensure the target node's inputs list is large enough to accommodate all incoming connections
-      if (nextNode.inputs.length < nextNode.inputsTypes.length) {
-        nextNode.inputs = List.generate(nextNode.inputsTypes.length, (i) {
-          NodeDataType type = nextNode.inputsTypes[i];
-          return NodeData(type: type, value: getDefaultNodeDataTypeValue(type));
-        });
-      }
-
-
-      // Find the matching output in the current node for the target node and input index
-      try {
-        NodeOutput matchingOutput = currentNode.outputs.firstWhere((output) =>
-            output.target == nextNode && output.inputIndex == target.inputIndex);
-
-        print(matchingOutput);
-
-        // Set the data to the correct input index of the next node
-        if (target.inputIndex < nextNode.inputsTypes.length) {
-          nextNode.inputs[target.inputIndex] = matchingOutput.data;
-        }
-      } catch (e) {
-        return;
-      }
-    }
-  }
-
-  @protected
-  void _buildGraph() {
-    for (var node in nodes) {
+  // Cycle detection and prevention
+  List<INode>? _buildGraph([List<INode>? nodesToUse]) {
+    for (var node in nodesToUse ?? nodes) {
       for (var target in node.targets) {
         _graph.addEdge(node, target.node);
       }
     }
+
+    // Ensure there are no cycles in the graph
+    return topologicalSort(nodesToUse);
   }
 
-  List<INode> topologicalSort() {
-    Map<INode, bool> visited = {for (var node in nodes) node: false};
-    List<INode> result = [];
-    Set<INode> currentPath = {};
+List<INode>? topologicalSort([List<INode>? nodesToUse]) {
+  Map<INode, bool> visited = {for (var node in nodesToUse ?? nodes) node: false};
+  List<INode> result = [];
+  Set<INode> currentPath = {};
 
-    void dfs(INode node) {
-      if (currentPath.contains(node)) {
-        throw Exception("Cycle detected in the graph, topological sort not possible");
-      }
-
-      bool isVisited = visited[node] ?? false;
-
-      if (isVisited) return;
-
-      currentPath.add(node);
-      visited[node] = true;
-
-      for (var target in node.targets) {
-        bool isVisited = visited[target.node] ?? false;
-        if (!isVisited) {
-          dfs(target.node);
-        }
-      }
-
-      currentPath.remove(node);
-      result.insert(0, node);
+  bool dfs(INode node) {
+    if (currentPath.contains(node)) {
+      return false;
     }
 
-    for (var node in nodes) {
-      if (!visited[node]!) {
-        dfs(node);
+    if (visited[node] == true) {
+      return true;
+    }
+
+    currentPath.add(node);
+    visited[node] = true;
+
+    for (var target in node.targets) {
+      if (!dfs(target.node)) {
+        return false;
       }
     }
 
-    return result;
+    currentPath.remove(node);
+    result.add(node);
+    return true;
   }
+
+  for (var node in nodesToUse ?? nodes) {
+    if (!visited[node]!) {
+      if (!dfs(node)) {
+        return null;
+      }
+    }
+  }
+
+  return result.reversed.toList();
+}
+
 
   NodeTreeEvaluation evaluateNodeTree() {
     List<INode> incorrectNodes = [];

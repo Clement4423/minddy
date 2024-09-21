@@ -36,7 +36,7 @@ class LoadingScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SvgPicture.asset("assets/logo/Logo.svg", width: 60, height: 60),
+                SvgPicture.asset("assets/logo/app_logo/logo_minddy.svg", width: 60, height: 60),
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Text(

@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:minddy/system/nodes/all_nodes/math_node.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/math_node_widget.dart';
 import 'package:minddy/ui/components/nodes/controllers/node_editor_bottom_sheet_controller.dart';
 import 'package:minddy/ui/components/nodes/controllers/node_editor_state.dart';
 import 'package:minddy/ui/components/nodes/node_widget_tree.dart';
 import 'package:minddy/ui/theme/theme.dart';
-import 'package:minddy/ui/views/plugin_editor_view.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:flutter/cupertino.dart';

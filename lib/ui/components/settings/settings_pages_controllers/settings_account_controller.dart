@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/files/app_config.dart';
-import 'package:minddy/ui/components/snackbar/snackbar.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
+import 'package:minddy/ui/components/notifications/notification_widget.dart';
 
 class AccountViewController extends ChangeNotifier {
 
@@ -13,13 +14,15 @@ class AccountViewController extends ChangeNotifier {
     });
   }
   resetSettings(context) {
-    showBottomSnackBar(
-      context,
-      S.of(context).snackbar_reset_text, 
-      S.of(context).snackbar_reset_button, 
-      AppConfig.resetConfigFile,
-      12,
-      argument: context
+    NotificationHandler.addNotification(
+      NotificationModel(
+        content: S.of(context).snackbar_reset_text,
+        action: () {
+          AppConfig.resetConfigFile(context);
+        }, 
+        actionLabel: S.of(context).snackbar_reset_text, 
+        duration: NotificationDuration.long
+      )
     );
   }
 
