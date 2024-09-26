@@ -149,9 +149,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "articles_education_title":
             MessageLookupByLibrary.simpleMessage("Éducation"),
         "articles_empty_menu_page_text": MessageLookupByLibrary.simpleMessage(
-            "C\'est vide pour l\'instant. Importez des articles ou écrivez les vôtres pour remplir l\'espace !"),
-        "articles_empty_menu_saved_page_text": MessageLookupByLibrary.simpleMessage(
-            "Aucun article enregistré pour l\'instant, pour enregistrer un article, cliquez sur enregistrer l\'article"),
+            "Aucun article pour cette catégorie, importez ou écrivez-en un !"),
+        "articles_empty_menu_saved_page_text":
+            MessageLookupByLibrary.simpleMessage("Aucun article enregistré."),
         "articles_environment_title":
             MessageLookupByLibrary.simpleMessage("Nature"),
         "articles_export_articles":
@@ -242,6 +242,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "custom_chart_grid_extend_chart":
             MessageLookupByLibrary.simpleMessage("Agrandir le graphique"),
         "custom_date_picker_end": MessageLookupByLibrary.simpleMessage("Fin"),
+        "custom_date_picker_include_hour":
+            MessageLookupByLibrary.simpleMessage("Inclure l\'heure"),
         "custom_date_picker_invalid_date":
             MessageLookupByLibrary.simpleMessage("Date invalide"),
         "custom_date_picker_select_multiples_date_title":
@@ -462,7 +464,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "project_card_delete":
             MessageLookupByLibrary.simpleMessage("Supprimer"),
         "project_card_duplicate":
-            MessageLookupByLibrary.simpleMessage("Dupiquer"),
+            MessageLookupByLibrary.simpleMessage("Dupliquer"),
         "project_card_open_settings":
             MessageLookupByLibrary.simpleMessage("Modifier"),
         "projects_add_module_tooltip":

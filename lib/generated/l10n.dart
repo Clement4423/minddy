@@ -660,20 +660,20 @@ class S {
     );
   }
 
-  /// `It's empty now. Import articles or write your own to fill the space !`
+  /// `No articles for this category yet, import, or write one !`
   String get articles_empty_menu_page_text {
     return Intl.message(
-      'It\'s empty now. Import articles or write your own to fill the space !',
+      'No articles for this category yet, import, or write one !',
       name: 'articles_empty_menu_page_text',
       desc: '',
       args: [],
     );
   }
 
-  /// `No saved article yet, to save an article, click on save article`
+  /// `No saved article yet`
   String get articles_empty_menu_saved_page_text {
     return Intl.message(
-      'No saved article yet, to save an article, click on save article',
+      'No saved article yet',
       name: 'articles_empty_menu_saved_page_text',
       desc: '',
       args: [],
@@ -1675,6 +1675,16 @@ class S {
     return Intl.message(
       'Select dates',
       name: 'custom_date_picker_select_multiples_date_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Include hour`
+  String get custom_date_picker_include_hour {
+    return Intl.message(
+      'Include hour',
+      name: 'custom_date_picker_include_hour',
       desc: '',
       args: [],
     );

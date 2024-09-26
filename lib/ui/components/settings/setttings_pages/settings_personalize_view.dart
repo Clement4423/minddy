@@ -46,10 +46,11 @@ class _PersonalizeViewState extends State<PersonalizeView> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: CustomDropdownButton(
-                          menuTitle: widget.controller.menuThemeTitle,
-                          action: widget.controller.treatThemeValue,
+                          width: 300,
+                          menuTitle: S.of(context).settings_theme_subtitle,
+                          selectedOptionTitle: widget.controller.menuThemeTitle,
+                          theme: theme,
                           items: widget.controller.getThemeItems(context),
-                          needToRestart: false,
                           enabled: StaticVariables.currentProjectInfo != null ? false : true,
                            // Not enabled if in a project, this is done because the change of ui causes the modules to 
                            // duplicate and create problems 
@@ -110,11 +111,15 @@ class _PersonalizeViewState extends State<PersonalizeView> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: CustomDropdownButton(
-                          menuTitle: widget.controller.menuLanguageTitle,
-                          action: widget.controller.treatLanguageValue,
+                          enableSearch: true,
+                          width: 300,
+                          menuTitle: S.of(context).settings_language_subtitle,
+                          selectedOptionTitle: widget.controller.menuLanguageTitle,
+                          theme: theme,
                           items: widget.controller.getLanguageItems(context),
-                          needToRestart: true,
                           enabled: StaticVariables.currentProjectInfo != null ? false : true,
+                           // Not enabled if in a project, this is done because the change of ui causes the modules to 
+                           // duplicate and create problems 
                         ),
                       ),
                     ),

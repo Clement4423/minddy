@@ -64,19 +64,28 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
         return '';
       }
 
-      DateTime? firstDate = await AppDate.formatDateAsDateTime(dateAsString.split('_').first);
+      String? firstDateInPreferedFormat = await AppDate.formatIso8601StringToPreferedDateFormatString(dateAsString.split('_').first);
+      String? endDateInPreferedFormat = await AppDate.formatIso8601StringToPreferedDateFormatString(dateAsString.split('_').last);
 
-      DateTime? endDate = await AppDate.formatDateAsDateTime(dateAsString.split('_').last);
+      DateTime? firstDate = await AppDate.formatDateWithTheCorrectOrder(
+        firstDateInPreferedFormat!,
+        true
+      );
+
+      DateTime? endDate = await AppDate.formatDateWithTheCorrectOrder(
+        endDateInPreferedFormat!,
+        true
+      );
 
       String firstDateAsString = await getDateString(firstDate, useUsFormat);
       String endDateAsString = await getDateString(endDate, useUsFormat);
 
       return "${S.current.projects_module_spreadsheet_date_from_text} $firstDateAsString \n${S.current.projects_module_spreadsheet_date_to_text} $endDateAsString";
     } else {
-      DateTime? date = await AppDate.formatDateAsDateTime(widget.data);
+      DateTime? date = AppDate.formatDateAsDateTime(widget.data);
 
       return _getDateWithMonthName(date, useUsFormat); 
-      // No need to use getDateString, because it crop the date if the month name is too long, 
+      // No need to use getDateString, because it crop the date month nale if it is too long, 
       // which is used when there is two dates, in which case, the 'from' and 'to' words will be added.
     }
   }
@@ -86,8 +95,19 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
       return '';
     }
 
-    if (DateFormat('MMMM').format(date).length >= 8) {
-      String finalDate = await AppDate.formatDateAsString(date);
+    String time = '';
+
+    if (date.hour != 0 || date.minute != 0) {
+      time = '${AppDate.padIfNecessary(date.hour)}:${AppDate.padIfNecessary(date.minute)}';
+    }
+
+    if (DateFormat('MMMM').format(date).length >= (time.isEmpty ? 8 : 5)) {
+
+      String? finalDate = await AppDate.formatIso8601StringToPreferedDateFormatString(
+        AppDate.formatDateAsString(date),
+        false
+      );
+      finalDate = '$finalDate${ time.isNotEmpty ? ', $time' : ''}';
       return finalDate.replaceAll('-', '/');
     }
     else {
@@ -97,11 +117,15 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
 
   String _getDateWithMonthName(DateTime? date, bool useUsFormat) {
     String newString = widget.data;
+    String time = '';
     if (date != null) {
+      if (date.hour != 0 || date.minute != 0) {
+        time = '${AppDate.padIfNecessary(date.hour)}:${AppDate.padIfNecessary(date.minute)}';
+      }
       if (useUsFormat) {
-        newString = '${DateFormat('MMMM').format(date)} ${date.day} ${date.year}';
+        newString = '${DateFormat('MMMM').format(date)} ${date.day} ${date.year}${ time.isNotEmpty ? ', $time' : ''}';
       } else {
-        newString = '${date.day} ${DateFormat('MMMM').format(date)} ${date.year}';
+        newString = '${date.day} ${DateFormat('MMMM').format(date)} ${date.year}${ time.isNotEmpty ? ', $time' : ''}';
       }
     }
     return newString;
@@ -110,7 +134,7 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
   @override
   void initState() {
     if (isStartEndDate()) {
-      datePickerMode = CustomDatePickerMode.startEnd;
+      datePickerMode = CustomDatePickerMode.range;
     }
     super.initState();
   }
@@ -119,38 +143,33 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+          final DateTime? startDate = AppDate.formatDateAsDateTime(widget.data.toString().split('_').first);
+          final DateTime? endDate = AppDate.formatDateAsDateTime(widget.data.toString().split('_').last);
+
           CustomDatePickerResult? result = await AppDate.pickDate(
-          // ignore: use_build_context_synchronously
-          context, 
-          mode: datePickerMode,
-          initialDate: widget.data == null 
-            ? null
-            : widget.data as String != ''
-              ? await AppDate.formatDateAsDateTime(widget.data)
-              : null,
-          initialEndDate: isStartEndDate() ?
-            widget.data.toString().split('_').length == 2 
-              ? await AppDate.formatDateAsDateTime(widget.data.toString().split('_').last)
-              : null
-            : null
+            context, 
+            mode: datePickerMode,
+            initialDate: startDate,
+            initialEndDate: endDate,
+            useTime: startDate?.hour != 00 || startDate?.minute != 0 || endDate?.hour != 0 || endDate?.minute != 0
           );
         
           if (result != null) {
             if (result.selectedDates.isEmpty) {
               widget.data = null;
-            } else if (datePickerMode == CustomDatePickerMode.startEnd) {
-              if (result.selectedDates.length != 2) {
+            } else if (datePickerMode == CustomDatePickerMode.range) {
+              if (result.selectedDates.length < 2) {
                 widget.data = null;
                 return;
               }
-              String startDateAsString = await AppDate.formatDateAsString(result.selectedDates.first);
-              String endDateAsString = await AppDate.formatDateAsString(result.selectedDates.last);
+              String? startDateAsString = AppDate.formatDateAsString(result.selectedDates.first);
+              String? endDateAsString = AppDate.formatDateAsString(result.selectedDates.last);
 
               String formattedString = '${startDateAsString}_$endDateAsString';
 
               widget.data = formattedString;
             } else {
-              String resultAsString = await AppDate.formatDateAsString(result.selectedDates.first);
+              String? resultAsString = AppDate.formatDateAsString(result.selectedDates.first);
               widget.data = resultAsString;
             }
           }
@@ -210,9 +229,11 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
                           onPressed: () {
                             if (datePickerMode == CustomDatePickerMode.single) {
                               if (widget.data != null && widget.data as String != '') {
-                                widget.data = '${widget.data}_${widget.data}';
+                                DateTime? endDate = AppDate.formatDateAsDateTime(widget.data);
+                                endDate!.add(const Duration(hours: 1));
+                                widget.data = '${widget.data}_${endDate.toIso8601String()}';
                               }
-                              datePickerMode = CustomDatePickerMode.startEnd;
+                              datePickerMode = CustomDatePickerMode.range;
                             } else {
                               if (widget.data != null && widget.data as String != '') {
                                 widget.data = widget.data.toString().split('_').first;
@@ -221,7 +242,7 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
                             }
                             setState(() {});
                           }, 
-                          tooltip: datePickerMode == CustomDatePickerMode.startEnd 
+                          tooltip: datePickerMode == CustomDatePickerMode.range 
                             ? S.of(context).projects_module_spreadsheet_date_single_tooltip 
                             : S.of(context).projects_module_spreadsheet_date_start_end_tooltip,
                           style: ButtonStyle(
@@ -229,7 +250,7 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
                             shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(13))),
                             elevation: const WidgetStatePropertyAll(8)
                           ),
-                          icon: Icon(datePickerMode == CustomDatePickerMode.startEnd ? Icons.calendar_today_rounded : Icons.calendar_month_rounded, color: widget.theme.onPrimary)
+                          icon: Icon(datePickerMode == CustomDatePickerMode.range ? Icons.calendar_today_rounded : Icons.calendar_month_rounded, color: widget.theme.onPrimary)
                         ),
                       );
                     }

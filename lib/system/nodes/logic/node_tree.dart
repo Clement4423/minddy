@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:minddy/system/interface/i_output_node.dart';
+import 'package:minddy/system/interface/node_interface.dart';
 import 'package:minddy/system/nodes/all_nodes/boolean_node.dart';
 import 'package:minddy/system/nodes/all_nodes/comparison_node.dart';
 import 'package:minddy/system/nodes/all_nodes/math_node.dart';
 import 'package:minddy/system/nodes/all_nodes/outputs_nodes/boolean_output_node.dart';
 import 'package:minddy/system/nodes/all_nodes/outputs_nodes/number_output_node.dart';
-import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
+import 'package:minddy/system/nodes/logic/node_tree_variable_manager.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 
@@ -32,13 +34,13 @@ class NodeGraph {
 class NodeTree {
   List<INode> nodes;
   final int id;
+  final NodeTreeVariablesManager variablesManager;
+
   List<INode> originalNodes = [];
   final NodeGraph _graph = NodeGraph();
   INode? outputNode;
 
-  List<NodeTreeVariable> variables;
-
-  NodeTree({required this.nodes, required this.variables, required this.id}) {
+  NodeTree({required this.nodes, required this.variablesManager, required this.id}) {
     originalNodes = nodes.map((node) => node.copy()).toList();
     for (var node in nodes) {
       _graph.addNode(node);
@@ -58,52 +60,51 @@ class NodeTree {
   }
 
   bool isInputNodeBefore(INode outputNode, INode inputNode, NodeTarget targetToAdd) {
+    try {
+      if (outputNode.targets.isEmpty && inputNode.targets.isEmpty) {
+        return false;
+      }
 
-    if (outputNode.targets.isEmpty && inputNode.targets.isEmpty) {
-      print("No targets");
-      return false;
-    }
+      List<INode> nodesCopy = nodes.map((e) => e.copy()).toList();
 
-    List<INode> nodesCopy = nodes.map((e) => e.copy()).toList();
+      for (INode node in nodesCopy) {
+        node.targets = node.targets.map((target) {
+          return NodeTarget(
+            outputIndex: target.outputIndex,
+            node: nodesCopy.firstWhere((n) => n.id == target.node.id),
+            inputIndex: target.inputIndex
+          );
+        }).toList();
+      }
 
-    for (INode node in nodesCopy) {
-      node.targets = node.targets.map((target) {
-        return NodeTarget(
-          outputIndex: target.outputIndex,
-          node: nodesCopy.firstWhere((n) => n.id == target.node.id),
-          inputIndex: target.inputIndex
-        );
-      }).toList();
-    }
+      NodeTarget targetToAddCopy = NodeTarget(
+        outputIndex: targetToAdd.outputIndex,
+        node: nodesCopy.firstWhere((e) => e.id == targetToAdd.node.id),
+        inputIndex: targetToAdd.inputIndex
+      );
 
-    NodeTarget targetToAddCopy = NodeTarget(
-      outputIndex: targetToAdd.outputIndex,
-       node: nodesCopy.firstWhere((e) => e.id == targetToAdd.node.id),
-      inputIndex: targetToAdd.inputIndex
-    );
+      nodesCopy.firstWhere((e) => e.id == outputNode.id).targets.add(targetToAddCopy); 
 
-    nodesCopy.firstWhere((e) => e.id == outputNode.id).targets.add(targetToAddCopy); 
+      INode outputCopy = nodesCopy.firstWhere((n) => n.id == outputNode.id);
+      INode inputCopy = nodesCopy.firstWhere((n) => n.id == inputNode.id);
 
-    INode outputCopy = nodesCopy.firstWhere((n) => n.id == outputNode.id);
-    INode inputCopy = nodesCopy.firstWhere((n) => n.id == inputNode.id);
+      List<INode>? sortedNodes = _buildGraph(nodesCopy);
 
-    List<INode>? sortedNodes = _buildGraph(nodesCopy);
+      if (sortedNodes == null) {
+        return true;
+      }
 
-    if (sortedNodes == null) {
+      int outputIndex = sortedNodes.indexOf(outputCopy);
+      int inputIndex = sortedNodes.indexOf(inputCopy);
+
+      if (outputIndex == -1 || inputIndex == -1) {
+        return true;
+      }
+
+      return outputIndex > inputIndex;
+    } catch (e) {
       return true;
     }
-
-    int outputIndex = sortedNodes.indexOf(outputCopy);
-    int inputIndex = sortedNodes.indexOf(inputCopy);
-
-    if (outputIndex == -1 || inputIndex == -1) {
-      print("null");
-      return true;
-    }
-
-    print("Indexes: $outputIndex, $inputIndex, Length: ${sortedNodes.length}");
-
-    return outputIndex > inputIndex;
   }
 
   void _propagateDataToNextNodes(INode currentNode) {
@@ -238,7 +239,7 @@ List<INode>? topologicalSort([List<INode>? nodesToUse]) {
     return jsonEncode(map);
   }
 
-  static NodeTree? fromString(String string, List<NodeTreeVariable> variables) {
+  static NodeTree? fromString(String string, NodeTreeVariablesManager variablesManager) {
     Map map = jsonDecode(string);
     Map<int, List<String>> targetsMap = {};
     List<INode> allNodes = [];
@@ -259,7 +260,7 @@ List<INode>? topologicalSort([List<INode>? nodesToUse]) {
         for (var node in allNodes) {
           node.targets = INode.initializeTargets(allNodes, targetsMap, node.id);
         }
-        return NodeTree(nodes: allNodes, id: map['id'] ?? createUniqueId(), variables: variables);
+        return NodeTree(nodes: allNodes, id: map['id'] ?? createUniqueId(), variablesManager: variablesManager);
       }
     }
     return null;

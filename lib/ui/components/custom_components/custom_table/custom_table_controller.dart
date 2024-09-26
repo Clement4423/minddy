@@ -21,7 +21,7 @@ class CustomTableController extends ChangeNotifier {
   int columns;
   int rows;
   Map<CustomTableCellPosition, dynamic> cellData = {};
-  Map<int, CustomTableType> columnTypes = {1: CustomTableType.email};
+  Map<int, CustomTableType> columnTypes = {};
   Map<int, String> columnNames = {};
   Map<int, String> rowNames = {};
 
@@ -83,6 +83,7 @@ class CustomTableController extends ChangeNotifier {
         for (int i = 0; i < positions.length; i++) {
           updateCell(positions[i], incrementDigits(firstCellData, i, isAdding));
         }
+        numbersChangeNotifier.numbersChanged();
       } else {
         for (CustomTableCellPosition position in positions) {
           updateCell(position, firstCellData);
@@ -376,7 +377,7 @@ class CustomTableController extends ChangeNotifier {
   void setColumnCalculation(int columnIndex, String function) {
     columnsFunctions[columnIndex] = function == 'Null' ? null : function;
     saveCells();
-    notifyListeners();
+    numbersChangeNotifier.numbersChanged();
   }
 
   String? getColumnCalculation(int columnIndex) {

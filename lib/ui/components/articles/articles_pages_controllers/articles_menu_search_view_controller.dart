@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:minddy/system/articles/article_categories.dart';
 import 'package:minddy/system/articles/get_articles.dart';
 import 'package:minddy/system/model/article_info.dart';
+import 'package:minddy/system/utils/search_text_formatter.dart';
 import 'package:minddy/ui/components/cards/articles_card.dart';
 
 class ArticleMenuSearchViewController extends ChangeNotifier {
@@ -45,10 +46,10 @@ class ArticleMenuSearchViewController extends ChangeNotifier {
 
   void searchArticles(String input) {
 
-    String transformedInput = removeAccents(input.toLowerCase().trim());
+    String transformedInput = SearchTextFormatter.format(input);
       List<ArticleInfo> result = allArticles.where((element) {
-    return removeAccents(element.title.toLowerCase().trim()).contains(transformedInput) ||
-           removeAccents(element.author.toLowerCase().trim()).contains(transformedInput);
+    return SearchTextFormatter.format(element.title).contains(transformedInput) ||
+           SearchTextFormatter.format(element.author).contains(transformedInput);
     }).toList();
 
     isSearchEmpty = result.isEmpty ? true : false;
@@ -69,21 +70,5 @@ class ArticleMenuSearchViewController extends ChangeNotifier {
   void clearArticlesCards() {
     articlesCardsList.clear();
     notifyListeners();
-  }
-
-  String removeAccents(String input) {
-    const accents = 'áàâäãåčćçďéèêëěíìîïĺľńňóòôöõøřšśťúùûüýÿžźżÁÀÂÄÃÅČĆÇĎÉÈÊËĚÍÌÎÏĹĽŃŇÓÒÔÖÕØŘŠŚŤÚÙÛÜÝŸŽŹŻ';
-    const withoutAccents = 'aaaaaaccceeeeeiiiillnnoooooorrsstuuuuyyzzzaaaaaaccceeeeeiiiillnnoooooorrsstuuuuyyzzz';
-    
-    String result = '';
-    for (int i = 0; i < input.length; i++) {
-      int index = accents.indexOf(input[i]);
-      if (index != -1) {
-        result += withoutAccents[index];
-      } else {
-        result += input[i];
-      }
-    }
-    return result;
   }
 }

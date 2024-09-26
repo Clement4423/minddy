@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/notes/app_notes.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
-import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_button.dart';
-import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_item_model.dart';
 import 'package:minddy/ui/components/menus/sub_menus/modify_note_category_sub_menu.dart';
 import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
 import 'package:minddy/ui/components/menus/sub_menus/unlock_content_submenu.dart';
@@ -86,39 +85,44 @@ class ProjectNoteModuleCategoryCard extends StatelessWidget {
                     ),
                   ),
                   if (isManageable)
-                    CustomPopupMenuButton(items: [
-                      CustomPopupItemModel(
-                        text: Text(S.of(context).projects_module_notes_modify_category, style: theme.bodyMedium.copyWith(color: theme.onPrimary)), 
-                        icon: Icon(Icons.brush_rounded, color: theme.onPrimary),
-                        action: () async {
-                          await showSubMenu(
-                            context, 
-                            ModifyNoteCategorySubMenu(
-                              onCompleted: onDelete, 
-                              categoryTitle: title, 
-                              categoryName: categoryName, 
-                              isPrivate: isPrivate
-                            )
-                          );
-                        }
-                      ),
-                      CustomPopupItemModel(
-                        text: Text(S.of(context).snackbar_delete_button, style: theme.bodyMedium.copyWith(color: theme.error)), 
-                        icon: Icon(Icons.delete_outline_rounded, color: theme.error),
-                        action: () async {
-                          if (isPrivate) {
-                            bool isUnlocked = await showUnlockContentSubMenu(context);
-                            if (isUnlocked) {
+                    CustomSelectionMenu(
+                      theme: theme, 
+                      items: [
+                        CustomSelectionMenuItem(
+                          label: S.of(context).projects_module_notes_modify_category, 
+                          icon: Icons.brush_rounded, 
+                          onTap: () async {
+                            await showSubMenu(
+                              context, 
+                              ModifyNoteCategorySubMenu(
+                                onCompleted: onDelete, 
+                                categoryTitle: title, 
+                                categoryName: categoryName, 
+                                isPrivate: isPrivate
+                              )
+                            );
+                          }
+                        ),
+                        CustomSelectionMenuItem(
+                          label: S.of(context).snackbar_delete_button, 
+                          icon: Icons.delete_outline_rounded, 
+                          foregroundColor: theme.error,
+                          onTap: () async {
+                            if (isPrivate) {
+                              bool isUnlocked = await showUnlockContentSubMenu(context);
+                              if (isUnlocked) {
+                                await AppNotes.deleteCategory(categoryName);
+                              }
+                            } else {
                               await AppNotes.deleteCategory(categoryName);
                             }
-                          } else {
-                            await AppNotes.deleteCategory(categoryName);
+                            await onDelete();
                           }
-                          await onDelete();
-                        }
-                      )
-                    ]
-                  )
+                        ),
+                      ], 
+                      type: CustomSelectionMenuButttonType.icon,
+                      child: Icon(Icons.more_horiz_rounded, color: theme.secondary)
+                    )
                 ],
               ),
               Align(

@@ -62,9 +62,7 @@ class _ProjectTaskElementState extends State<ProjectTaskElement> {
                       child: CustomCheckbox(
                         value: widget.data.isChecked,
                         onChanged: (value) async {
-                          setState(() {
-                            widget.data.isChecked = !widget.data.isChecked;
-                          });                        
+                          widget.data.isChecked = !widget.data.isChecked;
                           await widget.controller.completedOneTask();
                         },
                         theme: theme,

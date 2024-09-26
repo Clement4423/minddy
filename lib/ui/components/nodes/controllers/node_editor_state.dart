@@ -1,4 +1,4 @@
-import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
+import 'package:minddy/system/interface/i_node_widget.dart';
 
 class NodeEditorState {
 

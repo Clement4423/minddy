@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/interface/i_node_widget.dart';
+import 'package:minddy/system/interface/node_interface.dart';
 import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/nodes/all_nodes/comparison_node.dart';
-import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
+import 'package:minddy/system/nodes/logic/node_widget_functions.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_port_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_body.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_dropdown.dart';

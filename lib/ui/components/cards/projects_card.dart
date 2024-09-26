@@ -4,8 +4,7 @@ import 'package:minddy/system/model/project_info.dart';
 import 'package:minddy/system/notifications/notification_handler.dart';
 import 'package:minddy/system/projects/app_project.dart';
 import 'package:minddy/system/router/app_router.dart';
-import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_button.dart';
-import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_item_model.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/notifications/notification_widget.dart';
 import 'package:minddy/ui/components/settings/settings_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -74,42 +73,86 @@ class ProjectCard extends StatelessWidget {
           Positioned(
             top: 10,
             right: 10,
-            child: CustomPopupMenuButton(
+            width: 40,
+            height: 40,
+            child: CustomSelectionMenu(
+              theme: theme, 
+              type: CustomSelectionMenuButttonType.icon,
+              buttonStyle: ButtonThemes.primaryButtonStyle(context).copyWith(
+                backgroundColor: WidgetStatePropertyAll(theme.primaryContainer),
+                shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)
+                ))
+              ),
               items: [
-              // Open settings
-              CustomPopupItemModel(
-                text: Text(S.of(context).project_card_open_settings, style: theme.bodyMedium.copyWith(color: theme.onPrimary)),
-                icon: Icon(Icons.brush_rounded, color: theme.onPrimary,),
-                action: () {showSettings(context, pageRouteName: "/project", argument: {'info': projectInfo, 'function': function});},
-              ),
-              // Duplicate
-              CustomPopupItemModel(
-                text: Text(S.of(context).project_card_duplicate, style: theme.bodyMedium.copyWith(color: theme.onPrimary)),
-                icon: Icon(Icons.copy_rounded, color: theme.onPrimary,),
-                action: () async {await AppProject.duplicateProject(projectInfo.path); function();},
-              ),
-              // Delete
-              CustomPopupItemModel(
-                text: Text(S.of(context).project_card_delete, style: theme.bodyMedium.copyWith(color: theme.error)),
-                icon: Icon(Icons.delete_outline_rounded, color: theme.error,), 
-                action: () {
-                  NotificationHandler.addNotification(
-                    NotificationModel(
-                      content: S.of(context).snackbar_delete_element_text(projectInfo.name),
-                      action: () async {
-                        await AppProject.removeProject(projectInfo.path);
-                        function();
-                      }, 
-                      actionLabel: S.of(context).snackbar_delete_button, 
-                      duration: NotificationDuration.long
-                    )
-                  );
-                },
-              ),
-            ]),
+                CustomSelectionMenuItem(
+                  label: S.of(context).project_card_open_settings, 
+                  icon: Icons.brush_rounded, 
+                  onTap: () {
+                    showSettings(context, pageRouteName: "/project", argument: {'info': projectInfo, 'function': function});
+                  }
+                ),
+                CustomSelectionMenuItem(
+                  label: S.of(context).project_card_duplicate, 
+                  icon: Icons.copy_rounded, 
+                  onTap: () async {
+                    await AppProject.duplicateProject(projectInfo.path); function();
+                  }
+                ),
+                CustomSelectionMenuItem(
+                  label: S.of(context).project_card_delete, 
+                  icon: Icons.delete_outline_rounded, 
+                  foregroundColor: theme.error,
+                  onTap: () {
+                    NotificationHandler.addNotification(
+                      NotificationModel(
+                        content: S.of(context).snackbar_delete_element_text(projectInfo.name),
+                        action: () async {
+                          await AppProject.removeProject(projectInfo.path);
+                          function();
+                        }, 
+                        actionLabel: S.of(context).snackbar_delete_button, 
+                        duration: NotificationDuration.long
+                      )
+                    );
+                  }
+                ),
+              ], 
+              child: Icon(Icons.more_horiz_rounded, color: theme.secondary)
+            )
           ),
         ],
       ),
     );
   }
 }
+
+// CustomPopupItemModel(
+//   text: Text(S.of(context).project_card_open_settings, style: theme.bodyMedium.copyWith(color: theme.onPrimary)),
+//   icon: Icon(Icons.brush_rounded, color: theme.onPrimary,),
+//   action: () {showSettings(context, pageRouteName: "/project", argument: {'info': projectInfo, 'function': function});},
+// ),
+// // Duplicate
+// CustomPopupItemModel(
+//   text: Text(S.of(context).project_card_duplicate, style: theme.bodyMedium.copyWith(color: theme.onPrimary)),
+//   icon: Icon(Icons.copy_rounded, color: theme.onPrimary,),
+//   action: () async {await AppProject.duplicateProject(projectInfo.path); function();},
+// ),
+// // Delete
+// CustomPopupItemModel(
+//   text: Text(S.of(context).project_card_delete, style: theme.bodyMedium.copyWith(color: theme.error)),
+//   icon: Icon(Icons.delete_outline_rounded, color: theme.error,), 
+//   action: () {
+//     NotificationHandler.addNotification(
+//       NotificationModel(
+//         content: S.of(context).snackbar_delete_element_text(projectInfo.name),
+//         action: () async {
+//           await AppProject.removeProject(projectInfo.path);
+//           function();
+//         }, 
+//         actionLabel: S.of(context).snackbar_delete_button, 
+//         duration: NotificationDuration.long
+//       )
+//     );
+//   },
+// ),

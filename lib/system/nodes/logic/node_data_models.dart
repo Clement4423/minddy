@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
+import 'package:minddy/system/interface/node_interface.dart';
 
 class NodeEvaluation {
   bool isValid;

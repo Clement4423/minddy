@@ -4,7 +4,7 @@ import 'package:minddy/system/nodes/all_nodes/boolean_node.dart';
 import 'package:minddy/system/nodes/all_nodes/comparison_node.dart';
 import 'package:minddy/system/nodes/all_nodes/math_node.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
-import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
+import 'package:minddy/system/nodes/logic/node_widget_functions.dart';
 import 'package:minddy/ui/components/menus/sub_menus/node_editor_new_node_sub_menu.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/boolean_node_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/comparison_node_widget.dart';

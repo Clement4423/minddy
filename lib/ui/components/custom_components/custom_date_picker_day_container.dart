@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class CustomDatePickerDayContainer extends StatefulWidget {
@@ -41,8 +42,6 @@ class _DayContainerState extends State<CustomDatePickerDayContainer> {
 
   bool isHovering = false;
 
-  
-
   Color getHoverColor() {
     if (!widget.isSelectable || widget.isSelected || !isHovering) {
       return Colors.transparent;
@@ -53,17 +52,13 @@ class _DayContainerState extends State<CustomDatePickerDayContainer> {
 
   Color? getColor() {
     if (widget.isSelected) {
-        return widget.theme.secondary;
+      return widget.theme.secondary;
     } 
 
-    if (widget.endDate != null || widget.startDate != null) {
-      return widget.theme.secondary;
-    }
-
     if (widget.isToday) {
-        return widget.isInRange 
-            ? widget.theme.secondary.withOpacity(0.3) 
-            : widget.theme.error.withOpacity(0.5);
+      return widget.isInRange 
+        ? widget.theme.secondary.withOpacity(0.3) 
+        : DefaultAppColors.blue.color.withOpacity(0.2);
     } 
     
     return widget.isInRange 

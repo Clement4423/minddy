@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/system/model/number_value.dart';
 import 'package:minddy/system/utils/calculations.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_view.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -112,23 +113,28 @@ class _CalculationViewerState extends State<CalculationViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      child: PopupMenuButton(
-        onSelected: (value) {
-          widget.onFunctionSelected(value);
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(13)
-        ),
-        color: widget.theme.primary,
-        itemBuilder: (context) {
-          return getCalculationsMenuItems(widget.theme, widget.calculationName);
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            border: widget.isFromLastCell ? null : Border.symmetric(vertical: BorderSide(color: widget.theme.onPrimary, width: 0.25))
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 3),
+      child: Material(
+        type: MaterialType.transparency,
+        child: CustomSelectionMenu(
+          enableSearch: true,
+          menuMaxHeight: 300,
+          theme: widget.theme, 
+          buttonStyle: ButtonStyle(
+            backgroundColor: WidgetStatePropertyAll(widget.theme.primaryContainer),
+            overlayColor: WidgetStatePropertyAll(widget.theme.primaryContainer),
+            elevation: const WidgetStatePropertyAll(0),
+            padding: const WidgetStatePropertyAll(EdgeInsets.zero),
+            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ))
           ),
+          items: getCalculationsMenuItems(widget.theme, widget.calculationName).map((calculationItem) {
+            return calculationItem.menuItem..onTap = () {
+              widget.onFunctionSelected(calculationItem.calculation);
+            };
+          }).toList(),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -142,7 +148,7 @@ class _CalculationViewerState extends State<CalculationViewer> {
                 ),
               ),
               CustomTooltip(
-                message:  formatCalculation(performCalculation().toString().replaceAll('.', ',')),
+                message: formatCalculation(performCalculation().toString().replaceAll('.', ',')),
                 lengthTreshold: 9,
                 child: Padding(
                   padding: const EdgeInsets.only(right: 13),
@@ -159,7 +165,7 @@ class _CalculationViewerState extends State<CalculationViewer> {
               ),
             ],
           ),
-        ),
+        )
       ),
     );
   }

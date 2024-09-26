@@ -4,9 +4,8 @@ import 'package:minddy/system/notifications/notification_handler.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_view_controller.dart';
 import 'package:minddy/ui/components/articles/articles_view/articles_view.dart';
 import 'package:minddy/ui/components/cards/articles_card_controller.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
-import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_button.dart';
-import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_item_model.dart';
 import 'package:minddy/ui/components/notifications/notification_widget.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -81,29 +80,23 @@ class _ArticleCardState extends State<ArticleCard> {
                               maxLines: 2,
                             ),
                     ),
-                    CustomPopupMenuButton(
+                    CustomSelectionMenu(
+                      theme: theme, 
                       items: [
-                        CustomPopupItemModel(
-                          text: Text(
-                            S.of(context).articles_bookmark_semantic_text,
-                            style: theme.bodyMedium.copyWith(color: theme.onPrimary),
-                          ),
-                          icon: Icon(widget._controller.isBookmarked 
+                        CustomSelectionMenuItem(
+                          label: S.of(context).articles_bookmark_semantic_text, 
+                          icon: widget._controller.isBookmarked 
                             ? Icons.bookmark_rounded 
                             : Icons.bookmark_outline_rounded, 
-                            color: theme.onPrimary
-                          ),
-                          action: () {
-                            widget._controller.toggleBookmark();
-                          },
+                          onTap: () async {
+                            await widget._controller.toggleBookmark();
+                          }
                         ),
-                        CustomPopupItemModel(
-                          text: Text(
-                            S.of(context).project_card_delete,
-                            style: theme.bodyMedium.copyWith(color: theme.error),
-                          ),
-                          icon: Icon(Icons.delete_outline_rounded, color: theme.error),
-                          action: () {
+                        CustomSelectionMenuItem(
+                          label: S.of(context).project_card_delete, 
+                          icon: Icons.delete_outline_rounded,
+                          foregroundColor: theme.error,
+                          onTap: () {
                             NotificationHandler.addNotification(
                               NotificationModel(
                                 content: S.of(context).snackbar_delete_element_text(S.of(context).articles_card_delete_this_article),
@@ -114,10 +107,12 @@ class _ArticleCardState extends State<ArticleCard> {
                                 duration: NotificationDuration.long
                               )
                             );
-                          },
-                        ),
-                      ],
-                    ),
+                          }
+                        )
+                      ], 
+                      type: CustomSelectionMenuButttonType.icon,
+                      child: Icon(Icons.more_horiz_rounded, color: theme.secondary)
+                    )
                   ],
                 ),
                 Row(

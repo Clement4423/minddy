@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/custom_table_type.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_view.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -171,48 +172,36 @@ class _ColumnTypeSelectorState extends State<ColumnTypeSelector> {
                 ),
               ),
             ),
-            PopupMenuButton(
-              icon: Icon(Icons.arrow_drop_down_rounded, color: widget.theme.onSurface),
-              onSelected: (value) {
-                widget.widget.controller.setColumnType(widget.colIndex, value);
-              },
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
-              color: widget.theme.primary,
-              tooltip: S.of(context).projects_module_spreadsheet_data_choose_column_type_tooltip,
-              itemBuilder: (context) {
-                return CustomTableType.values.reversed.map((value) {
-                  return PopupMenuItem(
-                    value: value,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          customTableNames[value] ?? '', 
-                          style: actualType != null && value == actualType 
-                            ? widget.theme.bodyMedium.copyWith(color: widget.theme.secondary) 
-                            : widget.theme.bodyMedium.copyWith(color: widget.theme.onPrimary)
-                        ),
-                        Icon(
-                          customTableIcons[value]!.icon ?? Icons.error_outline_rounded,
-                          color: actualType != null && value == actualType
-                            ? widget.theme.secondary
-                            : widget.theme.onPrimary
-                        ),
-                      ],
-                    ),
+            CustomSelectionMenu(
+              type: CustomSelectionMenuButttonType.icon,
+              buttonStyle: const ButtonStyle(),
+              theme: widget.theme, 
+              items: [
+                CustomSelectionMenuItem(
+                  enabled: false,
+                  label: S.of(context).projects_module_spreadsheet_data_column_type, 
+                  labelStyle: widget.theme.titleMedium,
+                  icon: null, 
+                  onTap: () {}
+                ),
+
+                ...CustomTableType.values.map((value) {
+                  return CustomSelectionMenuItem(
+                    label: customTableNames[value] ?? '',
+                    icon: customTableIcons[value]!.icon ?? Icons.error_outline_rounded, 
+                    foregroundColor: actualType != null && value == actualType
+                      ? widget.theme.secondary
+                      : widget.theme.onPrimary,
+                    onTap: () {
+                      widget.widget.controller.setColumnType(widget.colIndex, value);
+                    }
                   );
-                }).followedBy(
-                  [
-                    PopupMenuItem(
-                      enabled: false,
-                      child: Text(
-                        S.of(context).projects_module_spreadsheet_data_column_type,
-                        style: widget.theme.titleMedium,
-                      )
-                    )
-                  ]
-                ).toList().reversed.toList();
-              },
+                })
+              ],
+              child: Icon(
+                Icons.arrow_drop_down_rounded, 
+                color: widget.theme.onSurface
+              )
             ),
           ],
         ),

@@ -148,10 +148,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "articles_education_title":
             MessageLookupByLibrary.simpleMessage("Education"),
         "articles_empty_menu_page_text": MessageLookupByLibrary.simpleMessage(
-            "It\'s empty now. Import articles or write your own to fill the space !"),
+            "No articles for this category yet, import, or write one !"),
         "articles_empty_menu_saved_page_text":
-            MessageLookupByLibrary.simpleMessage(
-                "No saved article yet, to save an article, click on save article"),
+            MessageLookupByLibrary.simpleMessage("No saved article yet"),
         "articles_environment_title":
             MessageLookupByLibrary.simpleMessage("Nature"),
         "articles_export_articles":
@@ -240,6 +239,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "custom_chart_grid_extend_chart":
             MessageLookupByLibrary.simpleMessage("Enlarge chart"),
         "custom_date_picker_end": MessageLookupByLibrary.simpleMessage("End"),
+        "custom_date_picker_include_hour":
+            MessageLookupByLibrary.simpleMessage("Include hour"),
         "custom_date_picker_invalid_date":
             MessageLookupByLibrary.simpleMessage("Invalid date"),
         "custom_date_picker_select_multiples_date_title":

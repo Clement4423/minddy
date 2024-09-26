@@ -3,6 +3,10 @@ import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/app_state.dart';
+import 'package:minddy/system/notifications/notification_handler.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
+import 'package:minddy/ui/components/custom_components/switch_tile.dart';
+import 'package:minddy/ui/components/notifications/notification_widget.dart';
 
 
 class PersonalizeViewController extends ChangeNotifier {
@@ -71,7 +75,11 @@ class PersonalizeViewController extends ChangeNotifier {
 
   setBWMode(bool newValue) async {
     await AppConfig.modifyConfigValue("using_bw_mode", newValue);
-    AppState.stateChanged();
+    _isUsingBWMode = newValue;
+    notifyListeners();
+    Future.delayed(const Duration(milliseconds: 150), () {
+      AppState.stateChanged();
+    });
   }
 
   Future<bool> _getThemeMode() async {
@@ -102,20 +110,29 @@ class PersonalizeViewController extends ChangeNotifier {
 
   
 
-  List<DropdownMenuItem<dynamic>> getThemeItems(BuildContext context) {
+  List<CustomSelectionMenuItem> getThemeItems(BuildContext context) {
     return [
-      DropdownMenuItem(
-        value: ThemeMode.system,
-        child: Text(S.of(context).settings_using_system_theme),
+      CustomSelectionMenuItem(
+        label: S.of(context).settings_using_system_theme, 
+        icon: null, 
+        onTap: () async {
+          await treatThemeValue(ThemeMode.system);
+        }
       ),
-      DropdownMenuItem(
-        value: ThemeMode.dark,
-        child: Text(S.of(context).settings_using_dark_mode),
+      CustomSelectionMenuItem(
+        label: S.of(context).settings_using_dark_mode, 
+        icon: null, 
+        onTap: () async {
+          await treatThemeValue(ThemeMode.dark);
+        }
       ),
-      DropdownMenuItem(
-        value: ThemeMode.light,
-        child: Text(S.of(context).settings_using_light_mode),
-      ),
+      CustomSelectionMenuItem(
+        label: S.of(context).settings_using_light_mode, 
+        icon: null, 
+        onTap: () async {
+          await treatThemeValue(ThemeMode.light);
+        }
+      )
     ];
   }
 
@@ -177,14 +194,29 @@ class PersonalizeViewController extends ChangeNotifier {
   }
 }
 
-  List<DropdownMenuItem<dynamic>> getLanguageItems(BuildContext context) {
-    List<DropdownMenuItem<dynamic>> elements = [];
-    _languagesNames.forEach((key, value) {
+  List<CustomSelectionMenuItem> getLanguageItems(BuildContext context) {
+    List<CustomSelectionMenuItem> elements = [];
+    _languagesNames.forEach((languageCode, languageFullName) {
       elements.add(
-        DropdownMenuItem(
-          value: key,
-          child: Text(value),
-        ),
+        CustomSelectionMenuItem(
+          label: languageFullName,
+          icon: null,
+          onTap: () async {
+            if (languageFullName != menuLanguageTitle) {
+              await treatLanguageValue(languageCode);
+                if (context.mounted) {
+                  NotificationHandler.addNotification(
+                    NotificationModel(
+                      content: S.of(context).snackbar_restart_needed_text,
+                      action: closeApp, 
+                      actionLabel: S.of(context).snackbar_restart_button, 
+                      duration: NotificationDuration.long
+                    )
+                  );
+                }
+            }
+          }
+        )
       );
     });
     return elements;

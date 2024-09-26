@@ -148,9 +148,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "articles_education_title":
             MessageLookupByLibrary.simpleMessage("Educación"),
         "articles_empty_menu_page_text": MessageLookupByLibrary.simpleMessage(
-            "Está vacío ahora. ¡Importe artículos o escriba los suyos propios para llenar el espacio!"),
-        "articles_empty_menu_saved_page_text": MessageLookupByLibrary.simpleMessage(
-            "Aún no se han guardado artículos. Para guardar un artículo, haga clic en guardar artículo"),
+            "¡No hay artículos para esta categoría, importa o escribe uno!"),
+        "articles_empty_menu_saved_page_text":
+            MessageLookupByLibrary.simpleMessage("No se guardaron artículos."),
         "articles_environment_title":
             MessageLookupByLibrary.simpleMessage("Medio ambiente"),
         "articles_export_articles":
@@ -241,6 +241,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "custom_chart_grid_extend_chart":
             MessageLookupByLibrary.simpleMessage("Ampliar gráfico"),
         "custom_date_picker_end": MessageLookupByLibrary.simpleMessage("Fin"),
+        "custom_date_picker_include_hour":
+            MessageLookupByLibrary.simpleMessage("Incluir hora"),
         "custom_date_picker_invalid_date":
             MessageLookupByLibrary.simpleMessage("Fecha no válida"),
         "custom_date_picker_select_multiples_date_title":

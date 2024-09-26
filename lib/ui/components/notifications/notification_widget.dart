@@ -105,6 +105,7 @@ class _NotificationWidgetState extends State<NotificationWidget> with SingleTick
     if (!_hasBeenClosed) {
       _controller.reverse().then((_) {
         _hasBeenClosed = true;
+        widget.state.timer.stop();
         NotificationHandler.removeNotification(widget.state.model);
       });
     }
@@ -126,6 +127,7 @@ class _NotificationWidgetState extends State<NotificationWidget> with SingleTick
         direction: DismissDirection.down,
         onDismissed: (direction) {
           _hasBeenClosed = true;
+          widget.state.timer.stop();
           NotificationHandler.removeNotification(widget.state.model);
         },
         child: SafeArea(

@@ -43,7 +43,7 @@ class AppConfig {
     }
   }
 
-  static dynamic getConfigValue(String key) async {
+  static Future<dynamic> getConfigValue(String key) async {
     final value = _configFileContent[key];
     return value;
   }

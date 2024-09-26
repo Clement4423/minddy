@@ -5,6 +5,7 @@ import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/system/model/note_model.dart';
 import 'package:minddy/system/notes/app_notes.dart';
 import 'package:minddy/system/interface/articles_element_interface.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class ArticlesElementEnvelop extends StatefulWidget {
@@ -48,27 +49,19 @@ class _ArticlesElementEnvelopState extends State<ArticlesElementEnvelop> {
               opacity: _hovering ? 1.0 : 0,
               duration: const Duration(milliseconds: 200),
               curve: Curves.linear,
-              child: GestureDetector(
-              onTap: () {
-                RenderBox renderBox = context.findRenderObject() as RenderBox;
-                final offset = renderBox.localToGlobal(Offset.zero);
-                const iconSize = 25.0;
-                const menuHeight = 80.0;
-                showMenu(
-                  context: context,
-                  position: RelativeRect.fromLTRB(
-                    offset.dx, // left
-                    offset.dy + menuHeight - iconSize, // top
-                    offset.dx + renderBox.size.width, // right
-                    offset.dy, // bottom
-                  ),
-                  color: theme.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(13)
+              child: Transform.translate(
+                offset: Offset(0, widget.sideMenuIconOffsetOnYAxis),
+                child: CustomSelectionMenu(
+                  theme: theme, 
+                  buttonStyle: const ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Colors.transparent),
+                    overlayColor: WidgetStatePropertyAll(Colors.transparent)
                   ),
                   items: [
                     // Copy (Clipboard)
-                    PopupMenuItem(
+                    CustomSelectionMenuItem(
+                      label: S.of(context).articles_copy_text, 
+                      icon: Icons.copy_rounded, 
                       onTap: () {
                         if (widget.child.data is String) {
                           Clipboard.setData(ClipboardData(text: widget.child.data));
@@ -82,21 +75,12 @@ class _ArticlesElementEnvelopState extends State<ArticlesElementEnvelop> {
                             Clipboard.setData(ClipboardData(text: data['code']));
                           }
                         }
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            S.of(context).articles_copy_text,
-                            style: theme.bodyMedium.copyWith(color: theme.onPrimary),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Icon(Icons.copy_outlined, color: theme.onPrimary),
-                        ],
-                      )
+                      }
                     ),
                     // Copy (Notes)
-                    PopupMenuItem(
+                    CustomSelectionMenuItem(
+                      label: S.of(context).articles_copy_to_notes_text, 
+                      icon: Icons.notes_rounded, 
                       onTap: () async {
                         await AppNotes.addNote(
                           NoteModel(
@@ -111,48 +95,23 @@ class _ArticlesElementEnvelopState extends State<ArticlesElementEnvelop> {
                             "for_later"
                           );
                       },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            S.of(context).articles_copy_to_notes_text,
-                            style: theme.bodyMedium.copyWith(color: theme.onPrimary),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Icon(Icons.notes_rounded, color: theme.onPrimary),
-                        ],
-                      )
                     ),
+                    // Delete
                     if (!widget.readOnly)
-                      // Delete element
-                      PopupMenuItem(
-                        onTap: () {
-                          widget.removeFunction(widget.keyToRemove);
+                      CustomSelectionMenuItem(
+                        label: S.of(context).snackbar_delete_button, 
+                        icon: Icons.delete_outline_rounded,
+                        foregroundColor: theme.error, 
+                        onTap: () async {
+                          await widget.removeFunction(widget.keyToRemove);
                         },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              S.of(context).snackbar_delete_button,
-                              style: theme.bodyMedium.copyWith(color: theme.error),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Icon(Icons.delete_outline_rounded, color: theme.error),
-                          ],
-                        ),
-                      )
-                  ],
-                );
-              },
-                child: Transform.translate(
-                  offset: Offset(-5, widget.sideMenuIconOffsetOnYAxis),
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: Icon(
-                      Icons.add_rounded,
-                      color: theme.onPrimary,
-                      size: 25
-                    ),
+                      ),
+                  ], 
+                  type: CustomSelectionMenuButttonType.icon,
+                  child: Icon(
+                    Icons.add_rounded,
+                    color: theme.onPrimary,
+                    size: 25
                   ),
                 ),
               ),
@@ -164,6 +123,7 @@ class _ArticlesElementEnvelopState extends State<ArticlesElementEnvelop> {
     );
   }
 }
+
 
 String _formatListInText(List<dynamic> list) {
   String finalText = "";

@@ -9,9 +9,8 @@ import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart
 import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_element_controller.dart';
 import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_types.dart';
 import 'package:minddy/ui/components/custom_components/custom_dropdown_button.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_view.dart';
-import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_button.dart';
-import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_item_model.dart';
 import 'package:minddy/ui/components/projects/modules/spreadsheet/chart_tab_widget.dart';
 import 'package:minddy/ui/components/projects/modules/spreadsheet/custom_projects_spreadsheet_module_column_dropdown_selector.dart';
 import 'package:minddy/ui/components/projects/modules/spreadsheet/project_spreadsheet_module_view_controller.dart';
@@ -111,29 +110,35 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 5, left: 5),
-                          child: CustomPopupMenuButton(items: [
-                            CustomPopupItemModel(
-                              text: Text(S.of(context).projects_module_help_text, style: theme.bodyMedium.copyWith(color: theme.onPrimary),), 
-                              icon: Icon(Icons.help_outline_rounded, color: theme.onPrimary), 
-                              action: () {
-                                
-                              }
-                            ),
-                            CustomPopupItemModel(
-                              text: Text(S.of(context).project_card_duplicate, style: theme.bodyMedium.copyWith(color: theme.onPrimary),), 
-                              icon: Icon(Icons.copy_rounded, color: theme.onPrimary), 
-                              action: () {
-                               widget.duplicateFunction(widget.controller.id);
-                              }
-                            ),
-                            CustomPopupItemModel(
-                              text: Text(S.of(context).snackbar_delete_button, style: theme.bodyMedium.copyWith(color: theme.error),), 
-                              icon: Icon(Icons.delete_outline_rounded, color: theme.error), 
-                              action: () {
-                                widget.deleteFunction(widget.controller.id);
-                              }
-                            ) 
-                          ])
+                          child: CustomSelectionMenu(
+                            theme: theme, 
+                            items: [
+                              CustomSelectionMenuItem(
+                                label: S.of(context).projects_module_help_text, 
+                                icon: Icons.help_outline_rounded, 
+                                onTap: () {
+
+                                }
+                              ),
+                              CustomSelectionMenuItem(
+                                label: S.of(context).project_card_duplicate, 
+                                icon: Icons.copy_rounded, 
+                                onTap: () {
+                                  widget.duplicateFunction(widget.controller.id);
+                                }
+                              ),
+                              CustomSelectionMenuItem(
+                                label: S.of(context).snackbar_delete_button, 
+                                icon: Icons.delete_outline_rounded, 
+                                foregroundColor: theme.error,
+                                onTap: () {
+                                  widget.deleteFunction(widget.controller.id);
+                                }
+                              )
+                            ], 
+                            type: CustomSelectionMenuButttonType.icon,
+                            child: Icon(Icons.more_horiz_rounded, color: theme.secondary)
+                          )
                         ),
                       ],
                     )
@@ -264,47 +269,39 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
                                     // Chart Type selector
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10),
-                                      child: SizedBox(
-                                        width: widget.width / 3.2,
-                                        child: Material(
-                                          type: MaterialType.transparency,
-                                          child: CustomDropdownButton(
-                                            menuTitle: getChartTypeName(widget.controller.getChartType(widget.controller.activeTab ?? 0)),
-                                            backgroundColor: theme.primary,
-                                            foregroundColor: theme.onPrimary,
-                                            action: (CustomChartType value) {},
-                                            items: [
-                                              DropdownMenuItem(
-                                                onTap: () {
-                                                  widget.controller.selectChartType(
-                                                    widget.controller.activeTab ?? 0, 
-                                                    CustomChartType.donut
-                                                  );
-                                                },
-                                                value: CustomChartType.donut,
-                                                child: Text(
-                                                  S.current.projects_module_spreadsheet_chart_chart_type_donut,
-                                                  style: theme.bodyMedium
-                                                  .copyWith(color: theme.onPrimary),
-                                                )
-                                              ),
-                                              DropdownMenuItem(
-                                                onTap: () {
-                                                  widget.controller.selectChartType(
-                                                    widget.controller.activeTab ?? 0, 
-                                                    CustomChartType.barSingle
-                                                  );
-                                                },
-                                                value: CustomChartType.barSingle,
-                                                child: Text(
-                                                  S.current.projects_module_spreadsheet_chart_chart_type_bar,
-                                                  style: theme.bodyMedium
-                                                  .copyWith(color: theme.onPrimary),
-                                                )
-                                              )
-                                            ],
-                                            needToRestart: false
-                                          ),
+                                      child: Material(
+                                        type: MaterialType.transparency,
+                                        child: CustomDropdownButton(
+                                          width: widget.width / 3.2,
+                                          menuTitle: null,
+                                          selectedOptionTitle: getChartTypeName(widget.controller.getChartType(widget.controller.activeTab ?? 0)),
+                                          backgroundColor: theme.primary,
+                                          foregroundColor: theme.onPrimary,
+                                          theme: theme,
+                                          items: [
+                                            CustomSelectionMenuItem(
+                                              label: S.current.projects_module_spreadsheet_chart_chart_type_donut, 
+                                              labelStyle: theme.bodyMedium.copyWith(color: theme.onPrimary),
+                                              icon: CupertinoIcons.chart_pie, 
+                                              onTap: () {
+                                                widget.controller.selectChartType(
+                                                  widget.controller.activeTab ?? 0, 
+                                                  CustomChartType.donut
+                                                );
+                                              }
+                                            ),
+                                            CustomSelectionMenuItem(
+                                              label: S.current.projects_module_spreadsheet_chart_chart_type_bar, 
+                                              labelStyle: theme.bodyMedium.copyWith(color: theme.onPrimary),
+                                              icon: CupertinoIcons.chart_bar, 
+                                              onTap: () {
+                                                widget.controller.selectChartType(
+                                                  widget.controller.activeTab ?? 0, 
+                                                  CustomChartType.barSingle
+                                                );
+                                              }
+                                            )
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -358,6 +355,7 @@ class _ProjectsSpreadsheetModuleState extends State<ProjectsSpreadsheetModule> {
                                       return Padding(
                                         padding: const EdgeInsets.only(top: 5),
                                         child: CustomProjectsSpreadsheetModuleColumnDropdownSelector(
+                                          theme: theme,
                                           width: widget.width / 3.2,
                                           height: 40,
                                           controller: widget.controller,

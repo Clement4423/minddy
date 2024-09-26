@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/model/node_tree_variable.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
-import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/ui/components/nodes/controllers/node_editor_bottom_sheet_controller.dart';
 import 'package:minddy/ui/components/nodes/node_editor_bottom_sheet_side_panel_box.dart';
@@ -143,12 +143,17 @@ class _NodeEditorBottomSheetSidePanelState extends State<NodeEditorBottomSheetSi
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                     child: Tooltip(
-                      message: isClosed ? S.of(context).node_editor_view_open_side_panel_tooltip : S.of(context).node_editor_view_close_side_panel_tooltip,
+                      message: isClosed 
+                        ? S.of(context).node_editor_view_open_side_panel_tooltip 
+                        : S.of(context).node_editor_view_close_side_panel_tooltip,
                       preferBelow: true,
                       verticalOffset: (widget.height / 5) / 2,
                       child: Container(
                         width: 40,
                         height: widget.height / 5,
+                        constraints: const BoxConstraints(
+                          minHeight: 90
+                        ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(13),
                           color: widget.theme.primaryContainer,

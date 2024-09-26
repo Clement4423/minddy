@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interface/i_custom_table_cell_data.dart';
 import 'package:minddy/system/model/default_app_color.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_controller.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/components/menus/sub_menus/custom_table_selection_cell_add_options_sub_menu.dart';
@@ -123,46 +124,55 @@ class _CustomTableSelectionCellState extends State<CustomTableSelectionCell> {
                   ? options.first.name
                   : widget.data
                 : options.first.name,
-              lengthTreshold: 9,
+              lengthTreshold: 5,
               child: Material(
                 type: MaterialType.transparency,
-                child: DropdownButton<String>(
-                  value: options.map((e) => e.name).toList().contains(widget.data ?? '') 
-                    ? widget.data 
-                    : options.first.name,
-                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-                  focusColor: Colors.transparent,
-                  dropdownColor: widget.theme.primary,
+                child: CustomSelectionMenu(
+                  theme: widget.theme, 
+                  menuMaxHeight: 250,
+                  buttonStyle: const ButtonStyle(
+                    padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 10))
+                  ),
                   items: options.map((option) {
-                    return DropdownMenuItem(
-                      value: option.name,
-                      child: CustomTooltip(
-                        message: option.name,
-                        lengthTreshold: 10,
-                        waitDuration: const Duration(milliseconds: 500),
-                        child: Text(
-                          option.name,
-                          overflow: TextOverflow.ellipsis,
-                          style: widget.theme.bodyMedium
-                          .copyWith(color: option.color), maxLines: 1
-                        )
+                    return CustomSelectionMenuItem(
+                      label: option.name, 
+                      labelStyle: widget.theme.bodyMedium.copyWith(
+                        color: option.color
                       ),
+                      icon: null, 
+                      onTap: () {
+                        setState(() {
+                          widget.data = option.name;
+                        });
+                      }
                     );
                   }).toList(),
-                  icon: Icon(
-                    Icons.arrow_drop_down_rounded,
-                     color: _getOptionColor()
-                    ),
-                  borderRadius: BorderRadius.circular((widget.cellHeight * 0.7) / 2),
-                  style: widget.theme.bodyMedium.copyWith(color: widget.theme.onSurface),
-                  isExpanded: true,
-                  underline: const SizedBox(),
-                  onChanged: (value) {
-                    setState(() {
-                      widget.data = value;
-                    });
-                  },
-                ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          options.map((e) => e.name).toList().contains(widget.data ?? '') 
+                            ? widget.data 
+                            : options.first.name,
+                          style: widget.theme.bodyMedium.copyWith(
+                            color: options.map((e) => e.name).toList().contains(widget.data ?? '') 
+                              ? options.firstWhere((o) => o.name == widget.data).color 
+                              : options.first.color,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_drop_down_rounded,
+                        color: options.map((e) => e.name).toList().contains(widget.data ?? '') 
+                          ? options.firstWhere((o) => o.name == widget.data).color 
+                          : options.first.color,
+                      )
+                    ],
+                  )
+                )
               ),
             ),
           ),
@@ -211,3 +221,41 @@ class _CustomTableSelectionCellState extends State<CustomTableSelectionCell> {
     );
   }
 }
+
+// DropdownButton<String>(
+//   value: options.map((e) => e.name).toList().contains(widget.data ?? '') 
+//     ? widget.data 
+//     : options.first.name,
+//   padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+//   focusColor: Colors.transparent,
+//   dropdownColor: widget.theme.primary,
+//   items: options.map((option) {
+//     return DropdownMenuItem(
+//       value: option.name,
+//       child: CustomTooltip(
+//         message: option.name,
+//         lengthTreshold: 10,
+//         waitDuration: const Duration(milliseconds: 500),
+//         child: Text(
+//           option.name,
+//           overflow: TextOverflow.ellipsis,
+//           style: widget.theme.bodyMedium
+//           .copyWith(color: option.color), maxLines: 1
+//         )
+//       ),
+//     );
+//   }).toList(),
+//   icon: Icon(
+//     Icons.arrow_drop_down_rounded,
+//       color: _getOptionColor()
+//     ),
+//   borderRadius: BorderRadius.circular((widget.cellHeight * 0.7) / 2),
+//   style: widget.theme.bodyMedium.copyWith(color: widget.theme.onSurface),
+//   isExpanded: true,
+//   underline: const SizedBox(),
+//   onChanged: (value) {
+//     setState(() {
+//       widget.data = value;
+//     });
+//   },
+//   ),

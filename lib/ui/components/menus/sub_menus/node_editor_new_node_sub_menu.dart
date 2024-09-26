@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/interface/i_node_widget.dart';
 import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
-import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
 import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/components/nodes/node_editor_bottom_sheet_side_panel_variable_container.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -597,7 +597,8 @@ class NodeEditorNewNodeSubMenuNodeModel {
 
 enum NodeCategory {
   math,
-  logic
+  logic,
+  variable
 }
 
 String _getNodeCategoryTranslatedName(NodeCategory category) {
@@ -606,6 +607,8 @@ String _getNodeCategoryTranslatedName(NodeCategory category) {
       return "Math";
     case NodeCategory.logic:
       return 'Logic';
+    case NodeCategory.variable:
+      return 'Variables';
   }
 }
 
@@ -615,6 +618,8 @@ IconData _getNodeCategoryIcon(NodeCategory category) {
       return Icons.calculate_outlined;
     case NodeCategory.logic:
       return Icons.settings_outlined;
+    case NodeCategory.variable:
+      return Icons.waves_rounded;
   }
 }
 

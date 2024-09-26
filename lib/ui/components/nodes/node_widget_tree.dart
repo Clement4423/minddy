@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:minddy/system/interface/i_node_widget.dart';
+import 'package:minddy/system/interface/i_output_node.dart';
+import 'package:minddy/system/interface/node_interface.dart';
 import 'package:minddy/system/nodes/logic/node_tree.dart';
-import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/boolean_node_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/comparison_node_widget.dart';

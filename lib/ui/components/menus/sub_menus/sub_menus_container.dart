@@ -1,8 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:minddy/system/shortcuts/shortcuts_activators.dart';
 
-ShortcutActivator escapeActivator = const SingleActivator(LogicalKeyboardKey.escape);
 
 Future<dynamic> showSubMenu(BuildContext context, Widget child, {bool isDismissible = true, Function? onMenuDismissed}) async {
   return showDialog(

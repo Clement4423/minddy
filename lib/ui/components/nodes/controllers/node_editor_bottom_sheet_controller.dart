@@ -1,12 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:minddy/system/interface/i_node_widget.dart';
+import 'package:minddy/system/interface/node_interface.dart';
 import 'package:minddy/system/model/node_connection.dart';
 import 'package:minddy/system/model/node_port_info.dart';
+import 'package:minddy/system/model/node_tree_variable.dart';
 import 'package:minddy/system/nodes/all_nodes/math_node.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/nodes/logic/node_tree.dart';
-import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
+import 'package:minddy/system/nodes/logic/node_tree_variable_manager.dart';
+import 'package:minddy/system/nodes/logic/node_widget_functions.dart';
 import 'package:minddy/system/nodes/nodes_add_menu_models.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/system/utils/move_element_to_end_of_list.dart';
@@ -721,7 +725,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
         nodes.add(widget.node);
       }
 
-      return NodeTree(nodes: nodes, id: createUniqueId(), variables: variables);
+      return NodeTree(nodes: nodes, id: createUniqueId(), variablesManager: NodeTreeVariablesManager(variablesList: variables));
     } catch (e) {
       return null;
     }

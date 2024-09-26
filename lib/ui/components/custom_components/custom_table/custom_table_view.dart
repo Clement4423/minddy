@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interface/i_custom_table_cell_data.dart';
 import 'package:minddy/system/model/custom_table_cell_position.dart';
 import 'package:minddy/system/model/custom_table_type.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/calculation_viewer.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/column_type_selector.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_date_cell.dart';
@@ -23,12 +23,11 @@ import 'package:minddy/ui/components/menus/sub_menus/custom_table_rearange_rows_
 import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
 import 'package:minddy/ui/components/menus/sub_menus_controllers/custom_table_rearange_columns_sub_menu_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
+import 'dart:math' as math;
 
 class CustomTable extends StatefulWidget {
   final double cellWidth;
   final double cellHeight;
-
-  final Function? onRebuild;
 
   final CustomTableController controller;
 
@@ -36,7 +35,6 @@ class CustomTable extends StatefulWidget {
     super.key,
     this.cellWidth = 170,
     this.cellHeight = 40,
-    this.onRebuild,
     required this.controller
   });
 
@@ -51,10 +49,6 @@ class _CustomTableState extends State<CustomTable> {
   Future<void> initialize() async {
     if (!isInitialized) {
       isInitialized = true;
-    } else {
-      if (widget.onRebuild != null) {
-        await widget.onRebuild!();
-      }
     }
   }
 
@@ -238,132 +232,127 @@ class _CustomTableState extends State<CustomTable> {
                     scrollDirection: Axis.horizontal,
                     controller: horizontalScrollController,
                     children: [
-                      FutureBuilder(
-                        future: initialize(),
-                        builder: (context, snapshot) {
-                          return Table(
-                            columnWidths: Map.fromIterables(
-                              List.generate(widget.controller.columns + 1, (index) => index),
-                              List.generate(widget.controller.columns + 1, (index) {
-                                if (index == 0) {
-                                  return FixedColumnWidth(widget.cellWidth * 1.2);
-                                } else {
-                                  return FixedColumnWidth(widget.cellWidth);
-                                }
-                              }),
-                            ),
-                            defaultColumnWidth: FixedColumnWidth(widget.cellWidth),
-                            children: [
-                              // First Row
-                              TableRow(
-                                children: List.generate(widget.controller.columns + 2, (colIndex) {
-                                  if (colIndex == 0) {
-                                    return _buildTitleCell(context, theme);
-                                  } else if (colIndex == widget.controller.columns + 1) {
-                                    return Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 10, top: 5),
-                                          child: IconButton(
-                                            onPressed: () {
-                                              widget.controller.newColumn();
-                                            },
-                                            tooltip: S.of(context).projects_module_spreadsheet_new_column,
-                                            style: ButtonThemes.secondaryButtonStyle(context),
-                                            icon: const Icon(Icons.add_rounded)
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 10, top: 5),
-                                          child: IconButton(
-                                            onPressed: () {
-                                              showSubMenu(context, CustomTableRearangeColumnsSubMenu(controller: CustomTableRearangeColumnsSubMenuController(tableController: widget.controller)));
-                                            },
-                                            tooltip: S.of(context).projects_module_spreadsheet_manage_columns_sub_menu_title,
-                                            style: ButtonThemes.secondaryButtonStyle(context),
-                                            icon: Transform.scale(
-                                              scaleX: -1,
-                                              child: Transform.rotate(
-                                                angle: math.pi / 2,
-                                                child: const Icon(Icons.move_down_rounded)
-                                              ),
-                                            )
+                      Table(
+                        columnWidths: Map.fromIterables(
+                          List.generate(widget.controller.columns + 1, (index) => index),
+                          List.generate(widget.controller.columns + 1, (index) {
+                            if (index == 0) {
+                              return FixedColumnWidth(widget.cellWidth * 1.2);
+                            } else {
+                              return FixedColumnWidth(widget.cellWidth);
+                            }
+                          }),
+                        ),
+                        defaultColumnWidth: FixedColumnWidth(widget.cellWidth),
+                        children: [
+                          // First Row
+                          TableRow(
+                            children: List.generate(widget.controller.columns + 2, (colIndex) {
+                              if (colIndex == 0) {
+                                return _buildTitleCell(context, theme);
+                              } else if (colIndex == widget.controller.columns + 1) {
+                                return Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 10, top: 5),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          widget.controller.newColumn();
+                                        },
+                                        tooltip: S.of(context).projects_module_spreadsheet_new_column,
+                                        style: ButtonThemes.secondaryButtonStyle(context),
+                                        icon: const Icon(Icons.add_rounded)
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 10, top: 5),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showSubMenu(context, CustomTableRearangeColumnsSubMenu(controller: CustomTableRearangeColumnsSubMenuController(tableController: widget.controller)));
+                                        },
+                                        tooltip: S.of(context).projects_module_spreadsheet_manage_columns_sub_menu_title,
+                                        style: ButtonThemes.secondaryButtonStyle(context),
+                                        icon: Transform.scale(
+                                          scaleX: -1,
+                                          child: Transform.rotate(
+                                            angle: math.pi / 2,
+                                            child: const Icon(Icons.move_down_rounded)
                                           ),
                                         )
-                                      ],
-                                    );
-                                  } else {
-                                    return _buildColumnTypeSelector(colIndex, theme);
-                                  }
-                                }),
-                              ),
-                              // Content
-                              ...buildCells(theme),
-                              // Last row
-                              TableRow(
-                                children: [
-                                  ...List.generate(widget.controller.columns + 2, (colIndex) {
-                                    if (colIndex == 0) {
-                                      return Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10, top: 5),
-                                            child: SizedBox(
-                                              height: 40,
-                                              child: ElevatedButton(
-                                                onPressed: () {
-                                                  widget.controller.newRow();
-                                                },
-                                                style: ButtonThemes.secondaryButtonStyle(context),
-                                                child: Text(
-                                                  S.of(context).projects_module_spreadsheet_new_row,
-                                                  style: theme.titleMedium
-                                                  .copyWith(
-                                                    color: theme.onPrimary,
-                                                    fontSize: 13
-                                                  )
-                                                ),
-                                              ),
+                                      ),
+                                    )
+                                  ],
+                                );
+                              } else {
+                                return _buildColumnTypeSelector(colIndex, theme);
+                              }
+                            }),
+                          ),
+                          // Content
+                          ...buildCells(theme),
+                          // Last row
+                          TableRow(
+                            children: [
+                              ...List.generate(widget.controller.columns + 2, (colIndex) {
+                                if (colIndex == 0) {
+                                  return Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 10, top: 5),
+                                        child: SizedBox(
+                                          height: 40,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              widget.controller.newRow();
+                                            },
+                                            style: ButtonThemes.secondaryButtonStyle(context),
+                                            child: Text(
+                                              S.of(context).projects_module_spreadsheet_new_row,
+                                              style: theme.titleMedium
+                                              .copyWith(
+                                                color: theme.onPrimary,
+                                                fontSize: 13
+                                              )
                                             ),
                                           ),
-                                          Padding(
-                                          padding: const EdgeInsets.only(left: 10, top: 5),
-                                          child: IconButton(
-                                            onPressed: () {
-                                              showSubMenu(context, CustomTableRearangeRowsSubMenu(controller: CustomTableRearangeColumnsSubMenuController(tableController: widget.controller)));
-                                            },
-                                            tooltip: S.of(context).projects_module_spreadsheet_manage_rows_sub_menu_title,
-                                            style: ButtonThemes.secondaryButtonStyle(context),
-                                            icon: const Icon(Icons.move_down_rounded)
-                                          ),
-                                        )
-                                        ],
-                                      );
-                                    } else if (widget.controller.getColumnType(colIndex) == CustomTableType.number) {
+                                        ),
+                                      ),
+                                      Padding(
+                                      padding: const EdgeInsets.only(left: 10, top: 5),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showSubMenu(context, CustomTableRearangeRowsSubMenu(controller: CustomTableRearangeColumnsSubMenuController(tableController: widget.controller)));
+                                        },
+                                        tooltip: S.of(context).projects_module_spreadsheet_manage_rows_sub_menu_title,
+                                        style: ButtonThemes.secondaryButtonStyle(context),
+                                        icon: const Icon(Icons.move_down_rounded)
+                                      ),
+                                    )
+                                    ],
+                                  );
+                                } else if (widget.controller.getColumnType(colIndex) == CustomTableType.number) {
+                                  return AnimatedBuilder(
+                                    animation: widget.controller.numbersChangeNotifier,
+                                    builder: (context, child) {
                                       return Padding(
                                         padding: const EdgeInsets.only(top: 2),
                                         child: widget.controller.getColumnCalculation(colIndex) != null 
-                                          ? AnimatedBuilder(
-                                            animation: widget.controller.numbersChangeNotifier,
-                                            builder: (context, animation) {
-                                              return Padding(
-                                                padding: const EdgeInsets.only(top: 5),
-                                                child: CalculationViewer(
-                                                  key: UniqueKey(), // Keep it or it will not refresh
-                                                  calculationName: widget.controller.getColumnCalculation(colIndex) ?? 'sum', 
-                                                  numbers: widget.controller.getAllNumbersFromColumn(colIndex),
-                                                  isFromLastCell: colIndex == widget.controller.columns,
-                                                  onFunctionSelected: (name) {
-                                                    widget.controller.setColumnCalculation(colIndex, name);
-                                                  },
-                                                  theme: theme,
-                                                ),
-                                              );
-                                            }
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(top: 5),
+                                              child: CalculationViewer(
+                                                key: UniqueKey(), // Keep it or it will not refresh
+                                                calculationName: widget.controller.getColumnCalculation(colIndex) ?? 'sum', 
+                                                numbers: widget.controller.getAllNumbersFromColumn(colIndex),
+                                                isFromLastCell: colIndex == widget.controller.columns,
+                                                onFunctionSelected: (name) {
+                                                  widget.controller.setColumnCalculation(colIndex, name);
+                                                },
+                                                theme: theme,
+                                              ),
                                           )
                                           : Padding(
                                             padding: const EdgeInsets.only(top: 5),
-                                            child: FunctionSelector(
+                                            child: CalculationSelector(
                                                 theme: theme,
                                                 onFunctionSelected: (name) {
                                                   widget.controller.setColumnCalculation(colIndex, name);
@@ -371,17 +360,17 @@ class _CustomTableState extends State<CustomTable> {
                                               ),
                                           ),
                                       );
-                                    } 
-                                    else {
-                                      return const SizedBox();
                                     }
-                                  })
-                                ]
-                              )
-                            ],
-                          );
-                        }
-                      ),
+                                  );
+                                } 
+                                else {
+                                  return const SizedBox();
+                                }
+                              })
+                            ]
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -394,8 +383,7 @@ class _CustomTableState extends State<CustomTable> {
   }
 }
 
-List<PopupMenuItem<String>> getCalculationsMenuItems(StylesGetters theme, String selected) {
-
+List<CustomTableCalculationModel> getCalculationsMenuItems(StylesGetters theme, String selected) {
   TextStyle getStyle(String value) {
     return value == 'Null'
         ? theme.titleMedium.copyWith(color: theme.onPrimary)
@@ -405,95 +393,152 @@ List<PopupMenuItem<String>> getCalculationsMenuItems(StylesGetters theme, String
   }
 
   return [
-    PopupMenuItem(
-      value: 'Null',
-      child: Text(calculationsOperationsTitles['Null'] ?? 'None', style: getStyle('Null'),)
+    CustomTableCalculationModel(
+      menuItem: CustomSelectionMenuItem(
+        label: calculationsOperationsTitles['Null'] ?? 'None',
+        labelStyle: getStyle('Null'),
+        icon: null, // No icon specified for this one
+        foregroundColor: theme.onPrimary,
+        onTap: () {
+          // Handle the tap logic for 'Null'
+        },
+      ),
+      calculation: 'Null',
+      tooltip: CustomTableCalculationExplanationTooltip(
+        example: '',
+        message: '', // No tooltip for 'Null'
+        theme: theme,
+        child: const SizedBox(), // Empty widget for no tooltip
+      ),
     ),
-    PopupMenuItem(
-      value: 'sum',
-      child: CustomTableCalculationExplanationTooltip(
+    CustomTableCalculationModel(
+      menuItem: CustomSelectionMenuItem(
+        label: calculationsOperationsTitles['sum'] ?? 'Sum',
+        labelStyle: getStyle('sum'),
+        icon: null,
+        onTap: () {
+          // Handle the tap logic for 'sum'
+        },
+      ),
+      calculation: 'sum',
+      tooltip: CustomTableCalculationExplanationTooltip(
         example: S.current.projects_module_spreadsheet_number_operation_sum_example,
         message: S.current.projects_module_spreadsheet_number_operation_sum_message,
         theme: theme,
-        child: Text(
-          calculationsOperationsTitles['sum'] ?? 'Sum', 
-          style: getStyle('sum')
-        )
-      )
+        child: Text(calculationsOperationsTitles['sum'] ?? 'Sum', style: getStyle('sum')),
+      ),
     ),
-    PopupMenuItem(
-      value: 'average',
-      child: CustomTableCalculationExplanationTooltip(
+    CustomTableCalculationModel(
+      menuItem: CustomSelectionMenuItem(
+        label: calculationsOperationsTitles['average'] ?? 'Average',
+        labelStyle: getStyle('average'),
+        icon: null,
+        onTap: () {
+          // Handle the tap logic for 'average'
+        },
+      ),
+      calculation: 'average',
+      tooltip: CustomTableCalculationExplanationTooltip(
         example: S.current.projects_module_spreadsheet_number_operation_average_example,
         message: S.current.projects_module_spreadsheet_number_operation_average_message,
         theme: theme,
-        child: Text(
-          calculationsOperationsTitles['average'] ?? 'Average', 
-          style: getStyle('average')
-        )
-      )
+        child: Text(calculationsOperationsTitles['average'] ?? 'Average', style: getStyle('average')),
+      ),
     ),
-    PopupMenuItem(
-      value: 'maximum',
-      child: CustomTableCalculationExplanationTooltip(
+    CustomTableCalculationModel(
+      menuItem: CustomSelectionMenuItem(
+        label: calculationsOperationsTitles['maximum'] ?? 'Maximum',
+        labelStyle: getStyle('maximum'),
+        icon: null,
+        onTap: () {
+          // Handle the tap logic for 'maximum'
+        },
+      ),
+      calculation: 'maximum',
+      tooltip: CustomTableCalculationExplanationTooltip(
         example: S.current.projects_module_spreadsheet_number_operation_maximum_example,
         message: S.current.projects_module_spreadsheet_number_operation_maximum_message,
         theme: theme,
-        child: Text(
-          calculationsOperationsTitles['maximum'] ?? 'Maximum', 
-          style: getStyle('maximum')
-        )
-      )
+        child: Text(calculationsOperationsTitles['maximum'] ?? 'Maximum', style: getStyle('maximum')),
+      ),
     ),
-    PopupMenuItem(
-      value: 'minimum',
-      child: CustomTableCalculationExplanationTooltip(
+    CustomTableCalculationModel(
+      menuItem: CustomSelectionMenuItem(
+        label: calculationsOperationsTitles['minimum'] ?? 'Minimum',
+        labelStyle: getStyle('minimum'),
+        icon: null,
+        onTap: () {
+          // Handle the tap logic for 'minimum'
+        },
+      ),
+      calculation: 'minimum',
+      tooltip: CustomTableCalculationExplanationTooltip(
         example: S.current.projects_module_spreadsheet_number_operation_minimum_example,
         message: S.current.projects_module_spreadsheet_number_operation_minimum_message,
         theme: theme,
-        child: Text(
-          calculationsOperationsTitles['minimum'] ?? 'Minimum', 
-          style: getStyle('minimum')
-        )
-      )
+        child: Text(calculationsOperationsTitles['minimum'] ?? 'Minimum', style: getStyle('minimum')),
+      ),
     ),
-    PopupMenuItem(
-      value: 'interval',
-      child: CustomTableCalculationExplanationTooltip(
+    CustomTableCalculationModel(
+      menuItem: CustomSelectionMenuItem(
+        label: calculationsOperationsTitles['interval'] ?? 'Interval',
+        labelStyle: getStyle('interval'),
+        icon: null,
+        onTap: () {
+          // Handle the tap logic for 'interval'
+        },
+      ),
+      calculation: 'interval',
+      tooltip: CustomTableCalculationExplanationTooltip(
         example: S.current.projects_module_spreadsheet_number_operation_interval_example,
         message: S.current.projects_module_spreadsheet_number_operation_interval_message,
         theme: theme,
-        child: Text(
-          calculationsOperationsTitles['interval'] ?? 'Interval', 
-          style: getStyle('interval')
-        )
-      )
+        child: Text(calculationsOperationsTitles['interval'] ?? 'Interval', style: getStyle('interval')),
+      ),
     ),
-    PopupMenuItem(
-      value: 'median',
-      child: CustomTableCalculationExplanationTooltip(
+    CustomTableCalculationModel(
+      menuItem: CustomSelectionMenuItem(
+        label: calculationsOperationsTitles['median'] ?? 'Median',
+        labelStyle: getStyle('median'),
+        icon: null,
+        onTap: () {
+          // Handle the tap logic for 'median'
+        },
+      ),
+      calculation: 'median',
+      tooltip: CustomTableCalculationExplanationTooltip(
         example: S.current.projects_module_spreadsheet_number_operation_median_example,
         message: S.current.projects_module_spreadsheet_number_operation_median_message,
         theme: theme,
-        child: Text(
-          calculationsOperationsTitles['median'] ?? 'Median', 
-          style: getStyle('median')
-        )
-      )
+        child: Text(calculationsOperationsTitles['median'] ?? 'Median', style: getStyle('median')),
+      ),
     ),
-    PopupMenuItem(
-      value: 'standardDeviation',
-      child: CustomTableCalculationExplanationTooltip(
+    CustomTableCalculationModel(
+      menuItem: CustomSelectionMenuItem(
+        label: calculationsOperationsTitles['standardDeviation'] ?? 'Standard deviation',
+        labelStyle: getStyle('standardDeviation'),
+        icon: null,
+        onTap: () {
+          // Handle the tap logic for 'standardDeviation'
+        },
+      ),
+      calculation: "standardDeviation",
+      tooltip: CustomTableCalculationExplanationTooltip(
         example: S.current.projects_module_spreadsheet_number_operation_standardDeviation_example,
         message: S.current.projects_module_spreadsheet_number_operation_standardDeviation_message,
         theme: theme,
-        child: Text(
-          calculationsOperationsTitles['standardDeviation'] ?? 'Standard deviation', 
-          style: getStyle('standardDeviation')
-        )
-      )
-    )
+        child: Text(calculationsOperationsTitles['standardDeviation'] ?? 'Standard deviation', style: getStyle('standardDeviation')),
+      ),
+    ),
   ];
+}
+
+class CustomTableCalculationModel {
+  CustomSelectionMenuItem menuItem;
+  String calculation;
+  CustomTableCalculationExplanationTooltip tooltip;
+
+  CustomTableCalculationModel({required this.menuItem, required this.calculation, required this.tooltip});
 }
 
 Map<String, String> calculationsOperationsTitles = {

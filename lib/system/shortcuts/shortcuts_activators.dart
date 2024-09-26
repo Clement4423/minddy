@@ -2,6 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+ShortcutActivator escapeActivator = const SingleActivator(LogicalKeyboardKey.escape);
+
+class EscapeIntent extends Intent {
+  const EscapeIntent();
+}
+
 ShortcutActivator saveActivator = SingleActivator(
   LogicalKeyboardKey.keyS, 
   meta: Platform.isMacOS 

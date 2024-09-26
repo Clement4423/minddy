@@ -71,7 +71,7 @@ class _SwitchTileState extends State<SwitchTile> {
               color: widget.enabled ? theme.surface : Colors.grey,
               borderRadius: BorderRadius.circular(10)
             ),
-            padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 8),
+            padding: const EdgeInsets.only(top: 3, bottom: 5, left: 10, right: 8),
             child: Row(
               children: [
                 Expanded(
@@ -79,7 +79,7 @@ class _SwitchTileState extends State<SwitchTile> {
                     widget.title,
                     style: theme.bodyMedium.copyWith(color: widget.enabled ? theme.onSurface : const Color.fromARGB(255, 120, 120, 120)),
                     maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                    overflow: TextOverflow.ellipsis
                   ),
                 ),
                 Switch(

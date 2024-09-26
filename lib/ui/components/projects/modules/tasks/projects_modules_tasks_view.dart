@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interface/projects_modules_controller_interface.dart';
 import 'package:minddy/system/interface/projects_modules_interface.dart';
-import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_button.dart';
-import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_item_model.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -88,29 +87,35 @@ class _ProjectsTasksModuleState extends State<ProjectsTasksModule> {
                       style: theme.titleMedium.copyWith(color: theme.onSurface),
                     ),
                     // Module options
-                    CustomPopupMenuButton(items: [
-                      CustomPopupItemModel(
-                        text: Text(S.of(context).projects_module_help_text, style: theme.bodyMedium.copyWith(color: theme.onPrimary),), 
-                        icon: Icon(Icons.help_outline_rounded, color: theme.onPrimary), 
-                        action: () {
-                          
-                        }
-                      ),
-                      CustomPopupItemModel(
-                        text: Text(S.of(context).project_card_duplicate, style: theme.bodyMedium.copyWith(color: theme.onPrimary),), 
-                        icon: Icon(Icons.copy_rounded, color: theme.onPrimary), 
-                        action: () {
-                          widget.duplicateFunction(widget.controller.id);
-                        }
-                      ),
-                      CustomPopupItemModel(
-                        text: Text(S.of(context).snackbar_delete_button, style: theme.bodyMedium.copyWith(color: theme.error),), 
-                        icon: Icon(Icons.delete_outline_rounded, color: theme.error), 
-                        action: () {
-                          widget.deleteFunction(widget.controller.id);
-                        }
-                      ) 
-                    ])
+                    CustomSelectionMenu(
+                      theme: theme, 
+                      items: [
+                        CustomSelectionMenuItem(
+                          label: S.of(context).projects_module_help_text, 
+                          icon: Icons.help_outline_rounded, 
+                          onTap: () {
+
+                          }
+                        ),
+                        CustomSelectionMenuItem(
+                          label: S.of(context).project_card_duplicate, 
+                          icon: Icons.copy_rounded, 
+                          onTap: () {
+                            widget.duplicateFunction(widget.controller.id);
+                          }
+                        ),
+                        CustomSelectionMenuItem(
+                          label: S.of(context).snackbar_delete_button, 
+                          icon: Icons.delete_outline_rounded, 
+                          foregroundColor: theme.error,
+                          onTap: () {
+                            widget.deleteFunction(widget.controller.id);
+                          }
+                        )
+                      ], 
+                      type: CustomSelectionMenuButttonType.icon,
+                      child: Icon(Icons.more_horiz_rounded, color: theme.secondary)
+                    )
                   ],
                 ),
                 // Completed tasks

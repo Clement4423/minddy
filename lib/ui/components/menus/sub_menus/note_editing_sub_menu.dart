@@ -10,9 +10,8 @@ import 'package:minddy/ui/components/custom_components/Custom_element_editor_env
 import 'package:minddy/ui/components/custom_components/custom_bulleted_list.dart';
 import 'package:minddy/ui/components/custom_components/custom_code_display.dart';
 import 'package:minddy/ui/components/custom_components/custom_image_display.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/custom_components/custom_text_area.dart';
-import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_button.dart';
-import 'package:minddy/ui/components/menus/popup_menu/custom_popup_menu_item_model.dart';
 import 'package:minddy/ui/components/menus/sub_menus_controllers/note_editing_submenu_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -149,35 +148,27 @@ class _NoteEditingSubMenuState extends State<NoteEditingSubMenu> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 10),
-                          child: CustomPopupMenuButton(
+                          child: CustomSelectionMenu(
+                            theme: theme, 
                             items: [
-                              CustomPopupItemModel(
-                                text: Text(
-                                  S.of(context).projects_module_notes_editing_note_sub_menu_move_tooltip,
-                                  style: theme.bodyMedium.copyWith(color: theme.onPrimary),
-                                ),
-                                icon: Icon(Icons.arrow_outward_rounded, color: theme.onPrimary),
-                                action: () async {
-                                  _showCategoriesDestinationMenu(context, theme, widget.controller);
-                                },
+                              CustomSelectionMenuItem(
+                                label: S.of(context).projects_module_notes_editing_note_sub_menu_move_tooltip, 
+                                icon: null, 
+                                items: _getDestinationCategoriesItems(widget.controller, context),
+                                onTap: () {}
                               ),
-                              CustomPopupItemModel(
-                                text: Text(
-                                  S.of(context).project_card_duplicate,
-                                  style: theme.bodyMedium.copyWith(color: theme.onPrimary),
-                                ),
-                                icon: Icon(Icons.copy_rounded, color: theme.onPrimary),
-                                action: () async {
+                              CustomSelectionMenuItem(
+                                label: S.of(context).project_card_duplicate, 
+                                icon: Icons.copy_rounded, 
+                                onTap: () async {
                                   await widget.controller.duplicateNote();
                                 },
                               ),
-                              CustomPopupItemModel(
-                                text: Text(
-                                  S.of(context).snackbar_delete_button,
-                                  style: theme.bodyMedium.copyWith(color: theme.error),
-                                ),
-                                icon: Icon(Icons.delete_outline_rounded, color: theme.error),
-                                action: () async {
+                              CustomSelectionMenuItem(
+                                label: S.of(context).snackbar_delete_button, 
+                                icon: Icons.delete_outline_rounded, 
+                                foregroundColor: theme.error,
+                                onTap: () async {
                                   bool isDeleted = await widget.controller.deleteNote();
                                   if (widget.controller.onClosed != null) {
                                     await widget.controller.onClosed!();
@@ -186,8 +177,10 @@ class _NoteEditingSubMenuState extends State<NoteEditingSubMenu> {
                                     Navigator.pop(context);
                                   }
                                 },
-                              ),
-                            ],
+                              )
+                            ], 
+                            type: CustomSelectionMenuButttonType.icon,
+                            child: Icon(Icons.more_horiz_rounded, color: theme.secondary)
                           ),
                         ),
                         // Quit button
@@ -285,13 +278,13 @@ IArticlesWriteElement _buildNoteContentWidget(NoteContentModel contentElementMod
   }
 }
 
-_showCategoriesDestinationMenu(BuildContext context, StylesGetters theme, NoteEditingSubMenuController controller) async {
-    List<PopupMenuItem> items = [];
+List<CustomSelectionMenuItem> _getDestinationCategoriesItems(NoteEditingSubMenuController controller, BuildContext context) {
+  List<CustomSelectionMenuItem> menuItems = [];
 
-    List<ProjectNoteModuleCategoryModel> categories = await AppNotes.getCategories();
-
+  // Asynchronously fetch categories
+  AppNotes.getCategories().then((List<ProjectNoteModuleCategoryModel> categories) {
+    // Check if current project info is available
     if (StaticVariables.currentProjectInfo != null) {
-
       categories.insert(
         0, 
         ProjectNoteModuleCategoryModel(
@@ -304,45 +297,30 @@ _showCategoriesDestinationMenu(BuildContext context, StylesGetters theme, NoteEd
       );
     }
 
+    categories.removeWhere((c) => c.categoryName == controller.noteModel.category);
+
+    // Iterate through categories to create CustomSelectionMenuItems
     for (ProjectNoteModuleCategoryModel category in categories) {
-      items.add(
-        PopupMenuItem(
+      menuItems.add(
+        CustomSelectionMenuItem(
+          label: category.title,
+          icon: category.icon,
           onTap: () async {
             await controller.saveNote();
             await controller.moveNote(category.categoryName);
-            if (context.mounted) {
+            if (controller.onClosed != null) {
               controller.onClosed!();
-              Navigator.pop(context);
             }
+            Future.delayed(const Duration(milliseconds: 650), () {
+              if (context.mounted) {
+                Navigator.pop(context);
+              }
+            });            
           },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(category.title),
-              Icon(category.icon),
-            ],
-          ), 
-        )
+        ),
       );
     }
+  });
 
-    if (context.mounted) {
-      RenderBox renderBox = context.findRenderObject() as RenderBox;
-      final offset = renderBox.localToGlobal(Offset.zero);
-
-      showMenu(
-        context: context,
-        position: RelativeRect.fromLTRB(
-          offset.dx + 1, // Left
-          offset.dy + 70, // Top
-          offset.dx, // Right
-          offset.dy, // Bottom
-        ),
-        color: theme.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(13)
-        ),
-        items: items
-      );
-    }
+  return menuItems;
 }

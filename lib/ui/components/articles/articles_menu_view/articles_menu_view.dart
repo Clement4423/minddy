@@ -114,12 +114,12 @@ class _EmptyArticleMenuPageState extends State<EmptyArticleMenuPage> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.only(left: 50, right: 40, top: 20),
           child: Text(
             widget.pageTitle == S.of(context).articles_saved_title 
               ? S.of(context).articles_empty_menu_saved_page_text
               : S.of(context).articles_empty_menu_page_text,
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.left,
             style: theme.titleMedium.copyWith(color: theme.onPrimary),
           ),
         )

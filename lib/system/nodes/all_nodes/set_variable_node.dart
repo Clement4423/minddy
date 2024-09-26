@@ -1,11 +1,10 @@
 import 'dart:convert';
 
 import 'package:minddy/system/interface/node_interface.dart';
-import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 
-class MyNewNode implements INode {
+class SetVariableNode implements INode {
   @override
   int id = createUniqueId();
 
@@ -13,10 +12,10 @@ class MyNewNode implements INode {
   List<NodeData> inputs = [];
 
   @override
-  List<NodeDataType> inputsTypes = []; // TODO : Fill inputs types
+  List<NodeDataType> inputsTypes = [NodeDataType.any];
 
   @override
-  List<NodeDataType> outputsTypes = []; // TODO : Fill outputs types;
+  List<NodeDataType> outputsTypes = [];
 
   @override
   List<NodeOutput> outputs = [];
@@ -42,8 +41,8 @@ class MyNewNode implements INode {
   }
 
   @override
-  MyNewNode copy() {
-    return MyNewNode()
+  SetVariableNode copy() {
+    return SetVariableNode()
       ..id = id
       ..inputs = inputs
       ..inputsTypes = inputsTypes

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class NodeWidgetDropdown<T> extends StatefulWidget {
@@ -29,72 +30,67 @@ class _NodeWidgetDropdownState<T> extends State<NodeWidgetDropdown<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 20,
-      width: widget.width - 10,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: widget.theme.surface,
-      ),
-      margin: const EdgeInsets.only(top: 5),
-      padding: const EdgeInsets.only(left: 5),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<T>(
-          hint: Text(
-            widget.itemToString(widget.value),
-            style: widget.theme.titleMedium.copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 8,
-              color: widget.theme.onPrimary,
-            ),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-          iconSize: 18,
-          borderRadius: BorderRadius.circular(13),
-          menuWidth: widget.width * 2,
+    return Material(
+      type: MaterialType.transparency,
+      child: Container(
+        height: 20,
+        width: widget.width - 10,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: widget.theme.surface,
+        ),
+        margin: const EdgeInsets.only(top: 5),
+        child: CustomSelectionMenu(
+          key: UniqueKey(),
           menuMaxHeight: widget.height * 2,
-          onChanged: widget.onChanged,
-          icon: Icon(Icons.arrow_drop_down_rounded, color: widget.theme.onSurface),
-          dropdownColor: widget.theme.surface,
-          itemHeight: kMinInteractiveDimension,
-          isExpanded: true,
-          items: [
-            ...widget.items.map((item) {
-              return DropdownMenuItem<T>(
-                value: item,
-                child: Container(
-                  height: kMinInteractiveDimension,
-                  width: widget.width * 2,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: widget.items.indexOf(item) == 0 
-                        ? BorderSide.none 
-                        : BorderSide(
-                        color: widget.theme.onSurface, 
-                        width: 0.5
-                      )
-                    )
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.itemToString(item),
-                        style: widget.theme.bodyMedium.copyWith(
-                          color: widget.theme.onPrimary,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+          theme: widget.theme, 
+          enableSearch: true,
+          buttonStyle: const ButtonStyle(
+            backgroundColor: WidgetStatePropertyAll(Colors.transparent),
+            overlayColor: WidgetStatePropertyAll(Colors.transparent),
+            padding: WidgetStatePropertyAll(EdgeInsets.only(left: 7, right: 4)),
+            elevation: WidgetStatePropertyAll(0)
+          ),
+          items: widget.items.map((item) {
+            return CustomSelectionMenuItem(
+              label: widget.itemToString(item), 
+              labelStyle: widget.theme.bodyMedium.copyWith(
+                fontWeight: FontWeight.w500,
+                color: widget.itemToString(item) == widget.itemToString(widget.value)
+                  ? widget.theme.secondary
+                  : widget.theme.onPrimary,
+              ),
+              icon: null, 
+              onTap: () {
+                widget.onChanged(item);
+              }
+            );
+          }).toList(),
+          child: SizedBox(
+            width: widget.width,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.itemToString(widget.value),
+                    style: widget.theme.titleMedium.copyWith(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 8,
+                      color: widget.theme.onPrimary,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              );
-            })
-          ],
+                Icon(
+                  Icons.arrow_drop_down_rounded,
+                  color: widget.theme.onSurface,
+                  size: 16,
+                )
+              ],
+            ),
+          )
         ),
       ),
     );

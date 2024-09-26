@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/articles/app_articles.dart';
 import 'package:minddy/system/articles/article_categories.dart';
 import 'package:minddy/system/articles/articles_exporter/articles_exporter.dart';
 import 'package:minddy/system/files/open_file_explorer.dart';
@@ -11,6 +12,7 @@ import 'package:minddy/ui/components/articles/articles_components/articles_eleme
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_subtitle.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_text.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_view_controller.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/notifications/notification_widget.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -131,78 +133,63 @@ class _ArticlesBottomMenuContentViewState extends State<ArticlesBottomMenuConten
           ),
           Align(
             alignment: Alignment.bottomRight,
-            child: PopupMenuButton(
-              tooltip: S.of(context).articles_export_articles,
-              elevation: 12,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(13)
-              ),
-              color: theme.primary,
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: theme.primary,
-                  borderRadius: BorderRadius.circular(10)
+            child: CustomSelectionMenu(
+              theme: theme, 
+              menuMaxHeight: 350,
+              enableSearch: true,
+              items: [
+                CustomSelectionMenuItem(
+                  enabled: false,
+                  label: S.of(context).articles_export_articles_choose_category,
+                  labelStyle: theme.titleMedium, 
+                  icon: null, 
+                  onTap: () {}
                 ),
-                child: Icon(Icons.arrow_upward_rounded, color: theme.onPrimary),
-              ),
-              onSelected: (value) async {
-                await widget.articleController.saveArticle();
-                String exportsDirectoryPath = 
-                  "${await StaticVariables.fileSource.getAppDirectoryPath()}/ressources/exports/${widget.articleController.articleTitle.substring(
-                    0, 
-                    widget.articleController.articleTitle.length > 10 
-                      ? 10 
-                      : widget.articleController.articleTitle.length
-                    )
-                  }";
-                bool isArticleExported = await ArticlesExporter.export(widget.articleController.articleInfos.path, value, exportsDirectoryPath);
-                if (isArticleExported && context.mounted) {
-                  NotificationHandler.addNotification(
-                    NotificationModel(
-                      content: S.of(context).articles_export_confirmed,
-                      action: () async {
-                        openFileExplorerAt("${await StaticVariables.fileSource.getAppDirectoryPath()}/ressources/exports");
-                      }, 
-                      actionLabel: S.of(context).articles_export_confirmed_button, 
-                      duration: NotificationDuration.long
-                    )
+                ...ArticleCategory.values.where(
+                  (c) => c != ArticleCategory.created
+                ).map((catergory) {
+                  return CustomSelectionMenuItem(
+                    label: categoriesTranslatedNames[catergory]!, 
+                    icon: AppArticles.getCategoryIcon(catergory.index), 
+                    onTap: () async {
+                      await widget.articleController.saveArticle();
+                        String exportsDirectoryPath = 
+                          "${await StaticVariables.fileSource.getAppDirectoryPath()}/ressources/exports/${widget.articleController.articleTitle.substring(
+                            0, 
+                            widget.articleController.articleTitle.length > 10 
+                              ? 10 
+                              : widget.articleController.articleTitle.length
+                            )
+                          }";
+                        bool isArticleExported = await ArticlesExporter.export(widget.articleController.articleInfos.path, catergory, exportsDirectoryPath);
+                        if (isArticleExported && context.mounted) {
+                          NotificationHandler.addNotification(
+                            NotificationModel(
+                              content: S.of(context).articles_export_confirmed,
+                              action: () async {
+                                openFileExplorerAt("${await StaticVariables.fileSource.getAppDirectoryPath()}/ressources/exports");
+                              }, 
+                              actionLabel: S.of(context).articles_export_confirmed_button, 
+                              duration: NotificationDuration.long
+                            )
+                          );
+                        } else if (context.mounted) {
+                          NotificationHandler.addNotification(
+                            NotificationModel(
+                              content: S.of(context).articles_export_canceled,
+                              action: null,
+                              actionLabel: S.of(context).snacbar_close_button, 
+                              duration: NotificationDuration.long
+                            )
+                          );
+                        }
+                    }
                   );
-                } else if (context.mounted) {
-                  NotificationHandler.addNotification(
-                    NotificationModel(
-                      content: S.of(context).articles_export_canceled,
-                      action: null,
-                      actionLabel: S.of(context).snacbar_close_button, 
-                      duration: NotificationDuration.long
-                    )
-                  );
-                }
-              },
-              itemBuilder: (context) {
-                return [
-                  PopupMenuItem(
-                    enabled: false,
-                    child: Text(
-                      S.of(context).articles_export_articles_choose_category,
-                      style: theme.titleMedium.copyWith(color: theme.onPrimary)
-                    )
-                  ),
-                  ...ArticleCategory.values
-                  .where((element) => element != ArticleCategory.created)
-                  .map((category) => 
-                    PopupMenuItem(
-                      value: category,
-                      child: Text(
-                        categoriesTranslatedNames[category] ?? "",
-                        style: theme.bodyMedium.copyWith(color: theme.onPrimary)
-                      )
-                    ),
-                  )
-                ];
-              }
-            ),
+                })
+              ], 
+              type: CustomSelectionMenuButttonType.icon,
+              child: Icon(Icons.arrow_upward_rounded, color: theme.onPrimary)
+            )
           )
         ],
       ),

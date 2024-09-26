@@ -5,9 +5,12 @@ import 'package:intl/intl.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/custom_date_picker_mode.dart';
 import 'package:minddy/system/model/custom_date_picker_result.dart';
+import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/ui/components/custom_components/custom_date_picker_day_container.dart';
 import 'package:minddy/ui/components/custom_components/custom_input_date_picker.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
+import 'package:minddy/ui/components/custom_components/switch_tile.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class CustomDatePicker extends StatefulWidget {
@@ -18,6 +21,7 @@ class CustomDatePicker extends StatefulWidget {
     this.initialStartDate,
     this.initialEndDate,
     this.mode = CustomDatePickerMode.single,
+    this.useTime = false
   });
 
   final String title;
@@ -25,16 +29,20 @@ class CustomDatePicker extends StatefulWidget {
   final DateTime? initialEndDate;
   final CustomDatePickerMode mode;
   final Function(CustomDatePickerResult?) onSelected;
+  final bool useTime;
 
   @override
   State<CustomDatePicker> createState() => _CustomDatePickerState();
 }
 
 class _CustomDatePickerState extends State<CustomDatePicker> {
+  bool useTime = false;
   late DateTime _currentMonth;
   late DateTime _endMonth;
   DateTime? _startDate;
   DateTime? _endDate;
+  DateTime? _startTime;
+  DateTime? _endTime;
 
   @override
   void initState() {
@@ -47,6 +55,11 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     if (widget.initialEndDate != null) {
       _endDate = widget.initialEndDate;
     }
+    useTime = widget.useTime;
+    if (useTime) {
+      _startTime = _startDate;
+      _endTime = _endDate;
+    }
   }
 
   Widget _buildCalendar(DateTime month, bool isEndDate, StylesGetters theme) {
@@ -55,14 +68,6 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (widget.mode == CustomDatePickerMode.startEnd)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Text(
-                isEndDate ? S.current.custom_date_picker_end : S.current.custom_date_picker_start,
-                style: theme.titleMedium.copyWith(color: theme.onPrimary),
-              ),
-            ),
           _buildMonthYearSelector(month, isEndDate, theme),
           const SizedBox(height: 8),
           _buildDayHeaders(theme),
@@ -131,63 +136,122 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        DropdownButton<int>(
-          value: month.month,
-          style: theme.bodyMedium.copyWith(color: theme.onPrimary),
-          borderRadius: BorderRadius.circular(13),
-          underline: const SizedBox(),
-          icon: const Icon(Icons.arrow_drop_down_rounded),
-          items: List.generate(12, (index) {
-            return DropdownMenuItem(
-              value: index + 1,
-              child: Text(
-                DateFormat('MMMM')
-                .format(DateTime(2024, index + 1))
-                .replaceFirst(
-                  DateFormat('MMMM').format(DateTime(2024, index +1)).characters.first, 
-                  DateFormat('MMMM').format(DateTime(2024, index +1)).characters.first.toUpperCase()
-                ), style: theme.bodyMedium.copyWith(color: index + 1 == DateTime.now().month && month.year == DateTime.now().year ? theme.error : theme.onPrimary),
+        Material(
+          type: MaterialType.transparency,
+          child: SizedBox(
+            width: 150,
+            height: 40,
+            child: CustomSelectionMenu(
+              theme: theme, 
+              buttonStyle: ButtonStyle(
+                backgroundColor: const WidgetStatePropertyAll(Colors.transparent),
+                padding: const WidgetStatePropertyAll(EdgeInsets.only(left: 7, right: 4)),
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  )
+                ),
+                elevation: const WidgetStatePropertyAll(0)
               ),
-            );
-          }),
-          onChanged: (value) {
-            setState(() {
-              if (isEndDate) {
-                _endMonth = DateTime(month.year, value!, 1);
-              } else {
-                _currentMonth = DateTime(month.year, value!, 1);
-              }
-            });
-          },
-        ),
-        DropdownButton<int>(
-          value: month.year,
-          style: theme.bodyMedium,
-          borderRadius: BorderRadius.circular(13),
-          underline: const SizedBox(),
-          icon: const Icon(Icons.arrow_drop_down_rounded),
-          items: List.generate(
-            (DateTime(2300).year) - (DateTime(1900).year) + 1,
-            (index) {
-              int year = (DateTime(1900).year) + index;
-              return DropdownMenuItem(
-                value: year, 
-                child: Text(
-                  year.toString(), 
-                  style: theme.bodyMedium.copyWith(color: year == DateTime.now().year ? theme.error : theme.onPrimary),
-                )
-              );
-            },
+              menuMaxHeight: 300,
+              enableSearch: true,
+              items: List.generate(12, (index) {
+                  return CustomSelectionMenuItem(
+                    label: DateFormat('MMMM')
+                      .format(DateTime(2024, index + 1))
+                      .replaceFirst(
+                        DateFormat('MMMM').format(DateTime(2024, index +1)).characters.first, 
+                        DateFormat('MMMM').format(DateTime(2024, index +1)).characters.first.toUpperCase()
+                      ),
+                    labelStyle: theme.bodyMedium.copyWith(color: index + 1 == DateTime.now().month && month.year == DateTime.now().year ? DefaultAppColors.blue.color : theme.onPrimary),
+                    icon: null,
+                    onTap: () {
+                      if (isEndDate) {
+                        _endMonth = DateTime(month.year, index + 1, 1);
+                      } else {
+                        _currentMonth = DateTime(month.year, index + 1, 1);
+                      }
+                    }
+                  );
+                },
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                     DateFormat('MMMM')
+                      .format(DateTime(2024, month.month))
+                      .replaceFirst(
+                        DateFormat('MMMM').format(DateTime(2024, month.month)).characters.first, 
+                        DateFormat('MMMM').format(DateTime(2024, month.month)).characters.first.toUpperCase()
+                      ),
+                      style: theme.bodyMedium,
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_drop_down_rounded,
+                    color: theme.onPrimary,
+                  )
+                ],
+              )
+            ),
           ),
-          onChanged: (value) {
-            setState(() {
-              if (isEndDate) {
-                _endMonth = DateTime(value!, month.month, 1);
-              } else {
-                _currentMonth = DateTime(value!, month.month, 1);
-              }
-            });
-          },
+        ),
+        Material(
+          type: MaterialType.transparency,
+          child: SizedBox(
+            width: 120,
+            height: 40,
+            child: CustomSelectionMenu(
+              theme: theme, 
+              buttonStyle: ButtonStyle(
+                backgroundColor: const WidgetStatePropertyAll(Colors.transparent),
+                padding: const WidgetStatePropertyAll(EdgeInsets.only(left: 7, right: 4)),
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  )
+                ),
+                elevation: const WidgetStatePropertyAll(0)
+              ),
+              menuMaxHeight: 300,
+              enableSearch: true,
+              items: List.generate(
+                (DateTime(2300).year) - (DateTime(1900).year) + 1,
+                (index) {
+                  int year = (DateTime(1900).year) + index;
+                  return CustomSelectionMenuItem(
+                    label: year.toString(),
+                    labelStyle: theme.bodyMedium.copyWith(color: year == DateTime.now().year ? DefaultAppColors.blue.color : theme.onPrimary),
+                    icon: null,
+                    onTap: () {
+                      setState(() {
+                        if (isEndDate) {
+                          _endMonth = DateTime(year, month.month, 1);
+                        } else {
+                          _currentMonth = DateTime(year, month.month, 1);
+                        }
+                      });
+                    }
+                  );
+                },
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      month.year.toString(),
+                      style: theme.bodyMedium,
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_drop_down_rounded,
+                    color: theme.onPrimary,
+                  )
+                ],
+              )
+            ),
+          ),
         ),
       ],
     );
@@ -209,7 +273,10 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
       children: daysAsStrings.map((day) => 
         Expanded(
           child: Center(
-            child: Text(day.substring(0, 3), style: theme.bodyMedium)
+            child: Text(
+              "${day.substring(0, 3)}.", 
+              style: theme.bodyMedium
+            )
           )
         )
       ).toList(),
@@ -271,6 +338,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                 _nextMonth(isEndDate);
               }
             }
+            timer.cancel();
           });
         
       },
@@ -290,24 +358,30 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     );
   }
 
-  bool _isDateSelectable(DateTime date, bool isEndDate) {
-    if (widget.mode != CustomDatePickerMode.startEnd) return true;
-    
+  bool _isDateSelectable(DateTime date, bool isEndDate) {    
     if (isEndDate) {
       return _startDate == null || date.isAfter(_startDate!);
     } else {
-      return _endDate == null || date.isBefore(_endDate!);
+      return _endDate == null 
+        || date.isBefore(_endDate!) 
+        || date == _endDate
+        || widget.mode == CustomDatePickerMode.range && date.isAfter(_endDate!);
     }
+  }
+
+  bool _isDateTheSameDay(DateTime date, DateTime? comparedTo) {
+    if (comparedTo == null) {
+      return false;
+    }
+    return date.year == comparedTo.year && date.month == comparedTo.month && date.day == comparedTo.day;
   }
 
   Widget _buildDayContainer(DateTime date, bool isEndDate, StylesGetters theme, {bool isGreyedOut = false}) {
     bool isSelectable = _isDateSelectable(date, isEndDate);
-    bool isSelected = (widget.mode == CustomDatePickerMode.startEnd)
-        ? (isEndDate ? date == _endDate : date == _startDate)
-        : (date == _startDate || date == _endDate);
+    bool isSelected = _isDateTheSameDay(date, _startDate) || _isDateTheSameDay(date, _endDate);
     bool isInRange = widget.mode == CustomDatePickerMode.range && _isDateInRange(date);
     DateTime now = DateTime.now();
-    bool isToday = date.day == now.day && date.month == now.month && date.year == now.year;
+    bool isToday = _isDateTheSameDay(date, now);
 
     return CustomDatePickerDayContainer(
       theme: theme, 
@@ -317,8 +391,8 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
       isGreyedOut: isGreyedOut, 
       isInRange: isInRange, 
       isEndDate: isEndDate, 
-      startDate: widget.mode == CustomDatePickerMode.startEnd ? date == _startDate ? _startDate : null : null,
-      endDate: widget.mode == CustomDatePickerMode.startEnd ? date == _endDate ? _endDate : null : null,
+      startDate: widget.mode == CustomDatePickerMode.range ? date == _startDate ? _startDate : null : null,
+      endDate: widget.mode == CustomDatePickerMode.range ? date == _endDate ? _endDate : null : null,
       isToday: isToday, 
       onSelected: _selectDate,
       onGreyedOutDayClicked: _selectGreyedOutDate,
@@ -336,10 +410,11 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
   if (_startDate != null && _endDate != null) {
     List<DateTime> dateRange = [];
     DateTime currentDate = _startDate!;
-    while (currentDate.isBefore(_endDate!) || currentDate.day == _endDate!.day && currentDate.month == _endDate!.month && currentDate.year == _endDate!.year) {
+    while (currentDate.isBefore(_endDate!)) {
       dateRange.add(currentDate);
       currentDate = currentDate.add(const Duration(days: 1));
     }
+    dateRange.add(_endDate!);
     return dateRange;
   }
   return [];
@@ -366,27 +441,15 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
             _endDate = null;
           } else {
             if (date == _startDate) {
-              _endDate = null;
-              _startDate = null;
+              if (isEndDate) {
+                _endDate = date; 
+              } else {
+                _startDate = null;
+                _endDate = null;
+              }
             } else {
               _endDate = date;
             }
-          }
-          break;
-        case CustomDatePickerMode.startEnd:
-          if (isEndDate) {
-            if (_endDate == date || _startDate != null && date.isBefore(_startDate!)) {
-              _endDate = null;
-            } else {
-              _endDate = date;
-            }
-          } else {
-            if (_startDate == date || _endDate != null && date.isAfter(_endDate!)) {
-              _startDate = null;
-            } else {
-              _startDate = date;
-            }
-            
           }
           break;
       }
@@ -406,7 +469,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
     return Container(
-      width: widget.mode == CustomDatePickerMode.startEnd ? 750 : 400,
+      width: 400,
       decoration: BoxDecoration(
         color: theme.primaryContainer,
         borderRadius: BorderRadius.circular(20),
@@ -428,52 +491,62 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
               ],
             ),
           ),
-          // Main part : Calendar view
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // First calendar board for start date
-              _buildCalendar(_currentMonth, false, theme),
-              if (widget.mode == CustomDatePickerMode.startEnd)
-                // Separator (If mode is CustomDatePickerMode.startEnd)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Container(
-                    width: 4,
-                    height: 300,
-                    decoration: BoxDecoration(
-                      color: theme.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(2)
-                    ),
-                  ),
-                ),
-                // Second calendar board for end date (If mode is CustomDatePickerMode.startEnd)
-              if (widget.mode == CustomDatePickerMode.startEnd)
-                _buildCalendar(_endMonth, true, theme),
-            ],
+          Center(
+            child: _buildCalendar(_currentMonth, false, theme)
           ),
           // Bottom
           Row(
+            key: UniqueKey(),
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               _getDatesInputs(),
               Padding(
-                padding: const EdgeInsets.all(10),
-                child: SizedBox(
-                  width: 140,
-                  height: 40,
-                  child: CustomTextButton(
-                    S.of(context).submenu_artilces_image_description_button, 
-                    () async {
-                      await widget.onSelected(getResults());
-                      if (context.mounted) {
-                        Navigator.pop(context);
-                      }
-                    }, 
-                    false,
-                    false
-                  ),
+                padding: const EdgeInsets.all(0.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: SizedBox(
+                        width: 160,
+                        height: 60,
+                        child: SwitchTile(
+                          useTime, 
+                          S.of(context).custom_date_picker_include_hour, 
+                          (newValue) {
+                            setState(() {
+                              useTime = newValue;
+                              if (!useTime) {
+                                _startTime = null;
+                                _endTime = null;
+                              }
+                            });
+                          }, 
+                          false
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: SizedBox(
+                        width: 160,
+                        height: 40,
+                        child: CustomTextButton(
+                          S.of(context).submenu_artilces_image_description_button, 
+                          () async {
+                            await widget.onSelected(getResults());
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                            }
+                          }, 
+                          false,
+                          false
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -487,16 +560,33 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     switch (widget.mode) {
       case CustomDatePickerMode.single:
         if (_startDate != null) {
+          _startDate = DateTime(
+            _startDate!.year,
+            _startDate!.month,
+            _startDate!.day,
+            _startTime?.hour ?? 0,
+            _startTime?.minute ?? 0
+          );
           return CustomDatePickerResult([_startDate!]);
         }
         
       case CustomDatePickerMode.range:
         if (_startDate != null && _endDate != null) {
+          _startDate = DateTime(
+            _startDate!.year,
+            _startDate!.month,
+            _startDate!.day,
+            _startTime?.hour ?? 0,
+            _startTime?.minute ?? 0
+          );
+          _endDate = DateTime(
+            _endDate!.year,
+            _endDate!.month,
+            _endDate!.day,
+            _endTime?.hour ?? 0,
+            _endTime?.minute ?? 0
+          );
           return CustomDatePickerResult(getDateRange());
-        }
-      case CustomDatePickerMode.startEnd:
-        if (_startDate != null && _endDate != null) {
-          return CustomDatePickerResult([_startDate!, _endDate!]);
         }
     }
 
@@ -509,6 +599,11 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         padding: const EdgeInsets.all(10),
         child: CustomInputDatePicker(
           key: UniqueKey(),
+          onTimeChanged: (value) {
+            if (value != null) {
+              _startTime = value;
+            }
+          },
           onCompleted: (value) {
             if (value != null) {
               _currentMonth = value;
@@ -516,6 +611,10 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
             }
           }, 
           initialValue: _startDate, 
+          initialTime: _startTime,
+          timeLowerLimit: null,
+          timeUpperLimit: null,
+          useTime: useTime
         ),
       );
     } else if (widget.mode == CustomDatePickerMode.range) {
@@ -525,6 +624,13 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           children: [
             CustomInputDatePicker(
               key: UniqueKey(),
+              onTimeChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _startTime = value;
+                    });
+                  }
+                },
               onCompleted: (value) {
                 if (value != null) {
                   _currentMonth = value;
@@ -532,6 +638,10 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                 }
               }, 
               initialValue: _startDate, 
+              initialTime: _startTime,
+              timeLowerLimit: null,
+              timeUpperLimit: _getTimeUpperLimit(),
+              useTime: useTime
             ),
             const Padding(
               padding: EdgeInsets.only(top: 10),
@@ -541,48 +651,26 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
               padding: const EdgeInsets.only(top: 10), 
               child: CustomInputDatePicker(
                 key: UniqueKey(),
+                onTimeChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _endTime = value;
+                    });
+                  }
+                },
                 onCompleted: (value) {
                   if (value != null) {
                     _endMonth = value;
                     _selectDate(value, true);
                   }
                 }, 
-                initialValue: _endDate, 
-              ),
-            ),
-          ],
-        ),
-      );
-    } else if (widget.mode == CustomDatePickerMode.startEnd) {
-      return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          children: [
-            CustomInputDatePicker(
-              key: UniqueKey(),
-              onCompleted: (value) {
-                if (value != null) {
-                  _currentMonth = value;
-                  _selectDate(value, false);
-                }
-              }, 
-              initialValue: _startDate, 
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: Icon(Icons.arrow_forward_rounded)
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: CustomInputDatePicker(
-                key: UniqueKey(),
-                onCompleted: (value) {
-                  if (value != null) {
-                    _endMonth = value;
-                    _selectDate(value, true);
-                  }
-                }, 
-                initialValue: _endDate, 
+                initialValue: _startDate != null && _endDate == null && _startDate!.isAfter(DateTime.now()) 
+                  ? _startDate 
+                  : _endDate, 
+                initialTime: _endTime,
+                timeLowerLimit: _getTimeLowerLimit(),
+                timeUpperLimit: null,
+                useTime: useTime
               ),
             ),
           ],
@@ -590,5 +678,27 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
       );
     }
     return const SizedBox();
+  }
+
+  DateTime? _getTimeLowerLimit() {
+    if (_startDate == null || _endDate == null) {
+      return null;
+    }
+    if (_startDate!.year == _endDate!.year && _startDate!.month == _endDate!.month && _startDate!.day == _endDate!.day) {
+      return _startTime;
+    } else {
+      return null;
+    }
+  }
+
+  DateTime? _getTimeUpperLimit() {
+    if (_startDate == null || _endDate == null) {
+      return null;
+    }
+    if (_startDate!.year == _endDate!.year && _startDate!.month == _endDate!.month && _startDate!.day == _endDate!.day) {
+      return _endTime;
+    } else {
+      return null;
+    }
   }
 }

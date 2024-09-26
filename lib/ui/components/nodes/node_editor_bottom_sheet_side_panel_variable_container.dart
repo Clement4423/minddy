@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/model/node_tree_variable.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
-import 'package:minddy/system/nodes/logic/node_types_interfaces.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class NodeEditorBottomSheetSidePanelVariableContainer extends StatefulWidget {
