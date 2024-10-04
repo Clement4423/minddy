@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
-import 'package:minddy/system/interface/projects_modules_controller_interface.dart';
+import 'package:minddy/system/interfaces/projects_modules_controller_interface.dart';
 import 'package:minddy/system/model/projects_modules.dart';
 import 'package:minddy/system/model/projects_tasks_module_task_model.dart';
 import 'package:minddy/system/projects/get_module_data.dart';

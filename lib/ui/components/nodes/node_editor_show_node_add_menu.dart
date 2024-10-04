@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:minddy/system/interface/i_node_widget.dart';
+import 'package:minddy/system/interfaces/node_widget_interface.dart';
 import 'package:minddy/ui/components/menus/sub_menus/node_editor_new_node_sub_menu.dart';
 import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
 import 'package:minddy/ui/theme/theme.dart';

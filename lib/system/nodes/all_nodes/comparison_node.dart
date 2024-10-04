@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-import 'package:minddy/system/interface/node_interface.dart';
+import 'package:minddy/system/interfaces/node_interface.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 
 enum ComparisonNodeType {
+  equal,
   lessThan,
   lessThanOrEqual,
   greatherThan,
-  greatherThanOrEqual,
-  equal
+  greatherThanOrEqual
 }
 
 class ComparisonNode implements INode {

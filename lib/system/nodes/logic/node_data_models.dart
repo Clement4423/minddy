@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:minddy/system/interface/node_interface.dart';
+import 'package:minddy/system/interfaces/node_interface.dart';
 
 class NodeEvaluation {
   bool isValid;
@@ -100,11 +100,11 @@ class NodeData {
           case NodeDataType.list:
             value = valueString.split(',').map((e) => e.trim()).toList();
             break;
-          case NodeDataType.color:
+          case NodeDataType.color: // TODO : Gérer la valeur de couleur
             value = null;
             break;
-          default:
-            return null;
+          case NodeDataType.any:
+            value = valueString;
         }
 
         if (value != null) {

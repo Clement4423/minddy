@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
-import 'package:minddy/system/interface/projects_modules_interface.dart';
+import 'package:minddy/system/interfaces/projects_modules_interface.dart';
 import 'package:minddy/system/model/module_container_model.dart';
 import 'package:minddy/system/model/project_info.dart';
 import 'package:minddy/system/model/project_module_model.dart';

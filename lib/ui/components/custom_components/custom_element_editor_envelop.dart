@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/interface/articles_element_interface.dart';
+import 'package:minddy/system/interfaces/articles_element_interface.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class CustomElementEditorEnvelop extends StatefulWidget {

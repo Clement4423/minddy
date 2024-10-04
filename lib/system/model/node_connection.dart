@@ -1,4 +1,4 @@
-import 'package:minddy/system/interface/i_node_widget.dart';
+import 'package:minddy/system/interfaces/node_widget_interface.dart';
 
 class NodeConnection {
   final INodeWidget startNode;

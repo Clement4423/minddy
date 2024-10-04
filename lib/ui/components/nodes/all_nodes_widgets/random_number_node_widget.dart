@@ -5,19 +5,18 @@ import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interfaces/node_widget_interface.dart';
 import 'package:minddy/system/interfaces/node_interface.dart';
 import 'package:minddy/system/model/node_port_info.dart';
-import 'package:minddy/system/nodes/all_nodes/comparison_node.dart';
+import 'package:minddy/system/nodes/all_nodes/random_number_node.dart';
 import 'package:minddy/system/nodes/logic/node_widget_functions.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_port_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_body.dart';
-import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_dropdown.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_informations.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_input.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_output.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 // ignore: must_be_immutable
-class ComparisonNodeWidget extends StatefulWidget implements INodeWidget {
-  ComparisonNodeWidget({
+class RandomNumberNodeWidget extends StatefulWidget implements INodeWidget {
+  RandomNumberNodeWidget({
     super.key,
     required this.node,
     required this.position,
@@ -30,7 +29,7 @@ class ComparisonNodeWidget extends StatefulWidget implements INodeWidget {
   Offset position;
 
   @override
-  final ComparisonNode node;
+  final RandomNumberNode node;
 
   @override
   final Offset maxOffset;
@@ -45,8 +44,8 @@ class ComparisonNodeWidget extends StatefulWidget implements INodeWidget {
   List<Offset> outputsOffsets = [];
 
   @override
-  ComparisonNodeWidget copy(GlobalKey newKey) {
-    return ComparisonNodeWidget(
+  RandomNumberNodeWidget copy(GlobalKey newKey) {
+    return RandomNumberNodeWidget(
       key: newKey,
       node: node.copy(), 
       position: Offset(position.dx, position.dy), 
@@ -67,13 +66,13 @@ class ComparisonNodeWidget extends StatefulWidget implements INodeWidget {
   }
 
   // Static method to deserialize from JSON
-  static ComparisonNodeWidget fromJson(GlobalKey key, String json, Offset maxOffset, StylesGetters theme, NodeWidgetFunctions functions) {
+  static RandomNumberNodeWidget fromJson(GlobalKey key, String json, Offset maxOffset, StylesGetters theme, NodeWidgetFunctions functions) {
     final Map<String, dynamic> data = jsonDecode(json);
 
-    return ComparisonNodeWidget(
+    return RandomNumberNodeWidget(
       key: key,
       theme: theme,
-      node: ComparisonNode().fromJson(data['node']) as ComparisonNode,
+      node: RandomNumberNode().fromJson(data['node']) as RandomNumberNode,
       position: Offset(data['positionX'], data['positionY']),
       maxOffset: maxOffset,
       functions: functions
@@ -81,7 +80,7 @@ class ComparisonNodeWidget extends StatefulWidget implements INodeWidget {
   }
   
   @override
-  final double height = 105;
+  final double height = 80;
   
   @override
   final double width = 100; // Do not modify the width.
@@ -102,15 +101,19 @@ class ComparisonNodeWidget extends StatefulWidget implements INodeWidget {
   set theme(StylesGetters newTheme) {}
 
   @override
-  State<ComparisonNodeWidget> createState() => _ComparisonNodeWidgetState();
+  State<RandomNumberNodeWidget> createState() => _RandomNumberNodeWidgetState();
 
   @override
   NodeWidgetFunctions functions;
 }
 
-class _ComparisonNodeWidgetState extends State<ComparisonNodeWidget> {
+class _RandomNumberNodeWidgetState extends State<RandomNumberNodeWidget> {
 
   late NodeWidgetInformations widgetInformations;
+
+  // The main action of the widget.
+  // Only if nescessary -> if you have a dropdown selector, can be used to change the inputs.
+  void main() {}
 
   @override
   void initState() {
@@ -129,8 +132,8 @@ class _ComparisonNodeWidgetState extends State<ComparisonNodeWidget> {
   Widget build(BuildContext context) {
     Offset draggingStartPortOffset = widgetInformations.draggingStartPort?.translate(-widget.position.dx, -widget.position.dy) ?? const Offset(0, 0);
     return NodeWidgetBody(
-      nodeTitle: S.of(context).node_widgets_comparison_node_title, 
-      nodeDescription: S.of(context).node_widgets_comparison_node_description,
+      nodeTitle: S.of(context).node_widgets_random_number_node_title,
+      nodeDescription: S.of(context).node_widgets_random_number_node_description,
       theme: widget.theme, 
       nodeWidget: widget, 
       needToBeSmaller: widgetInformations.needToBeSmaller, 
@@ -151,29 +154,12 @@ class _ComparisonNodeWidgetState extends State<ComparisonNodeWidget> {
             ), 
             setCursorPosition: widgetInformations.setCursorOffset,
             theme: widget.theme, 
-            label: S.of(context).node_editor_view_side_panel_variables_variable_type_boolean, 
+            label: S.of(context).node_widgets_result_text, 
             setDragStartingPort: widgetInformations.setStartDraggingPoint,
             getDraggingStartPortOffset: widgetInformations.getDraggingStartPortOffset,
             setOffset: widgetInformations.setNodePortOffset,
             functions: widget.functions
           )
-        ),
-        // Options selector
-        NodeWidgetDropdown(
-          value: widget.node.comparisonType,
-          items: ComparisonNodeType.values.map((t) => t).toList(),
-          onChanged: (newType) {
-            setState(() {
-              widget.node.comparisonType = newType!;
-              widget.functions.saveState();
-            });
-          },
-          width: widget.width,
-          height: widget.height,
-          theme: widget.theme,
-          itemToString: (type) {
-            return _getComparisonNodeTranslation(type);
-          },
         ),
         // Input.s
         Padding(
@@ -187,7 +173,7 @@ class _ComparisonNodeWidgetState extends State<ComparisonNodeWidget> {
             setCursorPosition: widgetInformations.setCursorOffset,
             theme: widget.theme, 
             isConnected: widget.functions.isPortAlreadyHaveConnection(0, NodePortType.input, widget),
-            connectedLabel: S.of(context).node_widgets_value_text, 
+            connectedLabel: S.of(context).projects_module_spreadsheet_number_operation_minimum, 
             setDragStartingPort: widgetInformations.setStartDraggingPoint,
             getDraggingStartPortOffset: widgetInformations.getDraggingStartPortOffset, 
             setOffset: widgetInformations.setNodePortOffset, 
@@ -206,7 +192,7 @@ class _ComparisonNodeWidgetState extends State<ComparisonNodeWidget> {
             setCursorPosition: widgetInformations.setCursorOffset,
             theme: widget.theme, 
             isConnected: widget.functions.isPortAlreadyHaveConnection(1, NodePortType.input, widget), 
-            connectedLabel: S.of(context).node_widgets_treshold_text, 
+            connectedLabel: S.of(context).projects_module_spreadsheet_number_operation_maximum, 
             setDragStartingPort: widgetInformations.setStartDraggingPoint, 
             getDraggingStartPortOffset: widgetInformations.getDraggingStartPortOffset, 
             setOffset: widgetInformations.setNodePortOffset, 
@@ -216,20 +202,5 @@ class _ComparisonNodeWidgetState extends State<ComparisonNodeWidget> {
         )
       ]
     );
-  }
-}
-
-String _getComparisonNodeTranslation(ComparisonNodeType comparisonType) {
-  switch (comparisonType) {
-    case ComparisonNodeType.lessThan:
-      return S.current.node_widgets_comparison_node_options_lessThan;
-    case ComparisonNodeType.lessThanOrEqual:
-      return S.current.node_widgets_comparison_node_options_lessThanOrEqual;
-    case ComparisonNodeType.greatherThan:
-      return S.current.node_widgets_comparison_node_options_greatherThan;
-    case ComparisonNodeType.greatherThanOrEqual:
-      return S.current.node_widgets_comparison_node_options_greatherThanOrEqual;
-    case ComparisonNodeType.equal:
-      return S.current.node_widgets_comparison_node_options_equal;
   }
 }

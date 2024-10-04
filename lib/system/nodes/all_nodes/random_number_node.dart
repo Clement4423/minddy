@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:minddy/system/interfaces/node_interface.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 
-class MyNewNode implements INode {
+class RandomNumberNode implements INode {
   @override
   int id = createUniqueId();
 
@@ -12,10 +13,10 @@ class MyNewNode implements INode {
   List<NodeData> inputs = [];
 
   @override
-  List<NodeDataType> inputsTypes = []; // TODO : Fill inputs types
+  List<NodeDataType> inputsTypes = [NodeDataType.number, NodeDataType.number];
 
   @override
-  List<NodeDataType> outputsTypes = []; // TODO : Fill outputs types;
+  List<NodeDataType> outputsTypes = [NodeDataType.number];
 
   @override
   List<NodeOutput> outputs = [];
@@ -30,8 +31,17 @@ class MyNewNode implements INode {
   Function get execute => main;
 
   void main() { // (Can be async)
-    // TODO : Fill the main method
-    _addDataToOutputs(null); // TODO Fill the correct value
+    num min = num.tryParse(inputs.firstOrNull?.value.toString() ?? '0.0') ?? 0.0;
+    num max = (inputs.length > 1 ? num.tryParse(inputs.last.value.toString()) ?? 1.0 : 1.0).clamp(min, double.infinity);
+
+    num randomNumber = _generateRandomNumber(min, max);
+
+    _addDataToOutputs(NodeData(type: NodeDataType.number, value: randomNumber));
+  }
+
+  num _generateRandomNumber(num min, num max) {
+    final random = Random();
+    return min + (random.nextDouble() * (max - min));
   }
 
   void _addDataToOutputs(dynamic data) {
@@ -41,8 +51,8 @@ class MyNewNode implements INode {
   }
 
   @override
-  MyNewNode copy() {
-    return MyNewNode()
+  RandomNumberNode copy() {
+    return RandomNumberNode()
       ..id = id
       ..inputs = inputs
       ..inputsTypes = inputsTypes
@@ -67,7 +77,7 @@ class MyNewNode implements INode {
   }
 
   @override
-  INode? fromJson(String json) {
+  RandomNumberNode? fromJson(String json) {
     // Map<String, dynamic> map = jsonDecode(json); 
     // You can uncomment to access the map. Be aware to respect coherance between toJson and fromJson.
 

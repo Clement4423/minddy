@@ -7,7 +7,7 @@
 // -> Create the [NodeEditorNewNodeSubMenuNodeModel] in the nodes_add_menu_models.dart file, and add it to the asList list.
 // -> Test it.
 
-import 'package:minddy/system/interface/node_interface.dart';
+import 'package:minddy/system/interfaces/node_interface.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 
 /// This is used for the nodes that has no outputs, the last one.
@@ -63,21 +63,3 @@ class IOutputNode implements INode {
     throw UnimplementedError();
   }
 }
-
-// void main() async {
-//   MathNode nodeD = MathNode()..inputs = [NodeData(type: NodeDataType.int, value: 20)];
-//   MathNode nodeA = MathNode();
-//   ComparisonNode nodeB = ComparisonNode(comparisonType: ComparisonNodeType.greatherThan);
-//   BooleanOutputNode nodeC = BooleanOutputNode();
-
-//   nodeA.targets = [NodeTarget(node: nodeB, inputIndex: 0, outputIndex: 0)];
-//   nodeB.targets = [NodeTarget(node: nodeC, inputIndex: 0, outputIndex: 0)];
-//   nodeD.targets = [NodeTarget(node: nodeA, inputIndex: 0, outputIndex: 0), NodeTarget(node: nodeA, inputIndex: 1, outputIndex: 0), NodeTarget(node: nodeB, inputIndex: 1, outputIndex: 0)];
-
-//   NodeTree tree = NodeTree(nodes: [nodeA, nodeB, nodeC, nodeD], id: createUniqueId(), variablesManager: NodeTreeVariablesManager(variablesList: []));
-  
-//   String treeAsString = tree.toString();
-//   NodeTree? treeFromString = NodeTree.fromString(treeAsString, []);
-//   NodeData? data = await treeFromString?.run();
-//   print(data);
-// }

@@ -34,17 +34,18 @@ class _NodeEditorBottomSheetSidePanelNodeTreeContainerState extends State<NodeEd
   bool canEdit = false;
 
   FocusNode focusNode = FocusNode();
+  TextEditingController controller = TextEditingController();
 
   setCanEdit(bool value) {
     setState(() {
       canEdit = value;
+      if (value == true) {
+        focusNode.requestFocus();
+        controller.selection = TextSelection(baseOffset: controller.text.length, extentOffset: controller.text.length);
+      } else if (focusNode.hasFocus) {
+        focusNode.unfocus();
+      }
     });
-
-    if (value == true) {
-      focusNode.requestFocus();
-    } else if (focusNode.hasFocus) {
-      focusNode.unfocus();
-    }
   }
 
   @override
@@ -55,6 +56,7 @@ class _NodeEditorBottomSheetSidePanelNodeTreeContainerState extends State<NodeEd
 
   @override
   void initState() {
+    controller.text = widget.trees[widget.index].name;
     id = widget.trees[widget.index].id;
     super.initState();
   }
@@ -89,7 +91,8 @@ class _NodeEditorBottomSheetSidePanelNodeTreeContainerState extends State<NodeEd
                     setCanEdit(false);
                   },
                   focusNode: focusNode,
-                  controller: TextEditingController(text: widget.trees[widget.index].name),
+                  autofocus: true,
+                  controller: controller,
                   cursorColor: widget.isSelected 
                     ? widget.theme.onSecondary
                     : widget.theme.onPrimary,
@@ -105,7 +108,7 @@ class _NodeEditorBottomSheetSidePanelNodeTreeContainerState extends State<NodeEd
                     : widget.theme.onPrimary,
                     fontWeight: FontWeight.w500
                   ),
-                  readOnly: canEdit ? false : true,
+                  readOnly: !canEdit,
                   onTap: () {
                     if (canEdit) {
                       return;

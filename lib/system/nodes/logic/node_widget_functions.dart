@@ -9,12 +9,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:minddy/system/interface/i_node_widget.dart';
-import 'package:minddy/system/interface/node_interface.dart';
+import 'package:minddy/system/interfaces/node_widget_interface.dart';
+import 'package:minddy/system/interfaces/node_interface.dart';
 import 'package:minddy/system/model/node_connection.dart';
 import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/nodes/logic/node_tree.dart';
+import 'package:minddy/system/nodes/logic/node_tree_variable_manager.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_port_widget.dart';
 
 class NodeWidgetFunctions {
@@ -31,6 +32,7 @@ class NodeWidgetFunctions {
   final Function updateAllNodes;
   final Function updateConnections;
   final Function saveState;
+  final NodeTreeVariablesManager variablesManager;
 
   NodeWidgetFunctions({
     required this.getIsDragging,
@@ -45,8 +47,8 @@ class NodeWidgetFunctions {
     required this.updateAllNodes,
     required this.updateConnections,
     required this.saveState,
+    required this.variablesManager
   });
-
 
   /// This function will ensure the node widget is correctly placed, within the bound of the node board.
   void verifyPosition(INodeWidget w) {

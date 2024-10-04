@@ -74,7 +74,6 @@ class AppDate {
         return '$day/$month/$year${useTime ? ' $hour:$minute' : ''}';
       }
     } catch (e) {
-      print(e);
       return null;
     }
   }

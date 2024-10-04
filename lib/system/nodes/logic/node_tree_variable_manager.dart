@@ -27,4 +27,8 @@ class NodeTreeVariablesManager {
       return;
     }
   }
+
+  void setVariablesList(List<NodeTreeVariable> newVariablesList) {
+    _variables = newVariablesList;
+  }
 }

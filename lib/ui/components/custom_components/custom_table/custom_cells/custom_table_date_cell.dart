@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/calendar/app_date.dart';
 import 'package:minddy/system/files/app_config.dart';
-import 'package:minddy/system/interface/i_custom_table_cell_data.dart';
+import 'package:minddy/system/interfaces/custom_table_cell_data_interface.dart';
 import 'package:minddy/system/model/custom_date_picker_mode.dart';
 import 'package:minddy/system/model/custom_date_picker_result.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_controller.dart';

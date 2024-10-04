@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/interface/i_node_widget.dart';
-import 'package:minddy/system/interface/node_interface.dart';
+import 'package:minddy/system/interfaces/node_widget_interface.dart';
+import 'package:minddy/system/interfaces/node_interface.dart';
 import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/nodes/all_nodes/boolean_node.dart';
 import 'package:minddy/system/nodes/logic/node_widget_functions.dart';
@@ -130,6 +130,7 @@ class _BooleanNodeWidgetState extends State<BooleanNodeWidget> {
     Offset draggingStartPortOffset = widgetInformations.draggingStartPort?.translate(-widget.position.dx, -widget.position.dy) ?? const Offset(0, 0);
     return NodeWidgetBody(
       nodeTitle: S.of(context).node_widgets_boolean_node_title, 
+      nodeDescription: S.of(context).node_widgets_boolean_node_description,
       theme: widget.theme, 
       nodeWidget: widget, 
       needToBeSmaller: widgetInformations.needToBeSmaller, 

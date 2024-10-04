@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/system/files/app_logs.dart';
-import 'package:minddy/system/interface/articles_element_interface.dart';
+import 'package:minddy/system/interfaces/articles_element_interface.dart';
 import 'package:minddy/system/model/note_model.dart';
 import 'package:minddy/system/notes/app_notes.dart';
 import 'package:minddy/ui/components/custom_components/custom_bulleted_list.dart';

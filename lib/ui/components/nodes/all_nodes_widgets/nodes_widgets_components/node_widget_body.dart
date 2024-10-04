@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:minddy/system/interface/i_node_widget.dart';
+import 'package:minddy/system/interfaces/node_widget_interface.dart';
 import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/utils/calculate_text_contrast.dart';
@@ -13,6 +13,7 @@ class NodeWidgetBody extends StatefulWidget {
   const NodeWidgetBody({
     super.key, 
     required this.nodeTitle, 
+    required this.nodeDescription,
     required this.theme,
     required this.nodeWidget, 
     required this.needToBeSmaller, 
@@ -21,18 +22,21 @@ class NodeWidgetBody extends StatefulWidget {
     required this.currentCursorOffset, 
     required this.draggingStartPortOffset, 
     required this.inputPortInfo,
+    this.nodeColor,
     required this.children
   });
 
   final String nodeTitle;
+  final String nodeDescription;
   final StylesGetters theme;
   final INodeWidget nodeWidget;
   final bool needToBeSmaller;
-  final List inputsThatAreNoLongerNeeded;
+  final List<int> inputsThatAreNoLongerNeeded;
   final bool isDraggingStartPortFromAnotherPort;
   final Offset? currentCursorOffset;
   final Offset draggingStartPortOffset;
   final NodePortInfo? inputPortInfo;
+  final Color? nodeColor;
   final List<Widget> children;
 
   @override
@@ -49,7 +53,7 @@ class _NodeWidgetBodyState extends State<NodeWidgetBody> {
 
   @override
   void initState() {
-    nodeColor = getCorrectColorBasedOnNodeDataType(widget.nodeWidget.node.outputsTypes.first);
+    nodeColor = widget.nodeColor ?? getCorrectColorBasedOnNodeDataType(widget.nodeWidget.node.outputsTypes.first);
     super.initState();
   }
 
@@ -121,28 +125,56 @@ class _NodeWidgetBodyState extends State<NodeWidgetBody> {
                 child: Column(
                   children: [
                     // Node top part, with title
-                    Container(
-                      height: 15,
-                      width: widget.nodeWidget.width,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)
-                        ),
-                        color: nodeColor
-                      ),
-                      child: Center(
-                        // Node title
-                        child: Text(
-                          widget.nodeTitle,
-                          style: widget.nodeWidget.theme.titleMedium.copyWith(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 8,
-                            color: hasSufficientContrast(Colors.black, nodeColor) 
-                              ? Colors.black 
-                              : Colors.white
+                    Tooltip(
+                      richMessage: WidgetSpan(
+                        alignment: PlaceholderAlignment.baseline,
+                        baseline: TextBaseline.alphabetic,
+                        child: Container(
+                          constraints: const BoxConstraints(
+                            maxWidth: 350,
                           ),
-                          maxLines: 1,
+                          child: Text(
+                            widget.nodeDescription,
+                            style: widget.theme.bodyMedium
+                            .copyWith(color: widget.theme.onPrimary)
+                          ),
+                        )
+                      ),
+                      waitDuration: const Duration(seconds: 1),
+                      decoration: BoxDecoration(
+                        color: widget.theme.primary,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(5, 5),
+                            blurRadius: 15,
+                            color: widget.theme.shadow.withOpacity(0.20),
+                          ),
+                        ],
+                      ),
+                      child: Container(
+                        height: 15,
+                        width: widget.nodeWidget.width,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)
+                          ),
+                          color: nodeColor
+                        ),
+                        child: Center(
+                          // Node title
+                          child: Text(
+                            widget.nodeTitle,
+                            style: widget.nodeWidget.theme.titleMedium.copyWith(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 8,
+                              color: hasSufficientContrast(Colors.black, nodeColor) 
+                                ? Colors.black 
+                                : Colors.white
+                            ),
+                            maxLines: 1,
+                          ),
                         ),
                       ),
                     ),

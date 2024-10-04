@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/interface/router_interface.dart';
+import 'package:minddy/system/interfaces/router_interface.dart';
 import 'package:minddy/system/model/navigation_list_tile_model.dart';
 import 'package:minddy/ui/components/settings/settings_components/navigation_list_tile.dart';
 import 'package:minddy/ui/components/settings/settings_components/sidebar_navigation_controller.dart';

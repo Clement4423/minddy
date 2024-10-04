@@ -3006,6 +3006,16 @@ class S {
     );
   }
 
+  /// `Not defined`
+  String get node_editor_view_side_panel_variables_variable_type_any {
+    return Intl.message(
+      'Not defined',
+      name: 'node_editor_view_side_panel_variables_variable_type_any',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Number`
   String get node_editor_view_side_panel_variables_variable_type_number {
     return Intl.message(
@@ -3276,11 +3286,31 @@ class S {
     );
   }
 
+  /// `None`
+  String get node_editor_add_sub_menu_none_input_output {
+    return Intl.message(
+      'None',
+      name: 'node_editor_add_sub_menu_none_input_output',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Value`
   String get node_widgets_value_text {
     return Intl.message(
       'Value',
       name: 'node_widgets_value_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Result`
+  String get node_widgets_result_text {
+    return Intl.message(
+      'Result',
+      name: 'node_widgets_result_text',
       desc: '',
       args: [],
     );
@@ -3296,11 +3326,51 @@ class S {
     );
   }
 
+  /// `Math`
+  String get node_widgets_category_math {
+    return Intl.message(
+      'Math',
+      name: 'node_widgets_category_math',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logic`
+  String get node_widgets_category_logic {
+    return Intl.message(
+      'Logic',
+      name: 'node_widgets_category_logic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Variables`
+  String get node_widgets_category_variable {
+    return Intl.message(
+      'Variables',
+      name: 'node_widgets_category_variable',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Calculations`
   String get node_widgets_math_node_title {
     return Intl.message(
       'Calculations',
       name: 'node_widgets_math_node_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Performs calculations on numbers.`
+  String get node_widgets_math_node_description {
+    return Intl.message(
+      'Performs calculations on numbers.',
+      name: 'node_widgets_math_node_description',
       desc: '',
       args: [],
     );
@@ -3596,6 +3666,16 @@ class S {
     );
   }
 
+  /// `Performs comparison between numbers.`
+  String get node_widgets_comparison_node_description {
+    return Intl.message(
+      'Performs comparison between numbers.',
+      name: 'node_widgets_comparison_node_description',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Less than`
   String get node_widgets_comparison_node_options_lessThan {
     return Intl.message(
@@ -3651,6 +3731,16 @@ class S {
     return Intl.message(
       'Logic Operations',
       name: 'node_widgets_boolean_node_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Performs operations on booleans.`
+  String get node_widgets_boolean_node_description {
+    return Intl.message(
+      'Performs operations on booleans.',
+      name: 'node_widgets_boolean_node_description',
       desc: '',
       args: [],
     );
@@ -3741,6 +3831,76 @@ class S {
     return Intl.message(
       'Subtract',
       name: 'node_widgets_boolean_node_options_subtract',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set variable`
+  String get node_widgets_set_variable_node_title {
+    return Intl.message(
+      'Set variable',
+      name: 'node_widgets_set_variable_node_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sets a variable's value.`
+  String get node_widgets_set_variable_node_description {
+    return Intl.message(
+      'Sets a variable\'s value.',
+      name: 'node_widgets_set_variable_node_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get variable`
+  String get node_widgets_get_variable_node_title {
+    return Intl.message(
+      'Get variable',
+      name: 'node_widgets_get_variable_node_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gets the value of a variable.`
+  String get node_widgets_get_variable_node_description {
+    return Intl.message(
+      'Gets the value of a variable.',
+      name: 'node_widgets_get_variable_node_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select a variable`
+  String get node_widgets_select_variable_node_text {
+    return Intl.message(
+      'Select a variable',
+      name: 'node_widgets_select_variable_node_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Random number`
+  String get node_widgets_random_number_node_title {
+    return Intl.message(
+      'Random number',
+      name: 'node_widgets_random_number_node_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Generates a random number between a minimum and maximum (0 and 1 by default).`
+  String get node_widgets_random_number_node_description {
+    return Intl.message(
+      'Generates a random number between a minimum and maximum (0 and 1 by default).',
+      name: 'node_widgets_random_number_node_description',
       desc: '',
       args: [],
     );

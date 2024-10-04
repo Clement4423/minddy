@@ -3,7 +3,7 @@ import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/shortcuts/shortcuts_activators.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-class CustomSelectionMenuSearchTile extends StatelessWidget {
+class CustomSelectionMenuSearchTile extends StatefulWidget {
   const CustomSelectionMenuSearchTile({
     super.key, 
     required this.itemHeight, 
@@ -24,17 +24,37 @@ class CustomSelectionMenuSearchTile extends StatelessWidget {
   final void Function() onEnterPressed;
 
   @override
+  State<CustomSelectionMenuSearchTile> createState() => _CustomSelectionMenuSearchTileState();
+}
+
+class _CustomSelectionMenuSearchTileState extends State<CustomSelectionMenuSearchTile> {
+
+  FocusNode _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    _focusNode.requestFocus();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Material(
       type: MaterialType.transparency,
       child: Container(
-        height: itemHeight,
-        width: menuWidth,
+        height: widget.itemHeight,
+        width: widget.menuWidth,
         decoration: BoxDecoration(
-          border: showBottomBorder
+          border: widget.showBottomBorder
             ? Border(
                 bottom: BorderSide(
-                  color: theme.onPrimary.withOpacity(theme.brightness == Brightness.light ? 1 : 0.4),
+                  color: widget.theme.onPrimary.withOpacity(widget.theme.brightness == Brightness.light ? 1 : 0.4),
                   width: 0.5
                 )
               )
@@ -43,30 +63,30 @@ class CustomSelectionMenuSearchTile extends StatelessWidget {
         child: CallbackShortcuts(
           bindings: {
             escapeActivator: () {
-              onEscapePressed();
+              widget.onEscapePressed();
             }
           },
           child: Focus(
             child: ListTile(
               title: TextSelectionTheme(
                 data: TextSelectionThemeData(
-                  selectionColor: theme.secondary.withOpacity(0.3)
+                  selectionColor: widget.theme.secondary.withOpacity(0.3)
                 ),
                 child: TextField(
-                  autofocus: true,
-                  onChanged: onChanged,
-                  onEditingComplete: onEnterPressed,
-                  cursorColor: theme.onPrimary,
+                  onChanged: widget.onChanged,
+                  onEditingComplete: widget.onEnterPressed,
+                  focusNode: _focusNode,
+                  cursorColor: widget.theme.onPrimary,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: S.of(context).articles_search,
                     contentPadding: const EdgeInsets.only(bottom: 10)
                   ), 
-                  style: theme.bodyMedium.copyWith(color: theme.onPrimary),
+                  style: widget.theme.bodyMedium.copyWith(color: widget.theme.onPrimary),
                 ),
               ),
               contentPadding: const EdgeInsets.only(right: 10, left: 10, bottom: 12),
-              trailing: Icon(Icons.search_rounded, color: theme.onPrimary),
+              trailing: Icon(Icons.search_rounded, color: widget.theme.onPrimary),
               tileColor: Colors.transparent,
             ),
           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:minddy/system/interface/projects_modules_controller_interface.dart';
-import 'package:minddy/system/interface/projects_modules_interface.dart';
+import 'package:minddy/system/interfaces/projects_modules_controller_interface.dart';
+import 'package:minddy/system/interfaces/projects_modules_interface.dart';
 import 'package:minddy/ui/components/projects/modules/notes/project_notes_module_note_categories_view.dart';
 import 'package:minddy/ui/components/projects/modules/notes/projects_modules_note_view_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/interface/projects_modules_controller_interface.dart';
-import 'package:minddy/system/interface/projects_modules_interface.dart';
+import 'package:minddy/system/interfaces/projects_modules_controller_interface.dart';
+import 'package:minddy/system/interfaces/projects_modules_interface.dart';
 import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/projects/modules/tasks/projects_modules_tasks_view_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';

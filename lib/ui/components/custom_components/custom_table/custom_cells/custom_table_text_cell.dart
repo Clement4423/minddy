@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minddy/system/interface/i_custom_table_cell_data.dart';
+import 'package:minddy/system/interfaces/custom_table_cell_data_interface.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 // ignore: must_be_immutable

@@ -48,7 +48,7 @@ class CustomDropdownButton extends StatelessWidget {
               ),
             ),
           Container(
-            width: _calculateTextWidth(selectedOptionTitle, theme.bodyMedium) + 11 + 20, // Here we add the selectedOptionTitle size, the Container padding, and the icon size
+            width: menuTitle != null ? (_calculateTextWidth(selectedOptionTitle, theme.bodyMedium) + 11 + 20) : width, // Here we add the selectedOptionTitle size, the Container padding, and the icon size
             height: 40,
             constraints: BoxConstraints(
               maxWidth: width - 15 - _calculateTextWidth(menuTitle ?? '', theme.titleMedium), // Here we remove the above padding and menu title size

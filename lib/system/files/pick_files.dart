@@ -5,7 +5,7 @@ import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:path/path.dart' as path;
-import 'package:minddy/system/interface/file_picker_interface.dart';
+import 'package:minddy/system/interfaces/file_picker_interface.dart';
 
 class FilesPicker extends IFilesPicker {
   @override

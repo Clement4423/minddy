@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:minddy/system/interface/i_output_node.dart';
-import 'package:minddy/system/interface/node_interface.dart';
+import 'package:minddy/system/interfaces/output_node_interface.dart';
+import 'package:minddy/system/interfaces/node_interface.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 

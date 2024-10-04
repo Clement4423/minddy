@@ -2,17 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/node_tree_variable.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class NodeEditorBottomSheetSidePanelVariableContainer extends StatefulWidget {
   const NodeEditorBottomSheetSidePanelVariableContainer({
     super.key,
     required this.variable,
+    required this.onRename,
+    required this.onTypeChanged,
     required this.theme,
     required this.deleteNodeTreeVariable
   });
 
   final NodeTreeVariable variable;
+  final Function onRename;
+  final Function onTypeChanged;
   final StylesGetters theme;
   final Function(int id) deleteNodeTreeVariable;
 
@@ -51,48 +56,36 @@ class _NodeEditorBottomSheetSidePanelVariableContainerState extends State<NodeEd
               color: widget.theme.surface,
               borderRadius: BorderRadius.circular(9)
             ),
-            child: DropdownButton<NodeDataType>(
-              onChanged: (NodeDataType? type) {
-                if (type != null) {
-                  setState(() {
-                    widget.variable.type = type;                    
-                  });
-                }
-              },
-              hint: Center(child: Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: Icon(_getCorrectIconBasedOnType(widget.variable.type), color: widget.theme.onSurface),
-              )),
-              icon: Icon(Icons.arrow_drop_down_rounded, color: widget.theme.onSurface),
-              borderRadius: BorderRadius.circular(13),
-              underline: const SizedBox(),
-              isExpanded: true,
-              menuWidth: 180,
-              padding: const EdgeInsets.only(left: 5),
-              items: NodeDataType.values.sublist(0, NodeDataType.values.length - 1).map((t) => DropdownMenuItem<NodeDataType>(
-                value: t,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      getCorrectNameBasedOnNodeDataType(t),
-                      style: widget.theme.bodyMedium
-                      .copyWith(
-                        color: widget.variable.type == t 
-                          ? widget.theme.secondary 
-                          : widget.theme.onSurface
-                      )
-                    ),
-                    Icon(
-                      _getCorrectIconBasedOnType(t), 
-                      color: widget.variable.type == t 
-                        ? widget.theme.secondary 
-                        : widget.theme.onSurface
-                    )
-                  ],
-                ) 
-              )).toList(),
-            ),
+            child: CustomSelectionMenu(
+              theme: widget.theme, 
+              enableSearch: true,
+              menuMaxHeight: 250,
+              buttonStyle: const ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(Colors.transparent),
+                overlayColor: WidgetStatePropertyAll(Colors.transparent),
+                padding: WidgetStatePropertyAll(EdgeInsets.only(left: 7)),
+                elevation: WidgetStatePropertyAll(0)
+              ),
+              items: NodeDataType.values.sublist(0, NodeDataType.values.length - 1).map((type) {
+                return CustomSelectionMenuItem(
+                  label: getCorrectNameBasedOnNodeDataType(type), 
+                  foregroundColor: widget.variable.type == type ? widget.theme.secondary : null,
+                  icon: _getCorrectIconBasedOnType(type), 
+                  onTap: () {
+                    setState(() {
+                      widget.variable.type = type;
+                      widget.onTypeChanged();
+                    });
+                  }
+                );
+              }).toList(),
+              child: Row(
+                children: [
+                  Icon(_getCorrectIconBasedOnType(widget.variable.type), color: widget.theme.onSurface),
+                  Icon(Icons.arrow_drop_down_rounded, color: widget.theme.onSurface)
+                ],
+              )
+            )
           ),
           Expanded(
             child: TextSelectionTheme(
@@ -100,6 +93,14 @@ class _NodeEditorBottomSheetSidePanelVariableContainerState extends State<NodeEd
               child: TextField(
                 onChanged: (value) {
                   widget.variable.name = value;
+                },
+                onEditingComplete: () {
+                  focusNode.unfocus();
+                  widget.onRename();
+                },
+                onTapOutside: (event) {
+                  focusNode.unfocus();
+                  widget.onRename();
                 },
                 focusNode: focusNode,
                 controller: TextEditingController(text: widget.variable.name),
@@ -150,7 +151,7 @@ class _NodeEditorBottomSheetSidePanelVariableContainerState extends State<NodeEd
 String getCorrectNameBasedOnNodeDataType(NodeDataType type) {
   switch (type) {
     case NodeDataType.any:
-      return "ERROR";
+      return S.current.node_editor_view_side_panel_variables_variable_type_any;
     case NodeDataType.number:
       return S.current.node_editor_view_side_panel_variables_variable_type_number;
     case NodeDataType.string:

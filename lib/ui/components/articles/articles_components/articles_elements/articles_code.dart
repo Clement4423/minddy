@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/interface/articles_element_interface.dart';
+import 'package:minddy/system/interfaces/articles_element_interface.dart';
 import 'package:minddy/system/model/code_languages_enum.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_elements/articles_element_envelop.dart';
 import 'package:minddy/ui/theme/theme.dart';

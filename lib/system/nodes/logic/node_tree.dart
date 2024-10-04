@@ -1,12 +1,15 @@
 import 'dart:convert';
 
-import 'package:minddy/system/interface/i_output_node.dart';
-import 'package:minddy/system/interface/node_interface.dart';
+import 'package:minddy/system/interfaces/output_node_interface.dart';
+import 'package:minddy/system/interfaces/node_interface.dart';
 import 'package:minddy/system/nodes/all_nodes/boolean_node.dart';
 import 'package:minddy/system/nodes/all_nodes/comparison_node.dart';
 import 'package:minddy/system/nodes/all_nodes/math_node.dart';
 import 'package:minddy/system/nodes/all_nodes/outputs_nodes/boolean_output_node.dart';
 import 'package:minddy/system/nodes/all_nodes/outputs_nodes/number_output_node.dart';
+import 'package:minddy/system/nodes/all_nodes/random_number_node.dart';
+import 'package:minddy/system/nodes/all_nodes/variables_nodes/get_variable_node.dart';
+import 'package:minddy/system/nodes/all_nodes/variables_nodes/set_variable_node.dart';
 import 'package:minddy/system/nodes/logic/node_tree_variable_manager.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
@@ -60,6 +63,11 @@ class NodeTree {
   }
 
   bool isInputNodeBefore(INode outputNode, INode inputNode, NodeTarget targetToAdd) {
+
+    if (outputNode.targets.isEmpty && inputNode.targets.isEmpty) {
+      return false;
+    }
+
     try {
       if (outputNode.targets.isEmpty && inputNode.targets.isEmpty) {
         return false;
@@ -121,6 +129,7 @@ class NodeTree {
 
       // Propagate data from current node's outputs to the next node's inputs
       try {
+        print(currentNode.runtimeType);
         NodeOutput matchingOutput = currentNode.outputs.firstWhere((output) =>
             output.target == nextNode && output.inputIndex == target.inputIndex);
 
@@ -248,7 +257,7 @@ List<INode>? topologicalSort([List<INode>? nodesToUse]) {
     if (nodesAsString is List) {
       for (var nodeJson in nodesAsString) {
         Map nodeMap = jsonDecode(nodeJson);
-        INode? node = _getCorrectNodeType(nodeMap['type'])?.fromJson(nodeJson);
+        INode? node = _getCorrectNodeType(nodeMap['type'], variablesManager)?.fromJson(nodeJson);
         
         if (node != null) {
           targetsMap[node.id] = convertListToListString(nodeMap['targets'] ?? []);
@@ -267,18 +276,25 @@ List<INode>? topologicalSort([List<INode>? nodesToUse]) {
   }
 }
 
-Map<String, Function> _nodeTypeConstructors = {
-    MathNode().runtimeType.toString(): () => MathNode(),
-    NumberOutputNode().runtimeType.toString(): () => NumberOutputNode(),
-    ComparisonNode().runtimeType.toString(): () => ComparisonNode(),
-    BooleanNode().runtimeType.toString(): () => BooleanNode(),
-    BooleanOutputNode().runtimeType.toString(): () => BooleanOutputNode()
-    
-};
+Function? _getNodeTypeConstructor(String type, NodeTreeVariablesManager variablesManager) {
 
-INode? _getCorrectNodeType(String type) {
-  if (_nodeTypeConstructors[type] != null) {
-    return _nodeTypeConstructors[type]?.call();
+    Map<String, Function> nodeTypesConstructors = {
+      'MathNode': () => MathNode(),
+      'NumberOutputNode': () => NumberOutputNode(),
+      'ComparisonNode': () => ComparisonNode(),
+      'BooleanNode': () => BooleanNode(),
+      'BooleanOutputNode': () => BooleanOutputNode(),
+      'RandomNumberNode': () => RandomNumberNode(),
+      'SetVariableNode': () => SetVariableNode(variablesManager: variablesManager),
+      'GetVariableNode': () => GetVariableNode(variablesManager: variablesManager)
+    };
+
+    return nodeTypesConstructors[type];
+}
+
+INode? _getCorrectNodeType(String type, NodeTreeVariablesManager variablesManager) {
+  if (_getNodeTypeConstructor(type, variablesManager) != null) {
+    return _getNodeTypeConstructor(type, variablesManager)?.call();
   }
   return null;
 }
@@ -314,6 +330,6 @@ dynamic getDefaultNodeDataTypeValue(NodeDataType type) {
       case NodeDataType.color:
         return null;
       case NodeDataType.any: 
-        return true;
+        return 'true';
     }
   }

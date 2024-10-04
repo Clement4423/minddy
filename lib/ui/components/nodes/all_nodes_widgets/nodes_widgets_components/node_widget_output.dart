@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minddy/system/interface/i_node_widget.dart';
+import 'package:minddy/system/interfaces/node_widget_interface.dart';
 import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/nodes/logic/node_widget_functions.dart';

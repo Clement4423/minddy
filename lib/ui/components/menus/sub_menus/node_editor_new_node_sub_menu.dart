@@ -3,9 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/interface/i_node_widget.dart';
+import 'package:minddy/system/interfaces/node_widget_interface.dart';
 import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
+import 'package:minddy/system/utils/search_text_formatter.dart';
 import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/components/nodes/node_editor_bottom_sheet_side_panel_variable_container.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -37,16 +38,20 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
 
   NodeEditorNewNodeSubMenuNodeModel? selectedNode;
 
-  void search(String entry) {
-    entry = entry.toLowerCase();
-    if (entry.isEmpty) {
+  void search(String query) {
+    String transformedQuery = SearchTextFormatter.format(query);
+    if (transformedQuery.isEmpty) {
       nodesList = widget.nodesToShow;
     } else {
-      nodesList = widget.nodesToShow.where((n) => 
-        n.name.toLowerCase().contains(entry) || 
-        n.description.toLowerCase().contains(entry) ||
-        _getNodeCategoryTranslatedName(n.category).toLowerCase().contains(entry)
-      ).toList();
+      nodesList = widget.nodesToShow.where((node) {
+        String transformedName = SearchTextFormatter.format(node.name);
+        String transformedDescription = SearchTextFormatter.format(node.description);
+        String transformedCategory = SearchTextFormatter.format(_getNodeCategoryTranslatedName(node.category));
+
+        return transformedName.contains(transformedQuery) 
+          || transformedCategory.contains(transformedQuery)
+          || transformedDescription.contains(transformedQuery);
+      }).toList();
     }
     if (!nodesList.contains(selectedNode) && nodesList.isNotEmpty) {
       selectedNode = nodesList.firstOrNull;
@@ -98,7 +103,10 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                   children: [
                     Icon(
                       _getNodeCategoryIcon(category), 
-                      color: node == selectedNode ? widget.theme.onSecondary : widget.theme.onPrimary,
+                      color: node == selectedNode 
+                        ? widget.theme.onSecondary 
+                        : widget.theme.onPrimary,
+                      size: 20,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 5),
@@ -337,8 +345,11 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                               builder: (context, child) {
                                 return Padding(
                                   padding: const EdgeInsets.all(10.0),
-                                  child: ListView(
-                                    children: _buildNodeCategoryList()
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: ListView(
+                                      children: _buildNodeCategoryList()
+                                    ),
                                   ),
                                 );
                               }
@@ -368,13 +379,14 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                                     // Header
                                     SizedBox(
                                       width: 440,
-                                      height: 100,
+                                      height: 110,
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 20, top: 20),
+                                        padding: const EdgeInsets.only(left: 20, top: 20, right: 5),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
+                                            // Node name
                                             Text(
                                               selectedNode!.name,
                                               style: widget.theme.titleLarge
@@ -382,12 +394,16 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                             ),
-                                            Text(
-                                              selectedNode!.description,
-                                              style: widget.theme.bodyMedium
-                                              .copyWith(color: widget.theme.onSurface, fontWeight: FontWeight.w300),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
+                                            // Node description
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 5),
+                                              child: Text(
+                                                selectedNode!.description,
+                                                style: widget.theme.bodyMedium
+                                                .copyWith(color: widget.theme.onSurface, fontWeight: FontWeight.w300),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             )
                                           ],
                                         ),
@@ -402,13 +418,13 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.only(bottom: 5),
+                                              padding: const EdgeInsets.only(bottom: 10),
                                               child: Text(
                                                 S.of(context).node_editor_add_sub_menu_types,
                                                 style: widget.theme.titleMedium
                                                 .copyWith(
                                                   color: widget.theme.onSurface, 
-                                                  fontSize: 18,
+                                                  fontSize: 20,
                                                   fontWeight: FontWeight.w700
                                                 ),
                                               ),
@@ -424,19 +440,25 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     mainAxisAlignment: MainAxisAlignment.start,
                                                     children: [
-                                                      Text(
-                                                        S.of(context).node_editor_add_sub_menu_inputs_subtitle(selectedNode!.inputsTypes.length),
-                                                        style: widget.theme.titleMedium
-                                                          .copyWith(color: widget.theme.onSurface, fontWeight: FontWeight.w600),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(top: 10),
-                                                        child: Column(
-                                                          children: [
-                                                            ..._createIndexedInputsOutputsList(selectedNode!.inputsTypes, widget.theme)
-                                                          ],
+                                                        Text(
+                                                          S.of(context).node_editor_add_sub_menu_inputs_subtitle(selectedNode!.inputsTypes.length),
+                                                          style: widget.theme.titleMedium
+                                                            .copyWith(color: widget.theme.onSurface, fontWeight: FontWeight.w600,),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(top: 10),
+                                                          child: Column(
+                                                            children: [
+                                                              if (selectedNode!.inputsTypes.isNotEmpty)
+                                                                ..._createIndexedInputsOutputsList(selectedNode!.inputsTypes, widget.theme)
+                                                              else 
+                                                                Text(
+                                                                  S.of(context).node_editor_add_sub_menu_none_input_output,
+                                                                  style: widget.theme.bodyMedium.copyWith(color: widget.theme.onSurface),
+                                                                )
+                                                            ],
+                                                          )
                                                         )
-                                                      )
                                                     ],
                                                   ),
                                                 ),
@@ -447,19 +469,25 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     mainAxisAlignment: MainAxisAlignment.start,
                                                     children: [
-                                                      Text(
-                                                        S.of(context).node_editor_add_sub_menu_outputs_subtitle(selectedNode!.inputsTypes.length),
-                                                        style: widget.theme.titleMedium
-                                                          .copyWith(color: widget.theme.onSurface, fontWeight: FontWeight.w600),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.only(top: 10),
-                                                        child: Column(
-                                                          children: [
-                                                            ..._createIndexedInputsOutputsList(selectedNode!.outputsTypes, widget.theme)
-                                                          ],
+                                                        Text(
+                                                          S.of(context).node_editor_add_sub_menu_outputs_subtitle(selectedNode!.outputsTypes.length),
+                                                          style: widget.theme.titleMedium
+                                                            .copyWith(color: widget.theme.onSurface, fontWeight: FontWeight.w600),
+                                                        ),
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(top: 10),
+                                                          child: Column(
+                                                            children: [
+                                                              if (selectedNode!.outputsTypes.isNotEmpty)
+                                                                ..._createIndexedInputsOutputsList(selectedNode!.outputsTypes, widget.theme)
+                                                              else 
+                                                                Text(
+                                                                  S.of(context).node_editor_add_sub_menu_none_input_output,
+                                                                  style: widget.theme.bodyMedium.copyWith(color: widget.theme.onSurface),
+                                                                )
+                                                            ],
+                                                          )
                                                         )
-                                                      )
                                                     ],
                                                   ),
                                                 )
@@ -482,16 +510,13 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                                             Tooltip(
                                               message: S.of(context).node_editor_add_sub_menu_note,
                                               child: Container(
-                                                padding: const EdgeInsets.only(right: 10),
+                                                padding: const EdgeInsets.only(right: 10, top: 8, bottom: 8),
                                                 width: 300,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Text(
-                                                    S.of(context).node_editor_add_sub_menu_note,
-                                                    style: widget.theme.bodyMedium.copyWith(color: widget.theme.onPrimary),
-                                                    overflow: TextOverflow.ellipsis,
-                                                    maxLines: 2
-                                                  ),
+                                                child: Text(
+                                                  S.of(context).node_editor_add_sub_menu_note,
+                                                  style: widget.theme.bodyMedium.copyWith(color: widget.theme.onPrimary),
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 2
                                                 ),
                                               ),
                                             ),
@@ -531,7 +556,7 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                             }
                           ),
                         ),
-                        // Close button
+                        // Close menu button
                         Positioned(
                           top: 10,
                           right: 10,
@@ -544,16 +569,16 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                               child: Tooltip(
                                 message: S.of(context).snacbar_close_button,
                                 child: Container(
-                                  width: 25,
-                                  height: 25,
+                                  width: 40,
+                                  height: 40,
                                   decoration: BoxDecoration(
                                     color: widget.theme.primary,
-                                    borderRadius: BorderRadius.circular(12.5)
+                                    borderRadius: BorderRadius.circular(10)
                                   ),
                                   child: Icon(
                                     Icons.close_rounded, 
                                     color: widget.theme.onPrimary,
-                                    size: 18,
+                                    size: 20,
                                   ),
                                 ),
                               ),
@@ -604,11 +629,11 @@ enum NodeCategory {
 String _getNodeCategoryTranslatedName(NodeCategory category) {
   switch (category) {
     case NodeCategory.math:
-      return "Math";
+      return S.current.node_widgets_category_math;
     case NodeCategory.logic:
-      return 'Logic';
+      return S.current.node_widgets_category_logic;
     case NodeCategory.variable:
-      return 'Variables';
+      return S.current.node_widgets_category_variable;
   }
 }
 

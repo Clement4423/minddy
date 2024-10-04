@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/interface/articles_element_interface.dart';
+import 'package:minddy/system/interfaces/articles_element_interface.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 // ignore: must_be_immutable

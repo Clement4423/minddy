@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:minddy/system/interface/i_node_widget.dart';
-import 'package:minddy/system/interface/node_interface.dart';
+import 'package:minddy/system/interfaces/node_variable_interface.dart';
+import 'package:minddy/system/interfaces/node_widget_interface.dart';
+import 'package:minddy/system/interfaces/node_interface.dart';
 import 'package:minddy/system/model/node_connection.dart';
 import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/model/node_tree_variable.dart';
@@ -62,6 +63,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
   List<INodeWidget> nodesWidgets = [];
 
   List<NodeTreeVariable> variables = [];
+  late NodeTreeVariablesManager variablesManager;
 
   bool isDragging = false;
 
@@ -69,6 +71,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
   
   NodeEditorBottomSheetController({this.isClosed = false, required this.views, required this.maxOffset, required this.save}) {
     selectedNodeTreeId = views.firstOrNull?.tree.id;
+    variablesManager = NodeTreeVariablesManager(variablesList: variables);
     widgetFunctions = NodeWidgetFunctions(
       getIsDragging: getIsDragging, 
       setIsDragging: setIsDragging, 
@@ -81,7 +84,8 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
       updateNode: updateNode, 
       updateAllNodes: updateAllNodes,
       updateConnections: nodeConnectionUpdater.notify,
-      saveState: saveState
+      saveState: saveState,
+      variablesManager: variablesManager
     );
   }
 
@@ -117,6 +121,9 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
         globalKeys[widget] = widget.key as GlobalKey;
       }
     }
+
+    variablesManager.setVariablesList(variables);
+    
     isInitialized = true;
   }
 
@@ -171,17 +178,35 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
 
   void deleteSelectedNodes() {
     try {
-      for (INodeWidget widget in selectedNodes) {
+      void removeNodeFromCollections(INodeWidget widget) {
         nodesWidgets.removeWhere((w) => w.node.id == widget.node.id);
         globalKeys.removeWhere((w, k) => w.node.id == widget.node.id);
+      }
+
+      bool isNodeSelected(NodeTarget target) {
+        return selectedNodes.any((n) => n.node.id == target.node.id);
+      }
+
+      void updateTargets(INodeWidget widget) {
         for (NodeTarget target in widget.node.targets) {
-          if (selectedNodes.map((n) => n.node.id == target.node.id).contains(true)) {
-            continue;
-          } else {
-              INodeWidget nodeToUpdate = nodesWidgets.firstWhere((n) => n.node.id == target.node.id);
-              updateNode(nodeToUpdate);
-          }
+          if (isNodeSelected(target)) continue;
+
+          INodeWidget nodeToUpdate = nodesWidgets.firstWhere((n) => n.node.id == target.node.id);
+          updateNode(nodeToUpdate);
         }
+      }
+
+      // Process the selected nodes
+      for (INodeWidget widget in selectedNodes) {
+        removeNodeFromCollections(widget);
+        updateTargets(widget);
+      }
+
+      // Update node connections
+      for (NodeConnection connection in nodesConnections) {
+        connection.startNode.node.targets.removeWhere((target) =>
+          selectedNodes.any((node) => node.node.id == target.node.id)
+        );
       }
 
       selectedNodes.clear();
@@ -331,16 +356,42 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
 
   void addNodeTreeVariable(NodeTreeVariable variable) {
     variables.add(variable);
+    updateVariablesManagerVariablesList();
+    updateVariablesNodes();
     notifyListeners();
+  }
+
+  void renamedVariable() {
+    updateVariablesManagerVariablesList();
+    updateVariablesNodes();
+  }
+
+  void changedVariableType() {
+    updateVariablesManagerVariablesList();
+    updateVariablesNodes();
   }
 
   void deleteNodeTreeVariable(int id) {
     try {
       variables.removeWhere((v) => v.id == id);
+      updateVariablesManagerVariablesList();
+      updateVariablesNodes();
       notifyListeners();
     } catch (e) {
       return;
     }
+  }
+
+  void updateVariablesNodes() {
+    for (INodeWidget widget in nodesWidgets) {
+      if (widget.node is IVariableNode) {
+        updateNode(widget);
+      }
+    }
+  }
+
+  void updateVariablesManagerVariablesList() {
+    variablesManager.setVariablesList(variables);
   }
 
   List<INodeWidget> selectedNodes = [];

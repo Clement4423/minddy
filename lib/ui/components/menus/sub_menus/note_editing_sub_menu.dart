@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
-import 'package:minddy/system/interface/articles_element_interface.dart';
+import 'package:minddy/system/interfaces/articles_element_interface.dart';
 import 'package:minddy/system/model/note_model.dart';
 import 'package:minddy/system/model/project_note_module_category_model.dart';
 import 'package:minddy/system/notes/app_notes.dart';

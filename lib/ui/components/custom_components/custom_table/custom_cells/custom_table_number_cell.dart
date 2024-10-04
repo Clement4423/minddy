@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/interface/i_custom_table_cell_data.dart';
+import 'package:minddy/system/interfaces/custom_table_cell_data_interface.dart';
 import 'package:minddy/system/model/custom_table_cell_position.dart';
 import 'package:minddy/system/model/number_value.dart';
 import 'package:minddy/system/utils/calculations.dart';

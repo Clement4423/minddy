@@ -53,6 +53,8 @@ class _NodeEditorBottomSheetSidePanelBoxState extends State<NodeEditorBottomShee
                             color: widget.panel.theme.onSurface,
                             fontSize: 20
                           ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis
                       ),
                       // Button
                       SizedBox(

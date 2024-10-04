@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minddy/system/interface/projects_modules_controller_interface.dart';
+import 'package:minddy/system/interfaces/projects_modules_controller_interface.dart';
 
 abstract class IProjectsModules extends Widget{
   late final double width;

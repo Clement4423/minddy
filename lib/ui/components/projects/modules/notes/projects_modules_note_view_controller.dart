@@ -3,7 +3,7 @@ import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
-import 'package:minddy/system/interface/projects_modules_controller_interface.dart';
+import 'package:minddy/system/interfaces/projects_modules_controller_interface.dart';
 import 'package:minddy/system/model/note_model.dart';
 import 'package:minddy/system/model/project_note_module_category_model.dart';
 import 'package:minddy/system/model/projects_modules.dart';

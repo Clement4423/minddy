@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/system/files/document_directory.dart';
 import 'package:minddy/system/files/pick_files.dart';
-import 'package:minddy/system/interface/document_directory_interface.dart';
-import 'package:minddy/system/interface/file_picker_interface.dart';
+import 'package:minddy/system/interfaces/document_directory_interface.dart';
+import 'package:minddy/system/interfaces/file_picker_interface.dart';
 import 'package:minddy/system/model/project_info.dart';
 
 class StaticVariables {

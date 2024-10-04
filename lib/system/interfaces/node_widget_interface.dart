@@ -8,7 +8,7 @@
 // -> Test it.
 
 import 'package:flutter/material.dart';
-import 'package:minddy/system/interface/node_interface.dart';
+import 'package:minddy/system/interfaces/node_interface.dart';
 import 'package:minddy/system/model/node_connection.dart';
 import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/nodes/logic/node_widget_functions.dart';

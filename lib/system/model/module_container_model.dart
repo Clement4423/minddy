@@ -1,4 +1,4 @@
-import 'package:minddy/system/interface/projects_modules_interface.dart';
+import 'package:minddy/system/interfaces/projects_modules_interface.dart';
 
 class ModuleContainerModel {
   List<IProjectsModules> modules;

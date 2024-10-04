@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/interface/projects_modules_controller_interface.dart';
-import 'package:minddy/system/interface/projects_modules_interface.dart';
+import 'package:minddy/system/interfaces/projects_modules_controller_interface.dart';
+import 'package:minddy/system/interfaces/projects_modules_interface.dart';
 import 'package:minddy/system/model/custom_table_type.dart';
 import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/ui/components/custom_components/custom_chart/custom_chart_element.dart';

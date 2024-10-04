@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minddy/system/interface/i_node_widget.dart';
+import 'package:minddy/system/interfaces/node_widget_interface.dart';
 import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/ui/components/nodes/nodes_connections_painter.dart';

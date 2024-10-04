@@ -46,13 +46,17 @@ class _CustomProjectsSpreadsheetModuleColumnDropdownSelectorState
             enabled: enabled,
             width: widget.width * 0.76,
             menuTitle: null,
-            selectedOptionTitle: widget.columnName,
+            selectedOptionTitle: widget.columnName.isEmpty 
+              ? S.of(context).projects_module_spreadsheet_value_unnamed 
+              : widget.columnName, 
             backgroundColor: widget.theme.primary,
             foregroundColor: widget.theme.onPrimary,
             theme: widget.theme,
             items: widget.availableColumns.map((entry) {
               return CustomSelectionMenuItem(
-                label: entry.value, 
+                label: entry.value.isEmpty 
+                  ? S.of(context).projects_module_spreadsheet_value_unnamed 
+                  : entry.value, 
                 labelStyle: widget.theme.bodyMedium.copyWith(color: widget.theme.onPrimary),
                 icon: null, 
                 onTap: () {

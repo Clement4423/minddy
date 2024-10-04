@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:minddy/system/interface/i_node_widget.dart';
-import 'package:minddy/system/interface/node_interface.dart';
+import 'package:minddy/system/interfaces/node_widget_interface.dart';
+import 'package:minddy/system/interfaces/node_interface.dart';
 import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/nodes/logic/node_widget_functions.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_port_widget.dart';
@@ -134,6 +134,7 @@ class _MyNewNodeWidgetState extends State<MyNewNodeWidget> {
     Offset draggingStartPortOffset = widgetInformations.draggingStartPort?.translate(-widget.position.dx, -widget.position.dy) ?? const Offset(0, 0);
     return NodeWidgetBody(
       nodeTitle: 'NODE TITLE', 
+      nodeDescription: 'NODE DESCRIPTION',
       theme: widget.theme, 
       nodeWidget: widget, 
       needToBeSmaller: widgetInformations.needToBeSmaller, 

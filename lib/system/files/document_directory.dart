@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/system/files/encryption.dart';
-import 'package:minddy/system/interface/document_directory_interface.dart';
+import 'package:minddy/system/interfaces/document_directory_interface.dart';
 import 'package:path/path.dart' as path;
 import 'package:minddy/system/files/app_logs.dart';
 import 'package:path_provider/path_provider.dart';
@@ -223,6 +223,9 @@ class AppDocumentsDirectory implements IDocumentsDirectory{
   Future<File> _getCompletePath(String fileRelativePath) async {
     String documentDirectoryPath = await getAppDirectoryPath();
     String completePath = '$documentDirectoryPath/$fileRelativePath';
+    if (Platform.isWindows) {
+      completePath = completePath.replaceAll(r'[/]', r'\');
+    }
     File file = File(completePath);
     return file;
   }

@@ -318,6 +318,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "node_editor_add_sub_menu_inputs_subtitle": m5,
         "node_editor_add_sub_menu_no_nodes_found":
             MessageLookupByLibrary.simpleMessage("Aucun nœud trouvé."),
+        "node_editor_add_sub_menu_none_input_output":
+            MessageLookupByLibrary.simpleMessage("Aucune"),
         "node_editor_add_sub_menu_note": MessageLookupByLibrary.simpleMessage(
             "Remarque: les entrées et sorties peuvent varier en fonction des options choisies pour le nœud"),
         "node_editor_add_sub_menu_outputs_subtitle": m6,
@@ -357,6 +359,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nouvelle variable"),
         "node_editor_view_side_panel_variables_title":
             MessageLookupByLibrary.simpleMessage("Variables"),
+        "node_editor_view_side_panel_variables_variable_type_any":
+            MessageLookupByLibrary.simpleMessage("Non défini"),
         "node_editor_view_side_panel_variables_variable_type_boolean":
             MessageLookupByLibrary.simpleMessage("Booléen"),
         "node_editor_view_side_panel_variables_variable_type_color":
@@ -367,6 +371,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nombre"),
         "node_editor_view_side_panel_variables_variable_type_text":
             MessageLookupByLibrary.simpleMessage("Texte"),
+        "node_widgets_boolean_node_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Effectue des opérations sur des booléens."),
         "node_widgets_boolean_node_options_and":
             MessageLookupByLibrary.simpleMessage("Et"),
         "node_widgets_boolean_node_options_equal":
@@ -387,6 +394,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Soustraire"),
         "node_widgets_boolean_node_title":
             MessageLookupByLibrary.simpleMessage("Opérations logiques"),
+        "node_widgets_category_logic":
+            MessageLookupByLibrary.simpleMessage("Logique"),
+        "node_widgets_category_math":
+            MessageLookupByLibrary.simpleMessage("Maths"),
+        "node_widgets_category_variable":
+            MessageLookupByLibrary.simpleMessage("Variables"),
+        "node_widgets_comparison_node_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Effectue une comparaison entre des nombres."),
         "node_widgets_comparison_node_options_equal":
             MessageLookupByLibrary.simpleMessage("Égal à"),
         "node_widgets_comparison_node_options_greatherThan":
@@ -399,6 +415,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Inférieur ou égal à"),
         "node_widgets_comparison_node_title":
             MessageLookupByLibrary.simpleMessage("Comparaison"),
+        "node_widgets_get_variable_node_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Obtient la valeur d\'une variable."),
+        "node_widgets_get_variable_node_title":
+            MessageLookupByLibrary.simpleMessage("Obtenir la variable"),
+        "node_widgets_math_node_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Effectue des calculs sur des nombres."),
         "node_widgets_math_node_options_abs":
             MessageLookupByLibrary.simpleMessage("Valeur absolue"),
         "node_widgets_math_node_options_acos":
@@ -457,6 +481,20 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Tronquer"),
         "node_widgets_math_node_title":
             MessageLookupByLibrary.simpleMessage("Calculs"),
+        "node_widgets_random_number_node_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Génère un nombre aléatoire entre un minimum et un maximum (0 et 1 par défaut)."),
+        "node_widgets_random_number_node_title":
+            MessageLookupByLibrary.simpleMessage("Nombre aléatoire"),
+        "node_widgets_result_text":
+            MessageLookupByLibrary.simpleMessage("Résultat"),
+        "node_widgets_select_variable_node_text":
+            MessageLookupByLibrary.simpleMessage("Sélectionnez une variable"),
+        "node_widgets_set_variable_node_description":
+            MessageLookupByLibrary.simpleMessage(
+                "Définit la valeur d\'une variable."),
+        "node_widgets_set_variable_node_title":
+            MessageLookupByLibrary.simpleMessage("Définir la variable"),
         "node_widgets_treshold_text":
             MessageLookupByLibrary.simpleMessage("Limite"),
         "node_widgets_value_text":

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minddy/system/interface/i_node_widget.dart';
+import 'package:minddy/system/interfaces/node_widget_interface.dart';
 import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
 import 'package:minddy/system/nodes/logic/node_widget_functions.dart';
@@ -83,58 +83,64 @@ class _NodeWidgetInputState extends State<NodeWidgetInput> {
               functions: widget.functions
             ),
           ),
-          if (widget.isConnected)
-            Text(
-              widget.connectedLabel, 
-              style: widget.theme.titleMedium.copyWith(
-                fontWeight: FontWeight.w500,
-                fontSize: 8,
-                color: widget.theme.onPrimary
-              ),
-              maxLines: 1,
-            )
-          else if (type == NodeDataType.boolean)
-            Row(
-              children: [
-                Transform.translate(
-                  offset: const Offset(-10, 0),
-                  child: CustomCheckbox(
-                    value: _getDefaultValueAsBoolean() ?? false, 
-                    onChanged: (bool newValue) {
-                      widget.onValueChanged(
-                        newValue, 
-                        widget.portInfo, 
-                        widget.portInfo.node
-                      );
-                    }, 
-                    backgroundColor: widget.theme.onPrimary.withOpacity(0.3),
-                    scale: 0.7,
-                    theme: widget.theme
+          Builder(
+            builder: (context) {
+              if (widget.isConnected) {
+                return Text(
+                  widget.connectedLabel, 
+                  style: widget.theme.titleMedium.copyWith(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 8,
+                    color: widget.theme.onPrimary
                   ),
-                ),
-                Transform.translate(
-                  offset: const 
-                  Offset(-15, 0),
-                  child: Text(
-                    widget.connectedLabel,
-                    style: widget.theme.titleMedium.copyWith(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 8,
-                      color: widget.theme.onPrimary
+                  maxLines: 1,
+                );
+              } else if (type == NodeDataType.boolean) {
+                return Row(
+                  children: [
+                    Transform.translate(
+                      offset: const Offset(-10, 0),
+                      child: CustomCheckbox(
+                        value: _getDefaultValueAsBoolean() ?? false, 
+                        onChanged: (bool newValue) {
+                          widget.onValueChanged(
+                            newValue, 
+                            widget.portInfo, 
+                            widget.portInfo.node
+                          );
+                        }, 
+                        backgroundColor: widget.theme.onPrimary.withOpacity(0.3),
+                        scale: 0.7,
+                        theme: widget.theme
+                      ),
                     ),
-                  ),
-                )
-              ],
-            )
-          else 
-            NodeWidgetTextInput(
-              onChange: widget.onValueChanged, 
-              theme: widget.theme, 
-              type: type, 
-              portInfo: widget.portInfo,
-              hint: widget.connectedLabel, 
-              defaultText: _getDefaultValueAsString()
-            )
+                    Transform.translate(
+                      offset: const 
+                      Offset(-15, 0),
+                      child: Text(
+                        widget.connectedLabel,
+                        style: widget.theme.titleMedium.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 8,
+                          color: widget.theme.onPrimary
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              } else {
+                return NodeWidgetTextInput(
+                  onChange: widget.onValueChanged, 
+                  theme: widget.theme, 
+                  type: type, 
+                  portInfo: widget.portInfo,
+                  hint: widget.connectedLabel, 
+                  defaultText: _getDefaultValueAsString()
+                );
+              }
+            }
+          ),
+          
         ],
       ),
     );
