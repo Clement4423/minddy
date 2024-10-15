@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:minddy/generated/l10n.dart';
-import 'package:minddy/system/notifications/notification_handler.dart';
 import 'package:minddy/ui/components/custom_components/custom_password_text_field.dart';
 import 'package:minddy/ui/components/custom_components/custom_underlined_text_button.dart';
 import 'package:minddy/ui/components/menus/sub_menus_controllers/unlock_submenu_controller.dart';
-import 'package:minddy/ui/components/notifications/notification_widget.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class UnlockSubMenu extends StatefulWidget {
@@ -44,14 +42,6 @@ class _UnlockSubMenuState extends State<UnlockSubMenu> {
       bool isUnlocked = await widget.controller.checkPassword(_password);
       if (isUnlocked && context.mounted) {
         Navigator.pop(context);
-        NotificationHandler.addNotification(
-          NotificationModel(
-            content: S.of(context).snackbar_welcome_back_text(widget.controller.username), 
-            action: () {}, 
-            actionLabel: S.of(context).snackbar_welcome_back_button,
-            duration: NotificationDuration.short
-          )
-        );
       }
     } 
 

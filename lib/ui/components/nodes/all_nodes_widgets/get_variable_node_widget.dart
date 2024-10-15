@@ -9,7 +9,6 @@ import 'package:minddy/system/model/node_port_info.dart';
 import 'package:minddy/system/model/node_tree_variable.dart';
 import 'package:minddy/system/nodes/all_nodes/variables_nodes/get_variable_node.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
-import 'package:minddy/system/nodes/logic/node_tree.dart';
 import 'package:minddy/system/nodes/logic/node_widget_functions.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_port_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_body.dart';
@@ -131,7 +130,7 @@ class _GetVariableNodeWidgetState extends State<GetVariableNodeWidget> {
   void destroyInvalidConnections(NodeDataType? newType) {
     List<NodeTarget> targetsToRemove = [];
     for (NodeTarget target in widget.node.targets) {
-      if (newType == null || INode.evaluateData(NodeData(type: newType, value: getDefaultNodeDataTypeValue(newType)), target.node.inputsTypes[target.inputIndex]) == null) {
+      if (newType == null || newType != target.node.inputsTypes[target.inputIndex]) {
         targetsToRemove.add(target);
       }
     }

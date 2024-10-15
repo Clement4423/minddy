@@ -8,10 +8,12 @@ import 'package:minddy/system/nodes/logic/node_tree.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/boolean_node_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/comparison_node_widget.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/conversion_node_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/get_variable_node_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/math_node_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/random_number_node_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/set_variable_node_widget.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/text_operation_node_widget.dart';
 import 'package:minddy/ui/components/nodes/controllers/node_editor_bottom_sheet_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -166,6 +168,10 @@ INodeWidget? _getCorrectNodeWidgetType(String type, String json, Offset maxOffse
       return GetVariableNodeWidget.fromJson(key, json, maxOffset, theme, controller.widgetFunctions);
     case 'RandomNumberNodeWidget':
       return RandomNumberNodeWidget.fromJson(key, json, maxOffset, theme, controller.widgetFunctions);
+    case 'ConversionNodeWidget':
+      return ConversionNodeWidget.fromJson(key, json, maxOffset, theme, controller.widgetFunctions);
+    case 'TextOperationNodeWidget':
+      return TextOperationNodeWidget.fromJson(key, json, maxOffset, theme, controller.widgetFunctions);
     default:
       return null;
   }

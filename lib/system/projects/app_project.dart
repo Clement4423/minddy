@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/utils/color_spaces_permutations.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/files/app_logs.dart';
@@ -10,12 +12,12 @@ import 'package:minddy/system/model/projects_modules.dart';
 class AppProject {
   AppProject();
 
-  static Future<bool> createProject(String projectName) async {
+  static Future<bool> createProject(String projectName, bool isPrivate, Color color) async {
 
     String projectFolderName = createUniqueId().toString();
 
     bool isProjectGenerated = await _generateProjectFiles(projectFolderName);
-    bool isInfoFileGenerated = await _createInfoFile(projectName, projectFolderName);
+    bool isInfoFileGenerated = await _createInfoFile(projectName, isPrivate, color, projectFolderName);
     return isProjectGenerated && isInfoFileGenerated;
   }
 
@@ -87,13 +89,17 @@ class AppProject {
     await StaticVariables.fileSource.createFolder(path);
   }
 
-  static Future<bool> _createInfoFile(String projectName, String projectFolderName) async {
+  static Future<bool> _createInfoFile(String projectName, bool isPrivate, Color color, String projectFolderName) async {
     try {
       final String username = await AppConfig.getConfigValue("username");
-      final date = DateTime.now().toString();
+      final date = DateTime.now().toIso8601String();
+
+      HSLColor hsl = HSLColor.fromColor(color);
 
       final Map<String, dynamic> infos = {
         "name": projectName,
+        "is_private": isPrivate,
+        "color": hslToHex(hsl),
         "creator": username,
         "creation_date": date,
         "last_change": date,

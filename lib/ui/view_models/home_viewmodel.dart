@@ -20,11 +20,6 @@ class HomeViewModel extends ChangeNotifier {
 
   static bool isUnlockMenuShown = false;
 
-  HomeViewModel() {
-    _initializeGreeting();
-    initializeProjectCards();
-  }
-
   String get greetingText => _greetingText;
 
   void showNewProjectMenu(BuildContext context, Function controllerAction) {
@@ -32,10 +27,9 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _initializeGreeting() async {
+  Future<void> initializeGreeting() async {
     _username = await _getUsername();
     _greetingText = await HomeViewModel.getGreetingText(_username);
-    notifyListeners();
   }
 
   static Future<String> getGreetingText(String username) async {
@@ -75,21 +69,25 @@ class HomeViewModel extends ChangeNotifier {
     return await AppConfig.getConfigValue("username");
   }
 
-  Future<void> initializeProjectCards() async {
+  Future<void> initializeProjectCards([bool notify = false]) async {
     _projectsList = await getProjects();
+    _projectsList.sort((a, b) {
+      return a.lastChanged.isBefore(b.lastChanged) ? 1 : 0;
+    });
     _projectCards = _buildProjectCards();
-    notifyListeners();
+    if (notify) {
+      notifyListeners();
+    }
   }
 
   List<Widget> get projectCards => _projectCards;
 
-  List<Widget> _buildProjectCards() {
-    List<Widget> cards = [];
+  List<ProjectCard> _buildProjectCards() {
+    List<ProjectCard> cards = [];
     for (var project in _projectsList) {
-      Widget card = ProjectCard(
+      ProjectCard card = ProjectCard(
         projectInfo: project,
-        background: null,
-        function: initializeProjectCards,
+        function: () {initializeProjectCards(true);},
       );
       cards.add(card);
     }

@@ -12,7 +12,7 @@ import 'package:minddy/system/model/articles_elements.dart';
 /// A utility class for managing articles.
 class AppArticles {
   /// A map containing category names and their associated icons.
-  static const Map<ArticleCategory, IconData> _categoryIcons = {
+  static const Map<ArticleCategory, IconData> categoryIcons = {
     ArticleCategory.creativity: Icons.brush_rounded,
     ArticleCategory.dailyLife: Icons.emoji_emotions_outlined,
     ArticleCategory.professional: Icons.work_outline_rounded,
@@ -36,7 +36,7 @@ class AppArticles {
 
   /// Get the icon associated with the given category.
   static IconData _getIconBasedOnCategory(ArticleCategory category) {
-    return _categoryIcons[category] ?? Icons.error_rounded;
+    return categoryIcons[category] ?? Icons.error_rounded;
   }
   
   /// Convert the category enum value to a string.

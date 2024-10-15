@@ -14,21 +14,21 @@ class ArticlesMenuButton extends StatelessWidget {
     StylesGetters theme = StylesGetters(context);
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: 37,
+        margin: const EdgeInsets.only(bottom: 8.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: theme.onPrimary.withOpacity(0.2),
+            width: 0.5
+          )
+        ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
-              height: 35,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.onPrimary.withOpacity(0.2),
-                  width: 0.5
-                )
-              ),
+            child: SizedBox(
               child: ElevatedButton.icon(
                 onPressed: () {showArticles(context);}, 
                 // ignore: deprecated_member_use
@@ -43,7 +43,8 @@ class ArticlesMenuButton extends StatelessWidget {
                 style: ButtonStyle(
                   elevation: const WidgetStatePropertyAll(12),
                   backgroundColor: WidgetStatePropertyAll(theme.primaryContainer),
-                  shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)))
+                  shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                  padding: const WidgetStatePropertyAll(EdgeInsets.only(left: 15, right: 20))
                 ),
               ),
             ),

@@ -137,7 +137,6 @@ class AppDate {
       // Return the properly formatted DateTime object
       return DateTime(year, month, day, hour, minute);
     } catch (e) {
-      print(e);
       return null;
     }
   }

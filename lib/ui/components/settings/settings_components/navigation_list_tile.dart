@@ -29,6 +29,7 @@ class NavigationListTile extends StatelessWidget {
       Card(
         color: theme.secondary,
         elevation: 0,
+        margin: const EdgeInsets.only(bottom: 5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -36,6 +37,7 @@ class NavigationListTile extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
+          style: ListTileStyle.list,
           leading: icon,
           iconColor: theme.onSecondary,
           title: Text(
@@ -53,12 +55,15 @@ class NavigationListTile extends StatelessWidget {
       Card(
         color: theme.primary,
         elevation: 0,
+        margin: const EdgeInsets.only(bottom: 5),
         child: ListTile(
           leading: icon,
           title: Text(
             title, 
             style: theme.bodyMedium.
-            copyWith(color: theme.onPrimary)
+            copyWith(color: theme.onPrimary),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

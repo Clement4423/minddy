@@ -8,6 +8,7 @@ import 'package:minddy/system/nodes/all_nodes/math_node.dart';
 import 'package:minddy/system/nodes/all_nodes/outputs_nodes/boolean_output_node.dart';
 import 'package:minddy/system/nodes/all_nodes/outputs_nodes/number_output_node.dart';
 import 'package:minddy/system/nodes/all_nodes/random_number_node.dart';
+import 'package:minddy/system/nodes/all_nodes/text_operation_node.dart';
 import 'package:minddy/system/nodes/all_nodes/variables_nodes/get_variable_node.dart';
 import 'package:minddy/system/nodes/all_nodes/variables_nodes/set_variable_node.dart';
 import 'package:minddy/system/nodes/logic/node_tree_variable_manager.dart';
@@ -286,7 +287,9 @@ Function? _getNodeTypeConstructor(String type, NodeTreeVariablesManager variable
       'BooleanOutputNode': () => BooleanOutputNode(),
       'RandomNumberNode': () => RandomNumberNode(),
       'SetVariableNode': () => SetVariableNode(variablesManager: variablesManager),
-      'GetVariableNode': () => GetVariableNode(variablesManager: variablesManager)
+      'GetVariableNode': () => GetVariableNode(variablesManager: variablesManager),
+      'ConversionNode': () => ComparisonNode(),
+      'TextOperationNode': () => TextOperationNode()
     };
 
     return nodeTypesConstructors[type];

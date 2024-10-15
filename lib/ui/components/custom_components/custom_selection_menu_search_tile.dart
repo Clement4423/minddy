@@ -29,7 +29,7 @@ class CustomSelectionMenuSearchTile extends StatefulWidget {
 
 class _CustomSelectionMenuSearchTileState extends State<CustomSelectionMenuSearchTile> {
 
-  FocusNode _focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void dispose() {
@@ -70,7 +70,7 @@ class _CustomSelectionMenuSearchTileState extends State<CustomSelectionMenuSearc
             child: ListTile(
               title: TextSelectionTheme(
                 data: TextSelectionThemeData(
-                  selectionColor: widget.theme.secondary.withOpacity(0.3)
+                  selectionColor: widget.theme.secondary.withOpacity(0.5)
                 ),
                 child: TextField(
                   onChanged: widget.onChanged,

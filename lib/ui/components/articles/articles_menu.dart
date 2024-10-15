@@ -109,7 +109,22 @@ List<NavigationListTileModel> bottomListTiles = [
   ),
 ];
 
-
+Map<ArticleCategory, String> articlesCategoryTitles = {
+  ArticleCategory.creativity: S.current.articles_creativity_title,
+  ArticleCategory.dailyLife: S.current.articles_daily_life_title,
+  ArticleCategory.professional: S.current.articles_professional_title,
+  ArticleCategory.wellness: S.current.articles_wellness_title,
+  ArticleCategory.technology: S.current.articles_technology_title,
+  ArticleCategory.education: S.current.articles_education_title,
+  ArticleCategory.science: S.current.articles_science_title,
+  ArticleCategory.philosophy: S.current.articles_philosophy_title,
+  ArticleCategory.environment: S.current.articles_environment_title,
+  ArticleCategory.travel: S.current.articles_travel_title,
+  ArticleCategory.finance: S.current.articles_finance_title,
+  ArticleCategory.politic: S.current.articles_politics_title,
+  ArticleCategory.food: S.current.articles_food_title,
+  ArticleCategory.created: S.current.articles_my_articles_title,
+};
 
 Future<dynamic> showArticles(BuildContext context, {String? pageRouteName, dynamic argument}) {
     return showCenterMenu(

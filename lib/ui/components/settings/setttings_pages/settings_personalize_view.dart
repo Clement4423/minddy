@@ -50,8 +50,8 @@ class _PersonalizeViewState extends State<PersonalizeView> {
                           menuTitle: S.of(context).settings_theme_subtitle,
                           selectedOptionTitle: widget.controller.menuThemeTitle,
                           theme: theme,
-                          items: widget.controller.getThemeItems(context),
-                          enabled: StaticVariables.currentProjectInfo != null ? false : true,
+                          items: widget.controller.getThemeItems(context, theme),
+                          enabled: StaticVariables.currentProjectInfo == null
                            // Not enabled if in a project, this is done because the change of ui causes the modules to 
                            // duplicate and create problems 
                         ),
@@ -66,7 +66,8 @@ class _PersonalizeViewState extends State<PersonalizeView> {
                         (value) async {
                           await widget.controller.setBWMode(value);
                         },
-                        enabled: StaticVariables.currentProjectInfo != null ? false : true,
+                        margin: EdgeInsets.zero,
+                        enabled: StaticVariables.currentProjectInfo == null,
                         false
                       ),
                     ),
@@ -86,13 +87,17 @@ class _PersonalizeViewState extends State<PersonalizeView> {
                         DateTime.now().month < 10 ? "0${DateTime.now().month}" : "${DateTime.now().month}", 
                         DateTime.now().day < 10 ? "0${DateTime.now().day}" : "${DateTime.now().day}"
                       ),
-                      child: SwitchTile(
-                        widget.controller.prefetUsDateFormat, 
-                        S.of(context).settings_date_format,
-                        (value) async {
-                          await widget.controller.setDateFormat(value);
-                        }, 
-                        false
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: SwitchTile(
+                          widget.controller.prefetUsDateFormat, 
+                          S.of(context).settings_date_format,
+                          margin: EdgeInsets.zero,
+                          (value) async {
+                            await widget.controller.setDateFormat(value);
+                          }, 
+                          false
+                        ),
                       ),
                     ),
                     // Language
@@ -116,8 +121,8 @@ class _PersonalizeViewState extends State<PersonalizeView> {
                           menuTitle: S.of(context).settings_language_subtitle,
                           selectedOptionTitle: widget.controller.menuLanguageTitle,
                           theme: theme,
-                          items: widget.controller.getLanguageItems(context),
-                          enabled: StaticVariables.currentProjectInfo != null ? false : true,
+                          items: widget.controller.getLanguageItems(context, theme),
+                          enabled: StaticVariables.currentProjectInfo == null,
                            // Not enabled if in a project, this is done because the change of ui causes the modules to 
                            // duplicate and create problems 
                         ),

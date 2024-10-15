@@ -41,7 +41,6 @@ class _NodeWidgetDropdownState<T> extends State<NodeWidgetDropdown<T>> {
         ),
         margin: const EdgeInsets.only(top: 5),
         child: CustomSelectionMenu(
-          key: UniqueKey(),
           menuMaxHeight: widget.height * 2,
           theme: widget.theme, 
           enableSearch: true,

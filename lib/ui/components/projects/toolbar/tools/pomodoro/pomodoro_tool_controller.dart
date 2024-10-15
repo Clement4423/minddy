@@ -49,11 +49,11 @@ class PomodoroToolController {
     _controller.add(true);
   }
 
-  static void nextRound(BuildContext context, [bool showMessage = true]) {
+  static void nextRound([bool showMessage = true]) {
     switch (currentSession) {
       case PomodoroSession.working:
         _doneRepetitions++;
-        bool allRepetitionsDone = _areAllRepetitionsDone(context);
+        bool allRepetitionsDone = _areAllRepetitionsDone();
         if (allRepetitionsDone) {
           resetEverything();
           if (showMessage) {
@@ -85,7 +85,7 @@ class PomodoroToolController {
     }
   }
 
-  static bool _areAllRepetitionsDone(BuildContext context) {
+  static bool _areAllRepetitionsDone() {
     if (_doneRepetitions >= _repetitionsCount) {
       return true;
     } else {
@@ -107,6 +107,9 @@ class PomodoroToolController {
   static void startTimer() {
     if (timer != null) {
       timer!.start(() {
+        if (timer!.remainingTime == 0) {
+          PomodoroToolController.nextRound();
+        }
         if (PomodoroToolController.isShown) {
           addToTimerStream(timer!.remainingTime);
         }

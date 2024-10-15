@@ -410,90 +410,94 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                                       ),
                                     ),
                                     // Body with inputs and outputs types
-                                    SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 20, bottom: 50),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(bottom: 10),
-                                              child: Text(
-                                                S.of(context).node_editor_add_sub_menu_types,
-                                                style: widget.theme.titleMedium
-                                                .copyWith(
-                                                  color: widget.theme.onSurface, 
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w700
+                                    SizedBox(
+                                      width: 440,
+                                      height: 200,
+                                      child: SingleChildScrollView(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 20, bottom: 50),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(bottom: 10),
+                                                child: Text(
+                                                  S.of(context).node_editor_add_sub_menu_types,
+                                                  style: widget.theme.titleMedium
+                                                  .copyWith(
+                                                    color: widget.theme.onSurface, 
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w700
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            Row(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              children: [
-                                                // Inputs
-                                                SizedBox(
-                                                  width: 180,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    children: [
-                                                        Text(
-                                                          S.of(context).node_editor_add_sub_menu_inputs_subtitle(selectedNode!.inputsTypes.length),
-                                                          style: widget.theme.titleMedium
-                                                            .copyWith(color: widget.theme.onSurface, fontWeight: FontWeight.w600,),
-                                                        ),
-                                                        Padding(
-                                                          padding: const EdgeInsets.only(top: 10),
-                                                          child: Column(
-                                                            children: [
-                                                              if (selectedNode!.inputsTypes.isNotEmpty)
-                                                                ..._createIndexedInputsOutputsList(selectedNode!.inputsTypes, widget.theme)
-                                                              else 
-                                                                Text(
-                                                                  S.of(context).node_editor_add_sub_menu_none_input_output,
-                                                                  style: widget.theme.bodyMedium.copyWith(color: widget.theme.onSurface),
-                                                                )
-                                                            ],
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                children: [
+                                                  // Inputs
+                                                  SizedBox(
+                                                    width: 180,
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: [
+                                                          Text(
+                                                            S.of(context).node_editor_add_sub_menu_inputs_subtitle(selectedNode!.inputsTypes.length),
+                                                            style: widget.theme.titleMedium
+                                                              .copyWith(color: widget.theme.onSurface, fontWeight: FontWeight.w600,),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(top: 10),
+                                                            child: Column(
+                                                              children: [
+                                                                if (selectedNode!.inputsTypes.isNotEmpty)
+                                                                  ..._createIndexedInputsOutputsList(selectedNode!.inputsTypes, widget.theme)
+                                                                else 
+                                                                  Text(
+                                                                    S.of(context).node_editor_add_sub_menu_none_input_output,
+                                                                    style: widget.theme.bodyMedium.copyWith(color: widget.theme.onSurface),
+                                                                  )
+                                                              ],
+                                                            )
                                                           )
-                                                        )
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                                // Outputs
-                                                SizedBox(
-                                                  width: 150,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    children: [
-                                                        Text(
-                                                          S.of(context).node_editor_add_sub_menu_outputs_subtitle(selectedNode!.outputsTypes.length),
-                                                          style: widget.theme.titleMedium
-                                                            .copyWith(color: widget.theme.onSurface, fontWeight: FontWeight.w600),
-                                                        ),
-                                                        Padding(
-                                                          padding: const EdgeInsets.only(top: 10),
-                                                          child: Column(
-                                                            children: [
-                                                              if (selectedNode!.outputsTypes.isNotEmpty)
-                                                                ..._createIndexedInputsOutputsList(selectedNode!.outputsTypes, widget.theme)
-                                                              else 
-                                                                Text(
-                                                                  S.of(context).node_editor_add_sub_menu_none_input_output,
-                                                                  style: widget.theme.bodyMedium.copyWith(color: widget.theme.onSurface),
-                                                                )
-                                                            ],
+                                                  // Outputs
+                                                  SizedBox(
+                                                    width: 150,
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: [
+                                                          Text(
+                                                            S.of(context).node_editor_add_sub_menu_outputs_subtitle(selectedNode!.outputsTypes.length),
+                                                            style: widget.theme.titleMedium
+                                                              .copyWith(color: widget.theme.onSurface, fontWeight: FontWeight.w600),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(top: 10),
+                                                            child: Column(
+                                                              children: [
+                                                                if (selectedNode!.outputsTypes.isNotEmpty)
+                                                                  ..._createIndexedInputsOutputsList(selectedNode!.outputsTypes, widget.theme)
+                                                                else 
+                                                                  Text(
+                                                                    S.of(context).node_editor_add_sub_menu_none_input_output,
+                                                                    style: widget.theme.bodyMedium.copyWith(color: widget.theme.onSurface),
+                                                                  )
+                                                              ],
+                                                            )
                                                           )
-                                                        )
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -623,6 +627,7 @@ class NodeEditorNewNodeSubMenuNodeModel {
 enum NodeCategory {
   math,
   logic,
+  text,
   variable
 }
 
@@ -632,6 +637,8 @@ String _getNodeCategoryTranslatedName(NodeCategory category) {
       return S.current.node_widgets_category_math;
     case NodeCategory.logic:
       return S.current.node_widgets_category_logic;
+    case NodeCategory.text:
+      return 'Text';
     case NodeCategory.variable:
       return S.current.node_widgets_category_variable;
   }
@@ -643,6 +650,8 @@ IconData _getNodeCategoryIcon(NodeCategory category) {
       return Icons.calculate_outlined;
     case NodeCategory.logic:
       return Icons.settings_outlined;
+    case NodeCategory.text:
+      return Icons.text_fields_rounded;
     case NodeCategory.variable:
       return Icons.waves_rounded;
   }
@@ -659,9 +668,9 @@ Color getCorrectColorBasedOnNodeDataType(NodeDataType type) {
     case NodeDataType.boolean:
       return DefaultAppColors.peach.color;
     case NodeDataType.list:
-      return DefaultAppColors.lightPurple.color;
-    case NodeDataType.color:
       return DefaultAppColors.pink.color;
+    case NodeDataType.color:
+      return DefaultAppColors.lightPurple.color;
   }
 }
 

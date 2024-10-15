@@ -51,12 +51,10 @@ class MainApp extends StatelessWidget {
   // TODO : Faire l'écran d'erreur au lancement
   // TODO : Faire thème high contrast et l'ajouter au main
   // TODO : Terminer les paramètres
-  // TODO : Faire en sorte de pouvoir mettre un projet en privé, pour nécessiter le mot de passe pour l'ouvrir
-  // TODO : Changer le format de stockage des dates pour utiliser le format ISO8601
   // TODO : Terminer la page des projets
   // TODO : Pouvoir changer l'icone des categories de notes
   // TODO : Ajouter une fonction pour sauvagarder le projet avant de fermer l'app
-  // TODO : Ajouter le déplacement des pages, ainsi que le déplacement des modules
+  // TODO : Ajouter le repositionement des pages, ainsi que le déplacement des modules
   // TODO : Faire le menu d'ajout de module
   // TODO : AJouter les légendes en dessous des graphiques
   // TODO : Faire le système d'addon

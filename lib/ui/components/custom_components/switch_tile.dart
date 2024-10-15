@@ -10,6 +10,7 @@ class SwitchTile extends StatefulWidget {
   final String title;
   final bool needToRestart;
   final bool enabled;
+  final EdgeInsets? margin;
   final Function(bool value) action;
   const SwitchTile(
     this.value,
@@ -17,6 +18,7 @@ class SwitchTile extends StatefulWidget {
     this.action,
     this.needToRestart, {
       super.key, 
+      this.margin,
       this.enabled = true
     }
   );
@@ -57,7 +59,7 @@ class _SwitchTileState extends State<SwitchTile> {
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
     return Padding(
-      padding: const EdgeInsets.only(top: 5, bottom: 5),
+      padding: widget.margin ?? const EdgeInsets.only(top: 5, bottom: 5),
       child: MouseRegion(
         cursor: widget.enabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
         child: GestureDetector(
@@ -69,9 +71,9 @@ class _SwitchTileState extends State<SwitchTile> {
           child: Container(
             decoration: BoxDecoration(
               color: widget.enabled ? theme.surface : Colors.grey,
-              borderRadius: BorderRadius.circular(10)
+              borderRadius: BorderRadius.circular(15)
             ),
-            padding: const EdgeInsets.only(top: 3, bottom: 5, left: 10, right: 8),
+            padding: const EdgeInsets.only(top: 7, bottom: 7, left: 10, right: 8),
             child: Row(
               children: [
                 Expanded(

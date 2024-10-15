@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/articles/app_articles.dart';
 import 'package:minddy/system/notifications/notification_handler.dart';
+import 'package:minddy/ui/components/articles/articles_menu.dart';
 import 'package:minddy/ui/components/articles/articles_pages_controllers/articles_view_controller.dart';
 import 'package:minddy/ui/components/articles/articles_view/articles_view.dart';
 import 'package:minddy/ui/components/cards/articles_card_controller.dart';
@@ -125,7 +127,13 @@ class _ArticleCardState extends State<ArticleCard> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(widget.icon, color: theme.onSurface, size: 20),
+                          Tooltip(
+                            message: articlesCategoryTitles[AppArticles.categoryIcons.entries.firstWhere((entry) => entry.value == widget._controller.infos.icon).key],
+                            child: Icon(
+                              widget.icon, 
+                              color: theme.onSurface, size: 20
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8),
                             child: Text(
@@ -146,7 +154,10 @@ class _ArticleCardState extends State<ArticleCard> {
                               ),
                             ),
                           ),
-                          Text(widget._controller.infos.author, style: theme.bodySmall.copyWith(color: Colors.grey)),
+                          Text(
+                            widget._controller.infos.author, 
+                            style: theme.bodySmall.copyWith(color: Colors.grey)
+                          )
                         ],
                       ),
                     ),

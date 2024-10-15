@@ -40,7 +40,7 @@ class _ArticleMenuSearchViewState extends State<ArticleMenuSearchView> {
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.transparent,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(15),
                 border: Border.all(width: 2, color: theme.onPrimary)
               ),
               child: Row(

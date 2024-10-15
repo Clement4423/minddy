@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/model/plugin_info.dart';

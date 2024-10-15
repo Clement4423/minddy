@@ -15,7 +15,7 @@ class SettingsRouter implements IRouter {
   final Map<String, dynamic> routes = {
     "/" : PersonalizeView(PersonalizeViewController()),
     "/personalize" : PersonalizeView(PersonalizeViewController()),
-    "/project": ProjectSettingsView(ProjectSettingsViewModel(StaticVariables.currentProjectInfo ?? ProjectInfo('', ''), () {})),
+    "/project": ProjectSettingsView(ProjectSettingsViewModel(StaticVariables.currentProjectInfo ?? ProjectInfo('', false, Colors.black, DateTime.now(), ''), () {})),
     "/account" : AccountView(AccountViewController())
   };
 
@@ -28,7 +28,7 @@ class SettingsRouter implements IRouter {
   Widget navigateToCustomPage(String route, dynamic argument) {
     Widget page;
     if (route == "/project") {
-      page = ProjectSettingsView(ProjectSettingsViewModel(argument['info'] ?? ProjectInfo('', ''), argument['function'] ?? () {}));
+      page = ProjectSettingsView(ProjectSettingsViewModel(argument['info'] ?? ProjectInfo('', false, Colors.black, DateTime.now(), ''), argument['function'] ?? () {}));
     } else {
       page = PersonalizeView(PersonalizeViewController());
     }

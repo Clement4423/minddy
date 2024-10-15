@@ -66,51 +66,52 @@ class NodeData {
   NodeData({required this.type, required this.value});
 
   @override
-  String toString() => 'NodeData(type: ${type.name}, value: $value)';
+  String toString() {
+    return jsonEncode({
+      'type': type.name,
+      'value': value
+    });
+  }
 
   static NodeData? fromString(String string) {
-    if (string.startsWith('NodeData')) {
-      string = string.substring('NodeData'.length).trim();
+    try {
+      Map<String, dynamic> map = jsonDecode(string);
 
-      final RegExp regex = RegExp(r'\(type: (\w+), value: (.+)\)');
-      final Match? match = regex.firstMatch(string);
-
-      if (match != null) {
-        String typeName = match.group(1)!;
-        String valueString = match.group(2)!;
-
-        NodeDataType? type;
-        try {
-          type = NodeDataType.values.firstWhere((e) => e.name == typeName);
-        } catch (e) {
-          return null;
-        }
-
-        dynamic value;
-        switch (type) {
-          case NodeDataType.number:
-            value = num.tryParse(valueString);
-            break;
-          case NodeDataType.boolean:
-            value = (valueString.toLowerCase() == 'true');
-            break;
-          case NodeDataType.string:
-            value = valueString;
-            break;
-          case NodeDataType.list:
-            value = valueString.split(',').map((e) => e.trim()).toList();
-            break;
-          case NodeDataType.color: // TODO : Gérer la valeur de couleur
-            value = null;
-            break;
-          case NodeDataType.any:
-            value = valueString;
-        }
-
-        if (value != null) {
-          return NodeData(type: type, value: value);
-        }
+      NodeDataType? type;
+      try {
+        type = NodeDataType.values.firstWhere((e) => e.name == map['type']);
+      } catch (e) {
+        return null;
       }
+
+      dynamic value;
+      switch (type) {
+        case NodeDataType.number:
+          value = num.tryParse(map['value'].toString());
+          break;
+        case NodeDataType.boolean:
+          value = (map['value'].toString().toLowerCase() == 'true');
+          break;
+        case NodeDataType.string:
+          value = map['value'].toString();
+          break;
+        case NodeDataType.list:
+          value = (map['value'] as String).split(',').map((e) => e.trim()).toList();
+          break;
+        case NodeDataType.color:
+          // TODO: Handle color conversion properly
+          value = null;
+          break;
+        case NodeDataType.any:
+          value = map['value'];
+          break;
+      }
+
+      if (value != null) {
+        return NodeData(type: type, value: value);
+      }
+    } catch (e) {
+      return null;
     }
 
     return null;
@@ -125,35 +126,41 @@ class NodeOutput {
   NodeOutput({required this.data, required this.target, required this.inputIndex});
 
   @override
-  String toString() => 'NodeOutput(data: $data, target: ${target.id}, inputIndex: $inputIndex)';
+  String toString() {
+    return jsonEncode({
+      'data': data.toString(), // Ensure NodeData uses its own toString (which is already a JSON string)
+      'target': target.id, // Assuming target has an ID field to uniquely identify it
+      'inputIndex': inputIndex
+    });
+  }
 
   static NodeOutput? fromString(String string, List<INode> nodes) {
-    if (string.startsWith('NodeOutput')) {
-      string = string.substring('NodeOutput'.length).trim();
+    try {
+      // Decode the JSON string into a map
+      Map<String, dynamic> map = jsonDecode(string);
 
-      final RegExp regex = RegExp(r'\(data: (.+), target: (\d+), inputIndex: (\d+)\)');
-      final Match? match = regex.firstMatch(string);
-
-      if (match != null) {
-        String dataString = match.group(1)!;
-        int targetId = int.parse(match.group(2)!);
-        int index = int.parse(match.group(3)!);
-
-        NodeData? data = NodeData.fromString(dataString);
-
-        INode? targetNode;
-        try {
-          targetNode = nodes.firstWhere((node) => node.id == targetId);
-        } catch (e) {
-          return null;
-        }
-
-        if (data != null) {
-          return NodeOutput(data: data, target: targetNode, inputIndex: index);
-        }
+      // Retrieve NodeData using the fromString method of NodeData
+      NodeData? data = NodeData.fromString(map['data']);
+      if (data == null) {
+        return null; // Return null if NodeData couldn't be parsed
       }
-    }
 
-    return null;
+      // Find the target node by matching the ID in the nodes list
+      INode? targetNode;
+      try {
+        targetNode = nodes.firstWhere((node) => node.id == map['target']);
+      } catch (e) {
+        return null; // Return null if the target node wasn't found
+      }
+
+      // Extract the input index
+      int inputIndex = map['inputIndex'];
+
+      // Create and return the NodeOutput instance
+      return NodeOutput(data: data, target: targetNode, inputIndex: inputIndex);
+    } catch (e) {
+      // Return null if there's an error (invalid JSON format or other parsing issues)
+      return null;
+    }
   }
 }

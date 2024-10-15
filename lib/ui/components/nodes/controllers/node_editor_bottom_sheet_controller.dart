@@ -596,13 +596,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
   bool _checkTypesCompatibilyty(INodeWidget outputNode, NodeTarget target) {
     NodeDataType outputType = outputNode.node.outputsTypes.elementAt(target.outputIndex);
     NodeDataType inputType = target.node.inputsTypes.elementAt(target.inputIndex);
-    NodeData? evaluatedData = INode.evaluateData(NodeData(type: outputType, value: getDefaultNodeDataTypeValue(outputType)), inputType);
-
-    if (evaluatedData != null) {
-      return true;
-    } else {
-      return false;
-    }
+    return outputType == inputType || inputType == NodeDataType.any;
   }
 
   INodeWidget? _isNodesContainingTarget(NodeTarget target) {

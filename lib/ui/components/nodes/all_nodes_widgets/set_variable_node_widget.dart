@@ -135,7 +135,7 @@ class _SetVariableNodeWidgetState extends State<SetVariableNodeWidget> {
     for (NodeConnection connection in connections) { 
       if (connection.endNode == widget) {
         NodeDataType startNodeOutputType = connection.startNode.node.outputsTypes[connection.startOutputIndex];
-        if (newType == null || INode.evaluateData(NodeData(type: startNodeOutputType, value: getDefaultNodeDataTypeValue(startNodeOutputType)), newType) == null) {
+        if (newType == null || newType != startNodeOutputType) {
           connection.startNode.node.targets.removeWhere((target) => target.node.id == widget.node.id);
         }
       }

@@ -411,11 +411,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Less than or equal to"),
         "node_widgets_comparison_node_title":
             MessageLookupByLibrary.simpleMessage("Comparison"),
+        "node_widgets_conversion_node_decsription":
+            MessageLookupByLibrary.simpleMessage(
+                "Converts a value to another type"),
+        "node_widgets_conversion_node_title":
+            MessageLookupByLibrary.simpleMessage("Conversion"),
+        "node_widgets_end_text": MessageLookupByLibrary.simpleMessage("End"),
         "node_widgets_get_variable_node_description":
             MessageLookupByLibrary.simpleMessage(
                 "Gets the value of a variable."),
         "node_widgets_get_variable_node_title":
             MessageLookupByLibrary.simpleMessage("Get variable"),
+        "node_widgets_length_text":
+            MessageLookupByLibrary.simpleMessage("Length"),
         "node_widgets_math_node_description":
             MessageLookupByLibrary.simpleMessage(
                 "Performs calculations on numbers."),
@@ -490,6 +498,30 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sets a variable\'s value."),
         "node_widgets_set_variable_node_title":
             MessageLookupByLibrary.simpleMessage("Set variable"),
+        "node_widgets_start_text":
+            MessageLookupByLibrary.simpleMessage("Start"),
+        "node_widgets_text_operation_node_decsription":
+            MessageLookupByLibrary.simpleMessage(
+                "Performs operations on a text"),
+        "node_widgets_text_operation_node_options_contains":
+            MessageLookupByLibrary.simpleMessage("Contains"),
+        "node_widgets_text_operation_node_options_cut":
+            MessageLookupByLibrary.simpleMessage("Cut"),
+        "node_widgets_text_operation_node_options_join":
+            MessageLookupByLibrary.simpleMessage("Join"),
+        "node_widgets_text_operation_node_options_pad_left":
+            MessageLookupByLibrary.simpleMessage("Pad left"),
+        "node_widgets_text_operation_node_options_pad_right":
+            MessageLookupByLibrary.simpleMessage("Pad right"),
+        "node_widgets_text_operation_node_options_trim":
+            MessageLookupByLibrary.simpleMessage("Trim"),
+        "node_widgets_text_operation_node_options_trim_left":
+            MessageLookupByLibrary.simpleMessage("Trim left"),
+        "node_widgets_text_operation_node_options_trim_right":
+            MessageLookupByLibrary.simpleMessage("Trim right"),
+        "node_widgets_text_operation_node_title":
+            MessageLookupByLibrary.simpleMessage("Text operation"),
+        "node_widgets_text_text": MessageLookupByLibrary.simpleMessage("Text"),
         "node_widgets_treshold_text":
             MessageLookupByLibrary.simpleMessage("Treshold"),
         "node_widgets_value_text":
@@ -739,6 +771,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Delete this project"),
         "settings_project_delete_subtitle":
             MessageLookupByLibrary.simpleMessage("Delete"),
+        "settings_project_privacy_subtitle":
+            MessageLookupByLibrary.simpleMessage("Privacy"),
+        "settings_project_private_project":
+            MessageLookupByLibrary.simpleMessage("Private project"),
         "settings_project_rename_button":
             MessageLookupByLibrary.simpleMessage("Rename"),
         "settings_project_rename_subtitle":

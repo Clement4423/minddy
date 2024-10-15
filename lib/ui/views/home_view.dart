@@ -12,9 +12,15 @@ import 'package:minddy/ui/components/settings/settings_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:minddy/ui/view_models/home_viewmodel.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   final HomeViewModel _viewmodel;
   const HomeView(this._viewmodel, {super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
@@ -56,20 +62,21 @@ class HomeView extends StatelessWidget {
                     icon: Icons.add_rounded, 
                     semanticText: S.of(context).submenu_new_project_title,
                     isPrimary: true, 
-                    action: () async {_viewmodel.showNewProjectMenu(context, _viewmodel.initializeProjectCards);}
+                    action: () async {widget._viewmodel.showNewProjectMenu(context, () {widget._viewmodel.initializeProjectCards(true);});}
                   )
                 ] 
             )
         ),
         body: AnimatedBuilder(
-          animation: _viewmodel,
+          animation: widget._viewmodel,
           builder: (context, child) {
-            if (_viewmodel.checkIfNeedToUnlock()) {
-              _viewmodel.showUnlockMenu(context, function: _viewmodel.initializeProjectCards);
+            if (widget._viewmodel.checkIfNeedToUnlock()) {
+              widget._viewmodel.showUnlockMenu(context, function: () {widget._viewmodel.initializeProjectCards(true);});
             }
             return Padding(
               padding: const EdgeInsets.only(left: 30),
               child: Stack(
+                alignment: Alignment.bottomCenter,
                 children: [
                   Column(
                     children: [
@@ -78,10 +85,15 @@ class HomeView extends StatelessWidget {
                           children: [                              
                             Padding(
                               padding: const EdgeInsets.only(top: 50, bottom: 30),
-                              child: Text(
-                                _viewmodel.greetingText,
-                                  style: theme.headlineLarge.
-                                  copyWith(color: theme.onPrimary)
+                              child: FutureBuilder(
+                                future: widget._viewmodel.initializeGreeting(),
+                                builder: (context, snapshot) {
+                                  return Text(
+                                    widget._viewmodel.greetingText,
+                                      style: theme.headlineLarge.
+                                      copyWith(color: theme.onPrimary)
+                                  );
+                                }
                               ),
                             ),
                             Padding(
@@ -105,14 +117,23 @@ class HomeView extends StatelessWidget {
                                       initialData: LoginState.isUnlocked,
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData && snapshot.data == true) {
-                                          return SingleChildScrollView(
-                                            scrollDirection: Axis.horizontal,
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: _viewmodel.projectCards
-                                            ),
+                                          return FutureBuilder(
+                                            future: widget._viewmodel.initializeProjectCards(),
+                                            builder: (context, future) {
+                                              if (future.connectionState == ConnectionState.done) {
+                                                return SingleChildScrollView(
+                                                  scrollDirection: Axis.horizontal,
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    children: widget._viewmodel.projectCards
+                                                  ),
+                                                );
+                                              } else {
+                                                return const SizedBox();
+                                              }
+                                            }
                                           );
                                         } else {
                                           return const SizedBox();
@@ -145,9 +166,11 @@ class HomeView extends StatelessWidget {
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.max,
-                                        children: DefaultArticlesList.list,
+                                        children: DefaultArticlesList.list.map((widget) => Padding(
+                                          padding: const EdgeInsets.only(right: 20),
+                                          child: widget,
+                                        )).toList()),
                                       ),
-                                    ),
                                   ],
                                 ),
                               ),
@@ -157,7 +180,13 @@ class HomeView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const ArticlesMenuButton()
+                  const Positioned(
+                    bottom: 0,
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 30),
+                      child: ArticlesMenuButton(),
+                    ),
+                  ),
                 ],
               ),
             );

@@ -108,9 +108,7 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
               backgroundColor: Colors.transparent,
               appBar: CustomAppBar(
                 CustomAppBarController(
-                  onHomeButtonPressed: () async {
-                    await widget._viewmodel.saveProject();
-                  },
+                  onHomeButtonPressed: widget._viewmodel.saveProject,
                   widget._viewmodel.projectInfo.name,
                   true,
                   [
@@ -348,7 +346,7 @@ class SwitchPageButton extends StatelessWidget {
             ? S.of(context).projects_next_page_shortcut_tooltip
             : S.of(context).projects_previous_page_shortcut_tooltip,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(13),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
             child: Container(
@@ -356,7 +354,7 @@ class SwitchPageButton extends StatelessWidget {
               height: 90,
               decoration: BoxDecoration(
                 color: theme.primaryContainer,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(13),
                 border: Border.all(
                   color: theme.onPrimary.withOpacity(theme.brightness == Brightness.light ? 1 : 0.2),
                   width: 0.5
@@ -382,7 +380,7 @@ class SwitchPageButton extends StatelessWidget {
                 style: ButtonStyle(
                   shape: WidgetStatePropertyAll(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)
+                      borderRadius: BorderRadius.circular(13)
                     )
                   )
                 ),

@@ -560,6 +560,26 @@ class S {
     );
   }
 
+  /// `Privacy`
+  String get settings_project_privacy_subtitle {
+    return Intl.message(
+      'Privacy',
+      name: 'settings_project_privacy_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private project`
+  String get settings_project_private_project {
+    return Intl.message(
+      'Private project',
+      name: 'settings_project_private_project',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Search`
   String get articles_search {
     return Intl.message(
@@ -3316,6 +3336,46 @@ class S {
     );
   }
 
+  /// `Text`
+  String get node_widgets_text_text {
+    return Intl.message(
+      'Text',
+      name: 'node_widgets_text_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start`
+  String get node_widgets_start_text {
+    return Intl.message(
+      'Start',
+      name: 'node_widgets_start_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End`
+  String get node_widgets_end_text {
+    return Intl.message(
+      'End',
+      name: 'node_widgets_end_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Length`
+  String get node_widgets_length_text {
+    return Intl.message(
+      'Length',
+      name: 'node_widgets_length_text',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Treshold`
   String get node_widgets_treshold_text {
     return Intl.message(
@@ -3831,6 +3891,126 @@ class S {
     return Intl.message(
       'Subtract',
       name: 'node_widgets_boolean_node_options_subtract',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Conversion`
+  String get node_widgets_conversion_node_title {
+    return Intl.message(
+      'Conversion',
+      name: 'node_widgets_conversion_node_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Converts a value to another type`
+  String get node_widgets_conversion_node_decsription {
+    return Intl.message(
+      'Converts a value to another type',
+      name: 'node_widgets_conversion_node_decsription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Text operation`
+  String get node_widgets_text_operation_node_title {
+    return Intl.message(
+      'Text operation',
+      name: 'node_widgets_text_operation_node_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Performs operations on a text`
+  String get node_widgets_text_operation_node_decsription {
+    return Intl.message(
+      'Performs operations on a text',
+      name: 'node_widgets_text_operation_node_decsription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Join`
+  String get node_widgets_text_operation_node_options_join {
+    return Intl.message(
+      'Join',
+      name: 'node_widgets_text_operation_node_options_join',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cut`
+  String get node_widgets_text_operation_node_options_cut {
+    return Intl.message(
+      'Cut',
+      name: 'node_widgets_text_operation_node_options_cut',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Trim`
+  String get node_widgets_text_operation_node_options_trim {
+    return Intl.message(
+      'Trim',
+      name: 'node_widgets_text_operation_node_options_trim',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Trim left`
+  String get node_widgets_text_operation_node_options_trim_left {
+    return Intl.message(
+      'Trim left',
+      name: 'node_widgets_text_operation_node_options_trim_left',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Trim right`
+  String get node_widgets_text_operation_node_options_trim_right {
+    return Intl.message(
+      'Trim right',
+      name: 'node_widgets_text_operation_node_options_trim_right',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pad left`
+  String get node_widgets_text_operation_node_options_pad_left {
+    return Intl.message(
+      'Pad left',
+      name: 'node_widgets_text_operation_node_options_pad_left',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pad right`
+  String get node_widgets_text_operation_node_options_pad_right {
+    return Intl.message(
+      'Pad right',
+      name: 'node_widgets_text_operation_node_options_pad_right',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contains`
+  String get node_widgets_text_operation_node_options_contains {
+    return Intl.message(
+      'Contains',
+      name: 'node_widgets_text_operation_node_options_contains',
       desc: '',
       args: [],
     );

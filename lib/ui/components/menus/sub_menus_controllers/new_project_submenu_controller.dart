@@ -9,6 +9,8 @@ class NewProjectSubMenuController extends ChangeNotifier {
 
   String get errorMessage => _errorMessage;
   String projectName = "";
+  bool isPrivate = false;
+  Color color = Colors.white;
 
   void nameChanged(String newName) {
     if (newName != "") {
@@ -23,7 +25,7 @@ class NewProjectSubMenuController extends ChangeNotifier {
       return false;
     }
     if (projectName != "") {
-      await AppProject.createProject(projectName);
+      await AppProject.createProject(projectName, isPrivate, color);
       await specialAction();
       _errorMessage = "";
       Navigator.pop(context);

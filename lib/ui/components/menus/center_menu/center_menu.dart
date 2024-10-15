@@ -18,6 +18,7 @@ Future<dynamic> showCenterMenu(BuildContext context, Widget icon, IRouter router
     }
     controller.setCurrentSelected(-1);
   }
+
   return showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -54,95 +55,13 @@ Future<dynamic> showCenterMenu(BuildContext context, Widget icon, IRouter router
                       // This does nothing, it stands only to prevent closing the menu by clicking it, 
                       //because of the upper GestureDetector.
                     },
-                    child: Container(
-                      width: 550,
-                      height: 550,
-                      decoration: BoxDecoration(
-                        color: theme.primaryContainer,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // Sidebar container
-                          Container(
-                            width: 214,
-                            height: 540,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: theme.primary,
-                            ),
-                            child: AnimatedBuilder(
-                              animation: controller,
-                              builder: (context, child) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    // Sidebar header
-                                      Padding (
-                                      padding: const EdgeInsets.all(25),
-                                      child: icon,
-                                    ),
-                                    // General list tiles secion
-                                    Expanded(
-                                      child: ListView(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Align(
-                                              alignment: AlignmentDirectional.centerStart,
-                                              child: Text(
-                                                S.of(context).center_menu_general,
-                                                style: theme.bodySmall.
-                                                copyWith(color: Colors.grey)
-                                              )
-                                            ),
-                                          ),
-                                          ...buildNavigationListTiles(theme, generalListTiles, controller)
-                                        ],
-                                      ),
-                                    ),
-                                    // Bottom list tiles section
-                                    if (bottomListTiles.isNotEmpty)
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Align(
-                                          alignment: AlignmentDirectional.centerStart,
-                                          child: Text(
-                                            S.of(context).center_menu_others,
-                                            style: theme.bodySmall.
-                                            copyWith(color: Colors.grey)
-                                          )
-                                        ),
-                                      ),
-                                    ...buildNavigationListTiles(theme, bottomListTiles, controller)
-                                  ],
-                                );
-                              }
-                            ),
-                          ),
-                          // Page container
-                          AnimatedBuilder(
-                            animation: controller,
-                            builder: (context, child) {
-                              return ClipRRect(
-                                 borderRadius: BorderRadius.circular(15),
-                                child: Container(
-                                  width: 321,
-                                  height: 540,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: theme.primary,
-                                  ),
-                                  child: controller.currentPage,
-                                ),
-                              );
-                            }
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: _CenterMenu(
+                      theme: theme, 
+                      controller: controller, 
+                      icon: icon, 
+                      generalListTiles: generalListTiles, 
+                      bottomListTiles: bottomListTiles
+                    )
                   ),
                 ]
               ),
@@ -152,6 +71,147 @@ Future<dynamic> showCenterMenu(BuildContext context, Widget icon, IRouter router
       );
     }
   );
+}
+
+class _CenterMenu extends StatefulWidget {
+  const _CenterMenu({
+    required this.icon,
+    required this.generalListTiles,
+    required this.bottomListTiles,
+    required this.theme,
+    required this.controller,
+  });
+
+  final Widget icon;
+  final List<NavigationListTileModel> generalListTiles;
+  final List<NavigationListTileModel> bottomListTiles;
+  final StylesGetters theme;
+  final SidebarNavigationController controller;
+
+  @override
+  State<_CenterMenu> createState() => _CenterMenuState();
+}
+
+class _CenterMenuState extends State<_CenterMenu> with SingleTickerProviderStateMixin {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder(
+        tween:  Tween<double>(
+        begin: 0.0,
+        end: 1.0
+      ),
+      duration: const Duration(milliseconds: 200),
+      builder: (context, opacity, child) {
+        return Opacity(
+          opacity: opacity,
+          child: Container(
+            width: 550,
+            height: 550,
+            decoration: BoxDecoration(
+              color: widget.theme.primaryContainer,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Sidebar container
+                Container(
+                  width: 214,
+                  height: 540,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: widget.theme.primary,
+                  ),
+                  child: AnimatedBuilder(
+                    animation: widget.controller,
+                    builder: (context, child) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Sidebar header
+                          Padding (
+                            padding: const EdgeInsets.all(25),
+                            child: widget.icon,
+                          ),
+                          // General list tiles secion
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: ListView(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Align(
+                                        alignment: AlignmentDirectional.centerStart,
+                                        child: Text(
+                                          S.of(context).center_menu_general,
+                                          style: widget.theme.bodySmall.
+                                          copyWith(color: Colors.grey)
+                                        )
+                                      ),
+                                    ),
+                                    ...buildNavigationListTiles(widget.theme, widget.generalListTiles, widget.controller)
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Bottom list tiles section
+                          if (widget.bottomListTiles.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                alignment: AlignmentDirectional.centerStart,
+                                child: Text(
+                                  S.of(context).center_menu_others,
+                                  style: widget.theme.bodySmall.
+                                  copyWith(color: Colors.grey)
+                                )
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5),
+                              child: Column(
+                                children: [
+                                  ...buildNavigationListTiles(widget.theme, widget.bottomListTiles, widget.controller)
+                                ],
+                              ),
+                            )
+                        ],
+                      );
+                    }
+                  ),
+                ),
+                // Page container
+                AnimatedBuilder(
+                  animation: widget.controller,
+                  builder: (context, child) {
+                    return ClipRRect(
+                       borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                        width: 321,
+                        height: 540,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: widget.theme.primary,
+                        ),
+                        child: widget.controller.currentPage,
+                      ),
+                    );
+                  }
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    );
+  }
 }
 
 List<NavigationListTile> buildNavigationListTiles(StylesGetters theme, List<NavigationListTileModel> list, SidebarNavigationController controller) {

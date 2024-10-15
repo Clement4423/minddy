@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/nodes/all_nodes/boolean_node.dart';
 import 'package:minddy/system/nodes/all_nodes/comparison_node.dart';
+import 'package:minddy/system/nodes/all_nodes/conversion_node.dart';
 import 'package:minddy/system/nodes/all_nodes/math_node.dart';
 import 'package:minddy/system/nodes/all_nodes/random_number_node.dart';
+import 'package:minddy/system/nodes/all_nodes/text_operation_node.dart';
 import 'package:minddy/system/nodes/all_nodes/variables_nodes/get_variable_node.dart';
 import 'package:minddy/system/nodes/all_nodes/variables_nodes/set_variable_node.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
@@ -11,11 +13,13 @@ import 'package:minddy/system/nodes/logic/node_widget_functions.dart';
 import 'package:minddy/ui/components/menus/sub_menus/node_editor_new_node_sub_menu.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/boolean_node_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/comparison_node_widget.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/conversion_node_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/get_variable_node_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/math_node_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_port_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/random_number_node_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/set_variable_node_widget.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/text_operation_node_widget.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class NodesAddMenuModels {
@@ -41,7 +45,9 @@ class NodesAddMenuModels {
     booleanNode,
     setVariableNode,
     getVariableNode,
-    randomNumberNode
+    randomNumberNode,
+    conversionNode,
+    textOperationNode
   ];
 
   late NodeEditorNewNodeSubMenuNodeModel mathNode = NodeEditorNewNodeSubMenuNodeModel(
@@ -149,7 +155,45 @@ class NodesAddMenuModels {
     create: () {
       return RandomNumberNodeWidget(
         key: GlobalKey(),
-        node: RandomNumberNode(),
+        node: RandomNumberNode()..inputs = [NodeData(type: NodeDataType.number, value: 0.0), NodeData(type: NodeDataType.number, value: 1.0)],
+        position: const Offset(100, 100), 
+        maxOffset: maxOffset, 
+        theme: theme, 
+        functions: functions,
+      );
+    }
+  );
+
+  late NodeEditorNewNodeSubMenuNodeModel conversionNode = NodeEditorNewNodeSubMenuNodeModel(
+    name: S.current.node_widgets_conversion_node_title, 
+    description: S.current.node_widgets_conversion_node_decsription, 
+    inputsTypes: [NodeDataType.any], 
+    outputsTypes: [NodeDataType.any], 
+    category: NodeCategory.logic, 
+    typesCanChange: true,
+    create: () {
+      return ConversionNodeWidget(
+        key: GlobalKey(),
+        node: ConversionNode(),
+        position: const Offset(100, 100), 
+        maxOffset: maxOffset, 
+        theme: theme, 
+        functions: functions,
+      );
+    }
+  );
+
+  late NodeEditorNewNodeSubMenuNodeModel textOperationNode = NodeEditorNewNodeSubMenuNodeModel(
+    name: S.current.node_widgets_text_operation_node_title, 
+    description: S.current.node_widgets_text_operation_node_decsription, 
+    inputsTypes: [NodeDataType.string, NodeDataType.any, NodeDataType.any], 
+    outputsTypes: [NodeDataType.any], 
+    category: NodeCategory.text, 
+    typesCanChange: true,
+    create: () {
+      return TextOperationNodeWidget(
+        key: GlobalKey(),
+        node: TextOperationNode(),
         position: const Offset(100, 100), 
         maxOffset: maxOffset, 
         theme: theme, 

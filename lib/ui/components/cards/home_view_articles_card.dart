@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/article_info.dart';
@@ -6,7 +8,7 @@ import 'package:minddy/ui/components/articles/articles_pages_controllers/article
 import 'package:minddy/ui/components/articles/articles_view/articles_view.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-class HomeViewArticleCard extends StatelessWidget {
+class HomeViewArticleCard extends StatefulWidget {
   const HomeViewArticleCard({super.key, required this.title, required this.description, required this.background, required this.articleInfo, required this.articleContent});
 
   final String title;
@@ -16,85 +18,110 @@ class HomeViewArticleCard extends StatelessWidget {
   final List<ArticleElement> articleContent;
 
   @override
+  State<HomeViewArticleCard> createState() => _HomeViewArticleCardState();
+}
+
+class _HomeViewArticleCardState extends State<HomeViewArticleCard> {
+
+  bool isHovering = false;
+
+  @override
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
-    return Padding(
-      padding: const EdgeInsets.only(right: 20),
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          onTap: () async {
-            await showArticle(ArticlesViewController(articleInfo, () {}, readOnly: true, initialContent: articleContent), context);
-          },
-          child: Tooltip(
-            message: S.of(context).home_articles_card_open_hint,
-            waitDuration: const Duration(seconds: 1),
-            child: Container(
-              width: 185,
-              height: 185,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    offset: const Offset(5, 5),
-                    blurStyle: BlurStyle.normal,
-                    blurRadius: 10,
-                    color: theme.shadow.withOpacity(0.05)                        
-                  )
-                ]
+    return MouseRegion(
+      onEnter: (details) {
+        setState(() {
+          isHovering = true;
+        });
+      },
+      onExit: (event) {
+        setState(() {
+          isHovering = false;
+        });
+      },
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () async {
+          await showArticle(ArticlesViewController(widget.articleInfo, () {}, readOnly: true, initialContent: widget.articleContent), context);
+        },
+        child: Container(
+          width: 185,
+          height: 185,
+          decoration: BoxDecoration(
+            color: theme.surface,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                offset: const Offset(5, 5),
+                blurStyle: BlurStyle.normal,
+                blurRadius: 10,
+                color: theme.shadow.withOpacity(0.15)                        
+              )
+            ]
+          ),
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              // Background element
+              Positioned(
+                top: 30,
+                child: widget.background
               ),
-              child: Column(
-                children: [
-                  // Background element
-                  Container(
-                    height: 110,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-                      color: theme.surface
-                    ),
-                    child: Center(child: background),
-                  ),
-                  // Infos box
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25)),
-                        color: theme.primary
+              // Infos box
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                    child: TweenAnimationBuilder(
+                      key: UniqueKey(),
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeOut,
+                      tween: Tween<double>(
+                        begin: 0.0,
+                        end: 1.0
                       ),
-                      child: SizedBox(
-                        width: 185,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 5, left: 15, right: 10),
-                              child: Text(
-                                title,
-                                style: theme.titleMedium.
-                                copyWith(color: theme.onPrimary),
-                                overflow: TextOverflow.ellipsis,
+                      builder: (context, opacity, child) {
+                        return Opacity(
+                          opacity: opacity,
+                          child: Container(
+                            width: 165,
+                            height: 50,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: isHovering 
+                                ? theme.secondary
+                                : theme.primaryContainer,
+                              borderRadius: BorderRadius.circular(20)
+                            ),
+                            child: Center(
+                              child: Opacity(
+                                opacity: opacity,
+                                child: Text(
+                                  isHovering 
+                                    ? S.of(context).articles_read_button
+                                    : widget.title, 
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.titleMedium.
+                                  copyWith(color: isHovering 
+                                    ? theme.onSecondary
+                                    : theme.onPrimary
+                                  ),
+                                ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 2, left: 15, right: 10),
-                              child: Text(
-                                description,
-                                maxLines: 2,
-                                style: theme.bodySmall.
-                                copyWith(color: Colors.grey),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
+                          ),
+                        );
+                      }
+                    ),
                   ),
-                ],
-              ),
-            ),
+                ),
+              )
+            ],
           ),
         ),
-      )
+      ),
     );
   }
 }

@@ -111,10 +111,6 @@ class _RandomNumberNodeWidgetState extends State<RandomNumberNodeWidget> {
 
   late NodeWidgetInformations widgetInformations;
 
-  // The main action of the widget.
-  // Only if nescessary -> if you have a dropdown selector, can be used to change the inputs.
-  void main() {}
-
   @override
   void initState() {
     widgetInformations = NodeWidgetInformations(

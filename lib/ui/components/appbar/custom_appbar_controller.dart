@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/system/model/custom_appbar_button_model.dart';
+import 'package:minddy/system/router/app_router.dart';
 
 
 // To create the appbar properly, you need to import 3 things for the constructor of the controller : 
@@ -51,6 +52,6 @@ class CustomAppBarController extends ChangeNotifier {
 
   void goToHomePage(BuildContext context) {
     StaticVariables.currentProjectInfo = null;
-    Navigator.of(context).pop();
+    AppRouter.router.navigateTo('/home');
   }
 }

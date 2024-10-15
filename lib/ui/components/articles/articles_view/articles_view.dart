@@ -143,7 +143,7 @@ class _ArticleViewState extends State<ArticleView> {
                         }
                       },
                       child: Column(
-                        crossAxisAlignment: widget.screenWidth > _widthTreshold ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+                        crossAxisAlignment:  CrossAxisAlignment.start,
                         children: [
                           SizedBox(
                             height: 170,
@@ -205,19 +205,19 @@ class _ArticleViewState extends State<ArticleView> {
                                             CustomTooltip(
                                               message: widget.controller.articleTitle,
                                               child: TextField(
-                                                  onChanged: (value) => widget.controller.articleTitleChanged(value),
-                                                  readOnly: widget.controller.readOnly,
-                                                  controller: TextEditingController(text: widget.controller.articleTitle == "" ? null : widget.controller.articleTitle),
-                                                  style: widget.theme.titleLarge.copyWith(color: widget.theme.onPrimary, fontSize: 30, overflow: TextOverflow.ellipsis),
-                                                  mouseCursor: widget.controller.readOnly ? SystemMouseCursors.basic : SystemMouseCursors.text,
-                                                  cursorColor: widget.theme.onPrimary,
-                                                  decoration: InputDecoration(
-                                                    border: InputBorder.none,
-                                                    hintText: S.of(context).articles_title_hint
-                                                  ),
-                                                  maxLines: 2,
-                                                  minLines: 1,
+                                                onChanged: (value) => widget.controller.articleTitleChanged(value),
+                                                readOnly: widget.controller.readOnly,
+                                                controller: TextEditingController(text: widget.controller.articleTitle == "" ? null : widget.controller.articleTitle),
+                                                style: widget.theme.titleLarge.copyWith(color: widget.theme.onPrimary, fontSize: 30, overflow: TextOverflow.ellipsis),
+                                                mouseCursor: widget.controller.readOnly ? SystemMouseCursors.basic : SystemMouseCursors.text,
+                                                cursorColor: widget.theme.onPrimary,
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  hintText: S.of(context).articles_title_hint
                                                 ),
+                                                maxLines: 2,
+                                                minLines: 1,
+                                              ),
                                             ),
                                             Row(
                                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -322,29 +322,25 @@ class _ArticleContentListState extends State<_ArticleContentList> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return Expanded(
-      child: Padding(
-        padding: EdgeInsets.only(left: screenWidth > _widthTreshold ? 0 : screenWidth / 7 - 24),
-        child: SizedBox(
-          width: screenWidth > _widthTreshold ?  
-            widget.controller.contentWidth + 53
-            : screenWidth / 1.5,
-
-          child: ListView.builder(
-            padding: const EdgeInsets.only(right: 20),
-            controller: _scrollController,
-            itemCount: widget.controller.articleContent.length + 2,
-            semanticChildCount: widget.controller.articleContent.length,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return const SizedBox(height: 50);
-              }
-              else if (index < widget.controller.articleContent.length + 1) {
-                return widget.controller.articleContent[index - 1];
-              } else {
-                return SizedBox(height: MediaQuery.of(context).size.height / 1.5);
-              }
-            },
-          ),
+      child: Container(
+        width: screenWidth,
+        padding: EdgeInsets.only(
+          left: screenWidth > _widthTreshold 
+            ? ((screenWidth / 2) - (widget.controller.contentWidth / 2) - 40)
+            : (screenWidth / 7) - 40,
+        ),
+        child: ListView(
+          controller: _scrollController,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 50),
+                ...widget.controller.articleContent,
+                SizedBox(height: MediaQuery.of(context).size.height / 1.5),
+              ],
+            )
+          ]
         ),
       ),
     );

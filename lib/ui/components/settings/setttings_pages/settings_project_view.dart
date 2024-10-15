@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/ui/components/custom_components/custom_color_input.dart';
 import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
+import 'package:minddy/ui/components/custom_components/switch_tile.dart';
 import 'package:minddy/ui/components/settings/settings_components/settings_page_top_bar.dart';
 import 'package:minddy/ui/components/settings/settings_pages_controllers/settings_project_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -56,12 +58,15 @@ class ProjectSettingsView extends StatelessWidget {
                 AnimatedBuilder(
                   animation: _controller,
                   builder: (context, child) {
-                    return Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        _controller.errorMessage, 
-                        style: theme.bodySmall.
-                        copyWith(color: theme.error),
+                    return Visibility(
+                      visible: _controller.errorMessage.isNotEmpty,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          _controller.errorMessage, 
+                          style: theme.bodySmall.
+                          copyWith(color: theme.error),
+                        ),
                       ),
                     );
                   }
@@ -78,14 +83,68 @@ class ProjectSettingsView extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 30,
+                Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      S.of(context).node_editor_view_side_panel_variables_variable_type_color,
+                      style: theme.bodySmall.copyWith(color: Colors.grey),
+                    ),
+                  ),
                 ),
-                Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text(
-                    S.of(context).settings_project_delete_subtitle,
-                    style: theme.bodySmall.copyWith(color: Colors.grey),
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: CustomColorInput(
+                        theme: theme,
+                        useOpacity: false,
+                        color: _controller.color, 
+                        onColorChanged: (color) {
+                          _controller.color = color;
+                          _controller.modifyColor(context);
+                        }
+                      )
+                    );
+                  }
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      S.of(context).settings_project_privacy_subtitle,
+                      style: theme.bodySmall.copyWith(color: Colors.grey),
+                    ),
+                  ),
+                ),
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: SwitchTile(
+                        key: UniqueKey(),
+                        _controller.isPrivate, 
+                        S.of(context).settings_project_private_project, 
+                        (value) {
+                          _controller.modifyIsPrivate(value, context);
+                        }, 
+                        false
+                      )
+                    );
+                  }
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      S.of(context).settings_project_delete_subtitle,
+                      style: theme.bodySmall.copyWith(color: Colors.grey),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -97,7 +156,7 @@ class ProjectSettingsView extends StatelessWidget {
                       _controller.deleteProject, 
                       true, 
                       false,
-                      isCritic: true,
+                      isCritic: true
                     ),
                   ),
                 )

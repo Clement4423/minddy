@@ -69,10 +69,6 @@ class TimerView extends StatefulWidget {
 class _TimerViewState extends State<TimerView> {
 
   String formatTimerInMinutes(int remainingTimeInSeconds) {
-    if (remainingTimeInSeconds == 0) {
-      PomodoroToolController.nextRound(context);
-      return '';
-    }
     final int minutes = remainingTimeInSeconds ~/ 60;
     final int seconds = remainingTimeInSeconds % 60;
     return '${minutes.toString().padLeft(2, '0')} : ${seconds.toString().padLeft(2, '0')}';

@@ -195,6 +195,8 @@ class NodeWidgetFunctions {
     for (int i = 0; i < widget.node.inputsTypes.length; i++) {
       if (widget.node.inputs.elementAtOrNull(i) == null) {
         _resetInput(widget, widget.node.inputsTypes[i]);
+      } else if (widget.node.inputs.elementAt(i).type != widget.node.inputsTypes.elementAt(i)) {
+        _resetInput(widget, widget.node.inputsTypes.elementAt(i), i);
       }
     }
   }

@@ -62,10 +62,10 @@ class _UnlockContentSubmenuState extends State<_UnlockContentSubmenu> {
 
     Future<void> _checkUnlockState(BuildContext context) async {
       bool isUnlocked = await widget.controller.checkPassword(_password);
-      await widget.isUnlockedFunction(isUnlocked);
       if (isUnlocked && context.mounted) {
         Navigator.pop(context);
       }
+      await widget.isUnlockedFunction(isUnlocked);
     } 
 
   @override

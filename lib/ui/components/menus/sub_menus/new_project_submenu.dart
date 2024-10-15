@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/ui/components/custom_components/custom_color_input.dart';
 import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
+import 'package:minddy/ui/components/custom_components/switch_tile.dart';
 import 'package:minddy/ui/components/menus/sub_menus_controllers/new_project_submenu_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -37,52 +39,99 @@ class NewProjectSubMenu extends StatelessWidget {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          S.of(context).submenu_new_project_subtitle, 
-                          style: theme.bodySmall.
-                          copyWith(color: theme.onPrimary),
-                        ),
-                      ),
-                      Container(
-                        width: 350,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          color: theme.surface,
-                          borderRadius: BorderRadius.circular(15)
-                        ),
-                        margin: const EdgeInsets.only(top: 10, bottom: 10),
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: TextField (
-                          onChanged: (value) => {_controller.nameChanged(value)},
-                          maxLength: 20,
-                          style: theme.bodyMedium.
-                          copyWith(color: theme.onSurface),
-                          cursorColor: theme.onSurface,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(10),
-                            hintText: S.of(context).submenu_new_project_hint,
-                            hintStyle: theme.bodyMedium.copyWith(color: Colors.grey),
-                            border: InputBorder.none
+                  padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 5),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            S.of(context).submenu_new_project_subtitle, 
+                            style: theme.bodySmall.
+                            copyWith(color: theme.onPrimary),
                           ),
                         ),
-                      ),
-                      Text(
-                        _controller.errorMessage,
-                        style: theme.bodySmall.
-                        copyWith(color: theme.error),
-                      )
-                    ],
+                        Container(
+                          width: 350,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            color: theme.surface,
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          margin: const EdgeInsets.only(top: 10),
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: TextField (
+                            onChanged: (value) => {_controller.nameChanged(value)},
+                            maxLength: 20,
+                            style: theme.bodyMedium.
+                            copyWith(color: theme.onSurface),
+                            cursorColor: theme.onSurface,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(10),
+                              hintText: S.of(context).submenu_new_project_hint,
+                              hintStyle: theme.bodyMedium.copyWith(color: Colors.grey),
+                              border: InputBorder.none
+                            ),
+                          ),
+                        ),
+                        Text(
+                          _controller.errorMessage,
+                          style: theme.bodySmall.
+                          copyWith(color: theme.error),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              S.of(context).node_editor_view_side_panel_variables_variable_type_color, 
+                              style: theme.bodySmall.
+                              copyWith(color: theme.onPrimary),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: CustomColorInput(
+                            theme: theme, 
+                            useOpacity: false,
+                            color: _controller.color, 
+                            onColorChanged: (newColor) {
+                              _controller.color = newColor;
+                            }
+                          )
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 25),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              S.of(context).settings_project_privacy_subtitle, 
+                              style: theme.bodySmall.
+                              copyWith(color: theme.onPrimary),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: SwitchTile(
+                            _controller.isPrivate, 
+                            S.of(context).settings_project_private_project, 
+                            (value) {
+                              _controller.isPrivate = value;
+                            }, 
+                            margin: EdgeInsets.zero,
+                            false
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(5),
+                padding: const EdgeInsets.only(right: 5, bottom: 5, left: 5, top: 0),
                 child: SizedBox(
                   width: 350,
                   height: 60,

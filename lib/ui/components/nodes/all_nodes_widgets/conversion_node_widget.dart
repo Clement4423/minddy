@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interfaces/node_widget_interface.dart';
 import 'package:minddy/system/interfaces/node_interface.dart';
-import 'package:minddy/system/model/node_connection.dart';
+import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/system/model/node_port_info.dart';
-import 'package:minddy/system/nodes/all_nodes/boolean_node.dart';
+import 'package:minddy/system/nodes/all_nodes/conversion_node.dart';
+import 'package:minddy/system/nodes/logic/node_data_models.dart';
+import 'package:minddy/system/nodes/logic/node_tree.dart';
 import 'package:minddy/system/nodes/logic/node_widget_functions.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_port_widget.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_body.dart';
@@ -14,11 +16,12 @@ import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_compo
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_informations.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_input.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_output.dart';
+import 'package:minddy/ui/components/nodes/node_editor_bottom_sheet_side_panel_variable_container.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 // ignore: must_be_immutable
-class BooleanNodeWidget extends StatefulWidget implements INodeWidget {
-  BooleanNodeWidget({
+class ConversionNodeWidget extends StatefulWidget implements INodeWidget {
+  ConversionNodeWidget({
     super.key,
     required this.node,
     required this.position,
@@ -31,7 +34,7 @@ class BooleanNodeWidget extends StatefulWidget implements INodeWidget {
   Offset position;
 
   @override
-  final BooleanNode node;
+  final ConversionNode node;
 
   @override
   final Offset maxOffset;
@@ -46,8 +49,8 @@ class BooleanNodeWidget extends StatefulWidget implements INodeWidget {
   List<Offset> outputsOffsets = [];
 
   @override
-  BooleanNodeWidget copy(GlobalKey newKey) {
-    return BooleanNodeWidget(
+  ConversionNodeWidget copy(GlobalKey newKey) {
+    return ConversionNodeWidget(
       key: newKey,
       node: node.copy(), 
       position: Offset(position.dx, position.dy), 
@@ -68,13 +71,13 @@ class BooleanNodeWidget extends StatefulWidget implements INodeWidget {
   }
 
   // Static method to deserialize from JSON
-  static BooleanNodeWidget fromJson(GlobalKey key, String json, Offset maxOffset, StylesGetters theme, NodeWidgetFunctions functions) {
+  static ConversionNodeWidget fromJson(GlobalKey key, String json, Offset maxOffset, StylesGetters theme, NodeWidgetFunctions functions) {
     final Map<String, dynamic> data = jsonDecode(json);
 
-    return BooleanNodeWidget(
+    return ConversionNodeWidget(
       key: key,
       theme: theme,
-      node: BooleanNode().fromJson(data['node']) as BooleanNode,
+      node: ConversionNode().fromJson(data['node']) as ConversionNode,
       position: Offset(data['positionX'], data['positionY']),
       maxOffset: maxOffset,
       functions: functions
@@ -82,7 +85,7 @@ class BooleanNodeWidget extends StatefulWidget implements INodeWidget {
   }
   
   @override
-  final double height = 105;
+  final double height = 85;
   
   @override
   final double width = 100; // Do not modify the width.
@@ -103,57 +106,52 @@ class BooleanNodeWidget extends StatefulWidget implements INodeWidget {
   set theme(StylesGetters newTheme) {}
 
   @override
-  State<BooleanNodeWidget> createState() => _BooleanNodeWidgetState();
+  State<ConversionNodeWidget> createState() => _ConversionNodeWidgetState();
 
   @override
   NodeWidgetFunctions functions;
 }
 
-class _BooleanNodeWidgetState extends State<BooleanNodeWidget> {
+class _ConversionNodeWidgetState extends State<ConversionNodeWidget> {
 
   late NodeWidgetInformations widgetInformations;
 
-  bool inputChanged = false;
+  bool outputTypeChanged = false;
 
-  void destroyInvalidConnections() {
-    List<NodeConnection> connections = widget.functions.getConnections();
-
-    for (NodeConnection connection in connections) { 
-      if (connection.endNode == widget) {
-        connection.startNode.node.targets.removeWhere((target) => target.node.id == widget.node.id && target.inputIndex == 1);
+  void destroyInvalidConnections(NodeDataType? newType) {
+    List<NodeTarget> targetsToRemove = [];
+    for (NodeTarget target in widget.node.targets) {
+      if (newType == null || INode.evaluateData(NodeData(type: newType, value: getDefaultNodeDataTypeValue(newType)), target.node.inputsTypes[target.inputIndex]) == null) {
+        targetsToRemove.add(target);
       }
     }
+
+    widget.node.targets.removeWhere((t) => targetsToRemove.contains(t));
 
     widget.functions.updateConnections();
   }
 
-  bool _getInputChanged() {
-    if (inputChanged) {
-      inputChanged = false;
+  bool _getOutputTypeChanged() {
+    if (outputTypeChanged) {
+      outputTypeChanged = false;
       return true;
     } else {
       return false;
     }
   }
 
-  void _setWidgetNeededInputs() {
-    widgetInformations.needToBeSmaller = widget.node.booleanType == BooleanNodeType.not;
+  NodeDataType _getCurrentOutputType() {
+    return widget.node.outputsTypes.first;
   }
 
-  void main(BooleanNodeType type) {
-    setState(() {
-      BooleanNodeType originalType = widget.node.booleanType;
-      widget.node.booleanType = type;
-
-      if (originalType != BooleanNodeType.not && type == BooleanNodeType.not || originalType == BooleanNodeType.not && type != BooleanNodeType.not) {
-        destroyInvalidConnections();
-        inputChanged = true;
-      }
-
-      _setWidgetNeededInputs();
-
-      widget.functions.saveState();
-    });
+  // The main action of the widget.
+  // Only if nescessary -> if you have a dropdown selector, can be used to change the inputs.
+  void main(NodeDataType newType) {
+    widget.node.outputsTypes = [newType];
+    outputTypeChanged = true;
+    destroyInvalidConnections(newType);
+    widget.functions.saveState();
+    setState(() {});
   }
 
   @override
@@ -164,7 +162,6 @@ class _BooleanNodeWidgetState extends State<BooleanNodeWidget> {
       inputsOffsetsMaxLength: widget.node.inputsTypes.length, 
       outputOffsetsMaxLength: widget.node.outputsTypes.length
     );
-    widgetInformations.inputsThatAreNoLongerNeeded = [1];
     widget.functions.verifyPosition(widget);
     widget.functions.verifyInputs(widget);
     super.initState();
@@ -173,9 +170,11 @@ class _BooleanNodeWidgetState extends State<BooleanNodeWidget> {
   @override
   Widget build(BuildContext context) {
     Offset draggingStartPortOffset = widgetInformations.draggingStartPort?.translate(-widget.position.dx, -widget.position.dy) ?? const Offset(0, 0);
+    
     return NodeWidgetBody(
-      nodeTitle: S.of(context).node_widgets_boolean_node_title, 
-      nodeDescription: S.of(context).node_widgets_boolean_node_description,
+      nodeTitle: S.of(context).node_widgets_conversion_node_title, 
+      nodeDescription: S.of(context).node_widgets_conversion_node_decsription, 
+      nodeColor: DefaultAppColors.grey.color,
       theme: widget.theme, 
       nodeWidget: widget, 
       needToBeSmaller: widgetInformations.needToBeSmaller, 
@@ -189,6 +188,9 @@ class _BooleanNodeWidgetState extends State<BooleanNodeWidget> {
         Padding(
           padding: const EdgeInsets.only(top: 5),
           child: NodeWidgetOutput(
+            key: _getOutputTypeChanged() 
+              ? UniqueKey() 
+              : null,
             portInfo: NodePortInfo(
               node: widget, 
               type: NodePortType.output, 
@@ -196,7 +198,7 @@ class _BooleanNodeWidgetState extends State<BooleanNodeWidget> {
             ), 
             setCursorPosition: widgetInformations.setCursorOffset,
             theme: widget.theme, 
-            label: S.of(context).node_editor_view_side_panel_variables_variable_type_boolean, 
+            label: S.of(context).node_widgets_value_text, 
             setDragStartingPort: widgetInformations.setStartDraggingPoint,
             getDraggingStartPortOffset: widgetInformations.getDraggingStartPortOffset,
             setOffset: widgetInformations.setNodePortOffset,
@@ -205,21 +207,19 @@ class _BooleanNodeWidgetState extends State<BooleanNodeWidget> {
         ),
         // Options selector
         NodeWidgetDropdown(
-          value: widget.node.booleanType,
-          items: BooleanNodeType.values,
+          value: _getCurrentOutputType(),
+          items: NodeDataType.values.sublist(0, NodeDataType.values.length - 1),
           onChanged: (type) {
-            if (type != null) {
-              main(type);
-            }
+            main(type!);
           },
           width: widget.width,
           height: widget.height,
           theme: widget.theme,
           itemToString: (type) {
-            return _getBooleanNodeTranslation(type);
+            return getCorrectNameBasedOnNodeDataType(type);
           },
         ),
-        // Input.s
+        // Input
         Padding(
           padding: const EdgeInsets.only(top: 5),
           child: NodeWidgetInput(
@@ -231,7 +231,7 @@ class _BooleanNodeWidgetState extends State<BooleanNodeWidget> {
             setCursorPosition: widgetInformations.setCursorOffset,
             theme: widget.theme, 
             isConnected: widget.functions.isPortAlreadyHaveConnection(0, NodePortType.input, widget),
-            connectedLabel: S.of(context).node_editor_view_side_panel_variables_variable_type_boolean,
+            connectedLabel: S.of(context).node_widgets_value_text,
             setDragStartingPort: widgetInformations.setStartDraggingPoint,
             getDraggingStartPortOffset: widgetInformations.getDraggingStartPortOffset, 
             setOffset: widgetInformations.setNodePortOffset, 
@@ -239,54 +239,7 @@ class _BooleanNodeWidgetState extends State<BooleanNodeWidget> {
             functions: widget.functions
           )
         ),
-        if (widget.node.booleanType != BooleanNodeType.not)
-        Padding(
-          padding: const EdgeInsets.only(top: 5),
-          child: NodeWidgetInput(
-            key: _getInputChanged() 
-              ? UniqueKey() 
-              : null,
-            portInfo: NodePortInfo(
-              node: widget, 
-              type: NodePortType.input, 
-              portIndex: 1
-            ), 
-            setCursorPosition: widgetInformations.setCursorOffset,
-            theme: widget.theme, 
-            isConnected: widget.functions.isPortAlreadyHaveConnection(1, NodePortType.input, widget), 
-            connectedLabel: S.of(context).node_editor_view_side_panel_variables_variable_type_boolean,
-            setDragStartingPort: widgetInformations.setStartDraggingPoint, 
-            getDraggingStartPortOffset: widgetInformations.getDraggingStartPortOffset, 
-            setOffset: widgetInformations.setNodePortOffset, 
-            onValueChanged: widget.functions.changeValueForPort, 
-            functions: widget.functions
-          )
-        )
       ]
     );
-  }
-}
-
-
-String _getBooleanNodeTranslation(BooleanNodeType booleanType) {
-  switch (booleanType) {
-    case BooleanNodeType.and:
-      return S.current.node_widgets_boolean_node_options_and;
-    case BooleanNodeType.or:
-      return S.current.node_widgets_boolean_node_options_or;
-    case BooleanNodeType.not:
-      return S.current.node_widgets_boolean_node_options_not;
-    case BooleanNodeType.notAnd:
-      return S.current.node_widgets_boolean_node_options_notAnd;
-    case BooleanNodeType.notOr:
-      return S.current.node_widgets_boolean_node_options_notOr;
-    case BooleanNodeType.equal:
-      return S.current.node_widgets_boolean_node_options_equal;
-    case BooleanNodeType.notEqual:
-      return S.current.node_widgets_boolean_node_options_notEqual;
-    case BooleanNodeType.imply:
-      return S.current.node_widgets_boolean_node_options_imply;
-    case BooleanNodeType.subtract:
-      return S.current.node_widgets_boolean_node_options_subtract;
   }
 }

@@ -24,7 +24,7 @@ class CalendarButton extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: theme.onPrimary.withOpacity(0.2),
+                color: theme.onPrimary.withOpacity(0.4),
                 width: 0.5
               ),
             ),

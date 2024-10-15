@@ -99,10 +99,10 @@ class __ArticleCodeElementContentState extends State<_ArticleCodeElementContent>
             width: maxWidth,
             decoration: const BoxDecoration(
               color: Color.fromARGB(255, 68, 68, 68),
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -111,7 +111,7 @@ class __ArticleCodeElementContentState extends State<_ArticleCodeElementContent>
                     height: 38,
                     decoration: BoxDecoration(
                       color: theme.surface,
-                      borderRadius: BorderRadius.circular(5)
+                      borderRadius: BorderRadius.circular(10)
                     ),
                     child: DropdownButton(
                       hint: Text(
@@ -186,7 +186,7 @@ class __ArticleCodeElementContentState extends State<_ArticleCodeElementContent>
             width: maxWidth,
             decoration: const BoxDecoration(
               color: Color.fromARGB(255, 34, 34, 34),
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))
             ),
             child: Padding(
               padding: const EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 10),

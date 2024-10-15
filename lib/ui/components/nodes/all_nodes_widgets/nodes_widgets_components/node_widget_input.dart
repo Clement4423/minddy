@@ -6,6 +6,7 @@ import 'package:minddy/system/nodes/logic/node_widget_functions.dart';
 import 'package:minddy/ui/components/custom_components/custom_checkbox.dart';
 import 'package:minddy/ui/components/menus/sub_menus/node_editor_new_node_sub_menu.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_port_widget.dart';
+import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_number_input.dart';
 import 'package:minddy/ui/components/nodes/all_nodes_widgets/nodes_widgets_components/node_widget_text_input.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -21,7 +22,8 @@ class NodeWidgetInput extends StatefulWidget {
     required this.getDraggingStartPortOffset, 
     required this.setOffset,
     required this.onValueChanged,
-    required this.functions
+    required this.functions,
+    this.portColor
   });
 
   final StylesGetters theme;
@@ -35,6 +37,7 @@ class NodeWidgetInput extends StatefulWidget {
   final Function(int?, NodePortType?, [INodeWidget?, NodePortInfo?]) setDragStartingPort;
   final Offset? Function() getDraggingStartPortOffset;
   final Function(Offset, NodePortInfo) setOffset;
+  final Color? portColor;
 
   @override
   State<NodeWidgetInput> createState() => _NodeWidgetInputState();
@@ -74,7 +77,7 @@ class _NodeWidgetInputState extends State<NodeWidgetInput> {
             offset: const Offset(-4, 0),
             child: NodePortWidget(
               portInfo: widget.portInfo, 
-              color: getCorrectColorBasedOnNodeDataType(type), 
+              color: widget.portColor ?? getCorrectColorBasedOnNodeDataType(type), 
               onHoveredColor: widget.theme.onSurface, 
               setCursorPosition: widget.setCursorPosition, 
               setDragStartingPort: widget.setDragStartingPort, 
@@ -85,7 +88,7 @@ class _NodeWidgetInputState extends State<NodeWidgetInput> {
           ),
           Builder(
             builder: (context) {
-              if (widget.isConnected) {
+              if (widget.isConnected || type == NodeDataType.any) {
                 return Text(
                   widget.connectedLabel, 
                   style: widget.theme.titleMedium.copyWith(
@@ -128,11 +131,18 @@ class _NodeWidgetInputState extends State<NodeWidgetInput> {
                     )
                   ],
                 );
-              } else {
-                return NodeWidgetTextInput(
+              } else if (type == NodeDataType.number) {
+                return NodeWidgetNumberInput(
                   onChange: widget.onValueChanged, 
                   theme: widget.theme, 
-                  type: type, 
+                  portInfo: widget.portInfo,
+                  hint: widget.connectedLabel, 
+                  defaultText: _getDefaultValueAsString()
+                );
+              } else {
+                return NodeWidgetStringInput(
+                  onChange: widget.onValueChanged, 
+                  theme: widget.theme, 
                   portInfo: widget.portInfo,
                   hint: widget.connectedLabel, 
                   defaultText: _getDefaultValueAsString()
@@ -140,7 +150,6 @@ class _NodeWidgetInputState extends State<NodeWidgetInput> {
               }
             }
           ),
-          
         ],
       ),
     );

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:minddy/system/shortcuts/shortcuts_activators.dart';
 
 
-Future<dynamic> showSubMenu(BuildContext context, Widget child, {bool isDismissible = true, Function? onMenuDismissed}) async {
+Future<dynamic> showSubMenu(BuildContext context, Widget child, {bool isDismissible = true, Function? onMenuDismissed, DismissDirection? dismissDirection}) async {
   return showDialog(
     barrierDismissible: isDismissible,
     context: context,
@@ -36,10 +36,10 @@ Future<dynamic> showSubMenu(BuildContext context, Widget child, {bool isDismissi
             child: Dismissible(
               key: UniqueKey(),
               dismissThresholds: {
-                DismissDirection.down: isDismissible ? 0.4 : 1.0,
+                (dismissDirection ?? DismissDirection.down): isDismissible ? 0.4 : 1.0,
               },
               movementDuration: const Duration(milliseconds: 500),
-              direction: DismissDirection.down,
+              direction: dismissDirection ?? DismissDirection.down,
               onDismissed: (direction) async {
                 if (onMenuDismissed != null) {
                   await onMenuDismissed();

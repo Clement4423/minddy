@@ -62,9 +62,9 @@ class CustomChartController extends ChangeNotifier {
       case CustomChartType.donut:
         return generateCategoricalPalette(allNumbers.length);
       case CustomChartType.barMultiples:
-        return generateSequentialPalette(getDataAsMultiples().first.values.length);
+        return generateSequentialPalette(getDataAsMultiples().first.values.length, Colors.blue[100]!, Colors.blue[800]!);
       case CustomChartType.barStacked:
-        return generateSequentialPalette(getDataAsMultiples().first.values.length);
+        return generateSequentialPalette(getDataAsMultiples().first.values.length, Colors.blue[100]!, Colors.blue[800]!);
       default: 
         return [];
     }

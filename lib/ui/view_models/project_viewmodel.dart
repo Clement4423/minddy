@@ -173,6 +173,7 @@ class ProjectViewModel extends ChangeNotifier {
     bool isContentSaved = await AppProject.modifyProperty(projectInfo.path, 'content', _convertMapToJson());
     if (isContentSaved) {
       bool isCurrentPageSaved = await AppProject.modifyProperty(projectInfo.path, 'page', pageIndicatorController.currentPageIndex);
+      await AppProject.modifyProperty(projectInfo.path, 'last_change', DateTime.now().toIso8601String());
       return isCurrentPageSaved;
     }
     return isContentSaved;

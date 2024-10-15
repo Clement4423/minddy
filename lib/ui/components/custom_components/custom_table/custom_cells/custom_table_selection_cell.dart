@@ -130,6 +130,7 @@ class _CustomTableSelectionCellState extends State<CustomTableSelectionCell> {
                 child: CustomSelectionMenu(
                   theme: widget.theme, 
                   menuMaxHeight: 250,
+                  enableSearch: true,
                   buttonStyle: const ButtonStyle(
                     padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 10))
                   ),

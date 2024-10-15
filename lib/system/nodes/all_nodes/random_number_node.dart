@@ -59,7 +59,6 @@ class RandomNumberNode implements INode {
       ..outputs = outputs
       ..outputsTypes = outputsTypes
       ..targets = targets;
-      // TODO : Add the rest of the class
   }
 
   @override
@@ -71,7 +70,6 @@ class RandomNumberNode implements INode {
       'inputsTypes': inputsTypes.map((e) => e.name).toList(),
       'outputsTypes': outputsTypes.map((e) => e.name).toList(),
       'targets': targets.map((e) => e.toString()).toList()
-      // TODO : Add the rest of the class.
     };
     return jsonEncode(map);
   }
@@ -86,8 +84,6 @@ class RandomNumberNode implements INode {
     inputs = inode.inputs;
     inputsTypes = inode.inputsTypes;
     outputsTypes = inode.outputsTypes;
-
-    // TODO : Add the rest of the class
 
     return this;
   }

@@ -7,6 +7,7 @@ import 'package:minddy/system/notifications/notification_handler.dart';
 import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/custom_components/switch_tile.dart';
 import 'package:minddy/ui/components/notifications/notification_widget.dart';
+import 'package:minddy/ui/theme/theme.dart';
 
 
 class PersonalizeViewController extends ChangeNotifier {
@@ -52,6 +53,9 @@ class PersonalizeViewController extends ChangeNotifier {
           notifyListeners();
           break;
       }
+      Future.delayed(const Duration(milliseconds: 260), () { // Duration for the selection menu to close + 10ms
+        AppState.stateChanged();
+      });
     } catch(e) {
       await AppLogs.writeError(e, "settings_personalize_controller.dart");
     }
@@ -65,12 +69,10 @@ class PersonalizeViewController extends ChangeNotifier {
 
   _setThemeMode(newValue) async {
     await AppConfig.modifyConfigValue("using_system_theme", newValue);
-    AppState.stateChanged();
   }
 
   _setDarkMode(newValue) async {
     await AppConfig.modifyConfigValue("dark_mode", newValue);
-    AppState.stateChanged();
   }
 
   setBWMode(bool newValue) async {
@@ -110,10 +112,13 @@ class PersonalizeViewController extends ChangeNotifier {
 
   
 
-  List<CustomSelectionMenuItem> getThemeItems(BuildContext context) {
+  List<CustomSelectionMenuItem> getThemeItems(BuildContext context, StylesGetters theme) {
     return [
       CustomSelectionMenuItem(
         label: S.of(context).settings_using_system_theme, 
+        foregroundColor: menuThemeTitle == S.of(context).settings_using_system_theme 
+          ? theme.secondary 
+          : theme.onPrimary,
         icon: null, 
         onTap: () async {
           await treatThemeValue(ThemeMode.system);
@@ -121,6 +126,9 @@ class PersonalizeViewController extends ChangeNotifier {
       ),
       CustomSelectionMenuItem(
         label: S.of(context).settings_using_dark_mode, 
+        foregroundColor: menuThemeTitle == S.of(context).settings_using_dark_mode
+          ? theme.secondary 
+          : theme.onPrimary,
         icon: null, 
         onTap: () async {
           await treatThemeValue(ThemeMode.dark);
@@ -128,6 +136,9 @@ class PersonalizeViewController extends ChangeNotifier {
       ),
       CustomSelectionMenuItem(
         label: S.of(context).settings_using_light_mode, 
+        foregroundColor: menuThemeTitle == S.of(context).settings_using_light_mode
+          ? theme.secondary 
+          : theme.onPrimary,
         icon: null, 
         onTap: () async {
           await treatThemeValue(ThemeMode.light);
@@ -157,9 +168,9 @@ class PersonalizeViewController extends ChangeNotifier {
 
   // Language settings
   static const Map<String, String> _languagesNames = {
-    'fr_FR': 'Français (France)',
     'en': 'English',
-    'es_ES': 'Español (España)'
+    'es_ES': 'Español (España)',
+    'fr_FR': 'Français (France)',
   };
 
 
@@ -194,12 +205,13 @@ class PersonalizeViewController extends ChangeNotifier {
   }
 }
 
-  List<CustomSelectionMenuItem> getLanguageItems(BuildContext context) {
+  List<CustomSelectionMenuItem> getLanguageItems(BuildContext context, StylesGetters theme) {
     List<CustomSelectionMenuItem> elements = [];
     _languagesNames.forEach((languageCode, languageFullName) {
       elements.add(
         CustomSelectionMenuItem(
           label: languageFullName,
+          foregroundColor: menuLanguageTitle == languageFullName ? theme.secondary : theme.onPrimary,
           icon: null,
           onTap: () async {
             if (languageFullName != menuLanguageTitle) {
