@@ -120,6 +120,7 @@ class _ProjectCardState extends State<ProjectCard> {
                                               : widget.projectInfo.name, 
                                             textAlign: TextAlign.center,
                                             overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
                                             style: theme.titleMedium.
                                             copyWith(color: isHovering
                                               ? theme.onSecondary

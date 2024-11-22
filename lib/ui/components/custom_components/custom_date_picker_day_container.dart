@@ -99,7 +99,11 @@ class _DayContainerState extends State<CustomDatePickerDayContainer> {
                 child: Text(
                   widget.date.day.toString(),
                   style: TextStyle(
-                    color: (widget.isGreyedOut || !widget.isSelectable) ? Colors.grey : (widget.isSelected ? widget.theme.onSecondary : null),
+                    color: (widget.isGreyedOut || !widget.isSelectable) 
+                      ? widget.theme.onPrimary.withOpacity(0.3) 
+                      : widget.isSelected 
+                        ? widget.theme.onSecondary 
+                        : null,
                   ),
                 ),
               ),

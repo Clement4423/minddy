@@ -216,7 +216,7 @@ class _CustomSelectionMenuTileMenuState extends State<CustomSelectionMenuTileMen
       ),
       splashColor: widget.theme.primary.withOpacity(0.1),
       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-      trailing: Icon(Icons.arrow_forward_ios_rounded, size: 14, color: widget.theme.onPrimary),
+      trailing: Icon(Icons.arrow_forward_ios_rounded, size: 14, color: widget.inititalItem.foregroundColor ?? widget.theme.onPrimary),
       tileColor: Colors.transparent,
       onTap: () {
         if (_overlayEntry != null) {

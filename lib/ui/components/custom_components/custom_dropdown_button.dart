@@ -10,6 +10,7 @@ class CustomDropdownButton extends StatelessWidget {
   final List<CustomSelectionMenuItem> items;
   final Color? backgroundColor;
   final Color? foregroundColor;
+  final double? menuMaxHeight;
   final bool enabled;
   final bool enableSearch;
 
@@ -22,6 +23,7 @@ class CustomDropdownButton extends StatelessWidget {
     required this.theme,
     this.enabled = true,
     this.enableSearch = false,
+    this.menuMaxHeight,
     this.backgroundColor,
     this.foregroundColor
   });
@@ -48,7 +50,7 @@ class CustomDropdownButton extends StatelessWidget {
               ),
             ),
           Container(
-            width: menuTitle != null ? (_calculateTextWidth(selectedOptionTitle, theme.bodyMedium) + 11 + 20) : width, // Here we add the selectedOptionTitle size, the Container padding, and the icon size
+            width: menuTitle != null ? (_calculateTextWidth(selectedOptionTitle, theme.bodyMedium) + 11 + 20) : width - 26, // Here we add the selectedOptionTitle size, the Container padding, and the icon size
             height: 40,
             constraints: BoxConstraints(
               maxWidth: width - 15 - _calculateTextWidth(menuTitle ?? '', theme.titleMedium), // Here we remove the above padding and menu title size
@@ -63,6 +65,7 @@ class CustomDropdownButton extends StatelessWidget {
               enabled: enabled,
               theme: theme, 
               items: items, 
+              menuMaxHeight: menuMaxHeight,
               enableSearch: enableSearch,
               buttonStyle: const ButtonStyle(
                 backgroundColor: WidgetStatePropertyAll(Color.fromRGBO(0, 0, 0, 0)),

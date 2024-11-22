@@ -6,8 +6,8 @@ import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-class CustomInputDatePicker extends StatefulWidget {
-  const CustomInputDatePicker({
+class CustomDatePickerInput extends StatefulWidget {
+  const CustomDatePickerInput({
     super.key, 
     required this.onCompleted, 
     required this.initialValue, 
@@ -27,10 +27,10 @@ class CustomInputDatePicker extends StatefulWidget {
   final DateTime? timeUpperLimit;
 
   @override
-  State<CustomInputDatePicker> createState() => _CustomInputDatePickerState();
+  State<CustomDatePickerInput> createState() => _CustomDatePickerInputState();
 }
 
-class _CustomInputDatePickerState extends State<CustomInputDatePicker> {
+class _CustomDatePickerInputState extends State<CustomDatePickerInput> {
 
   bool useUsFormat = false;
   String hint = '';
@@ -405,7 +405,9 @@ void _validateTime(TextEditingController timeController, FocusNode focusNode, Fu
       }
     }
 
-    minutes = minuteValue.clamp(timeLowerLimit?.minute ?? 00, timeUpperLimit?.minute ?? 59).toString();
+    if (hourValue == timeLowerLimit?.hour) {
+      minutes = minuteValue.clamp(timeLowerLimit?.minute ?? 00, timeUpperLimit?.minute ?? 59).toString();
+    }
 
     if (minutes.length == 1) {
       minutes = '0$minutes';

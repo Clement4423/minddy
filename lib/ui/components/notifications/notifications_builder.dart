@@ -35,8 +35,7 @@ class _NotificationsBuilderState extends State<NotificationsBuilder> {
                 child: NotificationWidget(
                   key: UniqueKey(),
                   state: notification,
-                  theme: theme,
-                  ammountOfNotifications: widget.notifications.length,
+                  theme: theme
                 ),
               );
             })

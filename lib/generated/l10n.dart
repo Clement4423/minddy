@@ -310,6 +310,387 @@ class S {
     );
   }
 
+  /// `Main calendar`
+  String get calendar_main_calendar_name {
+    return Intl.message(
+      'Main calendar',
+      name: 'calendar_main_calendar_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Event`
+  String get calendar_button_new_event_button_title {
+    return Intl.message(
+      'Event',
+      name: 'calendar_button_new_event_button_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Due date`
+  String get calendar_button_new_due_date_button_title {
+    return Intl.message(
+      'Due date',
+      name: 'calendar_button_new_due_date_button_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calendar`
+  String get calendar_button_calendar_title {
+    return Intl.message(
+      'Calendar',
+      name: 'calendar_button_calendar_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next events`
+  String get calendar_button_next_events_title {
+    return Intl.message(
+      'Next events',
+      name: 'calendar_button_next_events_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Due dates`
+  String get calendar_button_next_due_dates_title {
+    return Intl.message(
+      'Due dates',
+      name: 'calendar_button_next_due_dates_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add event`
+  String get calendar_button_add_event_button_tooltip {
+    return Intl.message(
+      'Add event',
+      name: 'calendar_button_add_event_button_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Manage calendar`
+  String get calendar_button_manage_calendar_button_tooltip {
+    return Intl.message(
+      'Manage calendar',
+      name: 'calendar_button_manage_calendar_button_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yesterday`
+  String get calendar_button_event_date_yesterday {
+    return Intl.message(
+      'Yesterday',
+      name: 'calendar_button_event_date_yesterday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today`
+  String get calendar_button_event_date_today {
+    return Intl.message(
+      'Today',
+      name: 'calendar_button_event_date_today',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tomorrow`
+  String get calendar_button_event_date_tomorrow {
+    return Intl.message(
+      'Tomorrow',
+      name: 'calendar_button_event_date_tomorrow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get calendar_button_due_date_cancel_complete {
+    return Intl.message(
+      'Cancel',
+      name: 'calendar_button_due_date_cancel_complete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{eventName} has been completed by {username}`
+  String calendar_button_due_date_has_been_complete(
+      Object eventName, Object username) {
+    return Intl.message(
+      '$eventName has been completed by $username',
+      name: 'calendar_button_due_date_has_been_complete',
+      desc: '',
+      args: [eventName, username],
+    );
+  }
+
+  /// `Not completed yet`
+  String get calendar_event_detailed_preview_not_completed_yet {
+    return Intl.message(
+      'Not completed yet',
+      name: 'calendar_event_detailed_preview_not_completed_yet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Completed by {username}`
+  String calendar_event_detailed_preview_completed_by(Object username) {
+    return Intl.message(
+      'Completed by $username',
+      name: 'calendar_event_detailed_preview_completed_by',
+      desc: '',
+      args: [username],
+    );
+  }
+
+  /// `New event`
+  String get calendar_new_event_title {
+    return Intl.message(
+      'New event',
+      name: 'calendar_new_event_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modify event`
+  String get calendar_modify_event_title {
+    return Intl.message(
+      'Modify event',
+      name: 'calendar_modify_event_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New due date`
+  String get calendar_new_due_date_title {
+    return Intl.message(
+      'New due date',
+      name: 'calendar_new_due_date_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modify due date`
+  String get calendar_modify_due_date_title {
+    return Intl.message(
+      'Modify due date',
+      name: 'calendar_modify_due_date_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Whole day`
+  String get calendar_new_event_whole_day {
+    return Intl.message(
+      'Whole day',
+      name: 'calendar_new_event_whole_day',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recurrence`
+  String get calendar_new_event_recurrence_subtitle {
+    return Intl.message(
+      'Recurrence',
+      name: 'calendar_new_event_recurrence_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Never`
+  String get calendar_new_event_recurrence_type_never {
+    return Intl.message(
+      'Never',
+      name: 'calendar_new_event_recurrence_type_never',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Every day`
+  String get calendar_new_event_recurrence_type_everyday {
+    return Intl.message(
+      'Every day',
+      name: 'calendar_new_event_recurrence_type_everyday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Every week`
+  String get calendar_new_event_recurrence_type_everyweek {
+    return Intl.message(
+      'Every week',
+      name: 'calendar_new_event_recurrence_type_everyweek',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Every month`
+  String get calendar_new_event_recurrence_type_everymonth {
+    return Intl.message(
+      'Every month',
+      name: 'calendar_new_event_recurrence_type_everymonth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Every year`
+  String get calendar_new_event_recurrence_type_everyyear {
+    return Intl.message(
+      'Every year',
+      name: 'calendar_new_event_recurrence_type_everyyear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select a calendar`
+  String get calendar_new_event_recurrence_select_calendar {
+    return Intl.message(
+      'Select a calendar',
+      name: 'calendar_new_event_recurrence_select_calendar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open week-view`
+  String get calendar_button_open_week_view_button_tooltip {
+    return Intl.message(
+      'Open week-view',
+      name: 'calendar_button_open_week_view_button_tooltip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only this event`
+  String get calendar_button_event_selection_menu_only_this_event {
+    return Intl.message(
+      'Only this event',
+      name: 'calendar_button_event_selection_menu_only_this_event',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All occurrences`
+  String get calendar_button_event_selection_menu_all_occurence {
+    return Intl.message(
+      'All occurrences',
+      name: 'calendar_button_event_selection_menu_all_occurence',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are free for the next 5 days`
+  String get calendar_button_free_for_next_days {
+    return Intl.message(
+      'You are free for the next 5 days',
+      name: 'calendar_button_free_for_next_days',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All calendars`
+  String get calendar_button_manage_calendars_sub_menu_all_calendars_subtitle {
+    return Intl.message(
+      'All calendars',
+      name: 'calendar_button_manage_calendars_sub_menu_all_calendars_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New calendar`
+  String get calendar_button_manage_calendars_sub_menu_add_calendar {
+    return Intl.message(
+      'New calendar',
+      name: 'calendar_button_manage_calendars_sub_menu_add_calendar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modify calendar`
+  String get calendar_button_manage_calendars_sub_menu_modify_calendar {
+    return Intl.message(
+      'Modify calendar',
+      name: 'calendar_button_manage_calendars_sub_menu_modify_calendar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get calendar_button_new_calendar_calendar_subtitle_name {
+    return Intl.message(
+      'Name',
+      name: 'calendar_button_new_calendar_calendar_subtitle_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Personalized`
+  String get calendar_button_new_calendar_personalized_color {
+    return Intl.message(
+      'Personalized',
+      name: 'calendar_button_new_calendar_personalized_color',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private calendar`
+  String get calendar_button_new_calendar_private_calendar_title {
+    return Intl.message(
+      'Private calendar',
+      name: 'calendar_button_new_calendar_private_calendar_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `By enabling this, the password will be required to see events from this calendar`
+  String get calendar_button_new_calendar_private_calendar_explanation {
+    return Intl.message(
+      'By enabling this, the password will be required to see events from this calendar',
+      name: 'calendar_button_new_calendar_private_calendar_explanation',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `General`
   String get center_menu_general {
     return Intl.message(
@@ -2951,6 +3332,16 @@ class S {
     return Intl.message(
       'Enlarge chart',
       name: 'custom_chart_grid_extend_chart',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Opacity`
+  String get custom_color_picker_opacity_tooltip {
+    return Intl.message(
+      'Opacity',
+      name: 'custom_color_picker_opacity_tooltip',
       desc: '',
       args: [],
     );

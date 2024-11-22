@@ -10,6 +10,8 @@ import 'package:minddy/ui/theme/theme.dart';
 class CustomSelectionMenuItem {
   String label;
   TextStyle? labelStyle;
+  String? tooltipTitle;
+  String? tooltip;
   IconData? icon;
   /// This will replace the icon if provided.
   Widget? iconReplacement;
@@ -31,6 +33,8 @@ class CustomSelectionMenuItem {
     required this.onTap, 
     this.foregroundColor, 
     this.enabled = true,
+    this.tooltipTitle,
+    this.tooltip,
     this.items
   });
 }
@@ -166,9 +170,10 @@ class _CustomSelectionMenuState extends State<CustomSelectionMenu> with SingleTi
 
     var screenSize = MediaQuery.of(context).size;
 
+
     double menuHeight = (widget.enableSearch && widget.items.length > 3 ? widget.items.length + 1 : widget.items.length) * itemHeight;
     double menuWidth = _calculateMenuWidth();
-
+    
     if (widget.menuMaxWidth != null && menuWidth > widget.menuMaxWidth!) {
       menuWidth = widget.menuMaxWidth!;
     }

@@ -33,7 +33,7 @@ class _ProjectSubTaskElementState extends State<ProjectSubTaskElement> {
             borderRadius: BorderRadius.circular(15),
             child: Dismissible(
               key: UniqueKey(),
-              onDismissed: (direction) {
+              onDismissed: (direction) async {
                 if (direction == DismissDirection.startToEnd) {
                   widget.controller.deleteSubtask(widget.parentTaskKey, widget.key ?? UniqueKey());
                 }

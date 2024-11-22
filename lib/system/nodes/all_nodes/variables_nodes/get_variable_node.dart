@@ -43,7 +43,6 @@ class GetVariableNode implements IVariableNode {
 
   void main() { // (Can be async)
     if (selectedVariableId == null) {
-      print("returning selected");
       return;
     } else {
       NodeTreeVariable? variable = variablesManager.getVariable(selectedVariableId!);

@@ -93,106 +93,119 @@ class _NodeWidgetBodyState extends State<NodeWidgetBody> {
           },
           onTapDown: (details) {widget.nodeWidget.functions.handleTapDown(widget.nodeWidget);},
           onTapUp: (details) {widget.nodeWidget.functions.handleTapUp(widget.nodeWidget);},
-          // Whole node
-          child: Stack(
-            children: [
-              Container(
-                width: widget.nodeWidget.width,
-                height: widget.needToBeSmaller 
-                  ? (widget.nodeWidget.height - (widget.inputsThatAreNoLongerNeeded.length * 20)) 
-                  : widget.nodeWidget.height,
-                decoration: BoxDecoration(
-                  color: widget.nodeWidget.theme.primary,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: widget.nodeWidget.theme.shadow.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4)
-                    )
-                  ],
-                  border: Border.all(
-                    color: isSelected 
-                      ? isLastSelected 
-                        ? DefaultAppColors.blue.color
-                        : DefaultAppColors.yellow.color
-                      : Colors.transparent, 
-                    width: 1.2,
-                    strokeAlign: BorderSide.strokeAlignOutside
+          child: SizedBox(
+            width: widget.nodeWidget.width + 8,
+            height: widget.needToBeSmaller 
+              ? (widget.nodeWidget.height - (widget.inputsThatAreNoLongerNeeded.length * 20)) 
+              : widget.nodeWidget.height,
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Container(
+                  width: widget.nodeWidget.width,
+                  height: widget.needToBeSmaller 
+                    ? (widget.nodeWidget.height - (widget.inputsThatAreNoLongerNeeded.length * 20)) 
+                    : widget.nodeWidget.height,
+                  decoration: BoxDecoration(
+                    color: widget.nodeWidget.theme.primary,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: widget.nodeWidget.theme.shadow.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4)
+                      )
+                    ],
+                    border: Border.all(
+                      color: isSelected 
+                        ? isLastSelected 
+                          ? DefaultAppColors.blue.color
+                          : DefaultAppColors.yellow.color
+                        : Colors.transparent, 
+                      width: 1.2,
+                      strokeAlign: BorderSide.strokeAlignOutside
+                    ),
+                  ),
+                  // Node body
+                  child: Column(
+                    children: [
+                      // Node top part, with title
+                      Tooltip(
+                        richMessage: WidgetSpan(
+                          alignment: PlaceholderAlignment.baseline,
+                          baseline: TextBaseline.alphabetic,
+                          child: Container(
+                            constraints: const BoxConstraints(
+                              maxWidth: 350,
+                            ),
+                            child: Text(
+                              widget.nodeDescription,
+                              style: widget.theme.bodyMedium
+                              .copyWith(color: widget.theme.onPrimary)
+                            ),
+                          )
+                        ),
+                        waitDuration: const Duration(seconds: 1),
+                        decoration: BoxDecoration(
+                          color: widget.theme.primary,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: const Offset(5, 5),
+                              blurRadius: 15,
+                              color: widget.theme.shadow.withOpacity(0.20),
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          height: 15,
+                          width: widget.nodeWidget.width,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10)
+                            ),
+                            color: nodeColor
+                          ),
+                          child: Center(
+                            // Node title
+                            child: Text(
+                              widget.nodeTitle,
+                              style: widget.nodeWidget.theme.titleMedium.copyWith(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 8,
+                                color: hasSufficientContrast(Colors.black, nodeColor) 
+                                  ? Colors.black 
+                                  : Colors.white
+                              ),
+                              maxLines: 1,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                // Node body
-                child: Column(
-                  children: [
-                    // Node top part, with title
-                    Tooltip(
-                      richMessage: WidgetSpan(
-                        alignment: PlaceholderAlignment.baseline,
-                        baseline: TextBaseline.alphabetic,
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            maxWidth: 350,
-                          ),
-                          child: Text(
-                            widget.nodeDescription,
-                            style: widget.theme.bodyMedium
-                            .copyWith(color: widget.theme.onPrimary)
-                          ),
-                        )
-                      ),
-                      waitDuration: const Duration(seconds: 1),
-                      decoration: BoxDecoration(
-                        color: widget.theme.primary,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            offset: const Offset(5, 5),
-                            blurRadius: 15,
-                            color: widget.theme.shadow.withOpacity(0.20),
-                          ),
-                        ],
-                      ),
-                      child: Container(
-                        height: 15,
-                        width: widget.nodeWidget.width,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10)
-                          ),
-                          color: nodeColor
-                        ),
-                        child: Center(
-                          // Node title
-                          child: Text(
-                            widget.nodeTitle,
-                            style: widget.nodeWidget.theme.titleMedium.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 8,
-                              color: hasSufficientContrast(Colors.black, nodeColor) 
-                                ? Colors.black 
-                                : Colors.white
-                            ),
-                            maxLines: 1,
-                          ),
-                        ),
-                      ),
-                    ),
-                    ...widget.children,
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Column(
+                    children: [
+                      ...widget.children,
+                    ],
+                  ),
                 ),
-              ),
-              // Do not modify
-              if (widget.currentCursorOffset != null)
-                NodeWidgetCursorConnectionPainter(
-                  draggingStartPortOffset: widget.draggingStartPortOffset, 
-                  isDraggingStartPortFromAnotherPort: widget.isDraggingStartPortFromAnotherPort,
-                  widget: widget.nodeWidget, 
-                  inputPortInfo: widget.inputPortInfo, 
-                  currentCursorOffset: widget.currentCursorOffset, 
-                  isSelected: isSelected
-                ),
-            ],
+                // Do not modify
+                if (widget.currentCursorOffset != null)
+                  NodeWidgetCursorConnectionPainter(
+                    draggingStartPortOffset: widget.draggingStartPortOffset.translate(-((widget.nodeWidget.width /  2) + 4), 0), 
+                    isDraggingStartPortFromAnotherPort: widget.isDraggingStartPortFromAnotherPort,
+                    widget: widget.nodeWidget, 
+                    inputPortInfo: widget.inputPortInfo, 
+                    currentCursorOffset: widget.isDraggingStartPortFromAnotherPort ? widget.currentCursorOffset?.translate(-((widget.nodeWidget.width /  2) + 4), 0) : widget.currentCursorOffset, 
+                    isSelected: isSelected
+                  ),
+              ],
+            ),
           ),
         ),
       ),

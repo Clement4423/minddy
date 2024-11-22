@@ -9,7 +9,7 @@ import 'package:minddy/ui/components/custom_components/custom_date_picker.dart';
 import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
 
 class AppDate {
-  static Future<CustomDatePickerResult?> pickDate(BuildContext context, {DateTime? initialDate, DateTime? initialEndDate, String? title, CustomDatePickerMode mode = CustomDatePickerMode.single, bool useTime = false}) async {
+  static Future<CustomDatePickerResult?> pickDate(BuildContext context, {DateTime? initialDate, DateTime? initialEndDate, String? title, CustomDatePickerMode mode = CustomDatePickerMode.single, bool useTime = false, bool allowChangeUseTime = true}) async {
     Completer<CustomDatePickerResult?> completer = Completer();
 
     if (title == null) {
@@ -30,6 +30,7 @@ class AppDate {
         initialEndDate: initialEndDate,
         mode: mode,
         useTime: useTime,
+        allowChangeUseTime: allowChangeUseTime,
         onSelected: (result) {
           completer.complete(result);
         }
@@ -60,6 +61,26 @@ class AppDate {
   static Future<String?> formatIso8601StringToPreferedDateFormatString(String iso8601String, [bool useTime = true]) async {
     try {
       bool useUsFormat = await AppConfig.getConfigValue('prefer_us_date_format') ?? false;
+      DateTime dateTime = DateTime.parse(iso8601String);
+
+      String year = dateTime.year.toString();
+      String month = padIfNecessary( dateTime.month);
+      String day = padIfNecessary(dateTime.day);
+      String hour = padIfNecessary(dateTime.hour);
+      String minute = padIfNecessary(dateTime.minute);
+
+      if (useUsFormat) {
+        return '$month/$day/$year${useTime ? ' $hour:$minute' : ''}';
+      } else {
+        return '$day/$month/$year${useTime ? ' $hour:$minute' : ''}';
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static String? formatIso8601StringToPreferedDateFormatStringSync(String iso8601String, bool useUsFormat, [bool useTime = true]) {
+    try {
       DateTime dateTime = DateTime.parse(iso8601String);
 
       String year = dateTime.year.toString();

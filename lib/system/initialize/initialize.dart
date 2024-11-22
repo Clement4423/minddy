@@ -4,17 +4,47 @@ import 'package:minddy/system/files/app_logs.dart';
 import 'package:minddy/system/initialize/static_variables.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
+class _InitialisationStep {
+  Future<bool> Function() execute;
+  String errorMessage;
+
+  _InitialisationStep({
+    required this.execute, required this.errorMessage
+  });
+}
+
+_InitialisationStep _loadConfigFile = _InitialisationStep(
+  execute: () async {
+    bool isLoaded = await AppConfig.loadConfigFile();
+    StaticVariables.fileSource.documentDirectoryPath = await StaticVariables.fileSource.getAppDirectoryPath();
+    return isLoaded;
+  },
+  errorMessage: 'Failed to initialize config file'
+);
+
+_InitialisationStep _initalizeTheme = _InitialisationStep(
+  execute: () async {
+    return await AppTheme.initializeTheme();
+  },
+  errorMessage: 'Failed to initialize theme'
+);
+
 /// This method will initlalize all apps components, so that later on, they will work properly.
 Future<bool> initializeApp() async {
-  bool isConfigFileLoaded = await AppConfig.loadConfigFile();
-  if (isConfigFileLoaded) {
-    StaticVariables.fileSource.documentDirectoryPath = await StaticVariables.fileSource.getAppDirectoryPath();
-    bool isThemeInitialized = await AppTheme.initializeTheme();
-    if (isThemeInitialized) {
-      return true;
+  List<_InitialisationStep> steps = [
+    _loadConfigFile,
+    _initalizeTheme
+  ];
+
+  for (_InitialisationStep step in steps) {
+    bool isInitialized = await step.execute();
+    if (!isInitialized) {
+      await AppLogs.writeError(step.errorMessage, 'initialize.dart');
+      return false;
     }
   }
-  return false;
+
+  return true;
 }
 
 const List<String> supportedLocales = [

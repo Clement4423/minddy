@@ -47,7 +47,7 @@ class _NodeWidgetOutputState extends State<NodeWidgetOutput> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: widget.portInfo.node.width,
+      width: widget.portInfo.node.width + 8, // Add 8 to ensure clickability
       height: 15,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -61,8 +61,8 @@ class _NodeWidgetOutputState extends State<NodeWidgetOutput> {
             ),
             maxLines: 1,
           ),
-          Transform.translate(
-            offset: const Offset(4, 0),
+          Padding(
+            padding: const EdgeInsets.only(left: 4),
             child: NodePortWidget(
               portInfo: widget.portInfo, 
               color: getCorrectColorBasedOnNodeDataType(type), 

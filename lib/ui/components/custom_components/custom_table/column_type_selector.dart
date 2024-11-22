@@ -175,6 +175,8 @@ class _ColumnTypeSelectorState extends State<ColumnTypeSelector> {
             CustomSelectionMenu(
               type: CustomSelectionMenuButttonType.icon,
               buttonStyle: const ButtonStyle(),
+              enableSearch: true,
+              menuMaxHeight: 300,
               theme: widget.theme, 
               items: [
                 CustomSelectionMenuItem(

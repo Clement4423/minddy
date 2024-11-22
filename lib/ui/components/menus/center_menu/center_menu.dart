@@ -102,7 +102,7 @@ class _CenterMenuState extends State<_CenterMenu> with SingleTickerProviderState
         begin: 0.0,
         end: 1.0
       ),
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 250),
       builder: (context, opacity, child) {
         return Opacity(
           opacity: opacity,

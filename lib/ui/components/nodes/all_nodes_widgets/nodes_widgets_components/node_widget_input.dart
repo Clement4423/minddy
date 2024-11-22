@@ -69,12 +69,12 @@ class _NodeWidgetInputState extends State<NodeWidgetInput> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: widget.portInfo.node.width,
+      width: widget.portInfo.node.width + 8,
       height: 15,
       child: Row(
         children: [
-          Transform.translate(
-            offset: const Offset(-4, 0),
+          Padding(
+            padding: const EdgeInsets.only(right: 4),
             child: NodePortWidget(
               portInfo: widget.portInfo, 
               color: widget.portColor ?? getCorrectColorBasedOnNodeDataType(type), 

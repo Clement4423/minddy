@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/model/custom_appbar_button_model.dart';
 import 'package:minddy/system/model/projects_modules.dart';
 import 'package:minddy/system/shortcuts/shortcuts_activators.dart';
@@ -246,16 +247,28 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
                                         pageController: _pageController,
                                       )
                                     ),
-                                    const Positioned(
-                                      bottom: 0,
-                                      right: 0,
-                                      child: CalendarButton(),
-                                    ),
+                                    // Articles
                                     const Positioned(
                                       bottom: 0,
                                       right: 0,
                                       left: 0,
                                       child: ArticlesMenuButton(),
+                                    ),
+                                    // Calendar
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: FutureBuilder(
+                                        future: AppConfig.getConfigValue('prefer_us_date_format'),
+                                        initialData: false,
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            return CalendarButton(useUsDateFormat: snapshot.data);
+                                          } else {
+                                            return const SizedBox.shrink();
+                                          }
+                                        }
+                                      ),
                                     ),
                                   ],
                                 );

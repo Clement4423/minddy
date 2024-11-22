@@ -7,7 +7,7 @@ import 'package:minddy/system/model/custom_date_picker_mode.dart';
 import 'package:minddy/system/model/custom_date_picker_result.dart';
 import 'package:minddy/system/model/default_app_color.dart';
 import 'package:minddy/ui/components/custom_components/custom_date_picker_day_container.dart';
-import 'package:minddy/ui/components/custom_components/custom_input_date_picker.dart';
+import 'package:minddy/ui/components/custom_components/custom_date_picker_input.dart';
 import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/components/custom_components/switch_tile.dart';
@@ -21,7 +21,8 @@ class CustomDatePicker extends StatefulWidget {
     this.initialStartDate,
     this.initialEndDate,
     this.mode = CustomDatePickerMode.single,
-    this.useTime = false
+    this.useTime = false,
+    this.allowChangeUseTime = true
   });
 
   final String title;
@@ -30,6 +31,7 @@ class CustomDatePicker extends StatefulWidget {
   final CustomDatePickerMode mode;
   final Function(CustomDatePickerResult?) onSelected;
   final bool useTime;
+  final bool allowChangeUseTime;
 
   @override
   State<CustomDatePicker> createState() => _CustomDatePickerState();
@@ -166,11 +168,13 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                     labelStyle: theme.bodyMedium.copyWith(color: index + 1 == DateTime.now().month && month.year == DateTime.now().year ? DefaultAppColors.blue.color : theme.onPrimary),
                     icon: null,
                     onTap: () {
-                      if (isEndDate) {
-                        _endMonth = DateTime(month.year, index + 1, 1);
-                      } else {
-                        _currentMonth = DateTime(month.year, index + 1, 1);
-                      }
+                      setState(() {
+                        if (isEndDate) {
+                          _endMonth = DateTime(month.year, index + 1, 1);
+                        } else {
+                          _currentMonth = DateTime(month.year, index + 1, 1);
+                        }
+                      });
                     }
                   );
                 },
@@ -432,27 +436,31 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           _endDate = null;
           break;
         case CustomDatePickerMode.range:
-          if (_startDate == null || _endDate != null || date.isBefore(_startDate!)) {
-            if (_startDate == date) {
-              _startDate = null;
-            } else {
+          if (_startDate != null && _endDate != null) {
+            if (date.isAtSameMomentAs(_endDate!) || date.isAtSameMomentAs(_startDate!)) {
               _startDate = date;
-            }
-            _endDate = null;
-          } else {
-            if (date == _startDate) {
-              if (isEndDate) {
-                _endDate = date; 
-              } else {
-                _startDate = null;
-                _endDate = null;
-              }
-            } else {
               _endDate = date;
+              return;
             }
+            else if (date.isAfter(_startDate!)) {
+              _endDate = date;
+              return;
+            }
+          } 
+          
+          if (_startDate == null || date.isBefore(_startDate!)) {
+            _startDate = date;
+            _endDate = date;
+          } else if (date == _endDate) {
+            _startDate = date;
+          } else if (date.isAfter(_startDate!)) {
+            _endDate = date;
+          } else if (date == _startDate) {
+            _startDate = null;
+            _endDate = null;
           }
           break;
-      }
+        }
     });
   }
 
@@ -473,6 +481,10 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
       decoration: BoxDecoration(
         color: theme.primaryContainer,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: theme.onPrimary.withOpacity(theme.brightness == Brightness.light ? 1 : 0.2),
+          width: 0.5
+        )
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -507,27 +519,29 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: SizedBox(
-                        width: 160,
-                        height: 60,
-                        child: SwitchTile(
-                          useTime, 
-                          S.of(context).custom_date_picker_include_hour, 
-                          (newValue) {
-                            setState(() {
-                              useTime = newValue;
-                              if (!useTime) {
-                                _startTime = null;
-                                _endTime = null;
-                              }
-                            });
-                          }, 
-                          false
+                    if (widget.allowChangeUseTime)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: SizedBox(
+                          width: 160,
+                          height: 60,
+                          child: SwitchTile(
+                            useTime, 
+                            enabled: widget.allowChangeUseTime,
+                            S.of(context).custom_date_picker_include_hour, 
+                            (newValue) {
+                              setState(() {
+                                useTime = newValue;
+                                if (!useTime) {
+                                  _startTime = null;
+                                  _endTime = null;
+                                }
+                              });
+                            }, 
+                            false
+                          ),
                         ),
                       ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: SizedBox(
@@ -560,32 +574,14 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     switch (widget.mode) {
       case CustomDatePickerMode.single:
         if (_startDate != null) {
-          _startDate = DateTime(
-            _startDate!.year,
-            _startDate!.month,
-            _startDate!.day,
-            _startTime?.hour ?? 0,
-            _startTime?.minute ?? 0
-          );
+          _startDate = _startDate!.copyWith(hour: _startTime?.hour, minute: _startTime?.minute);
           return CustomDatePickerResult([_startDate!]);
         }
         
       case CustomDatePickerMode.range:
         if (_startDate != null && _endDate != null) {
-          _startDate = DateTime(
-            _startDate!.year,
-            _startDate!.month,
-            _startDate!.day,
-            _startTime?.hour ?? 0,
-            _startTime?.minute ?? 0
-          );
-          _endDate = DateTime(
-            _endDate!.year,
-            _endDate!.month,
-            _endDate!.day,
-            _endTime?.hour ?? 0,
-            _endTime?.minute ?? 0
-          );
+          _startDate = _startDate!.copyWith(hour: _startTime?.hour, minute: _startTime?.minute);
+          _endDate = _endDate!.copyWith(hour: _endTime?.hour, minute: _endTime?.minute);
           return CustomDatePickerResult(getDateRange());
         }
     }
@@ -597,7 +593,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     if (widget.mode == CustomDatePickerMode.single) {
       return Padding(
         padding: const EdgeInsets.all(10),
-        child: CustomInputDatePicker(
+        child: CustomDatePickerInput(
           key: UniqueKey(),
           onTimeChanged: (value) {
             if (value != null) {
@@ -622,7 +618,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            CustomInputDatePicker(
+            CustomDatePickerInput(
               key: UniqueKey(),
               onTimeChanged: (value) {
                   if (value != null) {
@@ -649,7 +645,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10), 
-              child: CustomInputDatePicker(
+              child: CustomDatePickerInput(
                 key: UniqueKey(),
                 onTimeChanged: (value) {
                   if (value != null) {

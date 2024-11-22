@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
+import 'package:minddy/ui/components/custom_components/custom_selection_menu_tooltip.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-class CustomSelectionMenuListTile extends StatelessWidget {
+OverlayEntry? _tooltipEntry;
+
+// ignore: must_be_immutable
+class CustomSelectionMenuListTile extends StatefulWidget {
   const CustomSelectionMenuListTile({
     super.key, 
     required this.item, 
@@ -21,45 +25,135 @@ class CustomSelectionMenuListTile extends StatelessWidget {
   final Function dismissOverlay;
 
   @override
+  State<CustomSelectionMenuListTile> createState() => _CustomSelectionMenuListTileState();
+}
+
+class _CustomSelectionMenuListTileState extends State<CustomSelectionMenuListTile> {
+  final GlobalKey tileKey = GlobalKey();
+
+  void _hideTooltip() {
+    _tooltipEntry?.remove();
+    _tooltipEntry = null;
+  }
+
+  void _showTooltip(BuildContext context, CustomSelectionMenuItem item) {
+    RenderBox renderBox = tileKey.currentContext!.findRenderObject() as RenderBox;
+    var buttonSize = renderBox.size;
+    var offset = renderBox.localToGlobal(Offset.zero);
+
+    var screenSize = MediaQuery.of(context).size;
+
+    double availableSpaceRight = screenSize.width - offset.dx - buttonSize.width;
+    double availableSpaceLeft = offset.dx;
+
+    double tooltipWidth = 200.0;
+
+    double tooltipLeft;
+    Alignment tooltipAlignment;
+    if (availableSpaceRight >= tooltipWidth) {
+      tooltipLeft = offset.dx + buttonSize.width + 10;
+      tooltipAlignment = Alignment.centerLeft;
+    } else if (availableSpaceLeft >= tooltipWidth) {
+      tooltipLeft = offset.dx - tooltipWidth - 10;
+      tooltipAlignment = Alignment.centerRight;
+    } else {
+      tooltipLeft = offset.dx + buttonSize.width + 10;
+      tooltipAlignment = Alignment.centerLeft;
+    }
+
+    double tooltipTop = offset.dy + (buttonSize.height / 2) - widget.itemHeight / 2;
+
+    double tooltipHeight = CustomSelectionMenuTooltip.calculateTooltipHeight(item, widget.theme);
+
+    if (tooltipTop + tooltipHeight >= screenSize.height) {
+      tooltipTop = screenSize.height - tooltipHeight - 20;
+    } else if (tooltipTop < 0) {
+      tooltipTop = 20;
+    }
+
+    _tooltipEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        left: tooltipLeft,
+        top: tooltipTop,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Align(
+            alignment: tooltipAlignment,
+            child: CustomSelectionMenuTooltip(
+              item: item,
+              theme: widget.theme,
+              itemHeight: widget.itemHeight
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_tooltipEntry!);  
+  }
+
+  @override
+  void dispose() {
+    if (_tooltipEntry != null) {
+      _tooltipEntry!.remove();
+      _tooltipEntry = null;
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Material(
       type: MaterialType.transparency,
-      child: Container(
-        height: itemHeight,
-        width: menuWidth,
-        decoration: BoxDecoration(
-          border: showBottomBorder
-            ? Border(
-                bottom: BorderSide(
-                  color: theme.onPrimary.withOpacity(theme.brightness == Brightness.light ? 1 : 0.4),
-                  width: 0.5
+      child: MouseRegion(
+        onEnter: (event) {
+          if (widget.item.tooltip != null) {
+            _showTooltip(context, widget.item);
+          }
+        },
+        onExit: (event) {
+          if (widget.item.tooltip != null) {
+            _hideTooltip();
+          }
+        },
+        child: Container(
+          key: tileKey,
+          height: widget.itemHeight,
+          width: widget.menuWidth,
+          decoration: BoxDecoration(
+            border: widget.showBottomBorder
+              ? Border(
+                  bottom: BorderSide(
+                    color: widget.theme.onPrimary.withOpacity(widget.theme.brightness == Brightness.light ? 1 : 0.4),
+                    width: 0.5
+                  )
                 )
-              )
-            : null
-        ),
-        child: ListTile(
-          enabled: item.enabled,
-          title: Text(
-            item.label, 
-            style: item.labelStyle ?? theme.bodyMedium.copyWith(
-              color: item.foregroundColor ?? theme.onPrimary
-            ),
-            overflow: TextOverflow.ellipsis,
+              : null
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-          trailing: item.iconReplacement ?? (item.icon != null 
-            ? Icon(
-                item.icon, 
-                color: item.foregroundColor ?? theme.onPrimary
-              )
-            : null),
-          tileColor: Colors.transparent,
-          onTap: () async {
-            if (item.enabled) {
-              await item.onTap();
-              dismissOverlay();
-            }
-          },
+          child: ListTile(
+            enabled: widget.item.enabled,
+            title: Text(
+              widget.item.label, 
+              style: widget.item.labelStyle ?? widget.theme.bodyMedium.copyWith(
+                color: widget.item.foregroundColor ?? widget.theme.onPrimary
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            trailing: widget.item.iconReplacement ?? (widget.item.icon != null 
+              ? Icon(
+                  widget.item.icon, 
+                  color: widget.item.foregroundColor ?? widget.theme.onPrimary
+                )
+              : null),
+            tileColor: Colors.transparent,
+            onTap: () async {
+              if (widget.item.enabled) {
+                widget.dismissOverlay();
+                await widget.item.onTap();
+              }
+            },
+          ),
         ),
       ),
     );

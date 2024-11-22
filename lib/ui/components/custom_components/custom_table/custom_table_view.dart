@@ -12,7 +12,6 @@ import 'package:minddy/ui/components/custom_components/custom_table/custom_cells
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_selection_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_text_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_cells/custom_table_url_cell.dart';
-import 'package:minddy/ui/components/custom_components/custom_table/custom_table_calculation_explanation_tooltip.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_cell.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_controller.dart';
 import 'package:minddy/ui/components/custom_components/custom_table/custom_table_row_header.dart';
@@ -403,132 +402,98 @@ List<CustomTableCalculationModel> getCalculationsMenuItems(StylesGetters theme, 
           // Handle the tap logic for 'Null'
         },
       ),
-      calculation: 'Null',
-      tooltip: CustomTableCalculationExplanationTooltip(
-        example: '',
-        message: '', // No tooltip for 'Null'
-        theme: theme,
-        child: const SizedBox(), // Empty widget for no tooltip
-      ),
+      calculation: 'Null'
     ),
     CustomTableCalculationModel(
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['sum'] ?? 'Sum',
         labelStyle: getStyle('sum'),
+        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_sum_example,
+        tooltip: S.current.projects_module_spreadsheet_number_operation_sum_message,
         icon: null,
         onTap: () {
           // Handle the tap logic for 'sum'
         },
       ),
-      calculation: 'sum',
-      tooltip: CustomTableCalculationExplanationTooltip(
-        example: S.current.projects_module_spreadsheet_number_operation_sum_example,
-        message: S.current.projects_module_spreadsheet_number_operation_sum_message,
-        theme: theme,
-        child: Text(calculationsOperationsTitles['sum'] ?? 'Sum', style: getStyle('sum')),
-      ),
+      calculation: 'sum'
     ),
     CustomTableCalculationModel(
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['average'] ?? 'Average',
         labelStyle: getStyle('average'),
+        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_average_example,
+        tooltip: S.current.projects_module_spreadsheet_number_operation_average_message,
         icon: null,
         onTap: () {
           // Handle the tap logic for 'average'
         },
       ),
-      calculation: 'average',
-      tooltip: CustomTableCalculationExplanationTooltip(
-        example: S.current.projects_module_spreadsheet_number_operation_average_example,
-        message: S.current.projects_module_spreadsheet_number_operation_average_message,
-        theme: theme,
-        child: Text(calculationsOperationsTitles['average'] ?? 'Average', style: getStyle('average')),
-      ),
+      calculation: 'average'
     ),
     CustomTableCalculationModel(
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['maximum'] ?? 'Maximum',
         labelStyle: getStyle('maximum'),
+        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_maximum_example,
+        tooltip: S.current.projects_module_spreadsheet_number_operation_maximum_message,
         icon: null,
         onTap: () {
           // Handle the tap logic for 'maximum'
         },
       ),
-      calculation: 'maximum',
-      tooltip: CustomTableCalculationExplanationTooltip(
-        example: S.current.projects_module_spreadsheet_number_operation_maximum_example,
-        message: S.current.projects_module_spreadsheet_number_operation_maximum_message,
-        theme: theme,
-        child: Text(calculationsOperationsTitles['maximum'] ?? 'Maximum', style: getStyle('maximum')),
-      ),
+      calculation: 'maximum'
     ),
     CustomTableCalculationModel(
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['minimum'] ?? 'Minimum',
         labelStyle: getStyle('minimum'),
+        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_minimum_example,
+        tooltip: S.current.projects_module_spreadsheet_number_operation_minimum_message,
         icon: null,
         onTap: () {
           // Handle the tap logic for 'minimum'
         },
       ),
-      calculation: 'minimum',
-      tooltip: CustomTableCalculationExplanationTooltip(
-        example: S.current.projects_module_spreadsheet_number_operation_minimum_example,
-        message: S.current.projects_module_spreadsheet_number_operation_minimum_message,
-        theme: theme,
-        child: Text(calculationsOperationsTitles['minimum'] ?? 'Minimum', style: getStyle('minimum')),
-      ),
+      calculation: 'minimum'
     ),
     CustomTableCalculationModel(
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['interval'] ?? 'Interval',
         labelStyle: getStyle('interval'),
+        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_interval_example,
+        tooltip: S.current.projects_module_spreadsheet_number_operation_interval_message,
         icon: null,
         onTap: () {
           // Handle the tap logic for 'interval'
         },
       ),
-      calculation: 'interval',
-      tooltip: CustomTableCalculationExplanationTooltip(
-        example: S.current.projects_module_spreadsheet_number_operation_interval_example,
-        message: S.current.projects_module_spreadsheet_number_operation_interval_message,
-        theme: theme,
-        child: Text(calculationsOperationsTitles['interval'] ?? 'Interval', style: getStyle('interval')),
-      ),
+      calculation: 'interval'
     ),
     CustomTableCalculationModel(
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['median'] ?? 'Median',
         labelStyle: getStyle('median'),
+        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_median_example,
+        tooltip: S.current.projects_module_spreadsheet_number_operation_median_message,
         icon: null,
         onTap: () {
           // Handle the tap logic for 'median'
         },
       ),
-      calculation: 'median',
-      tooltip: CustomTableCalculationExplanationTooltip(
-        example: S.current.projects_module_spreadsheet_number_operation_median_example,
-        message: S.current.projects_module_spreadsheet_number_operation_median_message,
-        theme: theme,
-        child: Text(calculationsOperationsTitles['median'] ?? 'Median', style: getStyle('median')),
-      ),
+      calculation: 'median'
     ),
     CustomTableCalculationModel(
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['standardDeviation'] ?? 'Standard deviation',
         labelStyle: getStyle('standardDeviation'),
+        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_standardDeviation_example,
+        tooltip: S.current.projects_module_spreadsheet_number_operation_standardDeviation_message,
         icon: null,
         onTap: () {
           // Handle the tap logic for 'standardDeviation'
         },
       ),
-      calculation: "standardDeviation",
-      tooltip: CustomTableCalculationExplanationTooltip(
-        example: S.current.projects_module_spreadsheet_number_operation_standardDeviation_example,
-        message: S.current.projects_module_spreadsheet_number_operation_standardDeviation_message,
-        theme: theme,
-        child: Text(calculationsOperationsTitles['standardDeviation'] ?? 'Standard deviation', style: getStyle('standardDeviation')),
-      ),
+      calculation: "standardDeviation"
     ),
   ];
 }
@@ -536,9 +501,8 @@ List<CustomTableCalculationModel> getCalculationsMenuItems(StylesGetters theme, 
 class CustomTableCalculationModel {
   CustomSelectionMenuItem menuItem;
   String calculation;
-  CustomTableCalculationExplanationTooltip tooltip;
 
-  CustomTableCalculationModel({required this.menuItem, required this.calculation, required this.tooltip});
+  CustomTableCalculationModel({required this.menuItem, required this.calculation});
 }
 
 Map<String, String> calculationsOperationsTitles = {

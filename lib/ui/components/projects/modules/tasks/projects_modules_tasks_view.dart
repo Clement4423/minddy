@@ -172,7 +172,6 @@ class _ProjectsTasksModuleState extends State<ProjectsTasksModule> {
                             ),
                           ),
                         )
-                        
                       ]
                     );
                   }

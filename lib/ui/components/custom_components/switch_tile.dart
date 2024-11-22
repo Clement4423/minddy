@@ -59,7 +59,7 @@ class _SwitchTileState extends State<SwitchTile> {
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
     return Padding(
-      padding: widget.margin ?? const EdgeInsets.only(top: 5, bottom: 5),
+      padding: widget.margin ?? const EdgeInsets.only(top: 2, bottom: 2),
       child: MouseRegion(
         cursor: widget.enabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
         child: GestureDetector(

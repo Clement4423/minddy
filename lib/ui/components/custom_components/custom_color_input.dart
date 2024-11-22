@@ -63,10 +63,10 @@ class _CustomColorInputState extends State<CustomColorInput> {
                 child: Container(
                   width: 35,
                   height: 35,
-                  margin: const EdgeInsets.only(left: 7),
+                  margin: const EdgeInsets.only(left: 7.5),
                   decoration: BoxDecoration(
                     color: color,
-                    borderRadius: BorderRadius.circular(7),
+                    borderRadius: BorderRadius.circular(7.5),
                   )
                 ),
               ),

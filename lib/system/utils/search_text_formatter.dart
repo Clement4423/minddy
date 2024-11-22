@@ -1,7 +1,7 @@
 class SearchTextFormatter {
 
   static String format(String input) {
-    final regex = RegExp(r'["\s]');
+    final regex = RegExp(r'["\s,-]');
     final singleQuoteRegex = RegExp(r"[']");
     return _removeAccents(input.toLowerCase().trim().replaceAll(regex, '').replaceAll(singleQuoteRegex, ''));
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/utils/color_spaces_permutations.dart';
 import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
@@ -133,7 +134,7 @@ class _CustomColorPickerInputState extends State<CustomColorPickerInput> {
                       if (hex.isEmpty) {
                         hex = 'FFFFFF';
                       }
-                      
+
                       if (hex.length < 3) {
                         if (hex.length == 2) {
                           hex = hex.padRight(6, hex);
@@ -318,7 +319,7 @@ class _CustomColorPickerInputState extends State<CustomColorPickerInput> {
                   width: 45,
                   height: 30,
                   child: Tooltip(
-                    message: "Opacity",
+                    message: S.of(context).custom_color_picker_opacity_tooltip,
                     waitDuration: const Duration(seconds: 1),
                     child: TextField(
                       key: UniqueKey(),
@@ -328,7 +329,6 @@ class _CustomColorPickerInputState extends State<CustomColorPickerInput> {
                           if (value.isEmpty) {
                             value = "100";
                           }
-                          print("ALPHA ${(num.parse(value) / 100).clamp(0.0, 1.0)}");
                           typedColor = typedColor.withAlpha((num.parse(value) / 100).clamp(0.0, 1.0));
                         }
                       },
