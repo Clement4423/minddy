@@ -691,6 +691,26 @@ class S {
     );
   }
 
+  /// `This event is private.`
+  String get calendar_button_event_preview_private_event {
+    return Intl.message(
+      'This event is private.',
+      name: 'calendar_button_event_preview_private_event',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `See`
+  String get calendar_button_event_preview_see_button {
+    return Intl.message(
+      'See',
+      name: 'calendar_button_event_preview_see_button',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `General`
   String get center_menu_general {
     return Intl.message(

@@ -336,7 +336,7 @@ class _NodeEditorBottomSheetState extends State<NodeEditorBottomSheet> {
                                                   minHeight: 5
                                                 ),
                                                 decoration: BoxDecoration(
-                                                  color: widget.theme.onSurface.withOpacity(0.8),
+                                                  color: widget.theme.onSurface.withValues(alpha: 0.8),
                                                   borderRadius: BorderRadius.circular((appWindowSize.height * 0.005) / 2),
                                                 ),
                                               ),

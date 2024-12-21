@@ -85,7 +85,7 @@ class _CalendarEventDetailedPreviewState extends State<CalendarEventDetailedPrev
         color: widget.theme.primaryContainer,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: widget.theme.onPrimary.withOpacity(widget.theme.brightness == Brightness.light ? 1 : 0.2),
+          color: widget.theme.onPrimary.withValues(alpha: widget.theme.brightness == Brightness.light ? 1 : 0.2),
           width: 0.5
         )
       ),
@@ -198,7 +198,7 @@ class _CalendarEventDetailedPreviewState extends State<CalendarEventDetailedPrev
                         overflow: TextOverflow.ellipsis,
                         style: widget.theme.bodySmall
                           .copyWith(
-                            color: widget.theme.onPrimary.withOpacity(0.8),
+                            color: widget.theme.onPrimary.withValues(alpha: 0.8),
                             fontWeight: FontWeight.w400
                           ),
                       ),

@@ -13,17 +13,16 @@ List<Color> generateCategoricalPalette(int count, [HSVColor? baseColor]) {
   return colors.sublist(1, count + 1);
 }
 
-List<Color> generateSequentialPalette(int count, Color startingColor, [Color? endingColor]) {
+List<Color> generateSequentialPalette(int count, Color startingColor, [Color? endingColor, double difference = 0.35]) {
   if (count < 2) {
     return [startingColor];
   }
   List<Color> colors = [];
-  Color startColor = startingColor;
-  Color endColor = endingColor ?? startingColor.withRed((startColor.red - 50).clamp(0, 255)).withGreen((startColor.green - 50).clamp(0, 255)).withBlue((startColor.blue - 50).clamp(0, 255));
+  Color endColor = endingColor ?? startingColor.withValues(red: (startingColor.r - difference).clamp(0, 255)).withValues(green: (startingColor.g - difference).clamp(0, 255)).withValues(blue: (startingColor.b - difference).clamp(0, 255));
 
   for (int i = 0; i < count; i++) {
     double t = i / (count - 1);
-    Color color = Color.lerp(startColor, endColor, t)!;
+    Color color = Color.lerp(startingColor, endColor, t)!;
     colors.add(color);
   }
 

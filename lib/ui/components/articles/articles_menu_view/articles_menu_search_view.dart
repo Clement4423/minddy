@@ -48,7 +48,7 @@ class _ArticleMenuSearchViewState extends State<ArticleMenuSearchView> {
                   Expanded(
                     child: TextSelectionTheme(
                       data: TextSelectionThemeData(
-                        selectionColor: DefaultAppColors.blue.color.withOpacity(0.8)
+                        selectionColor: DefaultAppColors.blue.color.withValues(alpha: 0.8)
                       ),
                       child: CallbackShortcuts(
                         bindings: {

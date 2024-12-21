@@ -10,6 +10,8 @@ import 'package:minddy/system/model/calendar.dart';
 import 'package:minddy/system/model/calendar_event.dart';
 import 'package:minddy/ui/components/calendar/calendar_event_due_date_preview.dart';
 import 'package:minddy/ui/components/calendar/calendar_event_preview.dart';
+import 'package:minddy/ui/components/calendar/calendar_week_view.dart';
+import 'package:minddy/ui/components/calendar/controller/calendar_week_view_controller.dart';
 import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/components/menus/sub_menus/manage_calendars_sub_menu.dart';
 import 'package:minddy/ui/components/menus/sub_menus/new_calendar_due_date_event_sub_menu.dart';
@@ -79,7 +81,7 @@ class _CalendarButtonState extends State<CalendarButton> {
 
   String _getDateText(DateTime date, bool useUsFormat) {
 
-    String dateFormat = useUsFormat ? 'EEEE MMMM d, yyyy' : 'EEEE d MMMM yyyy';
+    String dateFormat = useUsFormat ? 'EEEE MMMM dd, yyyy' : 'EEEE dd MMMM yyyy';
 
     String formattedDate = intl.DateFormat(dateFormat).format(date);
 
@@ -225,7 +227,7 @@ class _CalendarButtonState extends State<CalendarButton> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(borderRadius),
                     border: Border.all(
-                      color: theme.onPrimary.withOpacity(0.2),
+                      color: theme.onPrimary.withValues(alpha: 0.2),
                       width: 0.5
                     )
                   ),
@@ -476,7 +478,7 @@ class _CalendarButtonState extends State<CalendarButton> {
                                                                               _getDateText(events.date, widget.useUsDateFormat),
                                                                               style: theme.bodySmall
                                                                                 .copyWith(
-                                                                                  color: theme.onSurface.withOpacity(0.5),
+                                                                                  color: theme.onSurface.withValues(alpha: 0.5),
                                                                                   fontSize: 13
                                                                                 ),
                                                                             ),
@@ -667,7 +669,17 @@ class _CalendarButtonState extends State<CalendarButton> {
                                                             cursor: SystemMouseCursors.click,
                                                             child: GestureDetector(
                                                               onTap: () {
-                                                                // TODO : Show week view
+                                                                showSubMenu(
+                                                                  context, 
+                                                                  dismissDirection: DismissDirection.startToEnd,
+                                                                  CalendarWeekView(
+                                                                    controller: CalendarWeekViewController(), 
+                                                                    onClosed: () {
+                                                                      setState(() {});
+                                                                    },
+                                                                    theme: theme
+                                                                  )
+                                                                );
                                                               },
                                                               child: Tooltip(
                                                                 message: S.of(context).calendar_button_open_week_view_button_tooltip,

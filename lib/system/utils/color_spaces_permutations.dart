@@ -4,10 +4,10 @@ Color mixColors(Color color1, Color color2, double ratio) {
   // Clamp ratio to [0, 1]
   ratio = ratio.clamp(0.0, 1.0);
 
-  int r = (color1.red * ratio + color2.red * (1 - ratio)).round();
-  int g = (color1.green * ratio + color2.green * (1 - ratio)).round();
-  int b = (color1.blue * ratio + color2.blue * (1 - ratio)).round();
-  int a = (color1.alpha * ratio + color2.alpha * (1 - ratio)).round();
+  int r = (color1.r * ratio + color2.r * (1 - ratio)).round();
+  int g = (color1.g * ratio + color2.g * (1 - ratio)).round();
+  int b = (color1.b * ratio + color2.b * (1 - ratio)).round();
+  int a = (color1.a * ratio + color2.a * (1 - ratio)).round();
 
   return Color.fromARGB(a, r, g, b);
 }

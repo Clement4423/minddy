@@ -370,9 +370,9 @@ class ProjectsSpreadsheetModuleController extends ChangeNotifier implements IPro
       maps.add(
         {
           'name': model.name,
-          'red': model.color.red,
-          'green': model.color.green,
-          'blue': model.color.blue
+          'red': model.color.r,
+          'green': model.color.g,
+          'blue': model.color.b
         }
       );
     }

@@ -58,7 +58,7 @@ class _UnlockSubMenuState extends State<UnlockSubMenu> {
             color: theme.primaryContainer,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: theme.onPrimary.withOpacity(theme.brightness == Brightness.light ? 1 : 0.2),
+              color: theme.onPrimary.withValues(alpha: theme.brightness == Brightness.light ? 1 : 0.2),
               width: 0.5
             )
           ),
@@ -228,12 +228,13 @@ class _UnlockSubMenuState extends State<UnlockSubMenu> {
                                 strokeWidth: 2,
                                 color: theme.onSecondary,
                               ),
-                            ),
-                          Text(
-                            S.of(context).submenu_artilces_image_description_button,
-                            style: theme.titleSmall.
-                            copyWith(color: theme.onSecondary),
-                          )
+                            )
+                          else
+                            Text(
+                              S.of(context).submenu_artilces_image_description_button,
+                              style: theme.titleSmall.
+                              copyWith(color: theme.onSecondary),
+                            )
                         ],
                       ),
                     )

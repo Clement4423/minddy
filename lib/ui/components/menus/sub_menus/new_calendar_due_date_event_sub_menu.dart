@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/calendar/app_calendar.dart';
+import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/model/calendar.dart';
 import 'package:minddy/system/model/calendar_event.dart';
 import 'package:minddy/system/model/custom_date_picker_mode.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
+import 'package:minddy/ui/components/custom_components/custom_checkbox.dart';
 import 'package:minddy/ui/components/custom_components/custom_date_input.dart';
 import 'package:minddy/ui/components/custom_components/custom_dropdown_button.dart';
 import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
@@ -122,7 +124,7 @@ class _NewCalendarDueDateSubMenuState extends State<NewCalendarDueDateSubMenu> {
         color: widget.theme.primaryContainer,
         borderRadius: BorderRadius.circular(25),
         border: Border.all(
-          color: widget.theme.onPrimary.withOpacity(widget.theme.brightness == Brightness.light ? 1 : 0.2),
+          color: widget.theme.onPrimary.withValues(alpha: widget.theme.brightness == Brightness.light ? 1 : 0.2),
           width: 0.5
         )
       ),
@@ -136,7 +138,8 @@ class _NewCalendarDueDateSubMenuState extends State<NewCalendarDueDateSubMenu> {
                 widget.event != null 
                   ? S.of(context).calendar_modify_due_date_title 
                   : S.of(context).calendar_new_due_date_title, 
-                style: widget.theme.titleLarge
+                style: widget.theme.titleLarge,
+                textAlign: TextAlign.center,
               ),
             ),
           ),
@@ -149,6 +152,63 @@ class _NewCalendarDueDateSubMenuState extends State<NewCalendarDueDateSubMenu> {
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
+                      if (widget.event != null)
+                        ...[
+                          // Completed
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Completion state", 
+                              style: widget.theme.bodySmall.
+                              copyWith(color: widget.theme.onPrimary),
+                            ),
+                          ),
+                          Container(
+                            width: 350,
+                            height: 45,
+                            margin: const EdgeInsets.only(top: 5, bottom: 20),
+                            decoration: BoxDecoration(
+                              color: widget.theme.surface,
+                              borderRadius: BorderRadius.circular(15)
+                            ),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 6),
+                                  child: CustomCheckbox(
+                                    value: widget.event!.dueDateInfo?.isCompleted ?? false, 
+                                    onChanged: (value) async {
+                                      if (value == true) {
+                                        event.dueDateInfo = DueDateInfo(
+                                          isCompleted: true, 
+                                          completedOn: DateTime.now(), 
+                                          completedBy: await AppConfig.getConfigValue('username') ?? S.current.welcome_pass_default_username
+                                        );
+                                      } else {
+                                        event.dueDateInfo = DueDateInfo(
+                                          isCompleted: false, 
+                                          completedOn: null, 
+                                          completedBy: null
+                                        );
+                                      }
+                                    }, 
+                                    theme: widget.theme
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5, right: 5),
+                                  child: Text(
+                                    "Completion state",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: widget.theme.bodyMedium
+                                      .copyWith(color: widget.theme.onSurface),
+                                  ),
+                                )
+                              ]
+                            ),
+                          ),
+                        ],
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -165,7 +225,7 @@ class _NewCalendarDueDateSubMenuState extends State<NewCalendarDueDateSubMenu> {
                           color: widget.theme.surface,
                           borderRadius: BorderRadius.circular(15)
                         ),
-                        margin: const EdgeInsets.only(top: 10),
+                        margin: const EdgeInsets.only(top: 5),
                         child: TextField (
                           controller: TextEditingController(text: event.title),
                           onChanged: (value) => event.title = value,
@@ -252,7 +312,7 @@ class _NewCalendarDueDateSubMenuState extends State<NewCalendarDueDateSubMenu> {
                         Container(
                           width: 350,
                           height: 50,
-                          margin: const EdgeInsets.only(top: 10),
+                          margin: const EdgeInsets.only(top: 5),
                           child: CustomDropdownButton(
                             width: 350, 
                             menuMaxHeight: 250,
@@ -304,7 +364,7 @@ class _NewCalendarDueDateSubMenuState extends State<NewCalendarDueDateSubMenu> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 10),
+                          padding: const EdgeInsets.only(top: 5),
                           child: FutureBuilder(
                             future: AppCalendar.getCalendars(), 
                             builder: (context, snapshot) {

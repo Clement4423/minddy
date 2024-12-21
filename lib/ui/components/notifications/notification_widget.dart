@@ -151,7 +151,7 @@ class _NotificationWidgetState extends State<NotificationWidget> with SingleTick
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: widget.theme.shadow.withOpacity(0.10),
+                                color: widget.theme.shadow.withValues(alpha: 0.10),
                                 blurRadius: 10,
                                 offset: const Offset(5, 5),
                               ),

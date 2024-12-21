@@ -46,7 +46,7 @@ class _ArticleCardState extends State<ArticleCard> {
             BoxShadow(
               offset: const Offset(2, 5),
               blurRadius: 10,
-              color: theme.shadow.withOpacity(0.05),
+              color: theme.shadow.withValues(alpha: 0.05),
             ),
           ],
         ),

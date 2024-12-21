@@ -124,7 +124,7 @@ class _CustomSelectionMenuListTileState extends State<CustomSelectionMenuListTil
             border: widget.showBottomBorder
               ? Border(
                   bottom: BorderSide(
-                    color: widget.theme.onPrimary.withOpacity(widget.theme.brightness == Brightness.light ? 1 : 0.4),
+                    color: widget.theme.onPrimary.withValues(alpha: widget.theme.brightness == Brightness.light ? 1 : 0.4),
                     width: 0.5
                   )
                 )

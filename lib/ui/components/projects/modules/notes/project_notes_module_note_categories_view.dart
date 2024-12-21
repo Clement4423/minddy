@@ -32,7 +32,6 @@ class ProjectNotesModuleNoteCategoriesView extends StatefulWidget {
 class _ProjectNotesModuleNoteCategoriesViewState extends State<ProjectNotesModuleNoteCategoriesView> {
   @override
   void initState() {
-    _loadCategories();
     super.initState();
   }
 

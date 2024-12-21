@@ -79,7 +79,7 @@ class __ChartTabWidgetState extends State<ChartTabWidget> {
             color: widget.isSelected 
               ? widget.theme.secondary 
               : isHovering 
-                ? widget.theme.primary.withOpacity(0.8)
+                ? widget.theme.primary.withValues(alpha: 0.8)
                 : widget.theme.primary,
             borderRadius: BorderRadius.circular(15)
           ),

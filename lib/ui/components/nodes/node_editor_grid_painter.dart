@@ -15,11 +15,11 @@ class NodeEditorGridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
-      ..color = theme.onPrimary.withOpacity(0.2)
+      ..color = theme.onPrimary.withValues(alpha: 0.2)
       ..style = PaintingStyle.fill;
 
     Paint brighterPaint = Paint()
-            ..color = theme.onPrimary.withOpacity(0.4)
+            ..color = theme.onPrimary.withValues(alpha: 0.4)
             ..style = PaintingStyle.fill;
 
     double brighterPointRadius = pointRadius * 1.5;

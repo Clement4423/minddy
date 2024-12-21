@@ -80,7 +80,7 @@ class _CustomSelectionMenuTooltipState extends State<CustomSelectionMenuTooltip>
             color: widget.theme.primaryContainer,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: widget.theme.onPrimary.withOpacity(widget.theme.brightness == Brightness.light ? 1 : 0.4),
+              color: widget.theme.onPrimary.withValues(alpha: widget.theme.brightness == Brightness.light ? 1 : 0.4),
               width: 0.5,
               strokeAlign: BorderSide.strokeAlignInside
             )

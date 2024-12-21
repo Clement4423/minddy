@@ -34,7 +34,7 @@ class CustomSelectionMenuListTileWithItems extends StatelessWidget {
           border: showBottomBorder
           ? Border(
               bottom: BorderSide(
-                color: theme.onPrimary.withOpacity(theme.brightness == Brightness.light ? 1 : 0.4),
+                color: theme.onPrimary.withValues(alpha: theme.brightness == Brightness.light ? 1 : 0.4),
                 width: 0.5
               )
             )

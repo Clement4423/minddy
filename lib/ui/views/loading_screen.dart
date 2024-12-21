@@ -69,7 +69,7 @@ class LoadingScreen extends StatelessWidget {
                         return LinearProgressIndicator(
                           value: value,
                           color: theme.secondary,
-                          backgroundColor: theme.onPrimary.withOpacity(0.05),
+                          backgroundColor: theme.onPrimary.withValues(alpha: 0.05),
                           borderRadius: BorderRadius.circular(2.5),
                         );
                       }

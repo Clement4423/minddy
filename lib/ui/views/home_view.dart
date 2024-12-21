@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/articles/defaults_articles/default_articles_list.dart';
+import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/initialize/login_state.dart';
 import 'package:minddy/system/model/custom_appbar_button_model.dart';
 import 'package:minddy/system/model/plugin_info.dart';
@@ -8,6 +9,7 @@ import 'package:minddy/system/router/app_router.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar_controller.dart';
 import 'package:minddy/ui/components/articles/articles_components/articles_buttons_components/articles_menu_button.dart';
+import 'package:minddy/ui/components/calendar/calendar_button.dart';
 import 'package:minddy/ui/components/settings/settings_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:minddy/ui/view_models/home_viewmodel.dart';
@@ -186,6 +188,20 @@ class _HomeViewState extends State<HomeView> {
                       padding: EdgeInsets.only(right: 30),
                       child: ArticlesMenuButton(),
                     ),
+                  ),
+                  FutureBuilder(
+                    future: AppConfig.getConfigValue('prefer_us_date_format'),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: CalendarButton(useUsDateFormat: snapshot.data ?? false),
+                        );  
+                      } else {
+                        return const SizedBox();
+                      }
+                    }
                   ),
                 ],
               ),

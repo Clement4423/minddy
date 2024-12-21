@@ -122,7 +122,7 @@ class _CalendarEventPreviewState extends State<CalendarEventPreview> {
         height: 110,
         decoration: BoxDecoration(
           color: isPrivate 
-            ? widget.theme.primary.withOpacity(0.6)
+            ? widget.theme.primary.withValues(alpha: 0.6)
             : widget.theme.primary,
           borderRadius: BorderRadius.circular(15)
         ),
@@ -149,7 +149,7 @@ class _CalendarEventPreviewState extends State<CalendarEventPreview> {
                         child: SizedBox(
                           width: 225,
                           child: Text(
-                            "This event is from a private calendar.",
+                            S.current.calendar_button_event_preview_private_event,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: widget.theme.bodyMedium
@@ -167,7 +167,7 @@ class _CalendarEventPreviewState extends State<CalendarEventPreview> {
                         width: 80,
                         height: 30,
                         child: CustomTextButton(
-                          "See", 
+                          S.of(context).calendar_button_event_preview_see_button, 
                           () async {
                             bool isUnlocked = await showUnlockContentSubMenu(context);
                             await widget.updateShowPrivateEvents(isUnlocked);
@@ -260,7 +260,6 @@ class _CalendarEventPreviewState extends State<CalendarEventPreview> {
                                       event: event, 
                                       onSelected: (e) async {
                                         await AppCalendar.deleteEvent(widget.event.originalEvent ?? widget.event);
-                                        e.recurrence!.modifiedDates.map((a) => a.replacementEvent.calendarId = e.calendarId).toList();
                                         await AppCalendar.addEvent(e);
                                         await widget.updateUi();  
                                       }, 

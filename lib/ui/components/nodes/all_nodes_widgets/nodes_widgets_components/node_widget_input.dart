@@ -112,7 +112,7 @@ class _NodeWidgetInputState extends State<NodeWidgetInput> {
                             widget.portInfo.node
                           );
                         }, 
-                        backgroundColor: widget.theme.onPrimary.withOpacity(0.3),
+                        backgroundColor: widget.theme.onPrimary.withValues(alpha: 0.3),
                         scale: 0.7,
                         theme: widget.theme
                       ),

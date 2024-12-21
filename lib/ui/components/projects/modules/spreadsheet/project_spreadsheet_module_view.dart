@@ -514,7 +514,7 @@ class _CustomProjectsSpreadsheetModuleBarChartTypeButtonState extends State<Cust
             padding: const EdgeInsets.only(bottom: 5, right: 5, left: 5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: isHovering ? getColor().withOpacity(0.7) : getColor()
+              color: isHovering ? getColor().withValues(alpha: 0.7) : getColor()
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -70,7 +70,7 @@ class _ToolContainerState extends State<ToolContainer> {
                 color: theme.primaryContainer,
                 borderRadius: BorderRadius.circular(15),
                 border: Border.all(
-                  color: theme.onPrimary.withOpacity(0.1),
+                  color: theme.onPrimary.withValues(alpha: 0.1),
                   width: 0.7
                 ), 
               ),

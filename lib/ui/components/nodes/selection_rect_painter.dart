@@ -17,7 +17,7 @@ class SelectionRectPainter extends CustomPainter {
     }
 
     final paint = Paint()
-      ..color = color.withOpacity(0.3)
+      ..color = color.withValues(alpha: 0.3)
       ..style = PaintingStyle.fill;
 
     final borderPaint = Paint()

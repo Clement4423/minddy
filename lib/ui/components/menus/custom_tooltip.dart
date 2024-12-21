@@ -37,7 +37,7 @@ class CustomTooltip extends StatelessWidget {
           BoxShadow(
             offset: const Offset(5, 5),
             blurRadius: 15,
-            color: theme.shadow.withOpacity(0.20),
+            color: theme.shadow.withValues(alpha: 0.20),
           ),
         ],
       ),

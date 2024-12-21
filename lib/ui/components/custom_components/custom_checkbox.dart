@@ -45,7 +45,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
             ? widget.checkedColor ?? widget.theme.secondary 
             : widget.backgroundColor ?? widget.theme.primary
         ),
-        hoverColor: widget.theme.onPrimary.withOpacity(0.8),
+        hoverColor: widget.theme.onPrimary.withValues(alpha: 0.8),
         splashRadius: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         side: widget.side ?? BorderSide.none,

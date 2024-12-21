@@ -25,7 +25,7 @@ class CustomTableCalculationExplanationTooltip extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: theme.shadow.withOpacity(0.2),
+            color: theme.shadow.withValues(alpha: 0.2),
             offset: const Offset(5, 5),
             blurRadius: 20,
           )
@@ -48,7 +48,7 @@ class CustomTableCalculationExplanationTooltip extends StatelessWidget {
                     height: 3,
                     margin: const EdgeInsets.only(top: 5, bottom: 10),
                     decoration: BoxDecoration(
-                      color: theme.onSurface.withOpacity(0.2),
+                      color: theme.onSurface.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(1)
                     ),
                   ),

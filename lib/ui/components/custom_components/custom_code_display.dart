@@ -144,7 +144,7 @@ class _CustomCodeDisplay extends State<CustomCodeDisplay> {
             padding: const EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 10),
             child: TextSelectionTheme(
               data: TextSelectionThemeData(
-                selectionColor: theme.secondary.withOpacity(0.5)
+                selectionColor: theme.secondary.withValues(alpha: 0.5)
               ),
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,

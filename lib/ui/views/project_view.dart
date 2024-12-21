@@ -369,7 +369,7 @@ class SwitchPageButton extends StatelessWidget {
                 color: theme.primaryContainer,
                 borderRadius: BorderRadius.circular(13),
                 border: Border.all(
-                  color: theme.onPrimary.withOpacity(theme.brightness == Brightness.light ? 1 : 0.2),
+                  color: theme.onPrimary.withValues(alpha: theme.brightness == Brightness.light ? 1 : 0.2),
                   width: 0.5
                 )
               ),

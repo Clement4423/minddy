@@ -64,6 +64,8 @@
     "calendar_button_new_calendar_personalized_color": "Personalizado",
     "calendar_button_new_calendar_private_calendar_title": "Calendario privado",
     "calendar_button_new_calendar_private_calendar_explanation": "Al habilitar esta opción, se requerirá la contraseña para ver los eventos en este calendario",
+    "calendar_button_event_preview_private_event": "Este evento es privado.",
+    "calendar_button_event_preview_see_button": "Ver",
     "center_menu_general": "General",
     "center_menu_others": "Otros",
     "settings_title": "Ajustes",

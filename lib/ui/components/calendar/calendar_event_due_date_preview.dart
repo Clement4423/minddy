@@ -211,7 +211,7 @@ class _CalendarEventDueDatePreviewState extends State<CalendarEventDueDatePrevie
         height: 70,
         decoration: BoxDecoration(
           color: isPrivate 
-            ? widget.theme.primary.withOpacity(0.6)
+            ? widget.theme.primary.withValues(alpha: 0.6)
             : widget.theme.primary,
           borderRadius: BorderRadius.circular(15),
           border: _isDatePassed() 
@@ -247,7 +247,7 @@ class _CalendarEventDueDatePreviewState extends State<CalendarEventDueDatePrevie
                             width: 80,
                             height: 30,
                             child: CustomTextButton(
-                              "See", 
+                              S.of(context).calendar_button_event_preview_see_button, 
                               () async {
                                 bool isUnlocked = await showUnlockContentSubMenu(context);
                                 await widget.updateShowPrivateEvents(isUnlocked);
@@ -269,7 +269,7 @@ class _CalendarEventDueDatePreviewState extends State<CalendarEventDueDatePrevie
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: widget.theme.shadow.withOpacity(0.05),
+                        color: widget.theme.shadow.withValues(alpha: 0.05),
                         blurRadius: 5,
                         offset: const Offset(0, 5)
                       )

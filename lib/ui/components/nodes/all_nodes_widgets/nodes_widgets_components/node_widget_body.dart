@@ -111,7 +111,7 @@ class _NodeWidgetBodyState extends State<NodeWidgetBody> {
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                        color: widget.nodeWidget.theme.shadow.withOpacity(0.05),
+                        color: widget.nodeWidget.theme.shadow.withValues(alpha: 0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 4)
                       )
@@ -153,7 +153,7 @@ class _NodeWidgetBodyState extends State<NodeWidgetBody> {
                             BoxShadow(
                               offset: const Offset(5, 5),
                               blurRadius: 15,
-                              color: widget.theme.shadow.withOpacity(0.20),
+                              color: widget.theme.shadow.withValues(alpha: 0.20),
                             ),
                           ],
                         ),

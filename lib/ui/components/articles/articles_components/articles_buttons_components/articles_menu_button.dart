@@ -20,7 +20,7 @@ class ArticlesMenuButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: theme.onPrimary.withOpacity(0.2),
+            color: theme.onPrimary.withValues(alpha: 0.2),
             width: 0.5
           )
         ),

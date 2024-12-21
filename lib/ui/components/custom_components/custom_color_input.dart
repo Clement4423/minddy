@@ -122,7 +122,7 @@ class _CustomColorInputState extends State<CustomColorInput> {
                   border: InputBorder.none,
                   hintText: "FFFFFF",
                   hintStyle: widget.theme.bodyMedium
-                    .copyWith(color: widget.theme.onSurface.withOpacity(0.5))
+                    .copyWith(color: widget.theme.onSurface.withValues(alpha: 0.5))
                 ),
               ),
             ),

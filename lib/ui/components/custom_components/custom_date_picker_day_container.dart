@@ -57,12 +57,12 @@ class _DayContainerState extends State<CustomDatePickerDayContainer> {
 
     if (widget.isToday) {
       return widget.isInRange 
-        ? widget.theme.secondary.withOpacity(0.3) 
-        : DefaultAppColors.blue.color.withOpacity(0.2);
+        ? widget.theme.secondary.withValues(alpha: 0.3) 
+        : DefaultAppColors.blue.color.withValues(alpha: 0.2);
     } 
     
     return widget.isInRange 
-        ? widget.theme.secondary.withOpacity(0.3) 
+        ? widget.theme.secondary.withValues(alpha: 0.3) 
         : null;
   }
 
@@ -100,7 +100,7 @@ class _DayContainerState extends State<CustomDatePickerDayContainer> {
                   widget.date.day.toString(),
                   style: TextStyle(
                     color: (widget.isGreyedOut || !widget.isSelectable) 
-                      ? widget.theme.onPrimary.withOpacity(0.3) 
+                      ? widget.theme.onPrimary.withValues(alpha: 0.3) 
                       : widget.isSelected 
                         ? widget.theme.onSecondary 
                         : null,

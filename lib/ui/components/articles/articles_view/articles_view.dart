@@ -124,7 +124,7 @@ class _ArticleViewState extends State<ArticleView> {
                       child: BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                         child: Container(
-                          color: widget.theme.secondaryContainer.withOpacity(0.70),
+                          color: widget.theme.secondaryContainer.withValues(alpha: 0.70),
                           child: Container(),
                         ),
                       ),
@@ -154,11 +154,13 @@ class _ArticleViewState extends State<ArticleView> {
                                   children: [
                                     // Back button
                                     ArticlesBackButton(
-                                      action: () {
-                                        widget.controller.saveArticle(isClosingArticle: true);
+                                      action: () async {
+                                        await widget.controller.saveArticle(isClosingArticle: true);
+                                        if (context.mounted) {
                                          _closeArticle(context);
-                                         widget.controller.resetFunction(); 
-                                        },
+                                        }
+                                        widget.controller.resetFunction(); 
+                                      },
                                     ),
                                     // Actions Row
                                     Row(
@@ -190,7 +192,9 @@ class _ArticleViewState extends State<ArticleView> {
                                   ],
                                 ),
                                 Row(
-                                  mainAxisAlignment: widget.screenWidth > _widthTreshold ? MainAxisAlignment.center : MainAxisAlignment.start,
+                                  mainAxisAlignment: widget.screenWidth > _widthTreshold 
+                                    ? MainAxisAlignment.center 
+                                    : MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // Title and info box

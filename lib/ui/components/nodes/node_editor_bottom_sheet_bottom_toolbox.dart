@@ -29,7 +29,7 @@ class _NodeEditorBottomSheetBottomToolboxState extends State<NodeEditorBottomShe
             color: widget.theme.primaryContainer,
             borderRadius: BorderRadius.circular(12.5),
             border: Border.all(
-              color: widget.theme.onSurface.withOpacity(0.2),
+              color: widget.theme.onSurface.withValues(alpha: 0.2),
               width: 0.5
             )
           ),
@@ -53,7 +53,7 @@ class _NodeEditorBottomSheetBottomToolboxState extends State<NodeEditorBottomShe
                     Icons.undo_rounded, 
                     color: widget.controller.state.canUndo() 
                       ? widget.theme.onPrimary 
-                      : widget.theme.onPrimary.withOpacity(0.5),
+                      : widget.theme.onPrimary.withValues(alpha: 0.5),
                     size: 19,
                   )
                 ),
@@ -74,7 +74,7 @@ class _NodeEditorBottomSheetBottomToolboxState extends State<NodeEditorBottomShe
                     Icons.redo_rounded, 
                     color: widget.controller.state.canRedo() 
                       ? widget.theme.onPrimary 
-                      : widget.theme.onPrimary.withOpacity(0.5),
+                      : widget.theme.onPrimary.withValues(alpha: 0.5),
                     size: 19,
                   )
                 ),
@@ -95,7 +95,7 @@ class _NodeEditorBottomSheetBottomToolboxState extends State<NodeEditorBottomShe
                     Icons.copy_all_rounded, 
                     color: widget.controller.selectedNodes.isNotEmpty
                       ? widget.theme.onPrimary 
-                      : widget.theme.onPrimary.withOpacity(0.5),
+                      : widget.theme.onPrimary.withValues(alpha: 0.5),
                     size: 19,
                   )
                 ),
@@ -116,7 +116,7 @@ class _NodeEditorBottomSheetBottomToolboxState extends State<NodeEditorBottomShe
                     Icons.paste_rounded, 
                     color: widget.controller.copiedNodes.isNotEmpty
                       ? widget.theme.onPrimary 
-                      : widget.theme.onPrimary.withOpacity(0.5),
+                      : widget.theme.onPrimary.withValues(alpha: 0.5),
                     size: 19,
                   )
                 ),
@@ -141,7 +141,7 @@ class _NodeEditorBottomSheetBottomToolboxState extends State<NodeEditorBottomShe
                     Icons.copy_rounded, 
                     color: widget.controller.selectedNodes.isNotEmpty
                       ? widget.theme.onPrimary 
-                      : widget.theme.onPrimary.withOpacity(0.5),
+                      : widget.theme.onPrimary.withValues(alpha: 0.5),
                     size: 19,
                   )
                 ),
@@ -164,7 +164,7 @@ class _NodeEditorBottomSheetBottomToolboxState extends State<NodeEditorBottomShe
                     Icons.delete_outline_rounded, 
                     color: widget.controller.selectedNodes.isNotEmpty
                       ? widget.theme.error 
-                      : widget.theme.onPrimary.withOpacity(0.5),
+                      : widget.theme.onPrimary.withValues(alpha: 0.5),
                     size: 19,
                   )
                 ),

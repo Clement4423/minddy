@@ -314,7 +314,7 @@ class _NodeEditorBottomSheetSidePanelState extends State<NodeEditorBottomSheetSi
                           borderRadius: BorderRadius.circular(13),
                           color: widget.theme.primaryContainer,
                           border: Border.all(
-                            color: widget.theme.onSurface.withOpacity(0.2),
+                            color: widget.theme.onSurface.withValues(alpha: 0.2),
                             width: 0.5
                           )
                         ),

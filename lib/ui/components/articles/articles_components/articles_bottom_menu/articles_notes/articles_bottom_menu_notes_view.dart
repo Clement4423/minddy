@@ -31,12 +31,7 @@ class _ArticlesBottomMenuNotesViewState extends State<ArticlesBottomMenuNotesVie
   void initState() {
     controller.articleController = widget.articleController;
     viewController.actualView = _CategoriesView(viewController, controller);
-    initialize();
     super.initState();
-  }
-
-  initialize() {
-    // Initialize logic if needed
   }
 
   @override

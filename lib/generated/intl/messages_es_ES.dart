@@ -248,6 +248,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Mañana"),
         "calendar_button_event_date_yesterday":
             MessageLookupByLibrary.simpleMessage("Ayer"),
+        "calendar_button_event_preview_private_event":
+            MessageLookupByLibrary.simpleMessage("Este evento es privado."),
+        "calendar_button_event_preview_see_button":
+            MessageLookupByLibrary.simpleMessage("Ver"),
         "calendar_button_event_selection_menu_all_occurence":
             MessageLookupByLibrary.simpleMessage("Todas las ocurrencias"),
         "calendar_button_event_selection_menu_only_this_event":

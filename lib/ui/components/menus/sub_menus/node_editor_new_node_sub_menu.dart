@@ -213,12 +213,12 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                 borderRadius: BorderRadius.circular(30),
                 color: widget.theme.primaryContainer,
                 border: Border.all(
-                  color: widget.theme.onPrimary.withOpacity(widget.theme.brightness == Brightness.light ? 1 : 0.2),
+                  color: widget.theme.onPrimary.withValues(alpha: widget.theme.brightness == Brightness.light ? 1 : 0.2),
                   width: 0.5
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: widget.theme.shadow.withOpacity(0.2),
+                    color: widget.theme.shadow.withValues(alpha: 0.2),
                     blurRadius: 10.0,
                     offset: const Offset(0, 4)
                   )
@@ -268,7 +268,7 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                                         color: widget.theme.brightness == Brightness.light ? Colors.white10 : Colors.white60,
                                         borderRadius: BorderRadius.circular(5),
                                         border: Border.all(
-                                          color: widget.theme.onPrimary.withOpacity(0.2),
+                                          color: widget.theme.onPrimary.withValues(alpha: 0.2),
                                           width: 1
                                         ),
                                       ),
@@ -280,7 +280,7 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                                     child: Center(
                                       child: TextSelectionTheme(
                                         data: TextSelectionThemeData(
-                                          selectionColor: DefaultAppColors.blue.color.withOpacity(0.8)
+                                          selectionColor: DefaultAppColors.blue.color.withValues(alpha: 0.8)
                                         ),
                                         child: Padding(
                                           padding: EdgeInsets.only(left: isSearching ? 12 : 0),
@@ -638,7 +638,7 @@ String _getNodeCategoryTranslatedName(NodeCategory category) {
     case NodeCategory.logic:
       return S.current.node_widgets_category_logic;
     case NodeCategory.text:
-      return 'Text';
+      return S.current.node_widgets_text_text;
     case NodeCategory.variable:
       return S.current.node_widgets_category_variable;
   }

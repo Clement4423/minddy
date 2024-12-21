@@ -55,7 +55,7 @@ class _HomeViewArticleCardState extends State<HomeViewArticleCard> {
                 offset: const Offset(5, 5),
                 blurStyle: BlurStyle.normal,
                 blurRadius: 10,
-                color: theme.shadow.withOpacity(0.15)                        
+                color: theme.shadow.withValues(alpha: 0.15)                        
               )
             ]
           ),

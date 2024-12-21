@@ -147,7 +147,11 @@ class CalendarEvent {
 
   });
 
- List<CalendarEvent> generateRecurrences(DateTime rangeStart, DateTime rangeEnd, [bool includeOriginal = true]) {
+  bool isSameDay(DateTime date, DateTime date2) {
+    return date.year == date2.year && date.month == date2.month && date.day == date2.day;
+  }
+
+ List<CalendarEvent> generateRecurrences(DateTime rangeStart, DateTime rangeEnd, [bool includeOriginal = true, bool includeModifiedEvents = true]) {
     assert(recurrence != null, () {
       throw AssertionError("generateRecurrences was called, but event doesn't have a recurrence. Event n°$eventId");
     });
@@ -160,11 +164,13 @@ class CalendarEvent {
       if (occurrence.isAfter(rangeStart) || (includeOriginal && isFirstOccurrence)) {
         bool isExcluded = recurrence!.exludedDates.map((e) => e.isAtSameMomentAs(occurrence)).contains(true);
         if (!isExcluded) {
-          CalendarEvent? modifiedEvent = recurrence!.modifiedDates.where((e) => e.calculatedDate.isAtSameMomentAs(occurrence)).firstOrNull?.replacementEvent;
-          if (modifiedEvent != null) {
+          CalendarEvent? modifiedEvent = recurrence!.modifiedDates.where((e) => isSameDay(e.calculatedDate, occurrence)).firstOrNull?.replacementEvent;
+          if (modifiedEvent != null && includeOriginal) {
             modifiedEvent
               ..isRecurrence = true
               ..originalEvent = this;
+          } else {
+            modifiedEvent = null;
           }
           recurrences.add(
             modifiedEvent ?? CalendarEvent(

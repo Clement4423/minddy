@@ -49,6 +49,7 @@ class CustomSelectionMenu extends StatefulWidget {
     super.key, 
     this.enabled = true,
     this.enableSearch = false,
+    this.enableRightClick = false,
     required this.theme,
     this.buttonStyle,
     this.type = CustomSelectionMenuButttonType.elevated,
@@ -60,6 +61,7 @@ class CustomSelectionMenu extends StatefulWidget {
 
   final bool enabled;
   final bool enableSearch;
+  final bool enableRightClick;
   final StylesGetters theme;
   final ButtonStyle? buttonStyle;
   final CustomSelectionMenuButttonType type;
@@ -263,17 +265,28 @@ class _CustomSelectionMenuState extends State<CustomSelectionMenu> with SingleTi
   Widget build(BuildContext context) {
     switch (widget.type) {
       case CustomSelectionMenuButttonType.elevated:
-        return ElevatedButton(
-          key: _buttonKey,
-          onPressed: () {
-            if (_overlayEntry != null) {
-              _dismissOverlay();
-            } else {
-              _showOverlayMenu(context);
+        return GestureDetector(
+          onSecondaryTap: () {
+            if (widget.enableRightClick) {
+              if (_overlayEntry != null) {
+                _dismissOverlay();
+              } else {
+                _showOverlayMenu(context);
+              }
             }
           },
-          style: widget.buttonStyle ?? ButtonThemes.secondaryButtonStyle(context),
-          child: widget.child,
+          child: ElevatedButton(
+            key: _buttonKey,
+            onPressed: () {
+              if (_overlayEntry != null) {
+                _dismissOverlay();
+              } else {
+                _showOverlayMenu(context);
+              }
+            },
+            style: widget.buttonStyle ?? ButtonThemes.secondaryButtonStyle(context),
+            child: widget.child,
+          ),
         );
       case CustomSelectionMenuButttonType.icon:
         return IconButton(
@@ -375,7 +388,7 @@ class _CustomSelectionMenuWidgetState extends State<CustomSelectionMenuWidget> {
         boxShadow: [
           BoxShadow(
             blurStyle: BlurStyle.outer,
-            color: widget.theme.shadow.withOpacity(0.15),
+            color: widget.theme.shadow.withValues(alpha: 0.15),
             offset: const Offset(0, 0),
             blurRadius: 10.0,
           ),
@@ -394,7 +407,7 @@ class _CustomSelectionMenuWidgetState extends State<CustomSelectionMenuWidget> {
                 color: widget.theme.primaryContainer,
                 borderRadius: BorderRadius.circular(13),
                 border: Border.all(
-                  color: widget.theme.onPrimary.withOpacity(widget.theme.brightness == Brightness.light ? 1 : 0.4),
+                  color: widget.theme.onPrimary.withValues(alpha: widget.theme.brightness == Brightness.light ? 1 : 0.4),
                   width: 0.5,
                   strokeAlign: BorderSide.strokeAlignInside
                 )

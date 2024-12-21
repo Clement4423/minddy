@@ -137,7 +137,7 @@ class _ValueContainerState extends State<_ValueContainer> {
       cursor: SystemMouseCursors.click,
       onEnter: (event) {
         setState(() {
-          color = widget.theme.surface.withOpacity(0.8);
+          color = widget.theme.surface.withValues(alpha: 0.8);
         });
       },
       onExit: (event) {

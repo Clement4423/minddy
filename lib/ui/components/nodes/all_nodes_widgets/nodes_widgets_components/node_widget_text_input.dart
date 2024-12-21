@@ -49,7 +49,7 @@ class _NodeWidgetStringInputState extends State<NodeWidgetStringInput> {
       height: 15,
       padding: const EdgeInsets.only(left: 5),
       decoration: BoxDecoration(
-        color: widget.theme.onPrimary.withOpacity(0.1),
+        color: widget.theme.onPrimary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(5)
       ),
       child: TextField(
@@ -73,7 +73,7 @@ class _NodeWidgetStringInputState extends State<NodeWidgetStringInput> {
           hintStyle: widget.theme.titleMedium.copyWith(
             fontWeight: FontWeight.w500,
             fontSize: 8,
-            color: widget.theme.onPrimary.withOpacity(0.5)
+            color: widget.theme.onPrimary.withValues(alpha: 0.5)
           ),
         ),
       ),

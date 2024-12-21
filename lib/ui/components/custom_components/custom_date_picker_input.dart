@@ -113,7 +113,7 @@ class _CustomDatePickerInputState extends State<CustomDatePickerInput> {
           background: theme.error,
           child: TextSelectionTheme(
             data: TextSelectionThemeData(
-              selectionColor: theme.secondary.withOpacity(0.5)
+              selectionColor: theme.secondary.withValues(alpha: 0.5)
             ),
             child: Row(
               children: [
@@ -149,7 +149,7 @@ class _CustomDatePickerInputState extends State<CustomDatePickerInput> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: hint.replaceAll('-', '/'),
-                        hintStyle: theme.bodyMedium.copyWith(color: theme.onPrimary.withOpacity(0.6)),
+                        hintStyle: theme.bodyMedium.copyWith(color: theme.onPrimary.withValues(alpha: 0.6)),
                         contentPadding: const EdgeInsets.only(bottom: 7)
                       ),
                     ),
@@ -162,7 +162,7 @@ class _CustomDatePickerInputState extends State<CustomDatePickerInput> {
                     width: 2,
                     height: 20,
                     decoration: BoxDecoration(
-                      color: theme.onPrimary.withOpacity(0.5),
+                      color: theme.onPrimary.withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(1)
                     ),
                   ),
@@ -186,7 +186,7 @@ class _CustomDatePickerInputState extends State<CustomDatePickerInput> {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: '${_padIfNecessary(DateTime.now().hour)}:${_padIfNecessary(DateTime.now().minute)}',
-                          hintStyle: theme.bodyMedium.copyWith(color: theme.onPrimary.withOpacity(0.6)),
+                          hintStyle: theme.bodyMedium.copyWith(color: theme.onPrimary.withValues(alpha: 0.6)),
                           contentPadding: const EdgeInsets.only(bottom: 7)
                         ),
                       ),

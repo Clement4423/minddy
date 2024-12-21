@@ -81,7 +81,7 @@ class _NodeWidgetNumberInputState extends State<NodeWidgetNumberInput> {
       width: 87,
       height: 15,
       decoration: BoxDecoration(
-        color: widget.theme.onPrimary.withOpacity(0.1),
+        color: widget.theme.onPrimary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(5)
       ),
       child: Row(
@@ -114,7 +114,7 @@ class _NodeWidgetNumberInputState extends State<NodeWidgetNumberInput> {
           height: 15,
           decoration: BoxDecoration(
             color: (isLeft ? isHoveringLeftArrow : isHoveringRightArrow) 
-              ? widget.theme.onPrimary.withOpacity(0.15) 
+              ? widget.theme.onPrimary.withValues(alpha: 0.15) 
               : Colors.transparent,
             borderRadius: BorderRadius.only(
               topLeft: isLeft ? const Radius.circular(5) : Radius.zero,
@@ -143,7 +143,7 @@ class _NodeWidgetNumberInputState extends State<NodeWidgetNumberInput> {
           style: widget.theme.titleMedium.copyWith(
             fontWeight: FontWeight.w500,
             fontSize: 8,
-            color: widget.theme.onPrimary.withOpacity(0.4)
+            color: widget.theme.onPrimary.withValues(alpha: 0.4)
           ),
         ),
       ),
@@ -177,7 +177,7 @@ class _NodeWidgetNumberInputState extends State<NodeWidgetNumberInput> {
           hintStyle: widget.theme.titleMedium.copyWith(
             fontWeight: FontWeight.w500,
             fontSize: 8,
-            color: widget.theme.onPrimary.withOpacity(0.5)
+            color: widget.theme.onPrimary.withValues(alpha: 0.5)
           ),
         ),
       ),

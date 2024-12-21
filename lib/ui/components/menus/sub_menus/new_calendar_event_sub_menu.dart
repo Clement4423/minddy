@@ -120,7 +120,7 @@ class _NewCalendarEventSubMenuState extends State<NewCalendarEventSubMenu> {
         color: widget.theme.primaryContainer,
         borderRadius: BorderRadius.circular(25),
         border: Border.all(
-          color: widget.theme.onPrimary.withOpacity(widget.theme.brightness == Brightness.light ? 1 : 0.2),
+          color: widget.theme.onPrimary.withValues(alpha: widget.theme.brightness == Brightness.light ? 1 : 0.2),
           width: 0.5
         )
       ),

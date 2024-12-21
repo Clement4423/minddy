@@ -463,7 +463,7 @@ class _CustomChartState extends State<CustomChart> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DashedLine(
-              color: theme.onPrimary.withOpacity(0.5),
+              color: theme.onPrimary.withValues(alpha: 0.5),
               dashWidth: (widget.controller.width - 80) / ((widget.controller.height - 40) / 10), 
               dashSpace: ((widget.controller.width - 80) / ((widget.controller.height - 40) / 10)) / 2, 
               lineHeight: widget.controller.height - 40,
@@ -481,7 +481,7 @@ class _CustomChartState extends State<CustomChart> {
         ...List.generate(5, (index) => Row(
           children: [
             DashedLine(
-              color: widget.controller.gridColor ?? theme.onPrimary.withOpacity(0.3),
+              color: widget.controller.gridColor ?? theme.onPrimary.withValues(alpha: 0.3),
               dashWidth: (widget.controller.width - 80) / ((widget.controller.height - 40) / 10), 
               dashSpace: ((widget.controller.width - 80) / ((widget.controller.height - 40) / 10)) / 2, 
               lineWidth: widget.controller.width - 80
@@ -668,7 +668,7 @@ class _CustomChartState extends State<CustomChart> {
                                           style: ButtonStyle(
                                             shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
                                           ),
-                                          icon: Icon(CupertinoIcons.arrow_up_left_arrow_down_right, color: widget.controller.gridColor != null ? widget.controller.gridColor!.withOpacity(1) : theme.onPrimary)
+                                          icon: Icon(CupertinoIcons.arrow_up_left_arrow_down_right, color: widget.controller.gridColor != null ? widget.controller.gridColor!.withValues(alpha: 1) : theme.onPrimary)
                                           ),
                                       );
                                     }

@@ -81,7 +81,7 @@ class ProjectsNotesModuleController extends ChangeNotifier implements IProjectMo
     );
   }
 
-  Future<bool> modifyProjectNote(NoteModel updatedNote) async {
+Future<bool> modifyProjectNote(NoteModel updatedNote) async {
   try {
     Map<String, dynamic>? fileContent = await getModuleData(_globalId, ProjectsModulesTypes.notes, projectPath);
     if (fileContent != null) {

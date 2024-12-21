@@ -30,7 +30,7 @@ class _NodeEditorBottomSheetSidePanelBoxState extends State<NodeEditorBottomShee
             color: widget.panel.theme.primaryContainer,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: widget.panel.theme.onSurface.withOpacity(0.2),
+              color: widget.panel.theme.onSurface.withValues(alpha: 0.2),
               width: 0.5
             )
           ),

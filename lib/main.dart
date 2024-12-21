@@ -43,10 +43,10 @@ class MainApp extends StatelessWidget {
 
   // TODO : Documenter tout le code
   // TODO : Faire les tests
-  // TODO : Implémenter une fonctionnalitée de recherche à l'interieur d'un article pour chercher un mot clé
   // TODO : Tools note rapide ?
   // TODO : Ajouter tous les articles de base
   // TODO : Faire les articles 'aide' pour les modules
+  // TODO : Implémenter une fonctionnalitée de recherche à l'interieur d'un article pour chercher un mot clé
   // TODO : Refaire le systeme des articles
   // TODO : Faire l'écran d'erreur au lancement
   // TODO : Faire thème high contrast et l'ajouter au main
@@ -58,6 +58,8 @@ class MainApp extends StatelessWidget {
   // TODO : Faire le menu d'ajout de module
   // TODO : AJouter les légendes en dessous des graphiques
   // TODO : Faire le système d'addon
+  // TODO : Faire en sorte que lorsque l'on quitte la vue week, le calendar button s'update
+  // TODO : Refaire le systeme de selection d'heure
 
   @override
   Widget build(BuildContext context) {

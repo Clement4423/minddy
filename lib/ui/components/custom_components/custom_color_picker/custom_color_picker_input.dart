@@ -38,9 +38,9 @@ class _CustomColorPickerInputState extends State<CustomColorPickerInput> {
 
   late String hex = hslToHex(typedColor);
 
-  late String r = typedColor.toColor().red.toStringAsFixed(0);
-  late String g = typedColor.toColor().green.toStringAsFixed(0);
-  late String b = typedColor.toColor().blue.toStringAsFixed(0);
+  late String r = typedColor.toColor().r.toStringAsFixed(0);
+  late String g = typedColor.toColor().g.toStringAsFixed(0);
+  late String b = typedColor.toColor().b.toStringAsFixed(0);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class _CustomColorPickerInputState extends State<CustomColorPickerInput> {
       ),
       child: TextSelectionTheme(
         data: TextSelectionThemeData(
-          selectionColor: widget.theme.secondary.withOpacity(0.5)
+          selectionColor: widget.theme.secondary.withValues(alpha: 0.5)
         ),
         child: Row(
           children: [
@@ -115,7 +115,7 @@ class _CustomColorPickerInputState extends State<CustomColorPickerInput> {
               width: 1,
               height: 20,
               decoration: BoxDecoration(
-                color: widget.theme.onPrimary.withOpacity(0.5),
+                color: widget.theme.onPrimary.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(1)
               ),
             ),
@@ -171,7 +171,7 @@ class _CustomColorPickerInputState extends State<CustomColorPickerInput> {
                       border: InputBorder.none,
                       hintText: 'FFFFFF',
                       hintStyle: widget.theme.bodyMedium
-                        .copyWith(color: widget.theme.onPrimary.withOpacity(0.5)),
+                        .copyWith(color: widget.theme.onPrimary.withValues(alpha: 0.5)),
                       contentPadding: const EdgeInsets.only(bottom: 15),
                     ),
                   ),
@@ -211,10 +211,10 @@ class _CustomColorPickerInputState extends State<CustomColorPickerInput> {
                         border: InputBorder.none,
                         prefixText: 'R ',
                         prefixStyle: widget.theme.bodyMedium
-                          .copyWith(color: widget.theme.onPrimary.withOpacity(0.7)),
+                          .copyWith(color: widget.theme.onPrimary.withValues(alpha: 0.7)),
                         hintText: '255',
                         hintStyle: widget.theme.bodyMedium
-                          .copyWith(color: widget.theme.onPrimary.withOpacity(0.5)),
+                          .copyWith(color: widget.theme.onPrimary.withValues(alpha: 0.5)),
                         contentPadding: const EdgeInsets.only(bottom: 15),
                       ),
                     ),
@@ -252,10 +252,10 @@ class _CustomColorPickerInputState extends State<CustomColorPickerInput> {
                         border: InputBorder.none,
                         prefixText: 'G ',
                         prefixStyle: widget.theme.bodyMedium
-                          .copyWith(color: widget.theme.onPrimary.withOpacity(0.7)),
+                          .copyWith(color: widget.theme.onPrimary.withValues(alpha: 0.7)),
                         hintText: '255',
                         hintStyle: widget.theme.bodyMedium
-                          .copyWith(color: widget.theme.onPrimary.withOpacity(0.5)),
+                          .copyWith(color: widget.theme.onPrimary.withValues(alpha: 0.5)),
                         contentPadding: const EdgeInsets.only(bottom: 15),
                       ),
                     ),
@@ -293,10 +293,10 @@ class _CustomColorPickerInputState extends State<CustomColorPickerInput> {
                         border: InputBorder.none,
                         prefixText: 'B ',
                         prefixStyle: widget.theme.bodyMedium
-                          .copyWith(color: widget.theme.onPrimary.withOpacity(0.7)),
+                          .copyWith(color: widget.theme.onPrimary.withValues(alpha: 0.7)),
                         hintText: '255',
                         hintStyle: widget.theme.bodyMedium
-                          .copyWith(color: widget.theme.onPrimary.withOpacity(0.5)),
+                          .copyWith(color: widget.theme.onPrimary.withValues(alpha: 0.5)),
                         contentPadding: const EdgeInsets.only(bottom: 15),
                       ),
                     ),
@@ -308,7 +308,7 @@ class _CustomColorPickerInputState extends State<CustomColorPickerInput> {
               width: 1,
               height: 20,
               decoration: BoxDecoration(
-                color: widget.theme.onPrimary.withOpacity(0.5),
+                color: widget.theme.onPrimary.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(1)
               ),
             ),
@@ -338,7 +338,7 @@ class _CustomColorPickerInputState extends State<CustomColorPickerInput> {
                       cursorColor: widget.theme.onPrimary,
                       cursorHeight: 20,
                       style: widget.theme.bodyMedium
-                        .copyWith(color: widget.theme.onPrimary.withOpacity(widget.useOpacity ? 1.0 : 0.5)),
+                        .copyWith(color: widget.theme.onPrimary.withValues(alpha: widget.useOpacity ? 1.0 : 0.5)),
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
                       ],
@@ -356,11 +356,11 @@ class _CustomColorPickerInputState extends State<CustomColorPickerInput> {
                         border: InputBorder.none,
                         hintText: '100',
                         hintStyle: widget.theme.bodyMedium
-                          .copyWith(color: widget.theme.onPrimary.withOpacity(0.5)),
+                          .copyWith(color: widget.theme.onPrimary.withValues(alpha: 0.5)),
                         contentPadding: const EdgeInsets.only(bottom: 15),
                         suffixText: '%',
                         suffixStyle: widget.theme.bodyMedium
-                          .copyWith(color: widget.theme.onPrimary.withOpacity(widget.useOpacity ? 1.0 : 0.5)),
+                          .copyWith(color: widget.theme.onPrimary.withValues(alpha: widget.useOpacity ? 1.0 : 0.5)),
                       ),
                     ),
                   ),
