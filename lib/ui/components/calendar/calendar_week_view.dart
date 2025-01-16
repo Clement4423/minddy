@@ -36,16 +36,16 @@ class _CalendarWeekViewState extends State<CalendarWeekView> {
 
   bool _isClosing = false;
 
-  void _closeView(BuildContext context) {
+  Future<void> _closeView(BuildContext context) async {
     if (context.mounted) {
       setState(() {
         _isClosing = true;
       });
-      Future.delayed(Duration(milliseconds: _isClosing ? 150 : 250), () {
+      Future.delayed(Duration(milliseconds: _isClosing ? 150 : 250), () async {
+        if (widget.onClosed != null) {
+          await widget.onClosed!();
+        }
         if (context.mounted) {
-          if (widget.onClosed != null) {
-            widget.onClosed!();
-          }
           Navigator.pop(context);
         }
       });
@@ -83,9 +83,9 @@ class _CalendarWeekViewState extends State<CalendarWeekView> {
                     ),
                     CallbackShortcuts(
                       bindings: <ShortcutActivator, VoidCallback>{
-                        escapeActivator:() {
+                        escapeActivator:() async {
                           if (context.mounted) {
-                            Navigator.pop(context);
+                            await _closeView(context);
                           }
                         }
                       },
@@ -101,14 +101,14 @@ class _CalendarWeekViewState extends State<CalendarWeekView> {
                                   children: [
                                     // Back button
                                     ArticlesBackButton(
-                                      action: () {
-                                        _closeView(context);
+                                      action: () async {
+                                        await _closeView(context);
                                       },
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 8),
                                       child: Text(
-                                        'Week ${widget.controller.selectedWeek}',
+                                        S.of(context).calendar_week_view_week_title(widget.controller.selectedWeek),
                                         style: widget.theme.titleLarge
                                           .copyWith(color: widget.theme.onPrimary),
                                       ),
@@ -176,7 +176,10 @@ class _CalendarWeekViewState extends State<CalendarWeekView> {
                                     width: windowSize.width / 1.2, 
                                     height: windowSize.height / 1.2, 
                                     week: widget.controller.selectedWeek, 
-                                    year: widget.controller.selectedYear
+                                    year: widget.controller.selectedYear,
+                                    onUpdate: widget.controller.update,
+                                    highlightedEventID: widget.controller.highlightedEventID,
+                                    resetHighligthedEvent: widget.controller.resetHighligthedEvent
                                   )
                                 ),
                               );
@@ -185,13 +188,22 @@ class _CalendarWeekViewState extends State<CalendarWeekView> {
                         ],
                       )
                     ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0, 
-                      child: CalendarBottomMenu(
-                        key: widget.controller.bottomMenuKey,
-                        controller: CalendarBottomMenuController(calendarWeekViewController: widget.controller)
-                      ),
+                    FutureBuilder(
+                      future: widget.controller.getCalendarsAndEvents(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return Positioned(
+                            bottom: 0,
+                            right: 0, 
+                            child: CalendarBottomMenu(
+                              key: widget.controller.bottomMenuKey,
+                              controller: CalendarBottomMenuController(calendarWeekViewController: widget.controller)
+                            ),
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      }
                     ), 
                   ],
                 ),

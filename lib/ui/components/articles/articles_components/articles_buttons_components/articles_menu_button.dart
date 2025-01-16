@@ -32,7 +32,7 @@ class ArticlesMenuButton extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: () {showArticles(context);}, 
                 // ignore: deprecated_member_use
-                icon: SvgPicture.asset("assets/logo/articles/logo_articles.svg", width: 30, color: theme.onPrimary,), 
+                icon: SvgPicture.asset("assets/logo/articles/logo_articles.svg", width: 30, color: theme.onPrimary), 
                 label: Text(
                   S.of(context).default_articles_articles_title, 
                   maxLines: 1,
@@ -44,7 +44,7 @@ class ArticlesMenuButton extends StatelessWidget {
                   elevation: const WidgetStatePropertyAll(12),
                   backgroundColor: WidgetStatePropertyAll(theme.primaryContainer),
                   shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
-                  padding: const WidgetStatePropertyAll(EdgeInsets.only(left: 15, right: 20))
+                  padding: const WidgetStatePropertyAll(EdgeInsets.only(left: 12, right: 20))
                 ),
               ),
             ),

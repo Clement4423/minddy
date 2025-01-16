@@ -1,8 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/calendar/app_date.dart';
 import 'package:minddy/system/files/app_config.dart';
+import 'package:minddy/system/model/custom_date_picker_mode.dart';
+import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -11,20 +15,32 @@ class CustomDatePickerInput extends StatefulWidget {
     super.key, 
     required this.onCompleted, 
     required this.initialValue, 
-    required this.onTimeChanged, 
+    required this.updateStartTime,
+    required this.updateEndTime, 
+    required this.updateWidget,
     required this.initialTime, 
     required this.useTime, 
-    required this.timeLowerLimit, 
-    required this.timeUpperLimit
+    required this.startTime,
+    required this.endTime,
+    required this.startDate, 
+    required this.endDate,
+    required this.isEndDate,
+    required this.mode
   });
 
   final bool useTime;
   final Function(DateTime?) onCompleted; 
-  final Function(DateTime?) onTimeChanged;
+  final Function(DateTime?) updateStartTime;
+  final Function(DateTime?) updateEndTime;
+  final Function updateWidget;
   final DateTime? initialValue;
   final DateTime? initialTime;
-  final DateTime? timeLowerLimit;
-  final DateTime? timeUpperLimit;
+  final DateTime? startDate;
+  final DateTime? endDate;
+  final DateTime? startTime;
+  final DateTime? endTime;
+  final bool isEndDate;
+  final CustomDatePickerMode mode;
 
   @override
   State<CustomDatePickerInput> createState() => _CustomDatePickerInputState();
@@ -170,25 +186,15 @@ class _CustomDatePickerInputState extends State<CustomDatePickerInput> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10),
-                      child: TextField(
-                        onChanged: (value) => _onTimeChanged(value, timeController),
-                        onEditingComplete: () => _validateTime(timeController, _timeFocusNode, widget.onTimeChanged, widget.timeLowerLimit, widget.timeUpperLimit),
-                        onTapOutside: (event) {
-                          _validateTime(timeController, _timeFocusNode, widget.onTimeChanged, widget.timeLowerLimit, widget.timeUpperLimit);
+                      child: CustomTimePicker(
+                        key: UniqueKey(), 
+                        theme: theme,
+                        time: widget.isEndDate 
+                          ? widget.endTime
+                          : widget.startTime,
+                        onSelected: (time) {
+                          _validateTime(widget, time);
                         },
-                        focusNode: _timeFocusNode,
-                        controller: timeController,
-                        style: theme.bodyMedium,
-                        cursorColor: theme.onPrimary,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'^[0-9:]+$'))
-                        ],
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: '${_padIfNecessary(DateTime.now().hour)}:${_padIfNecessary(DateTime.now().minute)}',
-                          hintStyle: theme.bodyMedium.copyWith(color: theme.onPrimary.withValues(alpha: 0.6)),
-                          contentPadding: const EdgeInsets.only(bottom: 7)
-                        ),
                       ),
                     ),
                   )
@@ -310,131 +316,348 @@ Future<bool> _validateDate(TextEditingController dateController, Function(DateTi
   }
 }
 
-
-void _onTimeChanged(String value, TextEditingController timeController) {
-  String digitsOnly = value.replaceAll(RegExp(r'[^\d:]'), '');
-  String newValue = '';
-
-  // Handle hours
-  if (digitsOnly.isNotEmpty) {
-    if (int.parse(digitsOnly[0].replaceAll(':', '').isEmpty ? '0' : digitsOnly[0].replaceAll(':', '')) > 2) {
-      newValue = '0${digitsOnly[0]}';
-    } else {
-      newValue = digitsOnly[0];
-    }
+bool _isDateTheSameDay(DateTime? date, DateTime? comparedTo) {
+  if (date == null || comparedTo == null) {
+    return false;
   }
-  if (digitsOnly.length >= 2) {
-    int secondDigit = int.parse(digitsOnly[1].replaceAll(':', '').isEmpty ? '0' : digitsOnly[1].replaceAll(':', ''));
-    if (newValue[0] == '2' && secondDigit > 3) {
-      newValue += '3';
-    } else {
-      newValue += digitsOnly[1];
-    }
-  }
-
-  // Add colon if length is 2 or more and doesn't contain a colon
-  if (newValue.length >= 2 && !newValue.contains(':')) {
-    newValue += ':';
-  }
-
-  // Handle minutes
-  if (digitsOnly.length >= 3) {
-    String minutes = digitsOnly.substring(3);
-    if (minutes.isNotEmpty) {
-      int firstMinuteDigit = int.parse(minutes[0].replaceAll(':', '').isEmpty ? '0' : minutes[0].replaceAll(':', ''));
-      if (firstMinuteDigit > 5) {
-        newValue += '0${minutes[0]}';
-      } else {
-        newValue += minutes[0];
-      }
-      if (minutes.length > 1) {
-        newValue += minutes[1];
-      }
-    }
-  }
-
-  // Ensure we don't exceed HH:mm format
-  if (newValue.length > 5) {
-    newValue = newValue.substring(0, 4);
-  }
-
-  // Update the controller only if the value has changed
-  timeController.value = TextEditingValue(
-    text: newValue,
-    selection: TextSelection.collapsed(offset: newValue.length),
-  );
+  return date.year == comparedTo.year && date.month == comparedTo.month && date.day == comparedTo.day;
 }
 
-void _validateTime(TextEditingController timeController, FocusNode focusNode, Function(DateTime?) onTimeChanged, DateTime? timeLowerLimit, DateTime? timeUpperLimit) {
-  String timeText = timeController.text;
 
-  // Split the input into hours and minutes using the colon
-  List<String> timeParts = timeText.split(':');
-
-  if (timeParts.length == 2) {
-    String hours = timeParts[0];
-    String minutes = timeParts[1];
-
-    // Ensure hours are valid (0-23)
-    if (hours.length == 1) {
-      hours = '0$hours'; // Add leading zero if necessary
-    }
-    int hourValue = int.parse(hours);
-    if (hourValue > 23) {
-      hours = '23'; // Cap hours at 23
-    }
-
-    hours = hourValue.clamp(timeLowerLimit?.hour ?? 00, timeUpperLimit?.hour ?? 23).toString();
-
-    if (hours.length == 1) {
-      hours = '0$hours';
-    }
-
-    if (minutes.isEmpty) {
-      minutes = '00';
-    }
-
-    // Ensure minutes are valid (0-59)
-    if (minutes.length == 1) {
-      minutes = '0$minutes'; // Add leading zero if necessary
-    }
-    int minuteValue = int.parse(minutes);
-    if (minutes.isNotEmpty) {
-      if (minuteValue > 59) {
-        minutes = '59'; // Cap minutes at 59
-      }
-    }
-
-    if (hourValue == timeLowerLimit?.hour) {
-      minutes = minuteValue.clamp(timeLowerLimit?.minute ?? 00, timeUpperLimit?.minute ?? 59).toString();
-    }
-
-    if (minutes.length == 1) {
-      minutes = '0$minutes';
-    }
-
-    // Combine the hours and minutes into the final valid time
-    String validatedTime = '$hours:$minutes';
-    onTimeChanged(DateTime(0, 0, 0, int.parse(hours), int.parse(minutes)));
-
-    // Update the text field with the validated time
-    timeController.value = TextEditingValue(
-      text: validatedTime,
-    );
-  } else if (timeParts.length == 1 && timeParts[0].isNotEmpty) {
-    // If the user entered only the hours (no colon), auto-complete with ":00"
-    String hours = timeParts[0].length == 1 ? '0${timeParts[0]}' : timeParts[0];
-    hours = int.parse(hours.replaceAll(':', '').isEmpty ? '00' : hours.replaceAll(':', '')).clamp(timeLowerLimit?.hour ?? 00, timeUpperLimit?.hour ?? 23).toString();
-    hours = hours.length == 1 ? '0$hours' : hours;
-    String validatedTime = '$hours:00';
-    onTimeChanged(DateTime(0, 0, 0, int.parse(hours), 00));
-
-    timeController.value = TextEditingValue(
-      text: validatedTime,
-    );
-  } else {
-    // If the input is invalid or empty, reset the input
-    timeController.clear();
+void _validateTime(CustomDatePickerInput widget, DateTime selectedTime) {
+  if (widget.mode == CustomDatePickerMode.single) {
+    widget.updateStartTime(selectedTime);
+    widget.updateWidget();
+    return;
   }
-  focusNode.unfocus();
+
+  if (widget.startDate == null || widget.endDate == null || widget.startTime == null || widget.endTime == null) {
+    return;
+  }
+
+  if (!_isDateTheSameDay(widget.startDate, widget.endDate)) {
+    if (widget.isEndDate) {
+      widget.updateEndTime(selectedTime);
+    } else {
+      widget.updateStartTime(selectedTime);
+    }
+    widget.updateWidget();
+    return;
+  }
+
+  if (widget.isEndDate) {
+    if (selectedTime.isBefore(widget.startTime!)) {
+      widget.updateEndTime(selectedTime);
+      widget.updateStartTime(selectedTime.subtract(const Duration(hours: 1)));
+    } else {
+      widget.updateEndTime(selectedTime);
+    }
+  } else {
+    if (selectedTime.isAfter(widget.endTime!)) {
+      widget.updateStartTime(selectedTime);
+      widget.updateEndTime(selectedTime.add(const Duration(hours: 1)));
+    } else {
+      widget.updateStartTime(selectedTime);
+    }
+  }
+  widget.updateWidget();
+}
+
+
+class CustomTimePicker extends StatefulWidget {
+  const CustomTimePicker({
+    super.key,
+    required this.theme,
+    required this.onSelected,
+    this.time
+  });
+
+  final StylesGetters theme;
+  final DateTime? time;
+  final Function(DateTime) onSelected;
+
+  @override
+  State<CustomTimePicker> createState() => _CustomTimePickerState();
+}
+
+class _CustomTimePickerState extends State<CustomTimePicker> with SingleTickerProviderStateMixin {
+
+  DateTime selected = DateTime.now();
+
+  GlobalKey key = GlobalKey();
+
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  OverlayEntry? entry;
+
+  late PageController hourController = PageController(viewportFraction: 0.25, initialPage: selected.hour);
+  late PageController minuteController = PageController(viewportFraction: 0.25, initialPage: getMinuteIndex(selected.minute));
+
+  int getMinuteIndex(int minutes) {
+    int roundexMinutes = (minutes / 5).round() * 5;
+
+    List<int> minutesList = [for (int i = 0; i < 60; i += 5) i];
+
+    int index = minutesList.indexOf(roundexMinutes);
+
+    return index;
+  }
+
+  int getMinutesFromIndex(int index) {
+    List<int> minutesList = [for (int i = 0; i < 60; i += 5) i];
+
+    if (index < 0 || index >= minutesList.length) {
+      throw RangeError('Index out of range');
+    }
+
+    return minutesList[index];
+  }
+
+  void _confirmSelection() {
+    _controller.reverse().then((_) {
+      entry?.remove();
+      entry = null;
+      widget.onSelected(selected);
+    });
+  }
+
+  OverlayEntry _createOverlayEntry(BuildContext context) {
+    RenderBox renderBox = key.currentContext!.findRenderObject() as RenderBox;
+    var buttonSize = renderBox.size;
+    var offset = renderBox.localToGlobal(Offset.zero);
+
+    double width = 300;
+    double height = 200;
+
+    Size screensize = MediaQuery.of(context).size;
+
+    double top = offset.dy - (height / 2) + (buttonSize.height / 2);
+    double left = offset.dx  - (width / 2) + (buttonSize.width / 2);
+
+    if (top + height + 45 > screensize.height) {
+
+      top = screensize.height - height - 45;
+    }
+
+    return OverlayEntry(
+      builder: (context) => GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: _confirmSelection,
+        child: Stack(
+          children: [
+            Positioned(
+              top: top,
+              left: left,
+              child: ScaleTransition(
+                scale: _animation,
+                child: Container(
+                  width: width,
+                  height: height + 45,
+                  decoration: BoxDecoration(
+                    color: widget.theme.primaryContainer,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: widget.theme.onPrimary.withValues(alpha: widget.theme.brightness == Brightness.light ? 1 : 0.2),
+                      width: 0.5
+                    )
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            top: (height / 2) - 20,
+                            left: 10,
+                            child: Container(
+                              width: width - 20,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: widget.theme.surface,
+                                borderRadius: BorderRadius.circular(10)
+                              ),
+                              child: Center(
+                                child: Text(
+                                  ":",
+                                  style: widget.theme.titleLarge
+                                    .copyWith(color: widget.theme.onPrimary),
+                                ),
+                              ),
+                            )
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SizedBox(
+                                height: 200,
+                                width: 100,
+                                child: PageView(
+                                  scrollDirection: Axis.vertical,
+                                  controller: hourController,
+                                  pageSnapping: true, 
+                                  onPageChanged: (value) {
+                                    selected = selected.copyWith(hour: value);
+                                  },
+                                  allowImplicitScrolling: true,
+                                  children: List.generate(24, (index) => Container(
+                                      width: 10, 
+                                      height: 15, 
+                                      decoration: const BoxDecoration(
+                                        color: Colors.transparent
+                                      ),
+                                      child: Center(
+                                          child: Text(
+                                            AppDate.padIfNecessary((index)),
+                                            style: widget.theme.titleLarge
+                                              .copyWith(color: widget.theme.onPrimary),
+                                          )
+                                        ),
+                                    )
+                                  )
+                                ),
+                              ),
+                              SizedBox(
+                                height: 200,
+                                width: 100,
+                                child: PageView(
+                                  scrollDirection: Axis.vertical,
+                                  controller: minuteController,
+                                  pageSnapping: true, 
+                                  onPageChanged: (value) {
+                                    selected = selected.copyWith(minute: getMinutesFromIndex(value));
+                                  },
+                                  allowImplicitScrolling: true,
+                                  children: List.generate(12, (index) => Container(
+                                      width: 10,
+                                      height: 15, 
+                                      decoration: const BoxDecoration(
+                                        color: Colors.transparent
+                                      ),
+                                      child: Center(
+                                          child: Text(
+                                            AppDate.padIfNecessary((index * 5)),
+                                            style: widget.theme.titleLarge
+                                              .copyWith(color: widget.theme.onPrimary)
+                                          )
+                                        ),
+                                    )
+                                  )
+                                ),
+                              )
+                            ],
+                          ),
+                          Positioned(
+                            top: 0,
+                            child: SizedBox(
+                              width: width,
+                              height: (height / 2) - 20, 
+                              child: ClipRRect(
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                                  child: SizedBox(
+                                    width: width,
+                                    height: (height / 2) - 20,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ),
+                          Positioned(
+                            bottom: 45,
+                            child: SizedBox(
+                              width: width,
+                              height: (height / 2) - 20, 
+                              child: ClipRRect(
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                                  child: SizedBox(
+                                    width: width,
+                                    height: (height / 2) - 20,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ),
+                          Positioned(
+                            top: height + 5,
+                            left: width - (width - 7.5),
+                            width: width - 15,
+                            height: 30,
+                            child: CustomTextButton(
+                              S.of(context).submenu_artilces_image_description_button, 
+                              _confirmSelection,
+                              false, 
+                              false
+                            )
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            )
+          ],
+        ),
+      )
+    ); 
+  }
+
+  void _showOverlayMenu(BuildContext context) {
+    entry = _createOverlayEntry(context);
+    Overlay.of(context).insert(entry!);
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.stop();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    if (widget.time != null) {
+      selected = widget.time!;
+    }
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 250),
+      reverseDuration: const Duration(milliseconds: 200)
+    );
+
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.fastEaseInToSlowEaseOut,
+      ),
+    );
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          _showOverlayMenu(context);
+        },
+        child: Text(
+          key: key,
+          '${AppDate.padIfNecessary(selected.hour)}:${AppDate.padIfNecessary(((selected.minute / 5).round() * 5).clamp(0, 55))}',
+          style: widget.theme.bodyMedium
+            .copyWith(color: widget.theme.onPrimary.withValues(alpha: widget.time != null ? 1 : 0.5)),
+          overflow: TextOverflow.ellipsis
+        ),
+      ),
+    );
+
+  }
 }

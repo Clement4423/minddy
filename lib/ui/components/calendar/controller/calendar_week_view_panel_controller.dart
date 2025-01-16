@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:isoweek/isoweek.dart';
 import 'package:minddy/system/calendar/app_calendar.dart';
 import 'package:minddy/system/model/calendar.dart';
 import 'package:minddy/system/model/calendar_event.dart';
@@ -25,7 +26,7 @@ class CalendarWeekViewDayEventsList {
   CalendarWeekViewDayEventsList({
     required this.dayIndex,
     required this.events,
-    required this.wholeDayEvents,
+    required this.wholeDayEvents
   });
 }
 
@@ -34,12 +35,18 @@ class CalendarWeekViewPanelController extends ChangeNotifier {
   final double height;
   final int week;
   final int year;
+  final Function? onUpdate;
+  final int? highlightedEventID;
+  final Function? resetHighligthedEvent;
 
   CalendarWeekViewPanelController({
     required this.width,
     required this.height,
     required this.week,
-    required this.year
+    required this.year,
+    this.onUpdate,
+    this.highlightedEventID,
+    this.resetHighligthedEvent
   });
 
   bool _isEventWholeDay(CalendarEvent event) {
@@ -53,14 +60,14 @@ class CalendarWeekViewPanelController extends ChangeNotifier {
     return calendars.firstWhere((calendar) => calendar.id == event.calendarId);
   }
 
-
   Future<List<CalendarWeekViewDayEventsList>> getEvents() async {
     List<DateTime> days = getWeekDays(year: year, weekNumber: week);
     List<Calendar> calendars = await AppCalendar.getCalendars();
 
     List<CalendarEvent> allEvents = [];
     for (Calendar calendar in calendars) {
-      allEvents.addAll(calendar.getEventsAndRecurrencesWithin(days.first, days.last));
+      allEvents.addAll(calendar.getEventsAndRecurrencesWithin(days.first.subtract(const Duration(days: 1)), days.last.add(const Duration(days: 1)))); 
+      // Remove and add one day because the getEventRecurences don't include the rangeStart and rangeEnd
     }
 
     List<CalendarWeekViewDayEventsList> weekEvents = [];
@@ -77,17 +84,17 @@ class CalendarWeekViewPanelController extends ChangeNotifier {
           .map((event) => CalendarEventWeekViewPreviewModel(
                 event: event,
                 isOverlapping: false,
+                calendar: getEventCalendar(event, calendars),
                 overlappingChilds: dailyEvents
-                  .where((e) => _isEventWholeDay(e) && e.start.day == event.start.day && e.eventId != event.eventId)
+                  .where((a) => _isEventWholeDay(a) && a.start.day == event.start.day && a.eventId != event.eventId)
                   .map((e) => CalendarEventWeekViewPreviewModel(
                     event: e, 
                     isOverlapping: true, 
                     calendar: getEventCalendar(e, calendars)
                   )).toList(),
-                calendar: getEventCalendar(event, calendars)
               ))
           .toList();
-
+          
       List<CalendarEventWeekViewPreviewModel> hourlyEvents = dailyEvents
           .where((event) => !_isEventWholeDay(event))
           .map((event) => CalendarEventWeekViewPreviewModel(
@@ -114,27 +121,21 @@ class CalendarWeekViewPanelController extends ChangeNotifier {
 
   List<CalendarEventWeekViewPreviewModel> organizeOverlappingEvents(
       List<CalendarEventWeekViewPreviewModel> events) {
-    // Sort events by start time
     events.sort((a, b) => a.event.start.compareTo(b.event.start));
 
-    // Result list to hold organized events
     List<CalendarEventWeekViewPreviewModel> organizedEvents = [];
 
     while (events.isNotEmpty) {
-      // Find the base event with the longest duration
       CalendarEventWeekViewPreviewModel baseEvent =
           events.reduce((a, b) => _getEventDuration(a) > _getEventDuration(b) ? a : b);
       baseEvent.isOverlapping = false;
 
-      // Find overlapping events for this base event
       List<CalendarEventWeekViewPreviewModel> overlappingEvents = events.where((event) {
         return event != baseEvent && isOverlapping(baseEvent, event);
       }).toList();
 
-      // Sort overlapping events by duration
       overlappingEvents.sort((a, b) => _getEventDuration(b).compareTo(_getEventDuration(a)));
 
-      // Set the second-longest event as the primary overlapping one
       if (overlappingEvents.isNotEmpty) {
         CalendarEventWeekViewPreviewModel primaryOverlap = overlappingEvents.removeAt(0);
         primaryOverlap.isOverlapping = true;
@@ -142,10 +143,8 @@ class CalendarWeekViewPanelController extends ChangeNotifier {
         organizedEvents.add(primaryOverlap);
       }
 
-      // Add the base event
       organizedEvents.add(baseEvent);
 
-      // Remove the base and all its overlapping events from the pool
       events.removeWhere((event) =>
           event == baseEvent || isOverlapping(baseEvent, event));
     }
@@ -162,19 +161,15 @@ class CalendarWeekViewPanelController extends ChangeNotifier {
         event1.event.end.isAfter(event2.event.start);
   }
 
-  List<DateTime> getWeekDays({
-    required int year,
-    required int weekNumber,
-    int weekStart = DateTime.monday,
-  }) {
-    DateTime firstDayOfYear = DateTime(year, 1, 1);
-    int offsetToStart = (weekStart - firstDayOfYear.weekday + 7) % 7;
-    DateTime firstWeekStart = firstDayOfYear.add(Duration(days: offsetToStart));
-    DateTime startOfWeek = firstWeekStart.add(Duration(days: (weekNumber - 1) * 7));
-    return List.generate(7, (index) => startOfWeek.add(Duration(days: index)));
+  List<DateTime> getWeekDays({required int year, required int weekNumber}) {
+    Week week = Week(year: year, weekNumber: weekNumber);
+    return week.days;
   }
 
   void updateUi() {
     notifyListeners();
+    if (onUpdate != null) {
+      onUpdate!();
+    }
   }
 }

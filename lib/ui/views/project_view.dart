@@ -269,7 +269,7 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
                                           }
                                         }
                                       ),
-                                    ),
+                                    )
                                   ],
                                 );
                               },

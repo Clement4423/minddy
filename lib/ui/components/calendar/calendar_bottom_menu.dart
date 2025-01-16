@@ -29,10 +29,12 @@ class _CalendarBottomMenuState extends State<CalendarBottomMenu> {
         if (details.primaryDelta! < 0) {
           setState(() {
             widget.controller.isClosed = false;
+            widget.controller.calendarWeekViewController.setIsBottomMenuClosed(false);
           });
         } else {
           setState(() {
             widget.controller.isClosed = true;
+            widget.controller.calendarWeekViewController.setIsBottomMenuClosed(true);
           });
         }
       },
@@ -80,6 +82,7 @@ class _CalendarBottomMenuState extends State<CalendarBottomMenu> {
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: Row(
+                                      spacing: 5,
                                       children: [
                                         // Week
                                         SizedBox(
@@ -94,9 +97,31 @@ class _CalendarBottomMenuState extends State<CalendarBottomMenu> {
                                               ? ButtonThemes.primaryButtonStyle(context).copyWith(elevation: const WidgetStatePropertyAll(0))
                                               : ButtonThemes.secondaryButtonStyle(context).copyWith(elevation: const WidgetStatePropertyAll(0)),
                                             child: Text(
-                                              "Week",
+                                              S.of(context).calendar_week_view_week_title('').replaceAll(' ', ''),
                                               style: theme.bodyMedium.copyWith(
                                                 color: widget.controller.getActive(0)
+                                                  ? theme.onSecondary
+                                                  : theme.onPrimary,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        // Week
+                                        SizedBox(
+                                          height: 40,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              widget.controller.setCurrentPage('/search');
+                                              widget.controller.setCurrentSelected(1);
+                                              widget.controller.updateMenu();
+                                            },
+                                            style: widget.controller.getActive(1)
+                                              ? ButtonThemes.primaryButtonStyle(context).copyWith(elevation: const WidgetStatePropertyAll(0))
+                                              : ButtonThemes.secondaryButtonStyle(context).copyWith(elevation: const WidgetStatePropertyAll(0)),
+                                            child: Text(
+                                              S.of(context).articles_search,
+                                              style: theme.bodyMedium.copyWith(
+                                                color: widget.controller.getActive(1)
                                                   ? theme.onSecondary
                                                   : theme.onPrimary,
                                               ),
@@ -118,6 +143,7 @@ class _CalendarBottomMenuState extends State<CalendarBottomMenu> {
                                     onPressed: () {
                                       setState(() {
                                         widget.controller.isClosed = !widget.controller.isClosed;
+                                        widget.controller.calendarWeekViewController.setIsBottomMenuClosed(widget.controller.isClosed);
                                       });
                                     },
                                     tooltip: widget.controller.isClosed 

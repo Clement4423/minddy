@@ -189,20 +189,31 @@ class _HomeViewState extends State<HomeView> {
                       child: ArticlesMenuButton(),
                     ),
                   ),
-                  FutureBuilder(
-                    future: AppConfig.getConfigValue('prefer_us_date_format'),
+                  StreamBuilder<bool>(
+                    stream: LoginState.unlockedStream,
+                    initialData: LoginState.isUnlocked,
                     builder: (context, snapshot) {
-                      if (snapshot.hasData) {
+                      if (snapshot.hasData && snapshot.data == true) {
                         return Positioned(
                           bottom: 0,
                           right: 0,
-                          child: CalendarButton(useUsDateFormat: snapshot.data ?? false),
-                        );  
+                          child: FutureBuilder(
+                            future: AppConfig.getConfigValue('prefer_us_date_format'),
+                            initialData: false,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return CalendarButton(useUsDateFormat: snapshot.data);
+                              } else {
+                                return const SizedBox.shrink();
+                              }
+                            }
+                          ),
+                        );
                       } else {
                         return const SizedBox();
                       }
                     }
-                  ),
+                  )
                 ],
               ),
             );

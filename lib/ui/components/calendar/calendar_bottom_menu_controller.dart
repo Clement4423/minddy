@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minddy/ui/components/calendar/calendar_week_view_bottom_menu_search_event_view.dart';
 import 'package:minddy/ui/components/calendar/controller/calendar_week_view_controller.dart';
 import 'package:minddy/ui/components/calendar/week_selector_date_picker.dart';
 
@@ -11,11 +12,29 @@ class CalendarBottomMenuController extends ChangeNotifier {
   bool isClosed = true;
 
   CalendarBottomMenuController({required this.calendarWeekViewController}) {
+    isClosed = calendarWeekViewController.isBottomMenuClosed;
     _pages = {
       "/week": WeekSelectorDatePicker(
         onWeekSelected: calendarWeekViewController.selectNewWeek, 
         selectedWeek: calendarWeekViewController.selectedWeek, 
-        selectedYear: calendarWeekViewController.selectedYear
+        selectedYear: calendarWeekViewController.selectedYear,
+        controller: calendarWeekViewController,
+        events: calendarWeekViewController.events,
+        calendars: calendarWeekViewController.calendars
+      ),
+      "/search": CalendarWeekViewBottomMenuSearchEventView(
+        events: calendarWeekViewController.events, 
+        calendars: calendarWeekViewController.calendars, 
+        updateUi: calendarWeekViewController.update,
+        setWeek: (event) {
+          int weekNumber = calendarWeekViewController.getWeekNumber(event.start);
+          int year = calendarWeekViewController.getISOYear(event.start);
+
+          calendarWeekViewController.highlightedEventID = event.eventId;
+
+          calendarWeekViewController.selectNewWeek(weekNumber, year);
+        },
+        useUsDateFormat: false
       )
     };
     _currentPage = _pages.values.toList()[_currentSelected];
@@ -37,6 +56,7 @@ class CalendarBottomMenuController extends ChangeNotifier {
   } 
 
   void updateMenu() {
+    calendarWeekViewController.setIsBottomMenuClosed(isClosed);
     notifyListeners();
   }
 

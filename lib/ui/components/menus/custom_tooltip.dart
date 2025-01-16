@@ -13,8 +13,9 @@ class CustomTooltip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
-    return message.length > lengthTreshold
-    ? Tooltip(
+    if (message.length > lengthTreshold) {
+      return Tooltip(
+      triggerMode: TooltipTriggerMode.tap,
       richMessage: WidgetSpan(
         alignment: PlaceholderAlignment.baseline,
         baseline: TextBaseline.alphabetic,
@@ -42,7 +43,9 @@ class CustomTooltip extends StatelessWidget {
         ],
       ),
       child: child,
-    ) 
-    : child;
+    );
+    } else {
+      return child;
+    }
   }
 }

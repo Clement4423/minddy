@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 Color mixColors(Color color1, Color color2, double ratio) {
-  // Clamp ratio to [0, 1]
   ratio = ratio.clamp(0.0, 1.0);
 
   int r = (color1.r * ratio + color2.r * (1 - ratio)).round();

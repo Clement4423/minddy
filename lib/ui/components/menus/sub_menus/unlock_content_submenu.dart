@@ -12,13 +12,14 @@ import 'package:minddy/ui/components/menus/sub_menus_controllers/unlock_submenu_
 import 'package:minddy/ui/theme/theme.dart';
 
 
-Future<bool> showUnlockContentSubMenu(BuildContext context) async {
+Future<bool> showUnlockContentSubMenu(BuildContext context, {String? title}) async {
   Completer<bool> completer = Completer<bool>();
 
   showSubMenu(
     context, 
     _UnlockContentSubmenu(
       controller: UnlockSubMenuController(), 
+      title: title,
       isUnlockedFunction: (bool value) {
         if (value == true) {
           completer.complete(value);
@@ -35,11 +36,16 @@ Future<bool> showUnlockContentSubMenu(BuildContext context) async {
 
 
 class _UnlockContentSubmenu extends StatefulWidget {
-  const _UnlockContentSubmenu({required this.controller, required this.isUnlockedFunction});
+  const _UnlockContentSubmenu({
+    required this.controller, 
+    required this.isUnlockedFunction, 
+    this.title
+  });
 
   final UnlockSubMenuController controller;
 
   final Function(bool) isUnlockedFunction;
+  final String? title;
 
   @override
   State<_UnlockContentSubmenu> createState() => _UnlockContentSubmenuState();
@@ -102,7 +108,7 @@ class _UnlockContentSubmenuState extends State<_UnlockContentSubmenu> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: Text(
-                              S.of(context).submenu_unlock_content_title,
+                              widget.title ?? S.of(context).submenu_unlock_content_title,
                               style: theme.titleLarge.copyWith(color: theme.onPrimary),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,

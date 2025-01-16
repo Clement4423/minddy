@@ -50,6 +50,7 @@ class CustomSelectionMenu extends StatefulWidget {
     this.enabled = true,
     this.enableSearch = false,
     this.enableRightClick = false,
+    this.enableLeftClick = true,
     required this.theme,
     this.buttonStyle,
     this.type = CustomSelectionMenuButttonType.elevated,
@@ -62,6 +63,7 @@ class CustomSelectionMenu extends StatefulWidget {
   final bool enabled;
   final bool enableSearch;
   final bool enableRightClick;
+  final bool enableLeftClick;
   final StylesGetters theme;
   final ButtonStyle? buttonStyle;
   final CustomSelectionMenuButttonType type;
@@ -278,6 +280,9 @@ class _CustomSelectionMenuState extends State<CustomSelectionMenu> with SingleTi
           child: ElevatedButton(
             key: _buttonKey,
             onPressed: () {
+              if (!widget.enableLeftClick) {
+                return;
+              }
               if (_overlayEntry != null) {
                 _dismissOverlay();
               } else {
@@ -292,6 +297,9 @@ class _CustomSelectionMenuState extends State<CustomSelectionMenu> with SingleTi
         return IconButton(
           key: _buttonKey,
           onPressed: () {
+            if (!widget.enableLeftClick) {
+              return;
+            }
             if (_overlayEntry != null) {
               _dismissOverlay();
             } else {

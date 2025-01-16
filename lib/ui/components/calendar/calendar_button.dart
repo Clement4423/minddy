@@ -20,8 +20,6 @@ import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 
-// TODO : Faire la vue Week
-
 class _CalendarsEventsList {
   DateTime date;
   List<CalendarEvent> events;
@@ -252,6 +250,7 @@ class _CalendarButtonState extends State<CalendarButton> {
                         child: SingleChildScrollView(
                           // Top when opened || Preview while hovering
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
                                 height: isOpened 
@@ -261,7 +260,7 @@ class _CalendarButtonState extends State<CalendarButton> {
                                   ? const EdgeInsets.symmetric(vertical: 5, horizontal: 5) 
                                   : EdgeInsets.zero,
                                 padding: isOpened 
-                                  ? const EdgeInsets.symmetric(vertical: 0, horizontal: 4) 
+                                  ? const EdgeInsets.symmetric(horizontal: 4) 
                                   : EdgeInsets.zero,
                                 decoration: isOpened 
                                   ? BoxDecoration(
@@ -270,21 +269,27 @@ class _CalendarButtonState extends State<CalendarButton> {
                                   )
                                   : null,
                                 child: SingleChildScrollView(
-                                  child: SizedBox(
-                                    height: isOpened 
-                                      ? 45 
-                                      : 37,
-                                    child: Center(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Align(
+                                    child: SizedBox(
+                                      height: isOpened 
+                                        ? 45 
+                                        : 37,
+                                      width: isOpened 
+                                        ? 630 
+                                        : isHovering 
+                                          ? _getTodayTextWidth(_getDateText(DateTime.now(), widget.useUsDateFormat), theme.titleMedium.copyWith(fontWeight: FontWeight.w600)) + 37 + 15
+                                          : 37,
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-                                          SizedBox(
-                                            width: 37,
-                                            height: 37,
+                                          // Day icon
+                                          Align(
+                                            alignment: Alignment.centerLeft,
                                             child: SizedBox(
-                                              width: 35,
-                                              height: 35,
+                                              width: 37,
+                                              height: 37,
                                               child: SvgPicture.asset(
                                                 "assets/logo/calendar/Calendar${DateTime.now().day}.svg", 
                                                 // ignore: deprecated_member_use
@@ -292,9 +297,10 @@ class _CalendarButtonState extends State<CalendarButton> {
                                               )
                                             ),
                                           ),
+                                          // Day text
                                           Expanded(
                                             child: Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+                                              padding: const EdgeInsets.symmetric(horizontal: 5),
                                               child: TweenAnimationBuilder(
                                                 duration: const Duration(milliseconds: 300),
                                                 tween: Tween<double>(
@@ -664,73 +670,49 @@ class _CalendarButtonState extends State<CalendarButton> {
                                                       child: Row(
                                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
-                                                          // Week view
-                                                          MouseRegion(
-                                                            cursor: SystemMouseCursors.click,
-                                                            child: GestureDetector(
-                                                              onTap: () {
-                                                                showSubMenu(
-                                                                  context, 
-                                                                  dismissDirection: DismissDirection.startToEnd,
-                                                                  CalendarWeekView(
-                                                                    controller: CalendarWeekViewController(), 
-                                                                    onClosed: () {
-                                                                      setState(() {});
-                                                                    },
-                                                                    theme: theme
-                                                                  )
-                                                                );
-                                                              },
-                                                              child: Tooltip(
-                                                                message: S.of(context).calendar_button_open_week_view_button_tooltip,
-                                                                waitDuration: const Duration(seconds: 1),
-                                                                child: Container(
-                                                                  width: 156,
-                                                                  height: 85,
-                                                                  margin: const EdgeInsets.only(right: 5),
-                                                                  decoration: BoxDecoration(
-                                                                    color: theme.surface,
-                                                                    borderRadius: BorderRadius.circular(borderRadius - 5)
-                                                                  ),
-                                                                  child: Center(
-                                                                    child: Transform.scale(
-                                                                      scaleX: -1,
-                                                                      child: Icon(
-                                                                        CupertinoIcons.arrow_up_left_arrow_down_right, 
-                                                                        color: theme.onSurface,
-                                                                        size: 40,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
+                                                          _CalendarButtonBottomButtons(
+                                                            borderRadius: borderRadius, 
+                                                            theme: theme,
+                                                            tooltip: S.of(context).calendar_button_open_week_view_button_tooltip,
+                                                            onTap: () {
+                                                              showSubMenu(
+                                                                context, 
+                                                                dismissDirection: DismissDirection.startToEnd,
+                                                                onMenuDismissed: () async {
+                                                                  await _getCalendars();
+                                                                  setState(() {});
+                                                                },
+                                                                CalendarWeekView(
+                                                                  controller: CalendarWeekViewController(), 
+                                                                  onClosed: () async {
+                                                                    await _getCalendars();
+                                                                    setState(() {});
+                                                                  },
+                                                                  theme: theme
+                                                                )
+                                                              );
+                                                            },
+                                                            icon: Transform.scale(
+                                                              scaleX: -1,
+                                                              child: Icon(
+                                                                CupertinoIcons.arrow_up_left_arrow_down_right, 
+                                                                color: theme.onSurface,
+                                                                size: 40,
                                                               ),
                                                             ),
                                                           ),
                                                           // Close button
-                                                          MouseRegion(
-                                                            cursor: SystemMouseCursors.click,
-                                                            child: GestureDetector(
-                                                              onTap: () {
-                                                                _toggleDateMenu();
-                                                              },
-                                                              child: Tooltip(
-                                                                message: S.of(context).snacbar_close_button,
-                                                                waitDuration: const Duration(seconds: 1),
-                                                                child: Container(
-                                                                  width: 156,
-                                                                  height: 85,
-                                                                  decoration: BoxDecoration(
-                                                                    color: theme.surface,
-                                                                    borderRadius: BorderRadius.circular(borderRadius - 5)
-                                                                  ),
-                                                                  child: Center(
-                                                                    child: Icon(
-                                                                      Icons.close_rounded, 
-                                                                      color: theme.onSurface,
-                                                                      size: 40,
-                                                                    ),
-                                                                  ),
-                                                                ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 5),
+                                                            child: _CalendarButtonBottomButtons(
+                                                              borderRadius: borderRadius, 
+                                                              theme: theme,
+                                                              tooltip: S.of(context).snacbar_close_button,
+                                                              onTap: _toggleDateMenu,
+                                                              icon: Icon(
+                                                                Icons.close_rounded, 
+                                                                color: theme.onSurface,
+                                                                size: 40,
                                                               ),
                                                             ),
                                                           )
@@ -761,6 +743,69 @@ class _CalendarButtonState extends State<CalendarButton> {
           return const SizedBox.shrink();
         }      
       }
+    );
+  }
+}
+
+class _CalendarButtonBottomButtons extends StatefulWidget {
+  const _CalendarButtonBottomButtons({
+    required this.onTap,
+    required this.icon,
+    required this.borderRadius,
+    required this.tooltip,
+    required this.theme
+  });
+
+  final Function onTap;
+  final StylesGetters theme;
+  final Widget icon;
+  final double borderRadius;
+  final String tooltip;
+
+  @override
+  State<_CalendarButtonBottomButtons> createState() => __CalendarButtonBottomButtonsState();
+}
+
+class __CalendarButtonBottomButtonsState extends State<_CalendarButtonBottomButtons> {
+
+  bool isHovering = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (event) {
+        setState(() {
+          isHovering = true;
+        });
+      },
+      onExit: (event) {
+        setState(() {
+          isHovering = false;
+        });
+      },
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          widget.onTap();
+        },
+        child: Tooltip(
+          message: widget.tooltip,
+          waitDuration: const Duration(seconds: 1),
+          child: Container(
+            width: 156,
+            height: 85,
+            decoration: BoxDecoration(
+              color: isHovering 
+                ? widget.theme.surface.withValues(alpha: 0.9)
+                : widget.theme.surface,
+              borderRadius: BorderRadius.circular(widget.borderRadius - 5)
+            ),
+            child: Center(
+              child: widget.icon
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

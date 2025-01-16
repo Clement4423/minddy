@@ -84,11 +84,13 @@ class _CalendarWeekViewPanelState extends State<CalendarWeekViewPanel> {
     return maximum(widths).toDouble();
   }
 
+  bool datesContainsToday(List<DateTime> days) {
+    DateTime now = DateTime.now();
+    return days.where((date) => date.day == now.day && date.month == now.month && date.year == now.year).isNotEmpty;
+  }
+
 
   double calculateEventTop({required DateTime eventStart, required DateTime eventEnd, required DateTime date, required double totalHeight}) {
-    const int dayMinutes = 24 * 60;
-
-    
     DateTime today = date;
     DateTime todayStart = DateTime(today.year, today.month, today.day);
     DateTime todayEnd = todayStart.add(const Duration(minutes: dayMinutes));
@@ -106,8 +108,7 @@ class _CalendarWeekViewPanelState extends State<CalendarWeekViewPanel> {
     return (minutesSinceStartOfDay / dayMinutes) * totalHeight;
   }
 
-
-  final int dayMinutes = 24 * 60;
+  static const int dayMinutes = 24 * 60;
 
   double calculateEventHeight({required DateTime eventStart, required DateTime eventEnd, required DateTime date, required double totalHeight}) {
 
@@ -244,6 +245,8 @@ class _CalendarWeekViewPanelState extends State<CalendarWeekViewPanel> {
                                             width: eventPreviewZoneWidth, 
                                             height: spaceBetweenDaysAndEvents - spaceBetweenDaysAndEvents / 5, 
                                             zoneHeight: eventPreviewZoneHeight,
+                                            highlightedEventID: widget.controller.highlightedEventID,
+                                            resetHighligthedEvent: widget.controller.resetHighligthedEvent,
                                             top: 0,
                                             isWholeDay: true
                                           )
@@ -266,20 +269,24 @@ class _CalendarWeekViewPanelState extends State<CalendarWeekViewPanel> {
                           children: [
                             // Time
                             Container(
-                              width: timeTextMaxWidth + 20, // Add padding
+                              width: timeTextMaxWidth + 20, // Padding
                               height: eventPreviewZoneHeight,
                               decoration: BoxDecoration(
                                 color: widget.theme.primaryContainer,
                                 borderRadius: BorderRadius.circular(10)
                               ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                              child: Stack(
+                                alignment: Alignment.topCenter,
                                 children: [
                                   ...List.generate(timeList.length, (index) {
-                                    return Text(
-                                      timeList[index],
-                                      overflow: TextOverflow.ellipsis
+                                    num hour = num.parse(timeList[index].split(':').first);
+                                    DateTime dateTime = DateTime(2025, 1, 1, hour.toInt(), 0);
+                                    return Positioned(
+                                      top: calculateEventTop(eventStart: dateTime, eventEnd: dateTime.add(const Duration(hours: 1)), date: dateTime, totalHeight: eventPreviewZoneHeight),
+                                      child: Text(
+                                        timeList[index],
+                                        overflow: TextOverflow.ellipsis
+                                      ),
                                     );
                                   })
                                 ],
@@ -309,6 +316,8 @@ class _CalendarWeekViewPanelState extends State<CalendarWeekViewPanel> {
                                               theme: widget.theme,
                                               updateUi: widget.controller.updateUi,
                                               model: event,
+                                              highlightedEventID: widget.controller.highlightedEventID,
+                                              resetHighligthedEvent: widget.controller.resetHighligthedEvent,
                                             );
                                           })
                                         ],
@@ -321,59 +330,104 @@ class _CalendarWeekViewPanelState extends State<CalendarWeekViewPanel> {
                           ],
                         ),
                         // Time indicator
-                        AnimatedBuilder(
-                          animation: timeUpdater,
-                          builder: (context, child) {
-                            return Positioned(
-                              top: calculateEventTop(eventStart: DateTime.now(), eventEnd: DateTime.now(), date: DateTime.now(), totalHeight: eventPreviewZoneHeight) - 10, // Remove half the bar height to align on real hour
-                              width: widget.controller.width,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    width: 10,
-                                    height: 2,
-                                    decoration: BoxDecoration(
-                                      color: widget.theme.secondary
-                                    ),
-                                  ),
-                                  Container(
-                                    width: timeTextMaxWidth,
-                                    height: 20,
-                                    decoration: BoxDecoration(
-                                      color: widget.theme.secondary,
-                                      borderRadius: BorderRadius.circular(9)
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        '${AppDate.padIfNecessary(DateTime.now().hour)}:${AppDate.padIfNecessary(DateTime.now().minute)}',
-                                        style: widget.theme.titleMedium
-                                          .copyWith(
-                                            fontSize: 14,
-                                            color: widget.theme.onSecondary
-                                          ),
+                        if (datesContainsToday(days))
+                          AnimatedBuilder(
+                            animation: timeUpdater,
+                            builder: (context, child) {
+                              return Positioned(
+                                top: calculateEventTop(eventStart: DateTime.now(), eventEnd: DateTime.now(), date: DateTime.now(), totalHeight: eventPreviewZoneHeight) - 10, // Remove half the bar height to align on real hour
+                                width: widget.controller.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // First blue bar
+                                    Container(
+                                      width: 10,
+                                      height: 2,
+                                      decoration: BoxDecoration(
+                                        color: widget.theme.secondary
                                       ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: 10,
-                                    height: 2,
-                                    decoration: BoxDecoration(
-                                      color: widget.theme.secondary
+                                    // Time box with hour indicated
+                                    Container(
+                                      width: timeTextMaxWidth,
+                                      height: 20,
+                                      decoration: BoxDecoration(
+                                        color: widget.theme.secondary,
+                                        borderRadius: BorderRadius.circular(9)
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          '${AppDate.padIfNecessary(DateTime.now().hour)}:${AppDate.padIfNecessary(DateTime.now().minute)}',
+                                          style: widget.theme.titleMedium
+                                            .copyWith(
+                                              fontSize: 14,
+                                              color: widget.theme.onSecondary
+                                            ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    width: widget.controller.width - timeTextMaxWidth - 20,
-                                    height: 2,
-                                    decoration: BoxDecoration(
-                                      color: widget.theme.secondary.withValues(alpha: 0.5)
+                                    // Second blue bar
+                                    Container(
+                                      width: 10,
+                                      height: 2,
+                                      decoration: BoxDecoration(
+                                        color: widget.theme.secondary
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                        )
+                                    // Long bar
+                                    SizedBox(
+                                      width: eventPreviewZoneWidth * 7 + 35 + 10,
+                                      height: 30,
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Container(
+                                            width: eventPreviewZoneWidth * 7 + 35 + 10,
+                                            height: 2,
+                                            decoration: BoxDecoration(
+                                              color: widget.theme.secondary.withValues(alpha: 0.2)
+                                            ),
+                                          ),
+                                          Positioned(
+                                            left: 15 + (days.indexWhere((day) => datesContainsToday([day]))) * (eventPreviewZoneWidth + 5),
+                                            width: eventPreviewZoneWidth - 5,
+                                            child: Stack(
+                                              alignment: Alignment.centerLeft,
+                                              children: [
+                                                // Thick bar
+                                                Container(
+                                                  width: eventPreviewZoneWidth - 5,
+                                                  height: 5,
+                                                  decoration: BoxDecoration(
+                                                    color: widget.theme.secondary,
+                                                    borderRadius: BorderRadius.circular(5)
+                                                  ),
+                                                ),
+                                                // Circle
+                                                Container(
+                                                  width: 12,
+                                                  height: 12,
+                                                  decoration: BoxDecoration(
+                                                    color: widget.theme.secondary,
+                                                    border: Border.all(
+                                                      color: widget.theme.primaryContainer, 
+                                                      width: 0.5
+                                                    ),
+                                                    borderRadius: BorderRadius.circular(6)
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          )
                       ],
                     ),
                   ],

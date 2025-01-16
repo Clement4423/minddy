@@ -146,9 +146,14 @@ class AppEncrypter {
     if (!_isInitialized) {
       return null;
     }
-    final openedEncrypter = await _openDataEncrypter();
-    final decryptedData = openedEncrypter!.encrypter.decrypt64(dataToDecrypt, iv: openedEncrypter.iv);
-    return decryptedData;
+    try {
+      final openedEncrypter = await _openDataEncrypter();
+      final decryptedData = openedEncrypter!.encrypter.decrypt64(dataToDecrypt, iv: openedEncrypter.iv);
+      return decryptedData;
+    } catch (e) {
+      await _handleError(e, "decryptData");
+      return null;
+    }
   }
 
   static Future<String?> encryptData(final dataToEncrypt) async {

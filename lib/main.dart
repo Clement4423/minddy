@@ -43,6 +43,9 @@ class MainApp extends StatelessWidget {
 
   // TODO : Documenter tout le code
   // TODO : Faire les tests
+  // TODO : Faire le site web de lancement
+  // TODO : Ajouter un menu activé au double clic droit sur les task
+  // TODO : Gérer les contrastes entre texte et fond sur les CalendarWeekEventPreview
   // TODO : Tools note rapide ?
   // TODO : Ajouter tous les articles de base
   // TODO : Faire les articles 'aide' pour les modules
@@ -57,9 +60,9 @@ class MainApp extends StatelessWidget {
   // TODO : Ajouter le repositionement des pages, ainsi que le déplacement des modules
   // TODO : Faire le menu d'ajout de module
   // TODO : AJouter les légendes en dessous des graphiques
-  // TODO : Faire le système d'addon
-  // TODO : Faire en sorte que lorsque l'on quitte la vue week, le calendar button s'update
-  // TODO : Refaire le systeme de selection d'heure
+  // TODO : Terminer le système d'addon
+  // TODO : Faire les paramètres chargés dans StaticVariables pour plus de simplicité
+  // TODO : Commit
 
   @override
   Widget build(BuildContext context) {

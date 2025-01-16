@@ -527,7 +527,6 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                           height: 60,
                           child: SwitchTile(
                             useTime, 
-                            enabled: widget.allowChangeUseTime,
                             S.of(context).custom_date_picker_include_hour, 
                             (newValue) {
                               setState(() {
@@ -595,10 +594,18 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         padding: const EdgeInsets.all(10),
         child: CustomDatePickerInput(
           key: UniqueKey(),
-          onTimeChanged: (value) {
+          updateStartTime: (value) {
             if (value != null) {
               _startTime = value;
             }
+          },
+          updateEndTime: (value) {
+            if (value != null) {
+              _endTime = value;      
+            }
+          },
+          updateWidget: () {
+            setState(() {});
           },
           onCompleted: (value) {
             if (value != null) {
@@ -606,10 +613,14 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
               _selectDate(value, false);
             }
           }, 
+          mode: widget.mode,
           initialValue: _startDate, 
           initialTime: _startTime,
-          timeLowerLimit: null,
-          timeUpperLimit: null,
+          isEndDate: false,
+          startDate: _startDate,
+          endDate: _endDate,
+          startTime: _startTime,
+          endTime: _endTime,
           useTime: useTime
         ),
       );
@@ -617,26 +628,37 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
       return Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
+          key: UniqueKey(),
           children: [
             CustomDatePickerInput(
               key: UniqueKey(),
-              onTimeChanged: (value) {
-                  if (value != null) {
-                    setState(() {
-                      _startTime = value;
-                    });
-                  }
-                },
+              updateStartTime: (value) {
+                if (value != null) {
+                  _startTime = value;
+                }
+              },
+              updateEndTime: (value) {
+                if (value != null) {
+                  _endTime = value;
+                }
+              },
+              updateWidget: () {
+                setState(() {});
+              },
               onCompleted: (value) {
                 if (value != null) {
                   _currentMonth = value;
                   _selectDate(value, false);
                 }
               }, 
+              mode: widget.mode,
               initialValue: _startDate, 
               initialTime: _startTime,
-              timeLowerLimit: null,
-              timeUpperLimit: _getTimeUpperLimit(),
+              startDate: _startDate,
+              endDate: _endDate,
+              startTime: _startTime,
+              endTime: _endTime,
+              isEndDate: false,
               useTime: useTime
             ),
             const Padding(
@@ -647,12 +669,18 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
               padding: const EdgeInsets.only(top: 10), 
               child: CustomDatePickerInput(
                 key: UniqueKey(),
-                onTimeChanged: (value) {
+                updateStartTime: (value) {
                   if (value != null) {
-                    setState(() {
-                      _endTime = value;
-                    });
+                    _startTime = value;
                   }
+                },
+                updateEndTime: (value) {
+                  if (value != null) {
+                    _endTime = value;                
+                  }
+                },
+                updateWidget: () {
+                  setState(() {});
                 },
                 onCompleted: (value) {
                   if (value != null) {
@@ -660,12 +688,14 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                     _selectDate(value, true);
                   }
                 }, 
-                initialValue: _startDate != null && _endDate == null && _startDate!.isAfter(DateTime.now()) 
-                  ? _startDate 
-                  : _endDate, 
+                mode: widget.mode,
+                initialValue: _endDate, 
                 initialTime: _endTime,
-                timeLowerLimit: _getTimeLowerLimit(),
-                timeUpperLimit: null,
+                isEndDate: true,
+                startDate: _startDate,
+                endDate: _endDate,
+                startTime: _startTime,
+                endTime: _endTime,
                 useTime: useTime
               ),
             ),
@@ -674,27 +704,5 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
       );
     }
     return const SizedBox();
-  }
-
-  DateTime? _getTimeLowerLimit() {
-    if (_startDate == null || _endDate == null) {
-      return null;
-    }
-    if (_startDate!.year == _endDate!.year && _startDate!.month == _endDate!.month && _startDate!.day == _endDate!.day) {
-      return _startTime;
-    } else {
-      return null;
-    }
-  }
-
-  DateTime? _getTimeUpperLimit() {
-    if (_startDate == null || _endDate == null) {
-      return null;
-    }
-    if (_startDate!.year == _endDate!.year && _startDate!.month == _endDate!.month && _startDate!.day == _endDate!.day) {
-      return _endTime;
-    } else {
-      return null;
-    }
   }
 }

@@ -7,6 +7,8 @@ import 'package:minddy/system/calendar/app_calendar.dart';
 import 'package:minddy/system/calendar/app_date.dart';
 import 'package:minddy/system/files/app_config.dart';
 import 'package:minddy/system/model/calendar_event.dart';
+import 'package:minddy/system/utils/calculate_text_contrast.dart';
+import 'package:minddy/system/utils/color_spaces_permutations.dart';
 import 'package:minddy/ui/components/calendar/calendar_event_detailed_preview.dart';
 import 'package:minddy/ui/components/calendar/controller/calendar_week_view_panel_controller.dart';
 import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
@@ -26,7 +28,9 @@ class CalendarEventWeekViewPreview extends StatefulWidget {
     required this.top,
     required this.updateUi,
     this.showTime = true,
-    this.isWholeDay = false
+    this.isWholeDay = false,
+    this.highlightedEventID,
+    this.resetHighligthedEvent
   });
 
   final CalendarEventWeekViewPreviewModel model;
@@ -38,12 +42,16 @@ class CalendarEventWeekViewPreview extends StatefulWidget {
   final bool showTime;
   final Function updateUi;
   final bool isWholeDay;
+  final int? highlightedEventID;
+  final Function? resetHighligthedEvent;
 
   @override
   State<CalendarEventWeekViewPreview> createState() => _CalendarEventWeekViewPreviewState();
 }
 
-class _CalendarEventWeekViewPreviewState extends State<CalendarEventWeekViewPreview> {
+class _CalendarEventWeekViewPreviewState extends State<CalendarEventWeekViewPreview> with SingleTickerProviderStateMixin {
+
+  bool needToShowPlusAsIcon = false;
 
   String formatDateRange(DateTime firstDate, DateTime secondDate, bool useUsFormat) {
     intl.DateFormat dateFormat = useUsFormat 
@@ -102,24 +110,83 @@ class _CalendarEventWeekViewPreviewState extends State<CalendarEventWeekViewPrev
     if (widget.top == 0) {
       return '00:00 - ${AppDate.padIfNecessary(widget.model.event.end.hour)}:${AppDate.padIfNecessary(widget.model.event.end.minute)}';
     }
+
+    if ((widget.height + widget.top) == widget.zoneHeight) {
+      return '${AppDate.padIfNecessary(widget.model.event.start.hour)}:${AppDate.padIfNecessary(widget.model.event.start.minute)}';
+    }
     
     return '${AppDate.padIfNecessary(widget.model.event.start.hour)}:${AppDate.padIfNecessary(widget.model.event.start.minute)} - ${AppDate.padIfNecessary(widget.model.event.end.hour)}:${AppDate.padIfNecessary(widget.model.event.end.minute)}';
   }
+
+  Color textColor = Colors.black;
+
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     width = widget.model.isOverlapping 
       ? widget.width / 2
       : widget.width;
+
+    Color background = mixColors(widget.theme.secondaryContainer, widget.model.calendar.color.withValues(alpha: 0.2), 0.5);
+
+    bool enoughContrast = hasSufficientContrast(widget.model.calendar.color, background);
+
+    if (!enoughContrast) {
+      textColor = widget.theme.onPrimary;
+    } else {
+      textColor = widget.model.calendar.color;
+    }
+
+    needToShowPlusAsIcon = widget.model.overlappingChilds.isNotEmpty && widget.height < (20 + (widget.height / 4).clamp(20, 500))
+      ? true
+      : false;
+
     super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _animation = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.8), weight: 1),
+      TweenSequenceItem(tween: Tween(begin: 0.8, end: 1.0), weight: 1),
+    ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
+    if (widget.highlightedEventID != null && widget.highlightedEventID == widget.model.event.eventId) {
+      if (widget.resetHighligthedEvent != null) {
+        widget.resetHighligthedEvent!();
+      }
+      _controller.forward().onError((e, s) {return;});
+    } else {
+      _controller.stop();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    if (widget.top == 0 && widget.model.event.start.hour != 0 && widget.model.event.start.minute != 0 && widget.model.event.end.hour == 0 && widget.model.event.end.minute == 0) {
+      return const SizedBox.shrink();
+    }
+
     return Positioned(
       top: widget.top,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(widget.height < 10 ? 8 : 6),
+          bottomLeft: Radius.circular(widget.height < 10 ? 8 : 6),
+          topRight: const Radius.circular(8),
+          bottomRight: const Radius.circular(8)
+        ),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: CustomSelectionMenu(
@@ -140,7 +207,7 @@ class _CalendarEventWeekViewPreviewState extends State<CalendarEventWeekViewPrev
                       ? S.of(context).articles_card_untitled
                       : widget.model.event.title,  
                   labelStyle: widget.theme.titleMedium
-                    .copyWith(fontWeight: FontWeight.w600),
+                    .copyWith(fontWeight: FontWeight.w600, color: widget.theme.secondary),
                   icon: null,
                   items: _getSelectionMenuItems(widget.model, widget.updateUi, widget.theme, context, formatDateRange), 
                   onTap: () {}
@@ -161,143 +228,179 @@ class _CalendarEventWeekViewPreviewState extends State<CalendarEventWeekViewPrev
               else 
                 ..._getSelectionMenuItems(widget.model, widget.updateUi, widget.theme, context, formatDateRange)
             ],
-            child: Container(
-              width: width,
-              height: widget.height,
-              decoration: BoxDecoration(
-                color: widget.model.calendar.color.withValues(alpha: 0.2),
-                border: Border(
-                  left: BorderSide(color: widget.model.calendar.color, width: 8), 
-                  top: BorderSide.none, 
-                  right: BorderSide.none, 
-                  bottom: BorderSide.none
-                ),
-                borderRadius: BorderRadius.circular(8)
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: ScaleTransition(
+              scale: _animation,
+              child: Stack(
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: width,
-                        constraints: BoxConstraints(
-                          maxHeight: widget.isWholeDay ? widget.height : (widget.height / 4).clamp(20, 500)
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 5, right: 2),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: width - 30 - (widget.isWholeDay && widget.model.overlappingChilds.isNotEmpty ? 25 : 0),
-                                child: Text(
-                                  widget.model.event.title.replaceAll(' ', '').isEmpty 
-                                  ? S.of(context).articles_card_untitled
-                                  : widget.model.event.title,
-                                  style: widget.theme.bodyMedium
-                                    .copyWith(
-                                      fontWeight: FontWeight.w600, 
-                                      color: widget.model.calendar.color, 
-                                      fontSize: (widget.height / 2).clamp(2, 16)
-                                    ),
-                                  overflow: TextOverflow.clip
-                                ),
+                  Container(
+                    width: width,
+                    padding: const EdgeInsets.only(left: 8),
+                    height: widget.height < 10 
+                      ? 12
+                      : widget.height,
+                    decoration: BoxDecoration(
+                      color: widget.model.calendar.color.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(widget.height < 10 ? 8 : 6),
+                        bottomLeft: Radius.circular(widget.height < 10 ? 8 : 6),
+                        topRight: const Radius.circular(8),
+                        bottomRight: const Radius.circular(8)
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: width,
+                              constraints: BoxConstraints(
+                                maxHeight: widget.isWholeDay ? widget.height : (widget.height / 4).clamp(20, 500)
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  if (widget.model.event.isRecurrence || widget.model.event.recurrence != null)
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 3),
-                                      child: Icon(
-                                        CupertinoIcons.repeat,
-                                        size: 12,
-                                        color: widget.model.calendar.color
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 5, right: 2),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: width - 30 - (widget.isWholeDay && widget.model.overlappingChilds.isNotEmpty ? 25 : 0) - (widget.model.event.isDueDate ? 12 : 0) - (widget.model.event.isRecurrence ? 12 : 0) - (needToShowPlusAsIcon ? 12 : 0),
+                                      child: Text(
+                                        widget.model.event.title.replaceAll(' ', '').isEmpty 
+                                        ? S.of(context).articles_card_untitled
+                                        : widget.model.event.title,
+                                        style: widget.theme.bodyMedium
+                                          .copyWith(
+                                            fontWeight: FontWeight.w600, 
+                                            color: textColor, 
+                                            fontSize: (widget.height / 2).clamp(8, 16)
+                                          ),
+                                        overflow: TextOverflow.ellipsis
                                       ),
                                     ),
-                                  if (widget.isWholeDay && widget.model.overlappingChilds.isNotEmpty)
-                                    Container(
-                                      width: 25,
-                                      height: widget.height,
-                                      decoration: BoxDecoration(
-                                        color: widget.model.calendar.color.withValues(alpha: 0.10)
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        if (widget.model.event.isRecurrence || widget.model.event.recurrence != null)
                                           Padding(
-                                            padding: const EdgeInsets.only(right: 5),
-                                            child: Text(
-                                              '+${widget.model.overlappingChilds.length}',
-                                              style: widget.theme.bodySmall
-                                                .copyWith(color: widget.model.calendar.color),
-                                              maxLines: 1
+                                            padding: EdgeInsets.only(right: 3, top: widget.height < 10 ? 1 : 0),
+                                            child: Icon(
+                                              CupertinoIcons.repeat,
+                                              size: widget.height < 10 ? 10 : 12,
+                                              color: textColor
                                             ),
                                           ),
-                                        ],
-                                      )
+                                        if (widget.isWholeDay && widget.model.overlappingChilds.isNotEmpty)
+                                          Container(
+                                            width: 25,
+                                            height: widget.height,
+                                            decoration: BoxDecoration(
+                                              color: widget.model.calendar.color.withValues(alpha: 0.10)
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.only(right: 5),
+                                                  child: Text(
+                                                    '+${widget.model.overlappingChilds.length}',
+                                                    style: widget.theme.bodySmall
+                                                      .copyWith(color: textColor),
+                                                    maxLines: 1
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          )
+                                        else if (widget.model.event.isDueDate && widget.model.event.dueDateInfo != null)
+                                          if (widget.model.event.dueDateInfo!.isCompleted)
+                                            Padding(
+                                              padding: EdgeInsets.only(top: widget.height < 10 ? 1 : 0),
+                                              child: Icon(
+                                                Icons.check_rounded,
+                                                size: widget.height < 10 ? 8 : 12,
+                                                color: textColor
+                                              ),
+                                            )
+                                          else 
+                                            Padding(
+                                              padding: EdgeInsets.only(top: widget.height < 10 ? 1 : 0),
+                                              child: Icon(
+                                                Icons.close_rounded,
+                                                size: widget.height < 10 ? 8 : 12,
+                                                color: textColor
+                                              ),
+                                            ),
+                                        if (needToShowPlusAsIcon)
+                                          Padding(
+                                            padding: EdgeInsets.only(top: widget.height < 10 ? 1 : 0),
+                                            child: Icon(
+                                              Icons.add_rounded,
+                                              size: widget.height < 10 ? 8 : 12,
+                                              color: textColor
+                                            ),
+                                          )
+                                      ],
                                     )
-                                  else if (widget.model.event.isDueDate && widget.model.event.dueDateInfo != null)
-                                    if (widget.model.event.dueDateInfo!.isCompleted)
-                                      Icon(
-                                        CupertinoIcons.checkmark_alt,
-                                        size: 12,
-                                        color: widget.model.calendar.color
-                                      )
-                                    else 
-                                      Icon(
-                                        CupertinoIcons.xmark,
-                                        size: 12,
-                                        color: widget.model.calendar.color
-                                      )
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      if (widget.showTime && widget.height > (30 + (widget.height / 4).clamp(20, 500)) && (widget.model.overlappingChilds.isNotEmpty ? widget.height > 50 : true))
-                        SizedBox(
-                          width: width,
-                          height: 20,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Text(
-                              getTimeText(),
-                              style: widget.theme.bodyMedium.copyWith(color: widget.model.calendar.color),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
+                            if (widget.showTime && widget.height > (30 + (widget.height / 4).clamp(20, 500)) && (widget.model.overlappingChilds.isNotEmpty ? widget.height > 50 : true))
+                              SizedBox(
+                                width: width,
+                                height: 20,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: Text(
+                                    getTimeText(),
+                                    style: widget.theme.bodyMedium.copyWith(color: textColor),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
-                    ],
+                        if (widget.model.overlappingChilds.isNotEmpty && widget.height > (20 + (widget.height / 4).clamp(20, 500)))
+                          Container(
+                            width: width,
+                            height: (widget.height / 5).clamp(20, 100),
+                            decoration: BoxDecoration(
+                              color: widget.model.calendar.color.withValues(alpha: 0.10)
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5),
+                                  child: Text(
+                                    '+${widget.model.overlappingChilds.length}',
+                                    style: widget.theme.bodySmall
+                                      .copyWith(color: textColor),
+                                    maxLines: 1
+                                  ),
+                                ),
+                              ],
+                            )
+                          )
+                      ],
+                    ),
                   ),
-                  if (widget.model.overlappingChilds.isNotEmpty && widget.height > (20 + (widget.height / 4).clamp(20, 500)))
-                    Container(
-                      width: width,
-                      height: (widget.height / 5).clamp(20, 100),
-                      decoration: BoxDecoration(
-                        color: widget.model.calendar.color.withValues(alpha: 0.10)
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 5),
-                            child: Text(
-                              '+${widget.model.overlappingChilds.length}',
-                              style: widget.theme.bodySmall
-                                .copyWith(color: widget.model.calendar.color),
-                              maxLines: 1
-                            ),
-                          ),
-                        ],
-                      )
-                    )
+                  // Side calendar indicator
+                  Container(
+                    width: 6,
+                    height: widget.height < 10 
+                      ? 8
+                      : widget.height - 5,
+                    margin: const EdgeInsets.only(left: 2.5, top: 2.5),
+                    decoration: BoxDecoration(
+                      color: widget.model.calendar.color,
+                      borderRadius: BorderRadius.circular(3)
+                    ),
+                  )
                 ],
               ),
             ),
@@ -356,7 +459,7 @@ String formatSingleDate(DateTime date, bool useUsFormat) {
 List<CustomSelectionMenuItem> _getSelectionMenuItems(CalendarEventWeekViewPreviewModel model, Function updateUi, StylesGetters theme, BuildContext context, String Function(DateTime, DateTime, bool) formatDateRange) {
   return [
     CustomSelectionMenuItem(
-      label: "Details", 
+      label: S.current.calendar_week_view_week_details, 
       icon: Icons.notes_rounded, 
       onTap: () async {
         bool useUsDateFormat = await AppConfig.getConfigValue("prefer_us_date_format") ?? false;

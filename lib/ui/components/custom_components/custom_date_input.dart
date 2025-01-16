@@ -69,7 +69,9 @@ class _CustomDateInputState extends State<CustomDateInput> {
               endDate = result.selectedDates.length > 1
                 ? result.selectedDates.last 
                 : date.add(const Duration(hours: 1));
-              setState(() {});
+              if (context.mounted) {
+                setState(() {});
+              }
               await widget.onSelected(result.selectedDates);
             }
           } 

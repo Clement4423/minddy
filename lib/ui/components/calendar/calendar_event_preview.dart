@@ -25,7 +25,8 @@ class CalendarEventPreview extends StatefulWidget {
     required this.updateUi,
     required this.formatDate,
     required this.useUsDateFormat,
-    required this.theme
+    required this.theme,
+    this.onClick
   });
 
   final CalendarEvent event;
@@ -37,6 +38,7 @@ class CalendarEventPreview extends StatefulWidget {
   final Function(DateTime, bool) formatDate;
   final bool useUsDateFormat;
   final StylesGetters theme;
+  final Function? onClick;
 
   @override
   State<CalendarEventPreview> createState() => _CalendarEventPreviewState();
@@ -107,6 +109,10 @@ class _CalendarEventPreviewState extends State<CalendarEventPreview> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        if (widget.onClick != null) {
+          widget.onClick!();
+          return;
+        }
         if (!isPrivate) {
           showSubMenu(context, CalendarEventDetailedPreview(
             event: widget.event,
@@ -339,6 +345,10 @@ class _CalendarEventPreviewState extends State<CalendarEventPreview> {
                           height: 20,
                           decoration: BoxDecoration(
                             color: widget.calendar.color,
+                            border: Border.all(
+                              width: 0.5,
+                              color: widget.theme.onPrimary.withValues(alpha: 0.5)
+                            ),
                             borderRadius: BorderRadius.circular(10)
                           ),
                         ),
@@ -357,7 +367,7 @@ class _CalendarEventPreviewState extends State<CalendarEventPreview> {
                             Padding(
                               padding: const EdgeInsets.only(left: 10, right: 3),
                               child: Tooltip(
-                                message: calendarEventRecurenceTypeTranslation[widget.event.recurrence?.type] ?? 'Recurrent event',
+                                message: widget.event.recurrence!.generateRecurenceText().typeAndInterval,
                                 child: Icon(
                                   CupertinoIcons.repeat, 
                                   size: 18,

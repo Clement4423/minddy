@@ -5,6 +5,8 @@ import 'package:minddy/system/model/calendar.dart';
 import 'package:minddy/system/model/calendar_event.dart';
 import 'package:minddy/system/model/custom_date_picker_mode.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
+import 'package:minddy/ui/components/calendar/custom_happens_on_picker.dart';
+import 'package:minddy/ui/components/calendar/custom_rec_interval_picker.dart';
 import 'package:minddy/ui/components/custom_components/custom_date_input.dart';
 import 'package:minddy/ui/components/custom_components/custom_dropdown_button.dart';
 import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
@@ -254,9 +256,7 @@ class _NewCalendarEventSubMenuState extends State<NewCalendarEventSubMenu> {
                           title: S.of(context).node_widgets_start_text,
                           endTitle: S.of(context).node_widgets_end_text,
                           date: event.start,
-                          endDate: isWholeDay 
-                            ? null
-                            : event.end,
+                          endDate: event.end,
                           mode: widget.datePickerMode ?? (isWholeDay 
                             ? CustomDatePickerMode.single
                             : CustomDatePickerMode.range),
@@ -294,9 +294,9 @@ class _NewCalendarEventSubMenuState extends State<NewCalendarEventSubMenu> {
                           child: CustomDropdownButton(
                             width: 350, 
                             menuMaxHeight: 250,
-                            menuTitle: S.of(context).calendar_new_event_recurrence_subtitle, 
+                            menuTitle: S.of(context).calendar_new_event_recurence_type_subtitle, 
                             enableSearch: true,
-                            selectedOptionTitle: calendarEventRecurenceTypeTranslation[event.recurrence?.type] ?? S.current.projects_module_spreadsheet_number_operation_none,
+                            selectedOptionTitle: calendarEventRecurenceTypeTranslation[event.recurrence?.type] ?? S.current.calendar_new_event_recurrence_type_never,
                             items: [
                               CustomSelectionMenuItem(
                                 label: S.current.calendar_new_event_recurrence_type_never, 
@@ -327,7 +327,117 @@ class _NewCalendarEventSubMenuState extends State<NewCalendarEventSubMenu> {
                             ], 
                             theme: widget.theme
                           )
-                        )],
+                        )
+                      ],
+                      if (event.recurrence != null && widget.showRecurrenceOption)
+                        ...[
+                          // Interval selector
+                          Container(
+                            width: 350,
+                            height: 50,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            margin: const EdgeInsets.only(top: 10),
+                            decoration: BoxDecoration(
+                              color: widget.theme.surface,
+                              borderRadius: BorderRadius.circular(15)
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  S.of(context).calendar_new_event_recurence_every_subtitle,
+                                  style: widget.theme.bodyMedium,
+                                ),
+                                CustomRecIntervalPicker(
+                                  key: UniqueKey(),
+                                  theme: widget.theme,
+                                  onSelected: (interval) {
+                                    setState(() {
+                                      event.recurrence!.interval = interval;  
+                                    });
+                                  },
+                                  value: event.recurrence!.interval,
+                                  recurenceType: event.recurrence!.type,
+                                )
+                              ],
+                            ),
+                          ),
+                          // Happens on selector
+                          if (event.recurrence!.type != CalendarEventRecurenceType.daily)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: CustomHappensOnPicker(
+                                key: UniqueKey(),
+                                theme: widget.theme,
+                                recurenceType: event.recurrence!.type,
+                                onSelected: (list) {
+                                  event.recurrence!.happensOn = list;
+                                },
+                                happensOn: event.recurrence!.happensOn,
+                              ),
+                            ),
+                            // Recurence end date
+                            Container(
+                              width: 350,
+                              height: 50,
+                              margin: const EdgeInsets.only(top: 10),
+                              child: CustomDropdownButton(
+                                width: 350, 
+                                menuMaxHeight: 250,
+                                menuTitle: S.of(context).calendar_new_event_recurence_end_date,
+                                enableSearch: true,
+                                selectedOptionTitle: event.recurrence!.endDate != null 
+                                  ? S.of(context).calendar_new_event_recurence_end_date_option_the
+                                  : S.current.node_editor_add_sub_menu_none_input_output,
+                                items: [
+                                  CustomSelectionMenuItem(
+                                    label: S.current.node_editor_add_sub_menu_none_input_output, 
+                                    foregroundColor: event.recurrence?.endDate == null 
+                                      ? widget.theme.secondary
+                                      : null,
+                                    icon: null, 
+                                    onTap: () {
+                                      setState(() {
+                                        event.recurrence!.endDate = null;
+                                      });
+                                    }
+                                  ),
+                                  CustomSelectionMenuItem(
+                                    label: S.of(context).calendar_new_event_recurence_end_date_option_the,
+                                    foregroundColor: event.recurrence?.endDate != null 
+                                      ? widget.theme.secondary
+                                      : null,
+                                    icon: null, 
+                                    onTap: () {
+                                      setState(() {
+                                        event.recurrence!.endDate = event.end.add(const Duration(days: 1)).copyWith(hour: 23, minute: 59);
+                                      });
+                                    }
+                                  ),
+                                ], 
+                                theme: widget.theme
+                              )
+                            ),
+                            if (event.recurrence!.endDate != null)
+                              Container(
+                                width: 350,
+                                height: 45,
+                                margin: const EdgeInsets.only(top: 10),
+                                child: CustomDateInput(
+                                  key: UniqueKey(),
+                                  theme: widget.theme, 
+                                  title: S.of(context).calendar_new_event_recurence_end_date,
+                                  date: event.recurrence!.endDate,
+                                  mode: CustomDatePickerMode.single,
+                                  useTime: false,
+                                  onSelected: (dates) {
+                                    setState(() {
+                                      event.recurrence!.endDate = dates.first.copyWith(hour: 23, minute: 59);
+                                    });
+                                  }
+                                )
+                              ),
+                        ],
                       if (widget.showCalendarOption)
                         ...[
                         Padding(
@@ -366,6 +476,15 @@ class _NewCalendarEventSubMenuState extends State<NewCalendarEventSubMenu> {
                                         ? widget.theme.secondary
                                         : widget.theme.onPrimary,
                                       icon: null, 
+                                      iconReplacelemntWidth: 20,
+                                      iconReplacement: Container(
+                                        width: 20,
+                                        height: 20,
+                                        decoration: BoxDecoration(
+                                          color: calendar.color,
+                                          borderRadius: BorderRadius.circular(5)
+                                        ),
+                                      ),
                                       onTap: () {
                                         setState(() {
                                           event.calendarId = calendar.id;

@@ -101,7 +101,7 @@ class _ArticlesBottomMenuState extends State<ArticlesBottomMenu> {
                                       ),
                                       // Content
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8),
+                                        padding: const EdgeInsets.only(left: 5),
                                         child: SizedBox(
                                           height: 40,
                                           child: TextButton(
@@ -126,7 +126,7 @@ class _ArticlesBottomMenuState extends State<ArticlesBottomMenu> {
                                       ),
                                       // Notes
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8),
+                                        padding: const EdgeInsets.only(left: 5),
                                         child: SizedBox(
                                           height: 40,
                                           child: TextButton(

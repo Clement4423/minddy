@@ -22,7 +22,7 @@ class AppCalendar {
       Directory calendarsDirectory = Directory("${StaticVariables.fileSource.documentDirectoryPath}/$calendarsFolderPath");
 
       if (!calendarsDirectory.existsSync()) {
-        calendarsDirectory.createSync();
+        calendarsDirectory.createSync(recursive: true);
       }
 
       List<FileSystemEntity> calendarsFolders = calendarsDirectory.listSync();

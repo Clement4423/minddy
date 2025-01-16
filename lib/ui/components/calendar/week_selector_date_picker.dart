@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:minddy/system/model/calendar.dart';
+import 'package:minddy/system/model/calendar_event.dart';
 import 'package:minddy/system/model/default_app_color.dart';
+import 'package:minddy/ui/components/calendar/controller/calendar_week_view_controller.dart';
 import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
@@ -10,12 +13,18 @@ class WeekSelectorDatePicker extends StatefulWidget {
     super.key, 
     required this.onWeekSelected,
     required this.selectedWeek,
-    required this.selectedYear
+    required this.selectedYear, 
+    required this.events, 
+    required this.calendars,
+    required this.controller
   });
 
   final Function(int week, int year) onWeekSelected;
+  final CalendarWeekViewController controller;
   final int selectedWeek;
   final int selectedYear;
+  final List<CalendarEvent> events;
+  final List<Calendar> calendars;
 
   @override
   State<WeekSelectorDatePicker> createState() => _WeekSelectorDatePickerState();
@@ -28,7 +37,19 @@ class _WeekSelectorDatePickerState extends State<WeekSelectorDatePicker> {
   @override
   void initState() {
     super.initState();
-    _currentMonth = DateTime.now();
+    _currentMonth = getWeekDays(year: widget.selectedYear, weekNumber: widget.selectedWeek).first;
+  }
+
+  List<DateTime> getWeekDays({
+    required int year,
+    required int weekNumber,
+    int weekStart = DateTime.monday,M
+  }) {
+    DateTime firstDayOfYear = DateTime(year, 1, 1);
+    int offsetToStart = (weekStart - firstDayOfYear.weekday + 7) % 7;
+    DateTime firstWeekStart = firstDayOfYear.add(Duration(days: offsetToStart));
+    DateTime startOfWeek = firstWeekStart.add(Duration(days: (weekNumber - 1) * 7));
+    return List.generate(7, (index) => startOfWeek.add(Duration(days: index)));
   }
 
   void _changeMonth(int index) {
@@ -47,7 +68,7 @@ class _WeekSelectorDatePickerState extends State<WeekSelectorDatePicker> {
     return Material(
       type: MaterialType.transparency,
       child: Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         color: Colors.transparent,
         child: Column(
           children: [
@@ -239,26 +260,28 @@ class _WeekSelectorDatePickerState extends State<WeekSelectorDatePicker> {
       (index) => days.sublist(index * 7, (index + 1) * 7),
     );
 
+    List<CalendarEvent> eventsForDays = getAllEventsForDays(days.first, days.last, widget.events);
+
     return Column(
       children: weeks.asMap().entries.map((entry) {
         final weekIndex = entry.key + 1;
         final week = entry.value;
 
         return GestureDetector(
-          onTap: () {
-            final weekNumber = _getWeekOfYear(week.first);
-            widget.onWeekSelected(weekNumber, week.first.year);
+          onTap: () async {
+            final weekNumber = widget.controller.getWeekNumber(week.first);
+            await widget.onWeekSelected(weekNumber, widget.controller.getISOYear(week.first));
           },
           child: MouseRegion(
             onEnter: (_) => setState(() => _hoveredWeek = weekIndex),
             onExit: (_) => setState(() => _hoveredWeek = null),
             cursor: SystemMouseCursors.click,
             child: Container(
-              height: 34,
+              height: 37,
               margin: const EdgeInsets.symmetric(vertical: 2),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: _currentMonth.year == widget.selectedYear && _getWeekOfYear(week.first) == widget.selectedWeek
+                color: _currentMonth.year == widget.selectedYear && widget.controller.getWeekNumber(week.first) == widget.selectedWeek
                   ? theme.secondary.withValues(alpha: 0.5)
                   : _hoveredWeek == weekIndex 
                     ? Colors.blue.withValues(alpha: 0.2) 
@@ -268,18 +291,49 @@ class _WeekSelectorDatePickerState extends State<WeekSelectorDatePicker> {
                 children: List.generate(7, (dayIndex) {
                   final DateTime day = week[dayIndex];
                   final bool isFaded = day.month != _currentMonth.month;
-              
+                  List<CalendarEvent> eventsThisDay = eventsForDays.where((event) => isSameDay(event.start, day) || isSameDay(event.end, day) || isBetweenStartAndEnd(event.start, event.end, day)).toList();
+
+                  List<CalendarEvent> eventsToRemove = [];
+
+                  for (CalendarEvent event in eventsThisDay) { // Day time is set by default to midnight
+                    if (event.end.isBefore(day.add(const Duration(minutes: 1)))) { // This avoid events that ends at midnight to be part of the next day.
+                      eventsToRemove.add(event);
+                    }
+                  }
+
+                  if (eventsToRemove.isNotEmpty) {
+                    for (CalendarEvent event in eventsToRemove) {
+                      eventsThisDay.remove(event);
+                    }
+                  }
+                  
                   return Expanded(
-                    child: Center(
-                      child: Text(
-                        '${day.day}',
-                        style: theme.bodyMedium
-                          .copyWith(color: isFaded 
-                            ? theme.onPrimary.withValues(alpha: 0.5) 
-                            : isToday(day) 
-                              ? theme.secondary 
-                              : theme.onPrimary
+                    child: SizedBox(
+                      height: 37,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 2),
+                            child: Text(
+                              '${day.day}',
+                              style: theme.bodyMedium
+                                .copyWith(color: isFaded 
+                                  ? theme.onPrimary.withValues(alpha: 0.5) 
+                                  : isToday(day) 
+                                    ? theme.secondary 
+                                    : theme.onPrimary,
+                                  fontWeight: isToday(day) 
+                                    ? FontWeight.w700
+                                    : FontWeight.w500
+                                ),
+                            ),
                           ),
+                          Positioned(
+                            bottom: 2.5,
+                            child: _getDayEventPreview(eventsThisDay, widget.calendars, theme)
+                          )
+                        ],
                       ),
                     ),
                   );
@@ -297,9 +351,86 @@ class _WeekSelectorDatePickerState extends State<WeekSelectorDatePicker> {
     return date.day == now.day && date.month == now.month && date.year == now.year;
   }
 
-  int _getWeekOfYear(DateTime date) {
-    final firstDayOfYear = DateTime(date.year, 1, 1);
-    final daysSinceStartOfYear = date.difference(firstDayOfYear).inDays;
-    return ((daysSinceStartOfYear + firstDayOfYear.weekday) / 7).ceil();
+  bool isSameDay(DateTime date1, DateTime date2) {
+    return date1.day == date2.day && date1.month == date2.month && date1.year == date2.year;
+  }
+
+  bool isBetweenStartAndEnd(DateTime start, DateTime end, DateTime day) {
+    return day.isAfter(start) && day.isBefore(end);
+  }
+
+  List<CalendarEvent> getAllEventsForDays(DateTime start, DateTime end, List<CalendarEvent> events) {
+    List<CalendarEvent> allEvents = [];
+
+    for (CalendarEvent event in events) {
+      if (event.recurrence != null) {
+        allEvents.addAll(event.generateRecurrences(start.subtract(const Duration(days: 1)), end.add(const Duration(days: 1)), true));
+      } else {
+        allEvents.add(event);
+      }
+    }  
+
+    return allEvents;
+  }
+}
+
+Widget _getDayEventPreview(List<CalendarEvent> eventOfDay, List<Calendar> calendars, StylesGetters theme) {
+
+  List<Calendar> selectedCalendars = [];
+
+  for (CalendarEvent event in eventOfDay) {
+    Calendar selectedCalendar = calendars.firstWhere(
+      (calendar) => calendar.id == event.calendarId,
+      orElse: () => calendars.first,
+    );
+    if (!selectedCalendars.contains(selectedCalendar)) {
+      selectedCalendars.add(selectedCalendar);
+    }
+  }
+
+  if (selectedCalendars.isEmpty) {
+    return const SizedBox.shrink();
+  }
+
+  if (selectedCalendars.length > 4) {
+    selectedCalendars = selectedCalendars.sublist(0, 4);
+  }
+
+  if (selectedCalendars.length == 1) {
+    return Container(
+      width: 7,
+      height: 7,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: selectedCalendars.first.color,
+      ),
+    );
+  } else {
+    List<Widget> circles = [];
+    double overlap = 3.0;
+
+    for (int i = 0; i < selectedCalendars.length; i++) {
+      circles.add(Positioned(
+        left: i * (7 - overlap),
+        child: Container(
+          width: 7,
+          height: 7,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: selectedCalendars[i].color,
+          ),
+        ),
+      ));
+    }
+
+    double totalWidth = 7 + (selectedCalendars.length - 1) * (7 - overlap);
+
+    return SizedBox(
+      width: totalWidth,
+      height: 7,
+      child: Stack(
+        children: circles,
+      ),
+    );
   }
 }

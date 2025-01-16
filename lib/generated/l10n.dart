@@ -711,6 +711,183 @@ class S {
     );
   }
 
+  /// `{interval, plural, one {Everyday} other {Every {interval} days}}`
+  String calendar_button_event_preview_recurence_text_every_day(num interval) {
+    return Intl.plural(
+      interval,
+      one: 'Everyday',
+      other: 'Every $interval days',
+      name: 'calendar_button_event_preview_recurence_text_every_day',
+      desc: '',
+      args: [interval],
+    );
+  }
+
+  /// `{interval, plural, one {Every week} other {Every {interval} weeks}}`
+  String calendar_button_event_preview_recurence_text_every_week(num interval) {
+    return Intl.plural(
+      interval,
+      one: 'Every week',
+      other: 'Every $interval weeks',
+      name: 'calendar_button_event_preview_recurence_text_every_week',
+      desc: '',
+      args: [interval],
+    );
+  }
+
+  /// `{interval, plural, one {Every month} other {Every {interval} months}}`
+  String calendar_button_event_preview_recurence_text_every_month(
+      num interval) {
+    return Intl.plural(
+      interval,
+      one: 'Every month',
+      other: 'Every $interval months',
+      name: 'calendar_button_event_preview_recurence_text_every_month',
+      desc: '',
+      args: [interval],
+    );
+  }
+
+  /// `{interval, plural, one {Every year} other {Every {interval} years}}`
+  String calendar_button_event_preview_recurence_text_every_year(num interval) {
+    return Intl.plural(
+      interval,
+      one: 'Every year',
+      other: 'Every $interval years',
+      name: 'calendar_button_event_preview_recurence_text_every_year',
+      desc: '',
+      args: [interval],
+    );
+  }
+
+  /// `Week {week}`
+  String calendar_week_view_week_title(Object week) {
+    return Intl.message(
+      'Week $week',
+      name: 'calendar_week_view_week_title',
+      desc: '',
+      args: [week],
+    );
+  }
+
+  /// `Details`
+  String get calendar_week_view_week_details {
+    return Intl.message(
+      'Details',
+      name: 'calendar_week_view_week_details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Completion state`
+  String get calendar_new_due_date_event_completion_state_subtitle {
+    return Intl.message(
+      'Completion state',
+      name: 'calendar_new_due_date_event_completion_state_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `State`
+  String get calendar_new_due_date_event_completion_state {
+    return Intl.message(
+      'State',
+      name: 'calendar_new_due_date_event_completion_state',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type`
+  String get calendar_new_event_recurence_type_subtitle {
+    return Intl.message(
+      'Type',
+      name: 'calendar_new_event_recurence_type_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Every`
+  String get calendar_new_event_recurence_every_subtitle {
+    return Intl.message(
+      'Every',
+      name: 'calendar_new_event_recurence_every_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{interval, plural, one {day} other {days}}`
+  String calendar_new_event_recurence_every_day(num interval) {
+    return Intl.plural(
+      interval,
+      one: 'day',
+      other: 'days',
+      name: 'calendar_new_event_recurence_every_day',
+      desc: '',
+      args: [interval],
+    );
+  }
+
+  /// `{interval, plural, one {week} other {weeks}}`
+  String calendar_new_event_recurence_every_week(num interval) {
+    return Intl.plural(
+      interval,
+      one: 'week',
+      other: 'weeks',
+      name: 'calendar_new_event_recurence_every_week',
+      desc: '',
+      args: [interval],
+    );
+  }
+
+  /// `{interval, plural, one {month} other {months}}`
+  String calendar_new_event_recurence_every_month(num interval) {
+    return Intl.plural(
+      interval,
+      one: 'month',
+      other: 'months',
+      name: 'calendar_new_event_recurence_every_month',
+      desc: '',
+      args: [interval],
+    );
+  }
+
+  /// `{interval, plural, one {year} other {years}}`
+  String calendar_new_event_recurence_every_year(num interval) {
+    return Intl.plural(
+      interval,
+      one: 'year',
+      other: 'years',
+      name: 'calendar_new_event_recurence_every_year',
+      desc: '',
+      args: [interval],
+    );
+  }
+
+  /// `End date`
+  String get calendar_new_event_recurence_end_date {
+    return Intl.message(
+      'End date',
+      name: 'calendar_new_event_recurence_end_date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The...`
+  String get calendar_new_event_recurence_end_date_option_the {
+    return Intl.message(
+      'The...',
+      name: 'calendar_new_event_recurence_end_date_option_the',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `General`
   String get center_menu_general {
     return Intl.message(

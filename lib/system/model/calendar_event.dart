@@ -1,5 +1,11 @@
 import 'dart:convert';
 
+import 'package:minddy/generated/l10n.dart';
+import 'package:minddy/system/calendar/app_date.dart';
+import 'package:minddy/system/utils/capitalize_first_letter.dart';
+import 'package:week_of_year/week_of_year.dart';
+import 'package:intl/intl.dart' as intl;
+
 class DueDateInfo {
   bool isCompleted;
   DateTime? completedOn;
@@ -73,19 +79,104 @@ enum CalendarEventRecurenceType {
   yearly
 }
 
+class CalendarEventRecurenceText{
+  final String typeAndInterval;
+  final String happensOn;
+
+  CalendarEventRecurenceText({required this.typeAndInterval, required this.happensOn});
+}
+
 class CalendarEventRecurence {
+  /// The type of event recurence
+  /// 
+  /// Defines the minimal interval between two dates
+  /// 
+  /// ex: Every week, every day...
   CalendarEventRecurenceType type;
+
+  /// Defines the interval between the type, 
+  /// 
+  /// If type is set to daily, and interval is set to 2, recurence will happen every 2 days.
   int interval;
 
+  /// Defines the spefic dates withing which recurences happens.
+  /// 
+  /// If type is set to monthly, happens on will define on which day it will happen.
   List<int> happensOn;
 
+  /// The list of dates that has been excluded -> If user clicked delete only this instance, the deleted date will be saved in this list.
   List<DateTime> exludedDates;
 
+  /// The list of modified dates -> If user clicked modify only this instance, the replacement instance will be saved in this list.
   List<CalendarEventRecurrenceReplacement> modifiedDates;
 
+  /// The end date of the recurence.
   DateTime? endDate;
 
   CalendarEventRecurence({required this.type, required this.interval, required this.happensOn, this.exludedDates = const [], this.modifiedDates = const [], required this.endDate});
+
+  /// This will return a string, representing the recurence setup.
+  /// 
+  /// ex: Every 2 weeks, monday and sunday.
+  CalendarEventRecurenceText generateRecurenceText() {
+    String typeAndInterval = '';
+
+    switch (type) {
+      case CalendarEventRecurenceType.daily:
+        typeAndInterval = S.current.calendar_button_event_preview_recurence_text_every_day(interval);
+        break;
+      case CalendarEventRecurenceType.weekly:
+        typeAndInterval = S.current.calendar_button_event_preview_recurence_text_every_week(interval);
+        break;
+      case CalendarEventRecurenceType.monthly:
+        typeAndInterval = S.current.calendar_button_event_preview_recurence_text_every_month(interval);
+        break;
+      case CalendarEventRecurenceType.yearly:
+        typeAndInterval = S.current.calendar_button_event_preview_recurence_text_every_year(interval);
+        break;
+    }
+
+    String happensOnText = '';
+
+    for (int number in happensOn) {
+      switch (type) {
+        case CalendarEventRecurenceType.daily:
+          happensOnText = '';
+          break;
+        case CalendarEventRecurenceType.weekly:
+          DateTime date = DateTime(2025, 1, 6 + (number - 1));
+          String stringDay = intl.DateFormat('EEEE').format(date);
+          if (happensOn.indexOf(number) == 0) {
+            happensOnText = capitalizeFirstLetter(stringDay);
+          } else {
+            happensOnText += ', ${capitalizeFirstLetter(stringDay)}';
+          }
+          break;
+        case CalendarEventRecurenceType.monthly:
+          String numberPadded = AppDate.padIfNecessary(number);
+          if (happensOn.indexOf(number) == 0) {
+            happensOnText = numberPadded;
+          } else {
+            happensOnText += ', $numberPadded';
+          }
+          break;
+        case CalendarEventRecurenceType.yearly:
+          DateTime date = DateTime(2025, number, 1);
+          String monthName = intl.DateFormat('MMMM').format(date);
+          if (happensOn.indexOf(number) == 0) {
+            happensOnText = capitalizeFirstLetter(monthName);
+          } else {
+            happensOnText += ', ${capitalizeFirstLetter(monthName)}';
+          }
+          break;
+      }
+    }
+
+    return CalendarEventRecurenceText(
+      typeAndInterval: typeAndInterval, 
+      happensOn: happensOnText
+    );
+  }
 
   String toJson() {
     return jsonEncode({
@@ -110,7 +201,9 @@ class CalendarEventRecurence {
         modifiedDates: (map['modified_dates'] as List)
             .map((eventJson) => CalendarEventRecurrenceReplacement.fromJson(eventJson)!)
             .toList(),
-        endDate: map['end_date']
+        endDate: map['end_date'] != null 
+          ? DateTime.parse(map['end_date']) 
+          : null
       );
       
     } catch (e) {
@@ -157,6 +250,7 @@ class CalendarEvent {
     });
 
     List<CalendarEvent> recurrences = [];
+    recurrence!.happensOn.sort();
     DateTime occurrence = start;
     bool isFirstOccurrence = true;
 
@@ -169,8 +263,14 @@ class CalendarEvent {
             modifiedEvent
               ..isRecurrence = true
               ..originalEvent = this;
+            if (recurrence!.endDate != null && modifiedEvent.end.isAfter(recurrence!.endDate!)) {
+              return recurrences;
+            }
           } else {
             modifiedEvent = null;
+          }
+          if (recurrence!.endDate != null && occurrence.add(end.difference(start)).isAfter(recurrence!.endDate!)) {
+            return recurrences;
           }
           recurrences.add(
             modifiedEvent ?? CalendarEvent(
@@ -206,13 +306,64 @@ class CalendarEvent {
           break;
 
         case CalendarEventRecurenceType.monthly:
-          int dayOfMonth = recurrence!.happensOn.firstWhere((day) => day >= occurrence.day, orElse: () => 1);
-          occurrence = DateTime(occurrence.year, occurrence.month + recurrence!.interval, dayOfMonth, occurrence.hour, occurrence.minute);
-          break;
+          int currentDay = occurrence.day;
+          int nextDayIndex = recurrence!.happensOn.indexWhere((day) => day > currentDay);
 
+          bool canPassNextMonth = nextDayIndex == -1; // Can pass next month if the last occurence has been created
+          int nextOccurrenceMonth = occurrence.month;
+          bool needToPassThisDate = false;
+
+          if (canPassNextMonth) {
+            nextOccurrenceMonth += recurrence!.interval;
+          }
+
+          if (_getNumbersOfDayInMonth(nextOccurrenceMonth, getYearAfterMonthAddition(occurrence.month, recurrence!.interval, occurrence.year)) < (recurrence!.happensOn.elementAt(nextDayIndex == - 1 ? 0 : nextDayIndex))) {
+            needToPassThisDate = true;
+          }
+
+          if (needToPassThisDate) {
+            nextDayIndex = recurrence!.happensOn.indexWhere((day) => day > (recurrence!.happensOn.elementAt(nextDayIndex == - 1 ? 0 : nextDayIndex)));
+            canPassNextMonth = nextDayIndex == -1;
+          }
+
+          DateTime approximateOccurence = occurrence.add(Duration(days: canPassNextMonth ? 31 * recurrence!.interval - (recurrence!.happensOn.elementAt(nextDayIndex == - 1 ? 0 : nextDayIndex)) - currentDay: (recurrence!.happensOn.elementAtOrNull(nextDayIndex == - 1 ? 100 : nextDayIndex) ?? recurrence!.happensOn.first) - currentDay));
+          occurrence = DateTime(approximateOccurence.year, occurrence.month +(canPassNextMonth ? recurrence!.interval : 0), recurrence!.happensOn.elementAt(nextDayIndex == - 1 ? 0 : nextDayIndex), occurrence.hour, occurrence.minute);
+          break;
         case CalendarEventRecurenceType.yearly:
-          int monthOfYear = recurrence!.happensOn.firstWhere((month) => month >= occurrence.month, orElse: () => 1);
-          occurrence = DateTime(occurrence.year + recurrence!.interval, monthOfYear, occurrence.day, occurrence.hour, occurrence.minute);
+          int currentMonth = occurrence.month;
+          int nextMonthIndex = recurrence!.happensOn.indexWhere((month) => month > currentMonth);
+
+          bool canPassNextYear = nextMonthIndex == -1;
+
+          DateTime approximateOccurrence = DateTime(
+            occurrence.year + (canPassNextYear ? recurrence!.interval : 0),
+            canPassNextYear ? recurrence!.happensOn.first : recurrence!.happensOn[nextMonthIndex],
+            occurrence.day,
+            occurrence.hour,
+            occurrence.minute,
+          );
+
+          int daysInTargetMonth = _getNumbersOfDayInMonth(approximateOccurrence.month, approximateOccurrence.year);
+          int targetDay = occurrence.day;
+
+          bool needToPassThisDate = false;
+
+          if (daysInTargetMonth < targetDay) {
+            needToPassThisDate = true;
+          }
+
+          if (needToPassThisDate) {
+            nextMonthIndex = recurrence!.happensOn.indexWhere((day) => day > (recurrence!.happensOn.elementAt(nextMonthIndex == - 1 ? 0 : nextMonthIndex)));
+            canPassNextYear = nextMonthIndex == -1; 
+          }
+
+          occurrence = DateTime(
+            approximateOccurrence.year,
+            approximateOccurrence.month,
+            targetDay,
+            occurrence.hour,
+            occurrence.minute,
+          );
           break;
       }
 
@@ -224,6 +375,23 @@ class CalendarEvent {
     }
     
     return recurrences;
+  }
+
+  int _getNumbersOfDayInMonth(int month, int year) {
+    DateTime selectedYear = DateTime(year);
+
+    List<int> daysPerMonthIndex = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    if (selectedYear.isLeapYear) {
+      daysPerMonthIndex[1] = 29;
+    }
+
+    return daysPerMonthIndex[month - 1];
+  }
+
+  int getYearAfterMonthAddition(int currentMonth, int monthsToAdd, int currentYear) {
+    int newMonthIndex = (currentMonth + monthsToAdd);
+    return currentMonth + (newMonthIndex / 12).floor();
   }
 
   String toJson() {

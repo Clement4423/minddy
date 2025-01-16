@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/calendar.dart';
 import 'package:minddy/system/model/calendar_event.dart';
-import 'package:minddy/ui/components/menus/sub_menus/new_calendar_event_sub_menu.dart';
+import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 class CalendarEventDetailedPreview extends StatefulWidget {
@@ -235,7 +235,7 @@ class _CalendarEventDetailedPreviewState extends State<CalendarEventDetailedPrev
             Container(
               width: 330,
               height: 50,
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               decoration: BoxDecoration(
                 color: widget.theme.surface,
                 borderRadius: BorderRadius.circular(15)
@@ -250,13 +250,43 @@ class _CalendarEventDetailedPreviewState extends State<CalendarEventDetailedPrev
                       size: 24,
                     ),
                   ),
-                  Text(
-                    calendarEventRecurenceTypeTranslation[widget.event.recurrence?.type ?? CalendarEventRecurenceType.daily]!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: widget.theme.bodyMedium
-                      .copyWith(color: widget.theme.onPrimary),
-                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomTooltip(
+                        message: widget.event.recurrence!.generateRecurenceText().typeAndInterval,
+                        lengthTreshold: 27,
+                        child: SizedBox(
+                          width: 270,
+                          child: Text(
+                            widget.event.recurrence!.generateRecurenceText().typeAndInterval,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: widget.theme.bodyMedium
+                              .copyWith(
+                                color: widget.theme.onPrimary,
+                                fontWeight: FontWeight.w600
+                              ),
+                          ),
+                        ),
+                      ),
+                      CustomTooltip(
+                        message: widget.event.recurrence!.generateRecurenceText().happensOn,
+                        lengthTreshold: 33,
+                        child: SizedBox(
+                          width: 270,
+                          child: Text(
+                            widget.event.recurrence!.generateRecurenceText().happensOn,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: widget.theme.bodyMedium
+                              .copyWith(color: widget.theme.onPrimary.withValues(alpha: 0.6)),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),

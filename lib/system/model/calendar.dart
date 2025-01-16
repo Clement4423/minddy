@@ -33,7 +33,7 @@ class Calendar {
       return events;
     } else {
       for (CalendarEvent event in eventsWithRecurrences) {
-        List<CalendarEvent> recurrences = event.generateRecurrences(start, end, true);
+        List<CalendarEvent> recurrences = event.generateRecurrences(start, end);
         if (recurrences.isNotEmpty) {
           eventsAndRecurrences.addAll(recurrences);
         }

@@ -13,7 +13,6 @@ import 'package:minddy/ui/components/custom_components/custom_selection_menu.dar
 import 'package:minddy/ui/components/custom_components/custom_text_button.dart';
 import 'package:minddy/ui/components/menus/custom_tooltip.dart';
 import 'package:minddy/ui/components/menus/sub_menus/new_calendar_due_date_event_sub_menu.dart';
-import 'package:minddy/ui/components/menus/sub_menus/new_calendar_event_sub_menu.dart';
 import 'package:minddy/ui/components/menus/sub_menus/sub_menus_container.dart';
 import 'package:minddy/ui/components/menus/sub_menus/unlock_content_submenu.dart';
 import 'package:minddy/ui/components/notifications/notification_widget.dart';
@@ -30,7 +29,8 @@ class CalendarEventDueDatePreview extends StatefulWidget {
     required this.updateUi,
     required this.formatDate,
     required this.useUsDateFormat,
-    required this.theme
+    required this.theme,
+    this.onClick
   });
 
   final CalendarEvent event;
@@ -42,6 +42,7 @@ class CalendarEventDueDatePreview extends StatefulWidget {
   final Function(DateTime, bool) formatDate;
   final bool useUsDateFormat;
   final StylesGetters theme;
+  final Function? onClick;
 
   @override
   State<CalendarEventDueDatePreview> createState() => _CalendarEventDueDatePreviewState();
@@ -194,6 +195,10 @@ class _CalendarEventDueDatePreviewState extends State<CalendarEventDueDatePrevie
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        if (widget.onClick != null) {
+          widget.onClick!();
+          return;
+        }
         if (!isPrivate) {
           showSubMenu(context, CalendarEventDetailedPreview(
             event: widget.event,
@@ -223,261 +228,268 @@ class _CalendarEventDueDatePreviewState extends State<CalendarEventDueDatePrevie
         ),
         child: Padding(
           padding: const EdgeInsets.all(9.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              if (isPrivate)
-                ...[
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Icon(
-                            CupertinoIcons.eye_slash,
-                            color: widget.theme.onPrimary,
-                            size: 30,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 5),
-                          child: SizedBox(
-                            width: 80,
-                            height: 30,
-                            child: CustomTextButton(
-                              S.of(context).calendar_button_event_preview_see_button, 
-                              () async {
-                                bool isUnlocked = await showUnlockContentSubMenu(context);
-                                await widget.updateShowPrivateEvents(isUnlocked);
-                              }, 
-                              isSecondary: true,
-                              false, 
-                              false
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (isPrivate)
+                  ...[
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Icon(
+                              CupertinoIcons.eye_slash,
+                              color: widget.theme.onPrimary,
+                              size: 30,
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                ]
-              else 
-              // Title and options
-              ...[
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: widget.theme.shadow.withValues(alpha: 0.05),
-                        blurRadius: 5,
-                        offset: const Offset(0, 5)
-                      )
-                    ]
-                  ),
-                  child: CustomCheckbox(
-                    key: UniqueKey(),
-                    scale: 1.5,
-                    value: widget.event.dueDateInfo?.isCompleted ?? false, 
-                    onChanged: (value) async {
-                      await _checkDueDate(value);
-                    }, 
-                    side: widget.theme.brightness == Brightness.dark 
-                      ? BorderSide(color: widget.theme.onPrimary, width: 0.5)
-                      : BorderSide.none,
-                    theme: widget.theme
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 6),
-                  child: SizedBox(
-                    width: 215,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.event.title.replaceAll(' ', '').isEmpty 
-                            ? S.of(context).articles_card_untitled
-                            : widget.event.title,
-                          style: widget.theme.titleMedium
-                            .copyWith(color: widget.theme.onPrimary),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(
-                          width: 215,
-                          height: 25,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CustomTooltip(
-                                message: widget.calendar.name,
-                                child: Container(
-                                  width: 15,
-                                  height: 15,
-                                  margin: const EdgeInsets.only(right: 7),
-                                  decoration: BoxDecoration(
-                                    color: widget.calendar.color,
-                                    borderRadius: BorderRadius.circular(7.5)
-                                  ),
-                                ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: SizedBox(
+                              width: 80,
+                              height: 30,
+                              child: CustomTextButton(
+                                S.of(context).calendar_button_event_preview_see_button, 
+                                () async {
+                                  bool isUnlocked = await showUnlockContentSubMenu(context);
+                                  await widget.updateShowPrivateEvents(isUnlocked);
+                                }, 
+                                isSecondary: true,
+                                false, 
+                                false
                               ),
-                              if (widget.event.isRecurrence || widget.event.recurrence != null)
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 1, right: 6),
-                                  child: Tooltip(
-                                    message: calendarEventRecurenceTypeTranslation[widget.event.recurrence?.type] ?? 'Recurrent event',
-                                    child: Icon(
-                                      CupertinoIcons.repeat, 
-                                      size: 16,
-                                      color: widget.theme.onPrimary
-                                    )
-                                  )
-                                ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 1),
-                                  child: Text(
-                                    formatSingleDate(widget.event.start, widget.useUsDateFormat),
-                                    style: widget.theme.bodyMedium
-                                      .copyWith(color: widget.theme.onPrimary),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ]
+                else 
+                // Title and options
+                ...[
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: widget.theme.shadow.withValues(alpha: 0.05),
+                          blurRadius: 5,
+                          offset: const Offset(0, 5)
+                        )
+                      ]
+                    ),
+                    child: CustomCheckbox(
+                      key: UniqueKey(),
+                      scale: 1.5,
+                      value: widget.event.dueDateInfo?.isCompleted ?? false, 
+                      onChanged: (value) async {
+                        await _checkDueDate(value);
+                      }, 
+                      side: widget.theme.brightness == Brightness.dark 
+                        ? BorderSide(color: widget.theme.onPrimary, width: 0.5)
+                        : BorderSide.none,
+                      theme: widget.theme
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 6),
+                    child: SizedBox(
+                      width: 215,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.event.title.replaceAll(' ', '').isEmpty 
+                              ? S.of(context).articles_card_untitled
+                              : widget.event.title,
+                            style: widget.theme.titleMedium
+                              .copyWith(color: widget.theme.onPrimary),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(
+                            width: 215,
+                            height: 25,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CustomTooltip(
+                                  message: widget.calendar.name,
+                                  child: Container(
+                                    width: 15,
+                                    height: 15,
+                                    margin: const EdgeInsets.only(right: 7),
+                                    decoration: BoxDecoration(
+                                      color: widget.calendar.color,
+                                      borderRadius: BorderRadius.circular(7.5),
+                                      border: Border.all(
+                                        width: 0.5,
+                                        color: widget.theme.onPrimary.withValues(alpha: 0.5)
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: CustomSelectionMenu(
-                    buttonStyle: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(widget.theme.primary),
-                      padding: const WidgetStatePropertyAll(EdgeInsets.zero),
-                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-                      elevation: const WidgetStatePropertyAll(0)
-                    ),
-                    theme: widget.theme, 
-                    items: [
-                      // Modify
-                      CustomSelectionMenuItem(
-                        label: S.of(context).projects_module_notes_modify_category, 
-                        icon: Icons.brush_rounded, 
-                        items: widget.event.recurrence != null ? [
-                          CustomSelectionMenuItem(
-                            label: S.of(context).calendar_button_event_selection_menu_only_this_event, 
-                            icon: null, 
-                            onTap: () async {
-                              showSubMenu(context, NewCalendarDueDateSubMenu(
-                                event: widget.event, 
-                                showCalendarOption: false,
-                                showRecurrenceOption: false,
-                                onSelected: (e) async {
-                                  e.recurrence = CalendarEventRecurence(
-                                    type: (widget.event.originalEvent ?? widget.event).recurrence!.type, 
-                                    interval: (widget.event.originalEvent ?? widget.event).recurrence!.interval, 
-                                    happensOn: (widget.event.originalEvent ?? widget.event).recurrence!.happensOn, 
-                                    modifiedDates: List.empty(growable: true),
-                                    endDate: (widget.event.originalEvent ?? widget.event).recurrence!.endDate
-                                  );
-                                  DateTime? start = (widget.event.originalEvent ?? widget.event).recurrence?.modifiedDates.where((e) => e.replacementEvent.start == widget.event.start).firstOrNull?.calculatedDate;
-                                  (widget.event.originalEvent ?? widget.event).recurrence!.modifiedDates.add(
-                                    CalendarEventRecurrenceReplacement(
-                                      calculatedDate: start ?? widget.event.start, 
-                                      replacementEvent: e
+                                if (widget.event.isRecurrence || widget.event.recurrence != null)
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 1, right: 6),
+                                    child: Tooltip(
+                                      message: widget.event.recurrence!.generateRecurenceText().typeAndInterval,
+                                      child: Icon(
+                                        CupertinoIcons.repeat, 
+                                        size: 16,
+                                        color: widget.theme.onPrimary
+                                      )
                                     )
-                                  );
-                                  await AppCalendar.deleteEvent(widget.event.originalEvent ?? widget.event);
-                                  await AppCalendar.addEvent(widget.event.originalEvent ?? widget.event);
-                                  await widget.updateUi();  
-                                }, 
-                                theme: widget.theme
-                              ));
-                            }
+                                  ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 1),
+                                    child: Text(
+                                      formatSingleDate(widget.event.start, widget.useUsDateFormat),
+                                      style: widget.theme.bodyMedium
+                                        .copyWith(color: widget.theme.onPrimary),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                          CustomSelectionMenuItem(
-                            label: S.of(context).calendar_button_event_selection_menu_all_occurence, 
-                            icon: null, 
-                            onTap: () async {
-                              CalendarEvent event = (widget.event.originalEvent ?? widget.event).copy();
-                              showSubMenu(context, NewCalendarDueDateSubMenu(
-                                event: event, 
-                                onSelected: (e) async {
-                                  await AppCalendar.deleteEvent(widget.event.originalEvent ?? widget.event);
-                                  e.recurrence!.modifiedDates.map((a) => a.replacementEvent.calendarId = e.calendarId).toList();
-                                  await AppCalendar.addEvent(e);
-                                  await widget.updateUi();  
-                                }, 
-                                theme: widget.theme
-                              ));
-                            }
-                          )
-                        ] 
-                        : [],
-                        onTap: () async {
-                          CalendarEvent event = (widget.event.originalEvent ?? widget.event).copy();
-                          showSubMenu(context, NewCalendarDueDateSubMenu(
-                            event: event, 
-                            onSelected: (e) async {
-                              await AppCalendar.deleteEvent(widget.event.originalEvent ?? widget.event);
-                              await AppCalendar.addEvent(e);
-                              await widget.updateUi();  
-                            }, 
-                            theme: widget.theme
-                          ));
-                        }
+                        ],
                       ),
-                      // Delete
-                      CustomSelectionMenuItem(
-                        label: S.of(context).snackbar_delete_button, 
-                        foregroundColor: widget.theme.error,
-                        items: widget.event.isRecurrence ? [
-                          CustomSelectionMenuItem(
-                            label: S.of(context).calendar_button_event_selection_menu_only_this_event, 
-                            foregroundColor: widget.theme.error,
-                            icon: null, 
-                            onTap: () async {
-                              widget.event.originalEvent ??= widget.event; // If event has recurrence but no original event, it means it's the original event itself.
-                              DateTime? start = widget.event.originalEvent!.recurrence?.modifiedDates.where((e) => e.replacementEvent.start == widget.event.start).firstOrNull?.calculatedDate;
-                              widget.event.originalEvent!.recurrence!.exludedDates.add(start ?? widget.event.start);
-                              await AppCalendar.deleteEvent(widget.event.originalEvent!);
-                              await AppCalendar.addEvent(widget.event.originalEvent!);
-                              await widget.updateUi();
-                            }
-                          ),
-                          CustomSelectionMenuItem(
-                            label: S.of(context).calendar_button_event_selection_menu_all_occurence, 
-                            foregroundColor: widget.theme.error,
-                            icon: null, 
-                            onTap: () async {
-                              await AppCalendar.deleteEvent(widget.event.originalEvent ?? widget.event);
-                              await widget.updateUi();
-                            }
-                          )
-                        ] 
-                        : [],
-                        icon: Icons.delete_outline_rounded, 
-                        onTap: () async {
-                          await AppCalendar.deleteEvent(widget.event);
-                          await widget.updateUi();
-                        }
-                      )
-                    ], 
-                    child: Icon(
-                      Icons.more_horiz_rounded, 
-                      color: widget.theme.onPrimary
-                    )
+                    ),
                   ),
-                )
-              ]
-            ],
+                  SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: CustomSelectionMenu(
+                      buttonStyle: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(widget.theme.primary),
+                        padding: const WidgetStatePropertyAll(EdgeInsets.zero),
+                        shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+                        elevation: const WidgetStatePropertyAll(0)
+                      ),
+                      theme: widget.theme, 
+                      items: [
+                        // Modify
+                        CustomSelectionMenuItem(
+                          label: S.of(context).projects_module_notes_modify_category, 
+                          icon: Icons.brush_rounded, 
+                          items: widget.event.recurrence != null ? [
+                            CustomSelectionMenuItem(
+                              label: S.of(context).calendar_button_event_selection_menu_only_this_event, 
+                              icon: null, 
+                              onTap: () async {
+                                showSubMenu(context, NewCalendarDueDateSubMenu(
+                                  event: widget.event, 
+                                  showCalendarOption: false,
+                                  showRecurrenceOption: false,
+                                  onSelected: (e) async {
+                                    e.recurrence = CalendarEventRecurence(
+                                      type: (widget.event.originalEvent ?? widget.event).recurrence!.type, 
+                                      interval: (widget.event.originalEvent ?? widget.event).recurrence!.interval, 
+                                      happensOn: (widget.event.originalEvent ?? widget.event).recurrence!.happensOn, 
+                                      modifiedDates: List.empty(growable: true),
+                                      endDate: (widget.event.originalEvent ?? widget.event).recurrence!.endDate
+                                    );
+                                    DateTime? start = (widget.event.originalEvent ?? widget.event).recurrence?.modifiedDates.where((e) => e.replacementEvent.start == widget.event.start).firstOrNull?.calculatedDate;
+                                    (widget.event.originalEvent ?? widget.event).recurrence!.modifiedDates.add(
+                                      CalendarEventRecurrenceReplacement(
+                                        calculatedDate: start ?? widget.event.start, 
+                                        replacementEvent: e
+                                      )
+                                    );
+                                    await AppCalendar.deleteEvent(widget.event.originalEvent ?? widget.event);
+                                    await AppCalendar.addEvent(widget.event.originalEvent ?? widget.event);
+                                    await widget.updateUi();  
+                                  }, 
+                                  theme: widget.theme
+                                ));
+                              }
+                            ),
+                            CustomSelectionMenuItem(
+                              label: S.of(context).calendar_button_event_selection_menu_all_occurence, 
+                              icon: null, 
+                              onTap: () async {
+                                CalendarEvent event = (widget.event.originalEvent ?? widget.event).copy();
+                                showSubMenu(context, NewCalendarDueDateSubMenu(
+                                  event: event, 
+                                  onSelected: (e) async {
+                                    await AppCalendar.deleteEvent(widget.event.originalEvent ?? widget.event);
+                                    e.recurrence!.modifiedDates.map((a) => a.replacementEvent.calendarId = e.calendarId).toList();
+                                    await AppCalendar.addEvent(e);
+                                    await widget.updateUi();  
+                                  }, 
+                                  theme: widget.theme
+                                ));
+                              }
+                            )
+                          ] 
+                          : [],
+                          onTap: () async {
+                            CalendarEvent event = (widget.event.originalEvent ?? widget.event).copy();
+                            showSubMenu(context, NewCalendarDueDateSubMenu(
+                              event: event, 
+                              onSelected: (e) async {
+                                await AppCalendar.deleteEvent(widget.event.originalEvent ?? widget.event);
+                                await AppCalendar.addEvent(e);
+                                await widget.updateUi();  
+                              }, 
+                              theme: widget.theme
+                            ));
+                          }
+                        ),
+                        // Delete
+                        CustomSelectionMenuItem(
+                          label: S.of(context).snackbar_delete_button, 
+                          foregroundColor: widget.theme.error,
+                          items: widget.event.isRecurrence ? [
+                            CustomSelectionMenuItem(
+                              label: S.of(context).calendar_button_event_selection_menu_only_this_event, 
+                              foregroundColor: widget.theme.error,
+                              icon: null, 
+                              onTap: () async {
+                                widget.event.originalEvent ??= widget.event; // If event has recurrence but no original event, it means it's the original event itself.
+                                DateTime? start = widget.event.originalEvent!.recurrence?.modifiedDates.where((e) => e.replacementEvent.start == widget.event.start).firstOrNull?.calculatedDate;
+                                widget.event.originalEvent!.recurrence!.exludedDates.add(start ?? widget.event.start);
+                                await AppCalendar.deleteEvent(widget.event.originalEvent!);
+                                await AppCalendar.addEvent(widget.event.originalEvent!);
+                                await widget.updateUi();
+                              }
+                            ),
+                            CustomSelectionMenuItem(
+                              label: S.of(context).calendar_button_event_selection_menu_all_occurence, 
+                              foregroundColor: widget.theme.error,
+                              icon: null, 
+                              onTap: () async {
+                                await AppCalendar.deleteEvent(widget.event.originalEvent ?? widget.event);
+                                await widget.updateUi();
+                              }
+                            )
+                          ] 
+                          : [],
+                          icon: Icons.delete_outline_rounded, 
+                          onTap: () async {
+                            await AppCalendar.deleteEvent(widget.event);
+                            await widget.updateUi();
+                          }
+                        )
+                      ], 
+                      child: Icon(
+                        Icons.more_horiz_rounded, 
+                        color: widget.theme.onPrimary
+                      )
+                    ),
+                  )
+                ]
+              ],
+            ),
           ),
         ),
       ),

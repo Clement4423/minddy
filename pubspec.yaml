@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  week_of_year: ^2.2.0
+  isoweek: ^1.1.4
   encrypt: ^5.0.3
   crypto: ^3.0.3
   pointycastle: ^3.9.1

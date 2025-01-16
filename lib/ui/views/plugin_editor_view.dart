@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/model/custom_appbar_button_model.dart';
