@@ -791,6 +791,7 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
       'views': views.map((v) => v.toJson()).toList(),
       'variables': variables.map((v) => v.toJson()).toList(),
       'selected_node_tree_id': selectedNodeTreeId,
+      'isClosed': isClosed,
       'isSidePanelClosed': isSidePanelClosed
     };
 
@@ -834,6 +835,10 @@ class NodeEditorBottomSheetController extends ChangeNotifier {
       if (map['selected_node_tree_id'] != null) {
         controller.selectedNodeTreeId = int.tryParse(map['selected_node_tree_id'].toString());
       } 
+
+      if (map['isClosed'] != null) {
+        controller.isClosed = map['isClosed'];
+      }
 
       return controller;
     } catch (e) {

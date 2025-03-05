@@ -216,7 +216,7 @@ class _GetVariableNodeWidgetState extends State<GetVariableNodeWidget> {
       nodeDescription: S.of(context).node_widgets_get_variable_node_description,
       theme: widget.theme, 
       nodeWidget: widget, 
-      nodeColor: DefaultAppColors.yellow.color,
+      nodeColor: DefaultAppColors.lightPurple.color,
       needToBeSmaller: widget.node.outputsTypes.isEmpty || widget.node.outputsTypes.first == NodeDataType.any,
       inputsThatAreNoLongerNeeded: const [0], 
       isDraggingStartPortFromAnotherPort: widgetInformations.isDraggingStartPortFromAnotherPort, 
@@ -260,7 +260,9 @@ class _GetVariableNodeWidgetState extends State<GetVariableNodeWidget> {
             height: widget.height,
             theme: widget.theme,
             itemToString: (nodeTreeVariable) {
-              return nodeTreeVariable.name;
+              return nodeTreeVariable.name.replaceAll(' ', '').isEmpty 
+                ? S.of(context).articles_card_untitled 
+                : nodeTreeVariable.name;
             },
           ),
         ),

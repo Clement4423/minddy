@@ -46,8 +46,8 @@ class WelcomeViewModel extends ChangeNotifier {
   }
 
   Future<bool> _saveUsername() async {
-    final writtenUsername = await AppConfig.modifyConfigValue("username", _username);
-    return writtenUsername;
+    AppConfig.data.username = _username;
+    return await AppConfig.saveConfig();
   }
 
   Future<bool> skipUsername() async {

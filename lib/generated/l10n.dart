@@ -18,17 +18,20 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(
+      _current != null,
+      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+    );
     return _current!;
   }
 
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
+    final name =
+        (locale.countryCode?.isEmpty ?? false)
+            ? locale.languageCode
+            : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
@@ -41,8 +44,10 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -52,12 +57,7 @@ class S {
 
   /// `minddy`
   String get app_name {
-    return Intl.message(
-      'minddy',
-      name: 'app_name',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('minddy', name: 'app_name', desc: '', args: []);
   }
 
   /// `Everything happens here.`
@@ -92,12 +92,7 @@ class S {
 
   /// `Welcome`
   String get welcome_appbar {
-    return Intl.message(
-      'Welcome',
-      name: 'welcome_appbar',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Welcome', name: 'welcome_appbar', desc: '', args: []);
   }
 
   /// `First of all, please enter your first name`
@@ -432,7 +427,9 @@ class S {
 
   /// `{eventName} has been completed by {username}`
   String calendar_button_due_date_has_been_complete(
-      Object eventName, Object username) {
+    Object eventName,
+    Object username,
+  ) {
     return Intl.message(
       '$eventName has been completed by $username',
       name: 'calendar_button_due_date_has_been_complete',
@@ -737,7 +734,8 @@ class S {
 
   /// `{interval, plural, one {Every month} other {Every {interval} months}}`
   String calendar_button_event_preview_recurence_text_every_month(
-      num interval) {
+    num interval,
+  ) {
     return Intl.plural(
       interval,
       one: 'Every month',
@@ -910,12 +908,7 @@ class S {
 
   /// `Settings`
   String get settings_title {
-    return Intl.message(
-      'Settings',
-      name: 'settings_title',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Settings', name: 'settings_title', desc: '', args: []);
   }
 
   /// `Personalize`
@@ -1160,12 +1153,7 @@ class S {
 
   /// `Search`
   String get articles_search {
-    return Intl.message(
-      'Search',
-      name: 'articles_search',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Search', name: 'articles_search', desc: '', args: []);
   }
 
   /// `Search a title, author`
@@ -1620,12 +1608,7 @@ class S {
 
   /// `Copy`
   String get articles_copy_text {
-    return Intl.message(
-      'Copy',
-      name: 'articles_copy_text',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Copy', name: 'articles_copy_text', desc: '', args: []);
   }
 
   /// `Add to notes`
@@ -1929,10 +1912,10 @@ class S {
   }
 
   /// `Close`
-  String get snacbar_close_button {
+  String get snackbar_close_button {
     return Intl.message(
       'Close',
-      name: 'snacbar_close_button',
+      name: 'snackbar_close_button',
       desc: '',
       args: [],
     );
@@ -1960,12 +1943,7 @@ class S {
 
   /// `Home`
   String get home_appbar {
-    return Intl.message(
-      'Home',
-      name: 'home_appbar',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Home', name: 'home_appbar', desc: '', args: []);
   }
 
   /// `Good morning {username}`
@@ -2516,7 +2494,9 @@ class S {
 
   /// `{totalTasksCount, plural, =0 {No tasks} one {{checkedTasks}/{totalTasksCount} task completed} other {{checkedTasks}/{totalTasksCount} tasks completed}}`
   String projects_module_tasks_completed(
-      num totalTasksCount, Object checkedTasks) {
+    num totalTasksCount,
+    Object checkedTasks,
+  ) {
     return Intl.plural(
       totalTasksCount,
       zero: 'No tasks',
@@ -3163,7 +3143,7 @@ class S {
 
   /// `√[((10-53.33)² + (50-53.33)² + (100-53.33)²) / 3]`
   String
-      get projects_module_spreadsheet_number_operation_standardDeviation_example {
+  get projects_module_spreadsheet_number_operation_standardDeviation_example {
     return Intl.message(
       '√[((10-53.33)² + (50-53.33)² + (100-53.33)²) / 3]',
       name:
@@ -3175,7 +3155,7 @@ class S {
 
   /// `Calculates the standard deviation to measure how much the values vary from the average. Here, 53.33 is the mean of the values 10, 50, and 100.`
   String
-      get projects_module_spreadsheet_number_operation_standardDeviation_message {
+  get projects_module_spreadsheet_number_operation_standardDeviation_message {
     return Intl.message(
       'Calculates the standard deviation to measure how much the values vary from the average. Here, 53.33 is the mean of the values 10, 50, and 100.',
       name:
@@ -3317,7 +3297,7 @@ class S {
 
   /// `Please, add options`
   String
-      get projects_module_spreadsheet_selection_sub_menu_error_message_no_options {
+  get projects_module_spreadsheet_selection_sub_menu_error_message_no_options {
     return Intl.message(
       'Please, add options',
       name:
@@ -3329,7 +3309,7 @@ class S {
 
   /// `Please, name all options`
   String
-      get projects_module_spreadsheet_selection_sub_menu_error_message_unnamed_option {
+  get projects_module_spreadsheet_selection_sub_menu_error_message_unnamed_option {
     return Intl.message(
       'Please, name all options',
       name:
@@ -3341,8 +3321,9 @@ class S {
 
   /// `Two options can't have the same name ({optionName})`
   String
-      projects_module_spreadsheet_selection_sub_menu_error_message_redundant_option_name(
-          Object optionName) {
+  projects_module_spreadsheet_selection_sub_menu_error_message_redundant_option_name(
+    Object optionName,
+  ) {
     return Intl.message(
       'Two options can\'t have the same name ($optionName)',
       name:
@@ -3354,7 +3335,7 @@ class S {
 
   /// `Two options can't have the same color`
   String
-      get projects_module_spreadsheet_selection_sub_menu_error_message_redundant_color {
+  get projects_module_spreadsheet_selection_sub_menu_error_message_redundant_color {
     return Intl.message(
       'Two options can\'t have the same color',
       name:
@@ -4674,6 +4655,276 @@ class S {
     );
   }
 
+  /// `Components`
+  String get plugin_editor_ui_side_panel_layers_title {
+    return Intl.message(
+      'Components',
+      name: 'plugin_editor_ui_side_panel_layers_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New component`
+  String get plugin_editor_ui_side_panel_layers_add_button {
+    return Intl.message(
+      'New component',
+      name: 'plugin_editor_ui_side_panel_layers_add_button',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add child`
+  String get plugin_editor_ui_side_panel_layers_add_child {
+    return Intl.message(
+      'Add child',
+      name: 'plugin_editor_ui_side_panel_layers_add_child',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `More options`
+  String get plugin_editor_ui_side_panel_layers_more_options {
+    return Intl.message(
+      'More options',
+      name: 'plugin_editor_ui_side_panel_layers_more_options',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{length, plural, one {Hide child} other {Hide children}}`
+  String plugin_editor_ui_side_panel_layers_hide_child(num length) {
+    return Intl.plural(
+      length,
+      one: 'Hide child',
+      other: 'Hide children',
+      name: 'plugin_editor_ui_side_panel_layers_hide_child',
+      desc: '',
+      args: [length],
+    );
+  }
+
+  /// `{length, plural, one {Show child} other {Show children}}`
+  String plugin_editor_ui_side_panel_layers_show_child(num length) {
+    return Intl.plural(
+      length,
+      one: 'Show child',
+      other: 'Show children',
+      name: 'plugin_editor_ui_side_panel_layers_show_child',
+      desc: '',
+      args: [length],
+    );
+  }
+
+  /// `Size`
+  String get plugin_editor_ui_side_panel_properties_size_subtitle {
+    return Intl.message(
+      'Size',
+      name: 'plugin_editor_ui_side_panel_properties_size_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Width`
+  String get plugin_editor_ui_side_panel_properties_size_width {
+    return Intl.message(
+      'Width',
+      name: 'plugin_editor_ui_side_panel_properties_size_width',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Height`
+  String get plugin_editor_ui_side_panel_properties_size_height {
+    return Intl.message(
+      'Height',
+      name: 'plugin_editor_ui_side_panel_properties_size_height',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Style`
+  String get plugin_editor_ui_side_panel_properties_style_subtitle {
+    return Intl.message(
+      'Style',
+      name: 'plugin_editor_ui_side_panel_properties_style_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Border radius`
+  String get plugin_editor_ui_side_panel_properties_style_border_radius {
+    return Intl.message(
+      'Border radius',
+      name: 'plugin_editor_ui_side_panel_properties_style_border_radius',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Alignment`
+  String get plugin_editor_ui_side_panel_properties_style_alignment {
+    return Intl.message(
+      'Alignment',
+      name: 'plugin_editor_ui_side_panel_properties_style_alignment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Top left`
+  String get plugin_editor_ui_side_panel_properties_style_alignment_top_left {
+    return Intl.message(
+      'Top left',
+      name: 'plugin_editor_ui_side_panel_properties_style_alignment_top_left',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Top right`
+  String get plugin_editor_ui_side_panel_properties_style_alignment_top_right {
+    return Intl.message(
+      'Top right',
+      name: 'plugin_editor_ui_side_panel_properties_style_alignment_top_right',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bottom left`
+  String
+  get plugin_editor_ui_side_panel_properties_style_alignment_bottom_left {
+    return Intl.message(
+      'Bottom left',
+      name:
+          'plugin_editor_ui_side_panel_properties_style_alignment_bottom_left',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bottom right`
+  String
+  get plugin_editor_ui_side_panel_properties_style_alignment_bottom_right {
+    return Intl.message(
+      'Bottom right',
+      name:
+          'plugin_editor_ui_side_panel_properties_style_alignment_bottom_right',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Border`
+  String get plugin_editor_ui_side_panel_properties_border_subtitle {
+    return Intl.message(
+      'Border',
+      name: 'plugin_editor_ui_side_panel_properties_border_subtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Top`
+  String get plugin_editor_ui_side_panel_properties_style_alignment_top {
+    return Intl.message(
+      'Top',
+      name: 'plugin_editor_ui_side_panel_properties_style_alignment_top',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bottom`
+  String get plugin_editor_ui_side_panel_properties_style_alignment_bottom {
+    return Intl.message(
+      'Bottom',
+      name: 'plugin_editor_ui_side_panel_properties_style_alignment_bottom',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Left`
+  String get plugin_editor_ui_side_panel_properties_style_alignment_left {
+    return Intl.message(
+      'Left',
+      name: 'plugin_editor_ui_side_panel_properties_style_alignment_left',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Right`
+  String get plugin_editor_ui_side_panel_properties_style_alignment_right {
+    return Intl.message(
+      'Right',
+      name: 'plugin_editor_ui_side_panel_properties_style_alignment_right',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thickness`
+  String get plugin_editor_ui_side_panel_properties_style_border_thickness {
+    return Intl.message(
+      'Thickness',
+      name: 'plugin_editor_ui_side_panel_properties_style_border_thickness',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Primary`
+  String get plugin_editor_ui_side_panel_properties_theme_colors_primary {
+    return Intl.message(
+      'Primary',
+      name: 'plugin_editor_ui_side_panel_properties_theme_colors_primary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Primary transparent`
+  String
+  get plugin_editor_ui_side_panel_properties_theme_colors_primary_transparent {
+    return Intl.message(
+      'Primary transparent',
+      name:
+          'plugin_editor_ui_side_panel_properties_theme_colors_primary_transparent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accent`
+  String get plugin_editor_ui_side_panel_properties_theme_colors_accent {
+    return Intl.message(
+      'Accent',
+      name: 'plugin_editor_ui_side_panel_properties_theme_colors_accent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Surface`
+  String get plugin_editor_ui_side_panel_properties_theme_colors_surface {
+    return Intl.message(
+      'Surface',
+      name: 'plugin_editor_ui_side_panel_properties_theme_colors_surface',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Change color`
   String get default_app_colors_change_color {
     return Intl.message(
@@ -4911,8 +5162,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
-      Locale.fromSubtags(languageCode: 'es', countryCode: 'ES'),
-      Locale.fromSubtags(languageCode: 'fr', countryCode: 'FR'),
+      Locale.fromSubtags(languageCode: 'fr'),
     ];
   }
 

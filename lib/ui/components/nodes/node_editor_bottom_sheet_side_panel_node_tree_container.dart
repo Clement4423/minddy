@@ -82,7 +82,7 @@ class _NodeEditorBottomSheetSidePanelNodeTreeContainerState extends State<NodeEd
                 setCanEdit(true);
               },
               child: TextSelectionTheme(
-                data: TextSelectionThemeData(selectionColor: widget.isSelected ? widget.theme.onPrimary : widget.theme.secondary),
+                data: TextSelectionThemeData(selectionColor: widget.isSelected ? widget.theme.onPrimary.withValues(alpha: 0.5) : widget.theme.secondary),
                 child: TextField(
                   onChanged: (value) {
                     widget.trees[widget.index].name = value;

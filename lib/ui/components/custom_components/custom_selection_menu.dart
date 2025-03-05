@@ -23,6 +23,10 @@ class CustomSelectionMenuItem {
   bool enabled;
   Function onTap;
   List<CustomSelectionMenuItem>? items;
+  /// Only useful when the menu is a multiple selection menu
+  bool isSelected;
+  /// Only useful when the menu is a multiple selection menu
+  bool closeMenuAfterSelected;
 
   CustomSelectionMenuItem({
     required this.label, 
@@ -33,6 +37,8 @@ class CustomSelectionMenuItem {
     required this.onTap, 
     this.foregroundColor, 
     this.enabled = true,
+    this.isSelected = false,
+    this.closeMenuAfterSelected = false,
     this.tooltipTitle,
     this.tooltip,
     this.items
@@ -54,8 +60,10 @@ class CustomSelectionMenu extends StatefulWidget {
     required this.theme,
     this.buttonStyle,
     this.type = CustomSelectionMenuButttonType.elevated,
+    this.isMultipleSelectionMenu = false,
     this.menuMaxHeight,
     this.menuMaxWidth,
+    this.onMenuClosed,
     required this.items,
     required this.child
   });
@@ -67,6 +75,8 @@ class CustomSelectionMenu extends StatefulWidget {
   final StylesGetters theme;
   final ButtonStyle? buttonStyle;
   final CustomSelectionMenuButttonType type;
+  final bool isMultipleSelectionMenu;
+  final Function? onMenuClosed;
   final List<CustomSelectionMenuItem> items;
   final double? menuMaxHeight;
   final double? menuMaxWidth;
@@ -236,7 +246,8 @@ class _CustomSelectionMenuState extends State<CustomSelectionMenu> with SingleTi
                     theme: widget.theme,
                     dismissOverlay: _dismissOverlay,
                     animation: _fadeAnimation,
-                    enableSearch: widget.enableSearch
+                    enableSearch: widget.enableSearch,
+                    isMultipleSelectionMenu: widget.isMultipleSelectionMenu,
                   ),
                 ),
               ),
@@ -251,6 +262,9 @@ class _CustomSelectionMenuState extends State<CustomSelectionMenu> with SingleTi
     _animationController.reverse().then((_) {
       _overlayEntry?.remove();
       _overlayEntry = null;
+      if (widget.onMenuClosed != null) {
+        widget.onMenuClosed!();
+      }
     });
   }
 
@@ -337,7 +351,8 @@ class CustomSelectionMenuWidget extends StatefulWidget {
     required this.theme,
     required this.dismissOverlay,
     required this.animation,
-    required this.enableSearch
+    required this.enableSearch,
+    required this.isMultipleSelectionMenu
   });
 
   final double menuWidth;
@@ -348,6 +363,7 @@ class CustomSelectionMenuWidget extends StatefulWidget {
   final Function dismissOverlay;
   final Animation<double> animation;
   final bool enableSearch;
+  final bool isMultipleSelectionMenu;
 
   @override
   State<CustomSelectionMenuWidget> createState() => _CustomSelectionMenuWidgetState();
@@ -453,6 +469,7 @@ class _CustomSelectionMenuWidgetState extends State<CustomSelectionMenuWidget> {
                                 menuWidth: widget.menuWidth, 
                                 theme: widget.theme, 
                                 enableSearch: widget.enableSearch,
+                                isMultipleSelectionMenu: widget.isMultipleSelectionMenu,
                                 showBottomBorder: items.indexOf(item) < items.length - 1, 
                                 dismissOverlay: widget.dismissOverlay
                               );
@@ -462,6 +479,7 @@ class _CustomSelectionMenuWidgetState extends State<CustomSelectionMenuWidget> {
                                 itemHeight: widget.itemHeight, 
                                 menuWidth: widget.menuWidth, 
                                 theme: widget.theme, 
+                                isMultipleSelectionMenu: widget.isMultipleSelectionMenu,
                                 showBottomBorder: items.indexOf(item) < items.length - 1, 
                                 dismissOverlay: widget.dismissOverlay
                               );

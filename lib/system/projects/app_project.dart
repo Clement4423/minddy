@@ -91,7 +91,7 @@ class AppProject {
 
   static Future<bool> _createInfoFile(String projectName, bool isPrivate, Color color, String projectFolderName) async {
     try {
-      final String username = await AppConfig.getConfigValue("username");
+      final String username = AppConfig.data.username;
       final date = DateTime.now().toIso8601String();
 
       HSLColor hsl = HSLColor.fromColor(color);

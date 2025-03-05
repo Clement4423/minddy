@@ -4,6 +4,7 @@ import 'package:minddy/system/model/custom_appbar_button_model.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar.dart';
 import 'package:minddy/ui/components/appbar/custom_appbar_controller.dart';
 import 'package:minddy/ui/components/nodes/node_editor_bottom_sheet.dart';
+import 'package:minddy/ui/components/plugin_ui/plugin_editor_ui_view.dart';
 import 'package:minddy/ui/components/settings/settings_menu.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:minddy/ui/view_models/plugin_editor_view_model.dart';
@@ -73,6 +74,15 @@ class _PluginEditorViewState extends State<PluginEditorView> {
             } else if (snapshot.connectionState == ConnectionState.done) {
               return Stack(
               children: [
+                Positioned(
+                  top: 0,
+                  width: appWindowSize.width,
+                  height: appWindowSize.height / 1.2,
+                  child: PluginEditorUiView(
+                    theme: theme, 
+                    controller: widget.viewModel.pluginEditorUiViewController
+                  )
+                ),
                 Positioned(
                   bottom: 0,
                   child: NodeEditorBottomSheet(controller: widget.viewModel.bottomSheetController, theme: theme)

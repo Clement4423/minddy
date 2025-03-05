@@ -116,7 +116,7 @@ class _CalendarWeekViewPanelState extends State<CalendarWeekViewPanel> {
 
       DateTime today = date;
       DateTime todayStart = DateTime(today.year, today.month, today.day);
-      DateTime todayEnd = todayStart.add(Duration(minutes: dayMinutes));
+      DateTime todayEnd = todayStart.add(const Duration(minutes: dayMinutes));
 
       DateTime realStart = eventStart;
 

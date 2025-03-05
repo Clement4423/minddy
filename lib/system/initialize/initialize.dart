@@ -24,7 +24,7 @@ _InitialisationStep _loadConfigFile = _InitialisationStep(
 
 _InitialisationStep _initalizeTheme = _InitialisationStep(
   execute: () async {
-    return await AppTheme.initializeTheme();
+    return AppTheme.initializeTheme();
   },
   errorMessage: 'Failed to initialize theme'
 );
@@ -48,23 +48,25 @@ Future<bool> initializeApp() async {
 }
 
 const List<String> supportedLocales = [
-  "fr_FR",
+  "fr",
   "en",
-  "es_ES"
+  "es"
 ];
 
 // Language initialization
 Future<Locale> getCurrentLocale() async {
-  String? actualLanguage = await _getActualLanguage();
+  String? actualLanguage = _getActualLanguage();
   String locale;
   if (actualLanguage == null) {
     String systemLocale = getSystemLocale();
     if (supportedLocales.contains(systemLocale.replaceAll(RegExp(r'[-]'), '_'))) {
-      AppConfig.modifyConfigValue("language", systemLocale);
+      AppConfig.data.language = systemLocale;
       locale = systemLocale;
+      await AppConfig.saveConfig();
     } else {
-      AppConfig.modifyConfigValue("language", "en");
+      AppConfig.data.language = 'en';
       locale = "en";
+      await AppConfig.saveConfig();
     }
     String languageCode = locale.substring(0, 2);
     String? countryCode = locale.length > 2 ? locale.split('_').last : null;
@@ -78,21 +80,21 @@ Future<Locale> getCurrentLocale() async {
 
 Future<String> getFirstPageRouteName() async {
   try {
-    bool isFirstStart = await AppConfig.getConfigValue("is_first_start");
-    String username = await AppConfig.getConfigValue('username');
+    bool isFirstStart = AppConfig.data.isFirstAppStart;
+    String username = AppConfig.data.username;
     return isFirstStart 
       ? username.isNotEmpty
         ? '/create_password'
         : '/welcome'  
       : '/home';
   } catch (e) {
-    await AppLogs.writeError(e, "Initialize.dart - getFirstPage");
+    await AppLogs.writeError(e, "Initialize.dart - getFirstPageRouteName");
     return '/';
   }
 }
 
-Future<String?> _getActualLanguage() async {
-  return await AppConfig.getConfigValue("language");
+String? _getActualLanguage() {
+  return AppConfig.data.language;
 }
 
 String getSystemLocale() {

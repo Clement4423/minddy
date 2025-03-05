@@ -47,7 +47,7 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
     return date.contains('_');
   } 
 
-  Future<String> formatDateInAUserFriendlyWay() async {
+  String formatDateInAUserFriendlyWay() {
     if (widget.data == null ) {
       return '';
     }
@@ -57,28 +57,28 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
       return '';
     }
 
-    bool useUsFormat = await AppConfig.getConfigValue('prefer_us_date_format') ?? false;
+    bool useUsFormat = AppConfig.data.preferUsDateFormat;
 
     if (isStartEndDate()) {
       if (dateAsString.split('_').length != 2) {
         return '';
       }
 
-      String? firstDateInPreferedFormat = await AppDate.formatIso8601StringToPreferedDateFormatString(dateAsString.split('_').first);
-      String? endDateInPreferedFormat = await AppDate.formatIso8601StringToPreferedDateFormatString(dateAsString.split('_').last);
+      String? firstDateInPreferedFormat = AppDate.formatIso8601StringToPreferedDateFormatString(dateAsString.split('_').first);
+      String? endDateInPreferedFormat = AppDate.formatIso8601StringToPreferedDateFormatString(dateAsString.split('_').last);
 
-      DateTime? firstDate = await AppDate.formatDateWithTheCorrectOrder(
+      DateTime? firstDate = AppDate.formatDateWithTheCorrectOrder(
         firstDateInPreferedFormat!,
         true
       );
 
-      DateTime? endDate = await AppDate.formatDateWithTheCorrectOrder(
+      DateTime? endDate = AppDate.formatDateWithTheCorrectOrder(
         endDateInPreferedFormat!,
         true
       );
 
-      String firstDateAsString = await getDateString(firstDate, useUsFormat);
-      String endDateAsString = await getDateString(endDate, useUsFormat);
+      String firstDateAsString = getDateString(firstDate, useUsFormat);
+      String endDateAsString = getDateString(endDate, useUsFormat);
 
       return "${S.current.projects_module_spreadsheet_date_from_text} $firstDateAsString \n${S.current.projects_module_spreadsheet_date_to_text} $endDateAsString";
     } else {
@@ -90,7 +90,7 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
     }
   }
 
-  Future<String> getDateString(DateTime? date, bool useUsFormat) async {
+  String getDateString(DateTime? date, bool useUsFormat) {
     if (date == null) {
       return '';
     }
@@ -103,7 +103,7 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
 
     if (DateFormat('MMMM').format(date).length >= (time.isEmpty ? 8 : 5)) {
 
-      String? finalDate = await AppDate.formatIso8601StringToPreferedDateFormatString(
+      String? finalDate = AppDate.formatIso8601StringToPreferedDateFormatString(
         AppDate.formatDateAsString(date),
         false
       );
@@ -195,21 +195,16 @@ class _CustomTableDateCellState extends State<CustomTableDateCell> {
           children: [
             Align(
               alignment: Alignment.centerRight,
-              child: FutureBuilder<String>(
-                future: formatDateInAUserFriendlyWay(),
-                builder: (context, snapshot) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Text(
-                      snapshot.data ?? '',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: widget.theme.bodyMedium.copyWith(color: widget.theme.onSurface),
-                      textAlign: TextAlign.right,
-                    ),
-                  );
-                },
-              ),
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: Text(
+                  formatDateInAUserFriendlyWay(),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: widget.theme.bodyMedium.copyWith(color: widget.theme.onSurface),
+                  textAlign: TextAlign.right,
+                ),
+              )
             ),
             if (isHovering)
               Align(

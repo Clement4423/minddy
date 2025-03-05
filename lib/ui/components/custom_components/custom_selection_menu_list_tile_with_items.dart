@@ -12,6 +12,7 @@ class CustomSelectionMenuListTileWithItems extends StatelessWidget {
     required this.menuWidth, 
     required this.theme, 
     required this.showBottomBorder, 
+    required this.isMultipleSelectionMenu,
     required this.dismissOverlay
   });
 
@@ -20,6 +21,7 @@ class CustomSelectionMenuListTileWithItems extends StatelessWidget {
   final double itemHeight;
   final double menuWidth;
   final StylesGetters theme;
+  final bool isMultipleSelectionMenu;
   final bool showBottomBorder;
   final Function dismissOverlay;
 
@@ -45,6 +47,7 @@ class CustomSelectionMenuListTileWithItems extends StatelessWidget {
           inititalItem: item, 
           enableSearch: enableSearch,
           closePreviousMenu: dismissOverlay, 
+          isMultipleSelectionMenu: isMultipleSelectionMenu,
           items: item.items!
         )
       ),

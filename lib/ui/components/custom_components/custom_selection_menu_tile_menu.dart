@@ -10,6 +10,7 @@ class CustomSelectionMenuTileMenu extends StatefulWidget {
     required this.enableSearch,
     required this.inititalItem,
     required this.closePreviousMenu,
+    required this.isMultipleSelectionMenu,
     required this.items,
   });
 
@@ -17,6 +18,7 @@ class CustomSelectionMenuTileMenu extends StatefulWidget {
   final bool enableSearch;
   final List<CustomSelectionMenuItem> items;
   final CustomSelectionMenuItem inititalItem;
+  final bool isMultipleSelectionMenu;
   final Function closePreviousMenu;
 
   @override
@@ -173,6 +175,7 @@ class _CustomSelectionMenuTileMenuState extends State<CustomSelectionMenuTileMen
                     itemHeight: itemHeight, 
                     items: widget.items, 
                     theme: widget.theme,
+                    isMultipleSelectionMenu: widget.isMultipleSelectionMenu,
                     dismissOverlay: _dismissOverlay,
                     animation: _fadeAnimation,
                     enableSearch: widget.enableSearch

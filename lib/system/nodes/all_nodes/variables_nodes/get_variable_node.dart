@@ -4,6 +4,7 @@ import 'package:minddy/system/interfaces/node_interface.dart';
 import 'package:minddy/system/interfaces/node_variable_interface.dart';
 import 'package:minddy/system/model/node_tree_variable.dart';
 import 'package:minddy/system/nodes/logic/node_data_models.dart';
+import 'package:minddy/system/nodes/logic/node_tree.dart';
 import 'package:minddy/system/nodes/logic/node_tree_variable_manager.dart';
 import 'package:minddy/system/utils/create_unique_id.dart';
 
@@ -46,13 +47,23 @@ class GetVariableNode implements IVariableNode {
       return;
     } else {
       NodeTreeVariable? variable = variablesManager.getVariable(selectedVariableId!);
-      if (variable != null) {
-        _addDataToOutputs(variable.value);
+      if (variable == null) {
+        if (outputsTypes.isNotEmpty) {
+          _addDataToOutputs(NodeData(type: outputsTypes.first, value: getDefaultNodeDataTypeValue(outputsTypes.first)));
+        }
+        return;
       }
+
+      if (variable.value == null) {
+        _addDataToOutputs(NodeData(type: variable.type, value: getDefaultNodeDataTypeValue(variable.type)));
+        return;
+      }
+
+      _addDataToOutputs(variable.value!);
     }
   }
 
-  void _addDataToOutputs(dynamic data) {
+  void _addDataToOutputs(NodeData data) {
     for (NodeTarget target in targets) {
       outputs.add(NodeOutput(data: data, target: target.node, inputIndex: target.inputIndex));
     }
@@ -73,7 +84,7 @@ class GetVariableNode implements IVariableNode {
 
   @override
   String toJson() {
-    Map map =  {
+    Map map = {
       'type': runtimeType.toString(),
       'inputs': inputs.map((e) => e.toString()).toList(),
       'id': id.toString(),

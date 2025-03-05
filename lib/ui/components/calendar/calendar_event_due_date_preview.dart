@@ -53,7 +53,7 @@ class _CalendarEventDueDatePreviewState extends State<CalendarEventDueDatePrevie
   late bool isPrivate = false;
 
   Future<void> _checkDueDate(bool value) async {
-    String username = await _getUsername();
+    String username = AppConfig.data.username;
     if (widget.event.isRecurrence && widget.event.recurrence != null || widget.event.recurrence != null) {
       widget.event.dueDateInfo = DueDateInfo(
         isCompleted: true, 
@@ -79,7 +79,7 @@ class _CalendarEventDueDatePreviewState extends State<CalendarEventDueDatePrevie
       await widget.updateUi();
       NotificationHandler.addNotification(
         NotificationModel(
-          content: S.current.calendar_button_due_date_has_been_complete(widget.event.title, username), 
+          content: S.current.calendar_button_due_date_has_been_complete(widget.event.title.replaceAll(' ', '').isEmpty ? S.current.articles_card_untitled : widget.event.title, username), 
           action: () async {
             widget.event.dueDateInfo = DueDateInfo(
               isCompleted: false, 
@@ -108,7 +108,7 @@ class _CalendarEventDueDatePreviewState extends State<CalendarEventDueDatePrevie
       await widget.updateUi();
       NotificationHandler.addNotification(
         NotificationModel(
-          content: S.current.calendar_button_due_date_has_been_complete(widget.event.title, username), 
+          content: S.current.calendar_button_due_date_has_been_complete(widget.event.title.replaceAll(' ', '').isEmpty ? S.current.articles_card_untitled : widget.event.title, username), 
           action: () async {
             widget.event.dueDateInfo = DueDateInfo(
               isCompleted: false, 
@@ -124,10 +124,6 @@ class _CalendarEventDueDatePreviewState extends State<CalendarEventDueDatePrevie
         )
       );
     }
-  }
-
-  Future<String> _getUsername() async {
-    return await AppConfig.getConfigValue('username') ?? S.current.welcome_pass_default_username;
   }
  
   String formatSingleDate(DateTime date, bool useUsFormat) {

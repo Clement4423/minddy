@@ -93,8 +93,8 @@ class _NodeEditorBottomSheetState extends State<NodeEditorBottomSheet> {
       duration: const Duration(milliseconds: 700),
       curve: Curves.easeInOutCubicEmphasized,
       tween: Tween<double>(
-        begin: widget.controller.isClosed ? appWindowSize.height / 2.2 : 0,
-        end: widget.controller.isClosed ? appWindowSize.height / 2.2 : 0,
+        begin: widget.controller.isClosed ? (appWindowSize.height / 1.8) - (appWindowSize.height - (appWindowSize.height / 1.2)) + 55 : 0,
+        end: widget.controller.isClosed ? (appWindowSize.height / 1.8) - (appWindowSize.height - (appWindowSize.height / 1.2)) + 55 : 0,
       ),
       builder: (context, offset, child) {
         return Transform.translate(

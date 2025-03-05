@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:minddy/system/files/app_config.dart';
 
@@ -21,21 +19,25 @@ class AppTheme{
 
   static bool get isUsingBWMode => _isUsingBWMode;
 
-  static Future<bool> initializeTheme() async {
-    bool? usingBWMode = await AppConfig.getConfigValue("using_bw_mode");
-    if (usingBWMode != null) {
+  static bool initializeTheme() {
+    try {
+      bool? usingBWMode = AppConfig.data.usingBlackAndWhiteMode;
       _isUsingBWMode = usingBWMode;
-      return true;
-    } else {
-      return false;
+      return true;      
+    } catch (e) {
+      return false;  
     }
   }
 
-  static Future<ThemeMode> getCurrentThemeMode() async {
-    bool isDarkModeEnabled = await AppConfig.getConfigValue("dark_mode");
-    bool isUsingSystem = await AppConfig.getConfigValue("using_system_theme");
-    ThemeMode system = isUsingSystem ? ThemeMode.system : isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light;
-    return system;
+  static ThemeMode getCurrentThemeMode() {
+    bool isDarkModeEnabled = AppConfig.data.usingDarkMode;
+    bool isUsingSystem = AppConfig.data.usingSystemTheme;
+    ThemeMode mode = isUsingSystem 
+      ? ThemeMode.system 
+      : isDarkModeEnabled 
+        ? ThemeMode.dark 
+        : ThemeMode.light;
+    return mode;
   }
 
   static final ThemeData _themeData = ThemeData(
@@ -238,5 +240,4 @@ class StylesGetters{
   TextStyle get titleLarge => Theme.of(context).textTheme.titleLarge!;
   TextStyle get titleMedium => Theme.of(context).textTheme.titleMedium!;
   TextStyle get titleSmall => Theme.of(context).textTheme.titleSmall!;
-
 }

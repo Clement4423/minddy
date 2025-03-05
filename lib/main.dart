@@ -29,9 +29,8 @@ Future<bool> initializeState() async {
     if (Platform.isWindows || Platform.isLinux) {
       setWindowTitle('minddy');
       setWindowMinSize(const Size(900, 630));
-      
     }
-    _currentThemeMode = await AppTheme.getCurrentThemeMode();
+    _currentThemeMode = AppTheme.getCurrentThemeMode();
     _routeName = await getFirstPageRouteName();
     _currentLocale = await getCurrentLocale();
   }
@@ -43,9 +42,8 @@ class MainApp extends StatelessWidget {
 
   // TODO : Documenter tout le code
   // TODO : Faire les tests
-  // TODO : Faire le site web de lancement
+  // TODO : Commencer le site web de lancement
   // TODO : Ajouter un menu activé au double clic droit sur les task
-  // TODO : Gérer les contrastes entre texte et fond sur les CalendarWeekEventPreview
   // TODO : Tools note rapide ?
   // TODO : Ajouter tous les articles de base
   // TODO : Faire les articles 'aide' pour les modules
@@ -59,10 +57,15 @@ class MainApp extends StatelessWidget {
   // TODO : Ajouter une fonction pour sauvagarder le projet avant de fermer l'app
   // TODO : Ajouter le repositionement des pages, ainsi que le déplacement des modules
   // TODO : Faire le menu d'ajout de module
-  // TODO : AJouter les légendes en dessous des graphiques
+  // TODO : AJouter les légendes en dessous des graphiques sur le module tableau + Corriger les bugs
+  // TODO : Faire un onglet 'notifications' pour voir les notifications récentes.
+  // TODO : Trouver un remplacant à l'addon FilePicker
+  // TODO : Remettre l'encryption sur les addons
+  // TODO : Voir les dates sur le DatePickerInput qui ne s'affichent pas
   // TODO : Terminer le système d'addon
-  // TODO : Faire les paramètres chargés dans StaticVariables pour plus de simplicité
-  // TODO : Commit
+  // TODO : Changer le lieu de sauvegarde des variables
+  // TODO : Faire les noeuds concernant les listes
+  // TODO : Faire tous les PluginUiComponent
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +87,6 @@ class MainApp extends StatelessWidget {
             
                     if (initSnapshot.hasData) {
                       return MaterialApp(
-                        navigatorKey: AppRouter.router.navigatorKey,
                         debugShowCheckedModeBanner: false,
                         localizationsDelegates: const [
                           S.delegate,
@@ -101,6 +103,7 @@ class MainApp extends StatelessWidget {
                         highContrastDarkTheme: AppTheme.getBWDarkThemeData,
                         title: "minddy",
                         initialRoute: _routeName,
+                        navigatorKey: AppRouter.router.navigatorKey,
                         onGenerateRoute: (settings) {
                           final builder = AppRouter.router.routes[settings.name];
                           if (builder == null) {

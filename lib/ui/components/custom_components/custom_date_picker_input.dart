@@ -88,9 +88,7 @@ class _CustomDatePickerInputState extends State<CustomDatePickerInput> {
     if (widget.initialValue != null) {
       String isoString = AppDate.formatDateAsString(widget.initialValue!);
       setState(() {
-        AppDate.formatIso8601StringToPreferedDateFormatString(isoString, false).then((v) {
-          dateController.text = formatToDashFormat(v!).replaceAll('-', '/');
-        });
+        formatToDashFormat(AppDate.formatIso8601StringToPreferedDateFormatString(isoString, false)!).replaceAll('-', '/');
       });
     }
     if (widget.initialTime != null) {
@@ -101,9 +99,7 @@ class _CustomDatePickerInputState extends State<CustomDatePickerInput> {
       setState(() {});
     });
 
-    AppConfig.getConfigValue('prefer_us_date_format').then((value) {
-      useUsFormat = value ?? false;
-    });
+    useUsFormat = AppConfig.data.preferUsDateFormat;
     super.initState();
   }
 
@@ -300,7 +296,7 @@ Future<bool> _validateDate(TextEditingController dateController, Function(DateTi
   if (dateController.text.isEmpty) {
     return false;
   }
-  DateTime? formatted = await AppDate.formatDateWithTheCorrectOrder(formatToDashFormat(dateController.text));
+  DateTime? formatted = AppDate.formatDateWithTheCorrectOrder(formatToDashFormat(dateController.text));
   if (formatted != null) {
     if (formatted.year.toString().length >= 3) {
       formatted = DateTime(

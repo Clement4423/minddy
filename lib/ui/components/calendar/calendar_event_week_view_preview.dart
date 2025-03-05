@@ -462,7 +462,7 @@ List<CustomSelectionMenuItem> _getSelectionMenuItems(CalendarEventWeekViewPrevie
       label: S.current.calendar_week_view_week_details, 
       icon: Icons.notes_rounded, 
       onTap: () async {
-        bool useUsDateFormat = await AppConfig.getConfigValue("prefer_us_date_format") ?? false;
+        bool useUsDateFormat = AppConfig.data.preferUsDateFormat;
         if (context.mounted) {
           showSubMenu(
             context, 

@@ -157,7 +157,7 @@ class AppNotes {
         title: "${noteModel.title} (${S.current.system_files_copy_text})",
         id: int.parse(newId),
         category: noteModel.category,
-        lastModified: await getCurrentTime(),
+        lastModified: getCurrentTime(),
         content: noteModel.content,
       );
 
@@ -260,7 +260,7 @@ class AppNotes {
     return {
       'title': noteModel.title, 
       'id': noteModel.id, 
-      'last_modified': await getCurrentTime(),
+      'last_modified': getCurrentTime(),
       'content': _convertNoteContentModelToJson(noteModel.content)
     };
   }
@@ -358,10 +358,10 @@ class AppNotes {
     return await StaticVariables.fileSource.writeJsonFile('shared/notes/$category/notes.json', newContent);
   }
 
-  static Future<String> getCurrentTime() async {
+  static String getCurrentTime() {
     DateTime now = DateTime.now();
 
-    bool preferUsFormat = await AppConfig.getConfigValue("prefer_us_date_format");
+    bool preferUsFormat = AppConfig.data.preferUsDateFormat;
 
     String dateFormat = preferUsFormat ? "MM/dd/yyyy" : "dd/MM/yyyy";
 

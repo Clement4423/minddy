@@ -179,12 +179,12 @@ class _NewCalendarDueDateSubMenuState extends State<NewCalendarDueDateSubMenu> {
                                   padding: const EdgeInsets.only(left: 6),
                                   child: CustomCheckbox(
                                     value: widget.event!.dueDateInfo?.isCompleted ?? false, 
-                                    onChanged: (value) async {
+                                    onChanged: (value) {
                                       if (value == true) {
                                         event.dueDateInfo = DueDateInfo(
                                           isCompleted: true, 
                                           completedOn: DateTime.now(), 
-                                          completedBy: await AppConfig.getConfigValue('username') ?? S.current.welcome_pass_default_username
+                                          completedBy: AppConfig.data.username
                                         );
                                       } else {
                                         event.dueDateInfo = DueDateInfo(

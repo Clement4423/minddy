@@ -7,18 +7,15 @@ import 'package:minddy/ui/components/notifications/notification_widget.dart';
 class AccountViewController extends ChangeNotifier {
 
   
-  AccountViewController() {
-    _getUsername().then((value) => {
-      _username = value,
-      notifyListeners(),
-    });
-  }
+  AccountViewController() {_username = AppConfig.data.username;}
+
+
   resetSettings(context) {
     NotificationHandler.addNotification(
       NotificationModel(
         content: S.of(context).snackbar_reset_text,
         action: () {
-          AppConfig.resetConfigFile(context);
+          AppConfig.resetConfig(context);
         }, 
         actionLabel: S.of(context).snackbar_reset_text, 
         duration: NotificationDuration.long
@@ -38,11 +35,7 @@ class AccountViewController extends ChangeNotifier {
   }
 
   Future<bool> saveUsername() async {
-    final writtenUsername = await AppConfig.modifyConfigValue("username", _username);
-    return writtenUsername;
-  }
-
-  Future<String> _getUsername() async {
-    return await AppConfig.getConfigValue("username");
+    AppConfig.data.username = _username;
+    return await AppConfig.saveConfig();
   }
 }

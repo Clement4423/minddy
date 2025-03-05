@@ -98,7 +98,7 @@ class PomodoroToolController {
         NotificationModel(
           content: message,
           action: null,
-          actionLabel: S.current.snacbar_close_button, 
+          actionLabel: S.current.snackbar_close_button, 
           duration: NotificationDuration.long
         )
       );

@@ -61,22 +61,19 @@ class PersonalizeViewController extends ChangeNotifier {
     }
   }
 
-  triggerBlackAndWhiteMode(bool value) async {
-    if (value == true) {
-      await AppConfig.modifyConfigValue("using_bw_theme", value);
-    }
+  _setThemeMode(value) async {
+    AppConfig.data.usingSystemTheme = value;
+    await AppConfig.saveConfig();
   }
 
-  _setThemeMode(newValue) async {
-    await AppConfig.modifyConfigValue("using_system_theme", newValue);
-  }
-
-  _setDarkMode(newValue) async {
-    await AppConfig.modifyConfigValue("dark_mode", newValue);
+  _setDarkMode(value) async {
+    AppConfig.data.usingDarkMode = value;
+    await AppConfig.saveConfig();
   }
 
   setBWMode(bool newValue) async {
-    await AppConfig.modifyConfigValue("using_bw_mode", newValue);
+    AppConfig.data.usingBlackAndWhiteMode = newValue;
+    await AppConfig.saveConfig();
     _isUsingBWMode = newValue;
     notifyListeners();
     Future.delayed(const Duration(milliseconds: 150), () {
@@ -84,30 +81,29 @@ class PersonalizeViewController extends ChangeNotifier {
     });
   }
 
-  Future<bool> _getThemeMode() async {
-    return await AppConfig.getConfigValue("using_system_theme");
+  bool _getThemeMode() {
+    return AppConfig.data.usingSystemTheme;
   }
 
-  Future<bool> _getTheme() async {
-    return await AppConfig.getConfigValue("dark_mode");
+  bool _getTheme() {
+    return AppConfig.data.usingDarkMode;
   }
 
-  Future<bool> _getBWMode() async {
-    return await AppConfig.getConfigValue("using_bw_mode");
+  bool _getBWMode() {
+    return AppConfig.data.usingBlackAndWhiteMode;
   }
 
-  _initializeThemeTitle() async {
+  _initializeThemeTitle() {
     bool isUsingSystem = true;
     bool isUsingDarkMode = false;
-    await _getBWMode().then((value) => _isUsingBWMode = value);
-    await _getTheme().then((value) => isUsingDarkMode = value);
-    await _getThemeMode().then((value) => isUsingSystem = value);
+    _isUsingBWMode = _getBWMode();
+    isUsingDarkMode = _getTheme();
+    isUsingSystem = _getThemeMode();
     _menuThemeTitle = isUsingSystem 
     ? _systemModeTitle 
     : isUsingDarkMode 
       ? _darkModeTitle 
       : _lightModeTitle;
-    notifyListeners();
   }
 
   
@@ -152,17 +148,17 @@ class PersonalizeViewController extends ChangeNotifier {
   bool get prefetUsDateFormat => _prefetUsDateFormat;
   bool _prefetUsDateFormat = false;
 
-  Future<bool> _getDateFormatPreference() async {
-    return await AppConfig.getConfigValue("prefer_us_date_format") ?? false;
+  bool _getDateFormatPreference() {
+    return AppConfig.data.preferUsDateFormat;
   }
 
-  _initializeDateFormatValue() async {
-    await _getDateFormatPreference().then((value) => _prefetUsDateFormat = value);
-    notifyListeners();
+  _initializeDateFormatValue() {
+    _prefetUsDateFormat = _getDateFormatPreference();
   }
 
   setDateFormat(bool value) async {
-    await AppConfig.modifyConfigValue('prefer_us_date_format', value);
+    AppConfig.data.preferUsDateFormat = value;
+    await AppConfig.saveConfig();
   }
 
 
@@ -179,17 +175,18 @@ class PersonalizeViewController extends ChangeNotifier {
   String get menuLanguageTitle => _menuLanguageTitle;
 
   _setLanguage(newValue) async {
-    await AppConfig.modifyConfigValue("language", newValue);
+    AppConfig.data.language = newValue;
+    await AppConfig.saveConfig();
     AppState.stateChanged();
   }
 
-  Future<String> _getLanguage() async {
-    return await AppConfig.getConfigValue("language");
+  String _getLanguage() {
+    return AppConfig.data.language ?? 'en';
   }
 
   _initializeLanguageTitle() async {
     String languageCode = "en";
-    await _getLanguage().then((value) => languageCode = value);
+    languageCode = _getLanguage();
     _menuLanguageTitle = _languagesNames[languageCode] ?? 'English';
     notifyListeners();
   }

@@ -178,7 +178,7 @@ class _ArticlesBottomMenuContentViewState extends State<ArticlesBottomMenuConten
                             NotificationModel(
                               content: S.of(context).articles_export_canceled,
                               action: null,
-                              actionLabel: S.of(context).snacbar_close_button, 
+                              actionLabel: S.of(context).snackbar_close_button, 
                               duration: NotificationDuration.long
                             )
                           );

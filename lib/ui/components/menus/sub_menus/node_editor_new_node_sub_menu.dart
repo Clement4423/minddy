@@ -571,7 +571,7 @@ class _NodeEditorNewNodeSubMenuState extends State<NodeEditorNewNodeSubMenu> {
                                 Navigator.pop(context);
                               },
                               child: Tooltip(
-                                message: S.of(context).snacbar_close_button,
+                                message: S.of(context).snackbar_close_button,
                                 child: Container(
                                   width: 40,
                                   height: 40,

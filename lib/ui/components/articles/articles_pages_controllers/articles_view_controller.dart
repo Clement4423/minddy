@@ -72,7 +72,7 @@ class ArticlesViewController extends ChangeNotifier {
           NotificationModel(
             content: S.of(context).articles_corrupted_file,
             action: null, 
-            actionLabel: S.of(context).snacbar_close_button, 
+            actionLabel: S.of(context).snackbar_close_button, 
             duration: NotificationDuration.long
           )
         );
@@ -112,7 +112,7 @@ class ArticlesViewController extends ChangeNotifier {
           NotificationModel(
             content: S.current.articles_impossible_to_load_content,
             action: null, 
-            actionLabel: S.current.snacbar_close_button, 
+            actionLabel: S.current.snackbar_close_button, 
             duration: NotificationDuration.long
           )
         );

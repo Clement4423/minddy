@@ -57,7 +57,11 @@ class _ProjectsTasksModuleState extends State<ProjectsTasksModule> {
       height: widget.height,
       decoration: BoxDecoration(
         color: theme.primaryContainer,
-        borderRadius: BorderRadius.circular(20)
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: theme.primary.withValues(alpha: 0.3),
+          width: 0.5
+        )
       ),
       child: Column(
         children: [

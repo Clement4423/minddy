@@ -87,7 +87,7 @@ class _ArticlesElementEnvelopState extends State<ArticlesElementEnvelop> {
                             title: '',
                             id: createUniqueId(),
                             category: 'for_later', 
-                            lastModified: await AppNotes.getCurrentTime(),
+                            lastModified: AppNotes.getCurrentTime(),
                             content: [
                               AppNotes.createNoteContentMap(widget.child.data)
                               ]

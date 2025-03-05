@@ -41,7 +41,8 @@ class NodeTreeVariable {
       {
         'name': name,
         'type': type.index,
-        'id': id
+        'id': id,
+        'value': value?.toString()
       }
     );
   }
@@ -58,8 +59,12 @@ class NodeTreeVariable {
 
         int? id = map['id'];
 
+        NodeData? value = map['value'] == null 
+          ? null 
+          : NodeData.fromString(map['value']);
+
         if (name != null && id != null ) {
-          return NodeTreeVariable(name: name, type: type, id: id);
+          return NodeTreeVariable(name: name, type: type, id: id, value: value);
         }
       }
       return null;
@@ -68,6 +73,6 @@ class NodeTreeVariable {
     }
   }
 
-  NodeTreeVariable({required this.name, required this.type, required this.id});
+  NodeTreeVariable({required this.name, required this.type, required this.id, this.value});
 }
 

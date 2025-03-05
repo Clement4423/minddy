@@ -307,9 +307,7 @@ class _NodeEditorBottomSheetSidePanelState extends State<NodeEditorBottomSheetSi
                       child: Container(
                         width: 40,
                         height: widget.height / 5,
-                        constraints: const BoxConstraints(
-                          minHeight: 90
-                        ),
+                        constraints: const BoxConstraints(minHeight: 90, maxHeight: 120),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(13),
                           color: widget.theme.primaryContainer,

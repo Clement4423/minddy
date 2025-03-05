@@ -707,7 +707,7 @@ class _CalendarButtonState extends State<CalendarButton> {
                                                             child: _CalendarButtonBottomButtons(
                                                               borderRadius: borderRadius, 
                                                               theme: theme,
-                                                              tooltip: S.of(context).snacbar_close_button,
+                                                              tooltip: S.of(context).snackbar_close_button,
                                                               onTap: _toggleDateMenu,
                                                               icon: Icon(
                                                                 Icons.close_rounded, 

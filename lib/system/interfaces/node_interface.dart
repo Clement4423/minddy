@@ -33,11 +33,6 @@ class INode {
   /// The action of the node
   Function execute = () {};
 
-  /// This will return a INode Object, recreated from a string
-  INode? fromJson(String string) {
-    throw UnimplementedError();
-  }
-
   /// This will deserialize data such as inputs or outputs from a string
   static INode deserializeBasicDataFromString(String string) {
     Map<String, dynamic> map = jsonDecode(string);
@@ -86,6 +81,12 @@ class INode {
   String toJson() {
     throw UnimplementedError();
   }
+
+  /// This will return a INode Object, recreated from a string
+  INode? fromJson(String string) {
+    throw UnimplementedError();
+  }
+
 
   /// Thiw will evaluate if the data is corresponding to what is attended.
   /// 

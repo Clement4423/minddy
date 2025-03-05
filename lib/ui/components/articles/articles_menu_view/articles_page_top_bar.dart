@@ -48,7 +48,7 @@ class ArticlesPagebar extends StatelessWidget {
                           NotificationModel(
                             content: S.of(context).articles_imported,
                             action: null, 
-                            actionLabel: S.of(context).snacbar_close_button, 
+                            actionLabel: S.of(context).snackbar_close_button, 
                             duration: NotificationDuration.long
                           )
                         );
@@ -59,7 +59,7 @@ class ArticlesPagebar extends StatelessWidget {
                           NotificationModel(
                             content: S.of(context).articles_not_imported,
                             action: null, 
-                            actionLabel: S.of(context).snacbar_close_button, 
+                            actionLabel: S.of(context).snackbar_close_button, 
                             duration: NotificationDuration.long
                           )
                         );
@@ -80,7 +80,7 @@ class ArticlesPagebar extends StatelessWidget {
                           title: "", 
                           relativeFolderPath: "shared/articles", 
                           isMultiLanguage: false,
-                          languageCode: await AppConfig.getConfigValue("language") ?? 'en', 
+                          languageCode: AppConfig.data.language ?? 'en', 
                           category: ArticleCategory.created,
                         );
                         resetFunction();

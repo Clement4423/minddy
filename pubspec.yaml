@@ -36,6 +36,7 @@ dev_dependencies:
   flutter_lints: ^3.0.0
 
 flutter:
+  generate: true
   fonts:
     - family: Montserrat
       fonts:
@@ -67,9 +68,11 @@ flutter:
     - assets/background/
     - assets/custom_icons/
     - assets/audio/
-    
+        
 flutter_intl:
   enabled: true
-  locales: ['en', 'fr_FR', 'es_ES']
+  locales: ['en', 'fr', 'es']
   arb_dir: lib/l10n
   template_arbs: [intl_en.arb]
+  main_locale: en
+  output_dir: lib/generated

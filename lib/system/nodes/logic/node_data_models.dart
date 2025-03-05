@@ -48,8 +48,6 @@ class NodeTarget {
   }
 }
 
-// TODO : Revoir les façons de sauvegarder les Objets et de les retrouver
-
 enum NodeDataType {
   number,
   string,

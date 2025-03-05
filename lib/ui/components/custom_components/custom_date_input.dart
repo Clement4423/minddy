@@ -96,29 +96,20 @@ class _CustomDateInputState extends State<CustomDateInput> {
                     style: widget.theme.bodyMedium
                       .copyWith(color: widget.theme.onSurface),
                   ),
-                  FutureBuilder(
-                    future: AppDate.formatIso8601StringToPreferedDateFormatString(date.toIso8601String(), widget.useTime), 
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: widget.theme.primary,
-                            borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                            child: Text(
-                              snapshot.data ?? date.toIso8601String(),
-                              style: widget.theme.bodyMedium
-                                .copyWith(color: widget.theme.onPrimary),
-                            ),
-                          ),
-                        );
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    }
-                  ),
+                   Container(
+                    decoration: BoxDecoration(
+                      color: widget.theme.primary,
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                      child: Text(
+                        AppDate.formatIso8601StringToPreferedDateFormatString(date.toIso8601String(), widget.useTime) ?? date.toIso8601String(),
+                        style: widget.theme.bodyMedium
+                          .copyWith(color: widget.theme.onPrimary),
+                      ),
+                    ),
+                  )
                 ],
               ),
               if (widget.mode == CustomDatePickerMode.range)
@@ -130,29 +121,20 @@ class _CustomDateInputState extends State<CustomDateInput> {
                       style: widget.theme.bodyMedium
                         .copyWith(color: widget.theme.onSurface),
                     ),
-                    FutureBuilder(
-                      future: AppDate.formatIso8601StringToPreferedDateFormatString(endDate.toIso8601String(), widget.useTime), 
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: widget.theme.primary,
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                              child: Text(
-                                snapshot.data ?? endDate.toIso8601String(),
-                                style: widget.theme.bodyMedium
-                                  .copyWith(color: widget.theme.onPrimary),
-                              ),
-                            ),
-                          );
-                        } else {
-                          return const SizedBox.shrink();
-                        }
-                      }
-                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: widget.theme.primary,
+                        borderRadius: BorderRadius.circular(10)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                        child: Text(
+                          AppDate.formatIso8601StringToPreferedDateFormatString(endDate.toIso8601String(), widget.useTime) ?? endDate.toIso8601String(),
+                          style: widget.theme.bodyMedium
+                            .copyWith(color: widget.theme.onPrimary),
+                        ),
+                      ),
+                    )
                   ],
                 ),
             ],

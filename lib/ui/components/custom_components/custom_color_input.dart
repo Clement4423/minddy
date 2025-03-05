@@ -126,7 +126,61 @@ class _CustomColorInputState extends State<CustomColorInput> {
                 ),
               ),
             ),
-          )
+          ),
+          if (widget.useOpacity) 
+            Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: SizedBox(
+                  width: 45,
+                  height: 30,
+                  child: Tooltip(
+                    message: S.of(context).custom_color_picker_opacity_tooltip,
+                    waitDuration: const Duration(seconds: 1),
+                    child: TextField(
+                      key: UniqueKey(),
+                      controller: TextEditingController(text: (color.a * 100).toStringAsFixed(0)),
+                      onChanged: (value) {
+                        if (widget.useOpacity) {
+                          if (value.isEmpty) {
+                            value = "100";
+                          }
+                          color = color.withValues(alpha: (num.parse(value) / 100).clamp(0.0, 1.0));
+                        }
+                      },
+                      onEditingComplete: () {
+                        widget.onColorChanged(color);
+                      },
+                      cursorColor: widget.theme.onPrimary,
+                      cursorHeight: 20,
+                      style: widget.theme.bodyMedium
+                        .copyWith(color: widget.theme.onPrimary.withValues(alpha: widget.useOpacity ? 1.0 : 0.5)),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                      ],
+                      maxLines: 1,
+                      maxLength: 3,
+                      buildCounter: (context, {required currentLength, required isFocused, required maxLength}) {
+                        return const SizedBox.shrink();
+                      },
+                      textAlign: TextAlign.end,
+                      mouseCursor: widget.useOpacity 
+                        ? SystemMouseCursors.text
+                        : SystemMouseCursors.basic,
+                      readOnly: !widget.useOpacity,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: '100',
+                        hintStyle: widget.theme.bodyMedium
+                          .copyWith(color: widget.theme.onPrimary.withValues(alpha: 0.5)),
+                        contentPadding: const EdgeInsets.only(bottom: 15),
+                        suffixText: '%',
+                        suffixStyle: widget.theme.bodyMedium
+                          .copyWith(color: widget.theme.onPrimary.withValues(alpha: widget.useOpacity ? 1.0 : 0.5)),
+                      ),
+                    ),
+                  ),
+                ),
+              )
         ],
       ),
     );

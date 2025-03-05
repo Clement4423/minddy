@@ -221,7 +221,7 @@ class _SetVariableNodeWidgetState extends State<SetVariableNodeWidget> {
       nodeDescription: S.of(context).node_widgets_set_variable_node_description,
       theme: widget.theme, 
       nodeWidget: widget, 
-      nodeColor: DefaultAppColors.yellow.color,
+      nodeColor: DefaultAppColors.lightPurple.color,
       needToBeSmaller: widget.node.inputsTypes.isEmpty || widget.node.inputsTypes.first == NodeDataType.any,
       inputsThatAreNoLongerNeeded: const [0], 
       isDraggingStartPortFromAnotherPort: widgetInformations.isDraggingStartPortFromAnotherPort, 
@@ -243,7 +243,9 @@ class _SetVariableNodeWidgetState extends State<SetVariableNodeWidget> {
             height: widget.height,
             theme: widget.theme,
             itemToString: (nodeTreeVariable) {
-              return nodeTreeVariable.name;
+              return nodeTreeVariable.name.replaceAll(' ', '').isEmpty 
+                ? S.of(context).articles_card_untitled 
+                : nodeTreeVariable.name;
             },
           ),
         ),

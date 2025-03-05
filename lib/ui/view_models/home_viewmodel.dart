@@ -27,12 +27,12 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> initializeGreeting() async {
-    _username = await _getUsername();
-    _greetingText = await HomeViewModel.getGreetingText(_username);
+  void initializeGreeting() {
+    _username = AppConfig.data.username;
+    _greetingText = HomeViewModel.getGreetingText(_username);
   }
 
-  static Future<String> getGreetingText(String username) async {
+  static String getGreetingText(String username) {
     if (username == S.current.welcome_pass_default_username) {
       username = "";
     }
@@ -63,10 +63,6 @@ class HomeViewModel extends ChangeNotifier {
         showSubMenu(context, UnlockSubMenu(controller: UnlockSubMenuController(function: function)),isDismissible: false);
       });
     }
-  }
-
-  Future<String> _getUsername() async {
-    return await AppConfig.getConfigValue("username");
   }
 
   Future<void> initializeProjectCards([bool notify = false]) async {

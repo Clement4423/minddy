@@ -29,9 +29,7 @@ class _UnlockSubMenuState extends State<UnlockSubMenu> {
 
   @override
     void initState() {
-      widget.controller.setTitle().then((value) => setState(() {
-        _title = value;
-      }));
+      _title = widget.controller.setTitle();
       widget.controller.getMnemonicSentence().then((value) => setState(() {
         _mnemonicSentence = value;
       }));

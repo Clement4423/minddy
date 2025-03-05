@@ -18,7 +18,7 @@ void main () async {
       setWindowTitle('Article Maker');
       setWindowMinSize(const Size(900, 600));
     }
-    ThemeMode themeMode = await AppTheme.getCurrentThemeMode();
+    ThemeMode themeMode = AppTheme.getCurrentThemeMode();
     Locale locale = await getCurrentLocale();
     runApp(_ArticleMaker(themeMode, locale));
   }

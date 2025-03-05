@@ -143,7 +143,7 @@ class _ManageCalendarsSubMenuState extends State<ManageCalendarsSubMenu> {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: CustomTextButton(
-                    S.of(context).snacbar_close_button, 
+                    S.of(context).snackbar_close_button, 
                     () {
                       Navigator.pop(context);
                     }, 

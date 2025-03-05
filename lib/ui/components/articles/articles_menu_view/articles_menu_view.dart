@@ -82,7 +82,7 @@ class _EmptyArticleMenuPageState extends State<EmptyArticleMenuPage> {
               title: "", 
               relativeFolderPath: "shared/articles", 
               isMultiLanguage: false,
-              languageCode: await AppConfig.getConfigValue('language') ?? "en", 
+              languageCode: AppConfig.data.language ?? "en", 
               category: ArticleCategory.created,
             );
             if (infos != null) {

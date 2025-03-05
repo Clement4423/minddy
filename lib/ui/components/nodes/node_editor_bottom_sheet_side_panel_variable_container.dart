@@ -49,7 +49,7 @@ class _NodeEditorBottomSheetSidePanelVariableContainerState extends State<NodeEd
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: 60,
+            width: 45,
             height: 35,
             margin: const EdgeInsets.only(left: 3),
             decoration: BoxDecoration(

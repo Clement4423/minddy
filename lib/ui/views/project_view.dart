@@ -258,17 +258,7 @@ class _ProjectViewState extends State<ProjectView> with AutomaticKeepAliveClient
                                     Positioned(
                                       bottom: 0,
                                       right: 0,
-                                      child: FutureBuilder(
-                                        future: AppConfig.getConfigValue('prefer_us_date_format'),
-                                        initialData: false,
-                                        builder: (context, snapshot) {
-                                          if (snapshot.hasData) {
-                                            return CalendarButton(useUsDateFormat: snapshot.data);
-                                          } else {
-                                            return const SizedBox.shrink();
-                                          }
-                                        }
-                                      ),
+                                      child: CalendarButton(useUsDateFormat: AppConfig.data.preferUsDateFormat)
                                     )
                                   ],
                                 );

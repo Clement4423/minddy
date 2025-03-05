@@ -14,6 +14,7 @@ class CustomSelectionMenuListTile extends StatefulWidget {
     required this.menuWidth, 
     required this.theme, 
     required this.showBottomBorder, 
+    required this.isMultipleSelectionMenu,
     required this.dismissOverlay
   });
 
@@ -21,6 +22,7 @@ class CustomSelectionMenuListTile extends StatefulWidget {
   final double itemHeight;
   final double menuWidth;
   final StylesGetters theme;
+  final bool isMultipleSelectionMenu;
   final bool showBottomBorder;
   final Function dismissOverlay;
 
@@ -92,6 +94,22 @@ class _CustomSelectionMenuListTileState extends State<CustomSelectionMenuListTil
     Overlay.of(context).insert(_tooltipEntry!);  
   }
 
+  void setForegroundColor() {
+    if (widget.isMultipleSelectionMenu) {
+      if (widget.item.isSelected) {
+        widget.item.foregroundColor = widget.theme.secondary;
+      } else {
+        widget.item.foregroundColor = widget.theme.onPrimary;
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    setForegroundColor();
+    super.initState();
+  }
+
   @override
   void dispose() {
     if (_tooltipEntry != null) {
@@ -149,7 +167,19 @@ class _CustomSelectionMenuListTileState extends State<CustomSelectionMenuListTil
             tileColor: Colors.transparent,
             onTap: () async {
               if (widget.item.enabled) {
-                widget.dismissOverlay();
+                if (!widget.isMultipleSelectionMenu) {
+                  widget.dismissOverlay();
+                }
+                if (widget.isMultipleSelectionMenu) {
+                  if (widget.item.closeMenuAfterSelected) {
+                    widget.dismissOverlay();
+                  } else {
+                    setState(() {
+                      widget.item.isSelected = !widget.item.isSelected;
+                      setForegroundColor();
+                    });
+                  }
+                }
                 await widget.item.onTap();
               }
             },

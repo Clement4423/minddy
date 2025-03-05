@@ -6,6 +6,7 @@ import 'package:minddy/ui/components/nodes/all_nodes_widgets/math_node_widget.da
 import 'package:minddy/ui/components/nodes/controllers/node_editor_bottom_sheet_controller.dart';
 import 'package:minddy/ui/components/nodes/controllers/node_editor_state.dart';
 import 'package:minddy/ui/components/nodes/node_widget_tree.dart';
+import 'package:minddy/ui/components/plugin_ui/plugin_editor_ui_view_controller.dart';
 import 'package:minddy/ui/theme/theme.dart';
 import 'package:path/path.dart' as p;
 
@@ -21,6 +22,7 @@ class PluginEditorViewModel {
   PluginEditorViewModel({required this.pluginInfo});
 
   late NodeEditorBottomSheetController bottomSheetController = NodeEditorBottomSheetController(views: [], maxOffset: const Offset(0, 0), save: savePlugin);
+  late PluginEditorUiViewController pluginEditorUiViewController = PluginEditorUiViewController();
 
   Future<void> initialize(Offset maxOffset, StylesGetters theme) async {
     Map<String, dynamic>? pluginData = await getPluginDataFromFiles();
@@ -32,6 +34,14 @@ class PluginEditorViewModel {
 
     bottomSheetController = NodeEditorBottomSheetController.fromJson(pluginData?['nodes_controller']??{}, maxOffset, theme, savePlugin) ?? NodeEditorBottomSheetController(views: [NodeEditorBottomSheetView(state: NodeEditorState(), tree: NodeWidgetTree(nodesWidgets: [MathNodeWidget(key: GlobalKey(), theme: theme, node: MathNode(), functions: bottomSheetController.widgetFunctions, position: const Offset(900, 300), maxOffset: maxOffset)], id: 1), viewPositionController: TransformationController())], maxOffset: maxOffset, save: savePlugin);
 
+    String uiControllerJsonString = '';
+
+    if (pluginData != null && pluginData['ui_controller'] is String) {
+      uiControllerJsonString = pluginData['ui_controller'];
+    }
+  
+    pluginEditorUiViewController = PluginEditorUiViewController.fromJson(uiControllerJsonString) ?? PluginEditorUiViewController();
+
     return;
   }
 
@@ -41,6 +51,7 @@ class PluginEditorViewModel {
 
       Map<String, dynamic> dataToSave = {
         'nodes_controller': bottomSheetController.toJson(),
+        'ui_controller': pluginEditorUiViewController.toJson(),
         'version': pluginInfo.version,
         'name': pluginInfo.name,
         'creator': pluginInfo.creator

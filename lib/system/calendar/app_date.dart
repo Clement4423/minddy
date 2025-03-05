@@ -58,9 +58,9 @@ class AppDate {
     }
   }
 
-  static Future<String?> formatIso8601StringToPreferedDateFormatString(String iso8601String, [bool useTime = true]) async {
+  static String? formatIso8601StringToPreferedDateFormatString(String iso8601String, [bool useTime = true]) {
     try {
-      bool useUsFormat = await AppConfig.getConfigValue('prefer_us_date_format') ?? false;
+      bool useUsFormat = AppConfig.data.preferUsDateFormat;
       DateTime dateTime = DateTime.parse(iso8601String);
 
       String year = dateTime.year.toString();
@@ -99,10 +99,10 @@ class AppDate {
     }
   }
 
-  static Future<DateTime?> formatDateWithTheCorrectOrder(String date, [bool useTime = false]) async {
+  static DateTime? formatDateWithTheCorrectOrder(String date, [bool useTime = false]) {
     try {
       // Determine the date format preference (US or not)
-      bool useUsFormat = await AppConfig.getConfigValue('prefer_us_date_format') ?? false;
+      bool useUsFormat = AppConfig.data.preferUsDateFormat;
 
       // Replace slashes with dashes to standardize the input
       date = date.replaceAll('/', '-');

@@ -62,7 +62,8 @@ class CreatePasswordViewModel extends ChangeNotifier {
         _setErrorMessage(S.current.welcome_password_creation_error_password_save);
         return;
       } else {
-        await AppConfig.modifyConfigValue("is_first_start", false);
+        AppConfig.data.isFirstAppStart = false;
+        await AppConfig.saveConfig();
         AppRouter.router.navigateToAndReplace('/home'); // Welcome
       }
     }

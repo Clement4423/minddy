@@ -64,7 +64,6 @@ class NodeTree {
   }
 
   bool isInputNodeBefore(INode outputNode, INode inputNode, NodeTarget targetToAdd) {
-
     if (outputNode.targets.isEmpty && inputNode.targets.isEmpty) {
       return false;
     }

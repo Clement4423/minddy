@@ -117,7 +117,7 @@ class _CalendarEventDetailedPreviewState extends State<CalendarEventDetailedPrev
                     Navigator.pop(context);
                   }
                 }, 
-                tooltip: S.of(context).snacbar_close_button,
+                tooltip: S.of(context).snackbar_close_button,
                 style: ButtonThemes.secondaryButtonStyle(context),
                 icon: Icon(Icons.close_rounded, color: widget.theme.onPrimary)
               )

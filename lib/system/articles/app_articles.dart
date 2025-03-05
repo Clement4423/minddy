@@ -61,7 +61,7 @@ class AppArticles {
     required ArticleCategory category,
   }) async {
     try {
-      String author = await AppConfig.getConfigValue("username");
+      String author = AppConfig.data.username;
 
       // This creates the article content Map
       final Map<String, dynamic> article = {

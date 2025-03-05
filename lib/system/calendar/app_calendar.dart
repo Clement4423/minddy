@@ -41,6 +41,8 @@ class AppCalendar {
         }
       }
 
+      await _cleanCalendarFolders();
+
       if (calendars.isEmpty) {
         Calendar defaultCalendar = Calendar(
           name: S.current.calendar_main_calendar_name, 
@@ -59,6 +61,29 @@ class AppCalendar {
     } catch (e) {
       await AppLogs.writeError(e, "app_calendar.dart - getCalendars");
       return calendars;
+    }
+  }
+
+  /// This function is cleaning the calendars fodler, as at random moments, empty calendar folders are created, creating lags in the app.
+  static Future<void> _cleanCalendarFolders() async {
+    try {
+      Directory calendarsDirectory = Directory("${StaticVariables.fileSource.documentDirectoryPath}/$calendarsFolderPath");
+
+      List<FileSystemEntity> calendarsFolders = calendarsDirectory.listSync();
+
+      for (FileSystemEntity entity in calendarsFolders) {
+        if (entity is Directory) {
+          if (path.basename(entity.path).startsWith('.')) {
+            continue;
+          }
+          if (File(path.normalize("${entity.absolute.path}/calendar.json")).readAsStringSync().isEmpty) {
+            await StaticVariables.fileSource.removeFolder(entity.path.substring(StaticVariables.fileSource.documentDirectoryPath.length));
+          }
+        }
+      }
+    } catch (e) {
+      await AppLogs.writeError(e, '_cleanCalendarFolders - app_calendar.dart');
+      return;
     }
   }
 

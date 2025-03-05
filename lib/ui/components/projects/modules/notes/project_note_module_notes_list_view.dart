@@ -162,7 +162,7 @@ class _ProjectNoteModuleNotesListViewState extends State<ProjectNoteModuleNotesL
                           NoteModel model = NoteModel(
                                 title: '',
                                 id: createUniqueId(),
-                                lastModified: await AppNotes.getCurrentTime(),
+                                lastModified: AppNotes.getCurrentTime(),
                                 category: widget.category, 
                                 content: []
                               );

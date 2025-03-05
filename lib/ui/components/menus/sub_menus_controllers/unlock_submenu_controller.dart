@@ -27,10 +27,10 @@ class UnlockSubMenuController extends ChangeNotifier {
     isLoading = value;
   }
 
-  Future<String> setTitle() async {
-    String gotUsername = await AppConfig.getConfigValue("username");
+  String setTitle() {
+    String gotUsername = AppConfig.data.username;
     username = gotUsername;
-    String title = await HomeViewModel.getGreetingText(gotUsername);
+    String title = HomeViewModel.getGreetingText(gotUsername);
     return title;
   }
 

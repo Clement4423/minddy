@@ -25,6 +25,12 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
 
   @override
+  void initState() {
+    widget._viewmodel.initializeGreeting();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     StylesGetters theme = StylesGetters(context);
     return Container(
@@ -87,15 +93,10 @@ class _HomeViewState extends State<HomeView> {
                           children: [                              
                             Padding(
                               padding: const EdgeInsets.only(top: 50, bottom: 30),
-                              child: FutureBuilder(
-                                future: widget._viewmodel.initializeGreeting(),
-                                builder: (context, snapshot) {
-                                  return Text(
-                                    widget._viewmodel.greetingText,
-                                      style: theme.headlineLarge.
-                                      copyWith(color: theme.onPrimary)
-                                  );
-                                }
+                              child: Text(
+                                widget._viewmodel.greetingText,
+                                  style: theme.headlineLarge.
+                                  copyWith(color: theme.onPrimary)
                               ),
                             ),
                             Padding(
@@ -197,17 +198,7 @@ class _HomeViewState extends State<HomeView> {
                         return Positioned(
                           bottom: 0,
                           right: 0,
-                          child: FutureBuilder(
-                            future: AppConfig.getConfigValue('prefer_us_date_format'),
-                            initialData: false,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return CalendarButton(useUsDateFormat: snapshot.data);
-                              } else {
-                                return const SizedBox.shrink();
-                              }
-                            }
-                          ),
+                          child: CalendarButton(useUsDateFormat: AppConfig.data.preferUsDateFormat)
                         );
                       } else {
                         return const SizedBox();
