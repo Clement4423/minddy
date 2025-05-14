@@ -10,8 +10,7 @@ import 'package:minddy/ui/theme/theme.dart';
 class CustomSelectionMenuItem {
   String label;
   TextStyle? labelStyle;
-  String? tooltipTitle;
-  String? tooltip;
+  CustomSelectionMenuItemTooltip? tooltip;
   IconData? icon;
   /// This will replace the icon if provided.
   Widget? iconReplacement;
@@ -39,10 +38,19 @@ class CustomSelectionMenuItem {
     this.enabled = true,
     this.isSelected = false,
     this.closeMenuAfterSelected = false,
-    this.tooltipTitle,
     this.tooltip,
     this.items
   });
+}
+
+class CustomSelectionMenuItemTooltip {
+  String? title;
+  String text;
+  Border? border;
+  Color? backgroundColor;
+  Color? foregroundColor;
+
+  CustomSelectionMenuItemTooltip({this.title, required this.text, this.border, this.backgroundColor, this.foregroundColor});
 }
 
 enum CustomSelectionMenuButttonType {

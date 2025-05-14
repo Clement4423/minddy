@@ -7,11 +7,12 @@ import 'package:minddy/system/plugin_ui_components/plugin_ui_component_column.da
 import 'package:minddy/ui/components/custom_components/custom_dropdown_button.dart';
 import 'package:minddy/ui/components/custom_components/custom_icon_input.dart';
 import 'package:minddy/ui/components/custom_components/custom_selection_menu.dart';
+import 'package:minddy/ui/components/plugin_ui/side_panel/get_properties/get_column_properties.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
-import '../plugin_editor_ui_view_side_panel.dart';
+import 'package:minddy/ui/components/plugin_ui/side_panel/plugin_editor_ui_view_side_panel.dart';
 
-List<PluginEditorUiViewSidePanelPropertiesElementList> getColumnProperties(PluginUiComponentColumnProperties properties, StylesGetters theme, BuildContext context, Function onPropertiesChanged, Function updateSidePanel) {
+List<PluginEditorUiViewSidePanelPropertiesElementList> getRowProperties(PluginUiComponentColumnProperties properties, StylesGetters theme, BuildContext context, Function onPropertiesChanged, Function updateSidePanel) {
   List<PluginEditorUiViewSidePanelPropertiesElementList> list = [];
 
   PluginEditorUiViewSidePanelPropertiesElementList size = PluginEditorUiViewSidePanelPropertiesElementList(
@@ -68,28 +69,6 @@ List<PluginEditorUiViewSidePanelPropertiesElementList> getColumnProperties(Plugi
         enableSearch: true,
         isMultipleSelectionMenu: true,
         onMenuClosed: updateSidePanel,
-        selectedOptionTitle: getMainAxisAlignmentName(properties.chilrenAligment.mainAxisAlignment), 
-        items: [
-          ...MainAxisAlignment.values.map((aligment) {
-            return CustomSelectionMenuItem(
-              label: getMainAxisAlignmentName(aligment),
-              icon: null,
-              onTap: () {
-                properties.chilrenAligment.mainAxisAlignment = aligment;
-                onPropertiesChanged();
-                updateSidePanel();
-              }
-            );
-          })
-        ],
-        theme: theme
-      ),
-      CustomDropdownButton(
-        width: 280,
-        menuTitle: 'Horizontal',
-        enableSearch: true,
-        isMultipleSelectionMenu: true,
-        onMenuClosed: updateSidePanel,
         selectedOptionTitle: getCrossAxisAlignmentName(properties.chilrenAligment.crossAxisAlignment), 
         items: [
           ...CrossAxisAlignment.values.map((aligment) {
@@ -103,6 +82,28 @@ List<PluginEditorUiViewSidePanelPropertiesElementList> getColumnProperties(Plugi
               }
             );
           }).toList().sublist(0, 4)
+        ],
+        theme: theme
+      ),
+      CustomDropdownButton(
+        width: 280,
+        menuTitle: 'Horizontal',
+        enableSearch: true,
+        isMultipleSelectionMenu: true,
+        onMenuClosed: updateSidePanel,
+        selectedOptionTitle: getMainAxisAlignmentName(properties.chilrenAligment.mainAxisAlignment), 
+        items: [
+          ...MainAxisAlignment.values.map((aligment) {
+            return CustomSelectionMenuItem(
+              label: getMainAxisAlignmentName(aligment),
+              icon: null,
+              onTap: () {
+                properties.chilrenAligment.mainAxisAlignment = aligment;
+                onPropertiesChanged();
+                updateSidePanel();
+              }
+            );
+          })
         ],
         theme: theme
       )
@@ -153,37 +154,4 @@ List<PluginEditorUiViewSidePanelPropertiesElementList> getColumnProperties(Plugi
   
   list.add(style);
   return list;
-}
-
-
-String getCrossAxisAlignmentName(CrossAxisAlignment alignment) {
-  switch (alignment) {
-    case CrossAxisAlignment.start:
-      return 'Start';
-    case CrossAxisAlignment.end:
-      return 'End';
-    case CrossAxisAlignment.center:
-      return 'Center';
-    case CrossAxisAlignment.stretch:
-      return 'Stretch';
-    case CrossAxisAlignment.baseline:
-      return 'NOT SUPPORTED';
-  }
-}
-
-String getMainAxisAlignmentName(MainAxisAlignment alignment) {
-  switch (alignment) {
-    case MainAxisAlignment.start:
-      return 'Start';
-    case MainAxisAlignment.end:
-      return 'End';
-    case MainAxisAlignment.center:
-      return 'Center';
-    case MainAxisAlignment.spaceBetween:
-      return 'Space Between';
-    case MainAxisAlignment.spaceAround:
-      return 'Space Around';
-    case MainAxisAlignment.spaceEvenly:
-      return 'Space Evenly';
-  }
 }

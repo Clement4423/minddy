@@ -132,7 +132,7 @@ List<PluginEditorUiViewSidePanelPropertiesElementList> getContainerPropeties(Plu
         selectedOptionTitle: getSelectedBorderAlignmentTitle(properties.borderRadiusAlignment.sides, borderRadiusAligmentTitles), 
         items: [
           CustomSelectionMenuItem(
-            label: 'All', // TODO : Traduire
+            label: S.of(context).plugin_editor_ui_side_panel_properties_style_alignment_all,
             icon: Icons.crop_square_rounded, 
             isSelected: properties.borderRadiusAlignment.sides.length == 4,
             closeMenuAfterSelected: true,
@@ -243,7 +243,7 @@ List<PluginEditorUiViewSidePanelPropertiesElementList> getContainerPropeties(Plu
         selectedOptionTitle: getSelectedBorderAlignmentTitle(properties.borderAlignment.sides, borderAligmentTitles), 
         items: [
           CustomSelectionMenuItem(
-            label: 'All', 
+            label: S.of(context).plugin_editor_ui_side_panel_properties_style_alignment_all, 
             icon: Icons.crop_square_rounded, 
             isSelected: properties.borderAlignment.sides.length == 4,
             closeMenuAfterSelected: true,

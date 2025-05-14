@@ -60,10 +60,13 @@ class _CustomIconInputState extends State<CustomIconInput> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 10),
-            child: SizedBox(
-              width: 35,
-              height: 35,
-              child: widget.icon
+            child: Tooltip(
+              message: widget.hint,
+              child: SizedBox(
+                width: 35,
+                height: 35,
+                child: widget.icon
+              ),
             ),
           ),
           Expanded(

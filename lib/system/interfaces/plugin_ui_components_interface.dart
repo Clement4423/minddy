@@ -5,7 +5,10 @@ import 'package:minddy/system/interfaces/plugin_ui_component_properties_interfac
 import 'package:minddy/system/model/border_alignment.dart';
 import 'package:minddy/system/plugin_ui_components/plugin_ui_component_column.dart';
 import 'package:minddy/system/plugin_ui_components/plugin_ui_component_container.dart';
+import 'package:minddy/system/plugin_ui_components/plugin_ui_component_icon.dart';
+import 'package:minddy/system/plugin_ui_components/plugin_ui_component_padding.dart';
 import 'package:minddy/system/plugin_ui_components/plugin_ui_component_row.dart';
+import 'package:minddy/system/plugin_ui_components/plugin_ui_component_text.dart';
 
 // Process to create a new UiComponent:
 // 1) Create a new class that extends IPluginUiComponent, using PluginUiComponentContainer as template
@@ -74,6 +77,33 @@ abstract class IPluginUiComponent {
     return radius;
   }
 
+  static IPluginUiComponent? findParent(List<IPluginUiComponent> components, int childId, [IPluginUiComponent? parent]) {
+    if (components.isEmpty) {
+      return null;
+    }
+
+    try {
+      if (parent == null) {
+        return findParent(components, childId, components.firstOrNull);
+      }
+    
+      for (var child in parent.child) {
+        if (child.id == childId) {
+          return parent;
+        }
+        var found = findParent(components, childId, child);
+        if (found != null) return found;
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static EdgeInsets getPadding(PluginUiComponentPadding component) {
+    return component.properties.padding;
+  }
+
   static Size getSize(IPluginUiComponent component) {
     double width = 0;
     double height = 0;
@@ -84,25 +114,44 @@ abstract class IPluginUiComponent {
       case PluginUiComponentColumnProperties():
         width = (component.properties as PluginUiComponentColumnProperties).width;
         height = (component.properties as PluginUiComponentColumnProperties).height;
+      case PluginUiComponentTextProperties():
+        width = (component.properties as PluginUiComponentTextProperties).width;
+        height = (component.properties as PluginUiComponentTextProperties).height;
+      case PluginUiComponentIconProperties():
+        width = (component.properties as PluginUiComponentIconProperties).width;
+        height = (component.properties as PluginUiComponentIconProperties).height;
     }
 
     return Size(width, height);
   }
 
   static void modifySize(Size newSize, IPluginUiComponent component) {
-    if (component.properties is PluginUiComponentContainerProperties) {
-      (component.properties as PluginUiComponentContainerProperties).width = newSize.width;
-      (component.properties as PluginUiComponentContainerProperties).height = newSize.height;
-    } else if (component.properties is PluginUiComponentColumnProperties) {
-      (component.properties as PluginUiComponentColumnProperties).width = newSize.width;
-      (component.properties as PluginUiComponentColumnProperties).height = newSize.height;
+    switch (component.properties) {
+      case PluginUiComponentContainerProperties():
+        (component.properties as PluginUiComponentContainerProperties).width = newSize.width;
+        (component.properties as PluginUiComponentContainerProperties).height = newSize.height;
+      case PluginUiComponentColumnProperties():
+        (component.properties as PluginUiComponentColumnProperties).width = newSize.width;
+        (component.properties as PluginUiComponentColumnProperties).height = newSize.height;
+      case PluginUiComponentTextProperties():
+        (component.properties as PluginUiComponentTextProperties).width = newSize.width;
+        (component.properties as PluginUiComponentTextProperties).height = newSize.height;
+      case PluginUiComponentIconProperties():
+        (component.properties as PluginUiComponentIconProperties).width = newSize.width;
+        (component.properties as PluginUiComponentIconProperties).height = newSize.height;
     }
   }
 
-  static final List<Type> _componentsThatCanHaveMultipleChildren = [PluginUiComponentColumn];
+  static final List<Type> _componentsThatCanHaveMultipleChildren = [PluginUiComponentColumn, PluginUiComponentRow];
+
+  static final List<Type> _componentsThatCantHaveChilden = [PluginUiComponentText, PluginUiComponentIcon];
 
   static bool canHaveMultipleChilren(IPluginUiComponent component) {
     return _componentsThatCanHaveMultipleChildren.contains(component.runtimeType);
+  }
+
+  static bool canHaveChildren(IPluginUiComponent component) {
+    return !_componentsThatCantHaveChilden.contains(component.runtimeType);
   }
 }
 
@@ -112,6 +161,9 @@ Function(String)? _getUIComponentTypeConstructor(String type) {
       'PluginUiComponentContainer': (string) {return PluginUiComponentContainer.fromJson(string);},
       'PluginUiComponentColumn': (string) {return PluginUiComponentColumn.fromJson(string);},
       'PluginUiComponentRow': (string) {return PluginUiComponentRow.fromJson(string);},
+      'PluginUiComponentText': (string) {return PluginUiComponentText.fromJson(string);},
+      'PluginUiComponentPadding': (string) {return PluginUiComponentPadding.fromJson(string);},
+      'PluginUiComponentIcon': (string) {return PluginUiComponentIcon.fromJson(string);}
     };
 
     return nodeTypesConstructors[type];

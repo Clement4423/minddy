@@ -103,11 +103,11 @@ class PluginUiComponentColumn implements IPluginUiComponent {
   set widget(Widget newWidget) {}
 }
 
-class AxisAligment {
+class AxisAlignment {
   MainAxisAlignment mainAxisAlignment;
   CrossAxisAlignment crossAxisAlignment;
 
-  AxisAligment(this.mainAxisAlignment, this.crossAxisAlignment);
+  AxisAlignment(this.mainAxisAlignment, this.crossAxisAlignment);
 }
 
 class PluginUiComponentColumnProperties implements IPluginUiComponentProperties {
@@ -115,7 +115,7 @@ class PluginUiComponentColumnProperties implements IPluginUiComponentProperties 
   double height;
   double borderRadius;
   double spacing;
-  AxisAligment chilrenAligment;
+  AxisAlignment chilrenAligment;
 
 
   PluginUiComponentColumnProperties({
@@ -149,7 +149,7 @@ class PluginUiComponentColumnProperties implements IPluginUiComponentProperties 
         height: map['height'], 
         spacing: map['spacing'],
         borderRadius: map['border_radius'], 
-        chilrenAligment: AxisAligment(
+        chilrenAligment: AxisAlignment(
           MainAxisAlignment.values[map['chilren_aligment']['main_axis']], 
           CrossAxisAlignment.values[map['chilren_aligment']['cross_axis']]
         )

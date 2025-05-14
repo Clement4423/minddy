@@ -46,6 +46,26 @@ List<CustomSelectionMenuItem> getThemeColorItems(Function(String) changeColor, S
       }
     ),
     CustomSelectionMenuItem(
+      label:"On primary",
+      icon: null, 
+      foregroundColor: color == 'onpr' 
+        ? theme.secondary
+        : theme.onPrimary,
+      iconReplacelemntWidth: 25,
+      iconReplacement: Container(
+        width: 25,
+        height: 25,
+        decoration: BoxDecoration(
+          color: theme.onPrimary,
+          borderRadius: BorderRadius.circular(5)
+        ),
+      ),
+      onTap: () {
+        changeColor('onpr');
+        onPropertiesChanged();
+      }
+    ),
+    CustomSelectionMenuItem(
       label: S.current.plugin_editor_ui_side_panel_properties_theme_colors_accent, 
       icon: null, 
       foregroundColor: color == 'se' 
@@ -66,6 +86,26 @@ List<CustomSelectionMenuItem> getThemeColorItems(Function(String) changeColor, S
       }
     ),
     CustomSelectionMenuItem(
+      label:"On accent", 
+      icon: null, 
+      foregroundColor: color == 'onse' 
+        ? theme.secondary
+        : theme.onPrimary,
+      iconReplacelemntWidth: 25,
+      iconReplacement: Container(
+        width: 25,
+        height: 25,
+        decoration: BoxDecoration(
+          color: theme.onSecondary,
+          borderRadius: BorderRadius.circular(5)
+        ),
+      ),
+      onTap: () {
+        changeColor('onse');
+        onPropertiesChanged();
+      }
+    ),
+    CustomSelectionMenuItem(
       label: S.current.plugin_editor_ui_side_panel_properties_theme_colors_surface, 
       icon: null, 
       foregroundColor: color == 'su' 
@@ -82,6 +122,26 @@ List<CustomSelectionMenuItem> getThemeColorItems(Function(String) changeColor, S
       ),
       onTap: () {
         changeColor('su');
+        onPropertiesChanged();
+      }
+    ),
+    CustomSelectionMenuItem(
+      label:"On surface", // TODO : Traduire
+      icon: null, 
+      foregroundColor: color == 'onsu' 
+        ? theme.secondary
+        : theme.onPrimary,
+      iconReplacelemntWidth: 25,
+      iconReplacement: Container(
+        width: 25,
+        height: 25,
+        decoration: BoxDecoration(
+          color: theme.onSurface,
+          borderRadius: BorderRadius.circular(5)
+        ),
+      ),
+      onTap: () {
+        changeColor('onsu');
         onPropertiesChanged();
       }
     ),

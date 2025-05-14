@@ -21,7 +21,7 @@ class CustomSelectionMenuTooltip extends StatefulWidget {
 
     TextPainter textPainter = TextPainter(
       text: TextSpan(
-        text: item.tooltipTitle ?? '',
+        text: item.tooltip?.title ?? '',
         style: item.labelStyle ?? theme.bodyMedium.copyWith(fontWeight: FontWeight.w600),
       ),
       textDirection: TextDirection.ltr,
@@ -34,7 +34,7 @@ class CustomSelectionMenuTooltip extends StatefulWidget {
 
     textPainter = TextPainter(
       text: TextSpan(
-        text: item.tooltip ?? '',
+        text: item.tooltip?.text ?? '',
         style: item.labelStyle ?? theme.bodyMedium.copyWith(color: theme.onPrimary),
       ),
       textDirection: TextDirection.ltr,
@@ -45,7 +45,7 @@ class CustomSelectionMenuTooltip extends StatefulWidget {
     
     height += textPainter.height;
 
-    height += 16 + 1 + (item.tooltipTitle != null ? 5 : 0); // + Padding + Border + Title padding
+    height += 16 + 1 + (item.tooltip?.title != null ? 5 : 0); // + Padding + Border + Title padding
 
     return height;
   }
@@ -77,9 +77,9 @@ class _CustomSelectionMenuTooltipState extends State<CustomSelectionMenuTooltip>
             minHeight: widget.itemHeight,
           ),
           decoration: BoxDecoration(
-            color: widget.theme.primaryContainer,
+            color: widget.item.tooltip?.backgroundColor ?? widget.theme.primaryContainer,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(
+            border: widget.item.tooltip?.border ?? Border.all(
               color: widget.theme.onPrimary.withValues(alpha: widget.theme.brightness == Brightness.light ? 1 : 0.4),
               width: 0.5,
               strokeAlign: BorderSide.strokeAlignInside
@@ -92,18 +92,18 @@ class _CustomSelectionMenuTooltipState extends State<CustomSelectionMenuTooltip>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(bottom: widget.item.tooltipTitle != null ? 5 : 0),
+                  padding: EdgeInsets.only(bottom: widget.item.tooltip?.title != null ? 5 : 0),
                   child: Text(
-                    widget.item.tooltipTitle ?? '',
-                    style: widget.item.labelStyle?.copyWith(color: widget.theme.onPrimary, fontWeight: FontWeight.w600) ?? widget.theme.bodyMedium
+                    widget.item.tooltip?.title ?? '',
+                    style: widget.item.labelStyle?.copyWith(color: widget.item.tooltip?.foregroundColor ?? widget.theme.onPrimary, fontWeight: FontWeight.w600) ?? widget.theme.bodyMedium
                       .copyWith(color: widget.theme.onPrimary, fontWeight: FontWeight.w600),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
                 ),
                 Text(
-                  widget.item.tooltip ?? '',
-                  style: widget.item.labelStyle?.copyWith(color: widget.theme.onPrimary) ?? widget.theme.bodyMedium
+                  widget.item.tooltip?.text ?? '',
+                  style: widget.item.labelStyle?.copyWith(color: widget.item.tooltip?.foregroundColor ?? widget.theme.onPrimary) ?? widget.theme.bodyMedium
                     .copyWith(color: widget.theme.onPrimary),
                   overflow: TextOverflow.fade
                 )

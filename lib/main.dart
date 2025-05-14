@@ -56,7 +56,7 @@ class MainApp extends StatelessWidget {
   // TODO : Pouvoir changer l'icone des categories de notes
   // TODO : Ajouter une fonction pour sauvagarder le projet avant de fermer l'app
   // TODO : Ajouter le repositionement des pages, ainsi que le déplacement des modules
-  // TODO : Faire le menu d'ajout de module
+  // TODO : Faire le menu d'ajout de module plus propre
   // TODO : AJouter les légendes en dessous des graphiques sur le module tableau + Corriger les bugs
   // TODO : Faire un onglet 'notifications' pour voir les notifications récentes.
   // TODO : Trouver un remplacant à l'addon FilePicker
@@ -65,7 +65,10 @@ class MainApp extends StatelessWidget {
   // TODO : Terminer le système d'addon
   // TODO : Changer le lieu de sauvegarde des variables
   // TODO : Faire les noeuds concernant les listes
+  // TODO : Ajouter une protection sur le premier component ui qui ne peux qu'être un container
   // TODO : Faire tous les PluginUiComponent
+  // TODO : Faire le menu pour les traductions de texte
+  // TODO : Traduire tous les textes
 
   @override
   Widget build(BuildContext context) {

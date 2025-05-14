@@ -4823,6 +4823,26 @@ class S {
     );
   }
 
+  /// `All`
+  String get plugin_editor_ui_side_panel_properties_style_alignment_all {
+    return Intl.message(
+      'All',
+      name: 'plugin_editor_ui_side_panel_properties_style_alignment_all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Selection`
+  String get plugin_editor_ui_side_panel_properties_style_alignment_multiples {
+    return Intl.message(
+      'Selection',
+      name: 'plugin_editor_ui_side_panel_properties_style_alignment_multiples',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Border`
   String get plugin_editor_ui_side_panel_properties_border_subtitle {
     return Intl.message(
@@ -5153,6 +5173,2366 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Text`
+  String get icons_category_text {
+    return Intl.message(
+      'Text',
+      name: 'icons_category_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Technology`
+  String get icons_category_tech {
+    return Intl.message(
+      'Technology',
+      name: 'icons_category_tech',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transport`
+  String get icons_category_transport {
+    return Intl.message(
+      'Transport',
+      name: 'icons_category_transport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Education`
+  String get icons_category_education {
+    return Intl.message(
+      'Education',
+      name: 'icons_category_education',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Media`
+  String get icons_category_media {
+    return Intl.message(
+      'Media',
+      name: 'icons_category_media',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Communication`
+  String get icons_category_communication {
+    return Intl.message(
+      'Communication',
+      name: 'icons_category_communication',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nature`
+  String get icons_category_nature {
+    return Intl.message(
+      'Nature',
+      name: 'icons_category_nature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Food`
+  String get icons_category_food {
+    return Intl.message(
+      'Food',
+      name: 'icons_category_food',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Social`
+  String get icons_category_social {
+    return Intl.message(
+      'Social',
+      name: 'icons_category_social',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Navigation`
+  String get icons_category_navigation {
+    return Intl.message(
+      'Navigation',
+      name: 'icons_category_navigation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accessibility`
+  String get icons_category_accessibility {
+    return Intl.message(
+      'Accessibility',
+      name: 'icons_category_accessibility',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Finance`
+  String get icons_category_finance {
+    return Intl.message(
+      'Finance',
+      name: 'icons_category_finance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User`
+  String get icons_category_user {
+    return Intl.message(
+      'User',
+      name: 'icons_category_user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Content`
+  String get icons_category_content {
+    return Intl.message(
+      'Content',
+      name: 'icons_category_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Business`
+  String get icons_category_business {
+    return Intl.message(
+      'Business',
+      name: 'icons_category_business',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Data`
+  String get icons_category_data {
+    return Intl.message(
+      'Data',
+      name: 'icons_category_data',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location`
+  String get icons_category_location {
+    return Intl.message(
+      'Location',
+      name: 'icons_category_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Moderation`
+  String get icons_category_moderation {
+    return Intl.message(
+      'Moderation',
+      name: 'icons_category_moderation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home`
+  String get icons_category_home {
+    return Intl.message(
+      'Home',
+      name: 'icons_category_home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Weather`
+  String get icons_category_weather {
+    return Intl.message(
+      'Weather',
+      name: 'icons_category_weather',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Time`
+  String get icons_category_time {
+    return Intl.message(
+      'Time',
+      name: 'icons_category_time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Design`
+  String get icons_category_design {
+    return Intl.message(
+      'Design',
+      name: 'icons_category_design',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Action`
+  String get icons_category_action {
+    return Intl.message(
+      'Action',
+      name: 'icons_category_action',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gesture`
+  String get icons_category_gesture {
+    return Intl.message(
+      'Gesture',
+      name: 'icons_category_gesture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Travel`
+  String get icons_category_travel {
+    return Intl.message(
+      'Travel',
+      name: 'icons_category_travel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Building`
+  String get icons_category_building {
+    return Intl.message(
+      'Building',
+      name: 'icons_category_building',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bathroom`
+  String get icons_category_bathroom {
+    return Intl.message(
+      'Bathroom',
+      name: 'icons_category_bathroom',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Furniture`
+  String get icons_category_furniture {
+    return Intl.message(
+      'Furniture',
+      name: 'icons_category_furniture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sleep`
+  String get icons_category_sleep {
+    return Intl.message(
+      'Sleep',
+      name: 'icons_category_sleep',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Science`
+  String get icons_category_science {
+    return Intl.message(
+      'Science',
+      name: 'icons_category_science',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Kitchen`
+  String get icons_category_kitchen {
+    return Intl.message(
+      'Kitchen',
+      name: 'icons_category_kitchen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Health`
+  String get icons_category_health {
+    return Intl.message(
+      'Health',
+      name: 'icons_category_health',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tools`
+  String get icons_category_tools {
+    return Intl.message(
+      'Tools',
+      name: 'icons_category_tools',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notification`
+  String get icons_category_notification {
+    return Intl.message(
+      'Notification',
+      name: 'icons_category_notification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Alphabet`
+  String get icons_tags_alphabet {
+    return Intl.message(
+      'Alphabet',
+      name: 'icons_tags_alphabet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Letters`
+  String get icons_tags_letters {
+    return Intl.message(
+      'Letters',
+      name: 'icons_tags_letters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Alarm`
+  String get icons_tags_alarm {
+    return Intl.message('Alarm', name: 'icons_tags_alarm', desc: '', args: []);
+  }
+
+  /// `Clock`
+  String get icons_tags_clock {
+    return Intl.message('Clock', name: 'icons_tags_clock', desc: '', args: []);
+  }
+
+  /// `Time`
+  String get icons_tags_time {
+    return Intl.message('Time', name: 'icons_tags_time', desc: '', args: []);
+  }
+
+  /// `Anchor`
+  String get icons_tags_anchor {
+    return Intl.message(
+      'Anchor',
+      name: 'icons_tags_anchor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Boat`
+  String get icons_tags_boat {
+    return Intl.message('Boat', name: 'icons_tags_boat', desc: '', args: []);
+  }
+
+  /// `Battery`
+  String get icons_tags_battery {
+    return Intl.message(
+      'Battery',
+      name: 'icons_tags_battery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Charging`
+  String get icons_tags_charging {
+    return Intl.message(
+      'Charging',
+      name: 'icons_tags_charging',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bluetooth`
+  String get icons_tags_bluetooth {
+    return Intl.message(
+      'Bluetooth',
+      name: 'icons_tags_bluetooth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wireless`
+  String get icons_tags_wireless {
+    return Intl.message(
+      'Wireless',
+      name: 'icons_tags_wireless',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Book`
+  String get icons_tags_book {
+    return Intl.message('Book', name: 'icons_tags_book', desc: '', args: []);
+  }
+
+  /// `Reading`
+  String get icons_tags_reading {
+    return Intl.message(
+      'Reading',
+      name: 'icons_tags_reading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Art`
+  String get icons_tags_art {
+    return Intl.message('Art', name: 'icons_tags_art', desc: '', args: []);
+  }
+
+  /// `Paint`
+  String get icons_tags_paint {
+    return Intl.message('Paint', name: 'icons_tags_paint', desc: '', args: []);
+  }
+
+  /// `Camera`
+  String get icons_tags_camera {
+    return Intl.message(
+      'Camera',
+      name: 'icons_tags_camera',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Photo`
+  String get icons_tags_photo {
+    return Intl.message('Photo', name: 'icons_tags_photo', desc: '', args: []);
+  }
+
+  /// `Car`
+  String get icons_tags_car {
+    return Intl.message('Car', name: 'icons_tags_car', desc: '', args: []);
+  }
+
+  /// `Rental`
+  String get icons_tags_rental {
+    return Intl.message(
+      'Rental',
+      name: 'icons_tags_rental',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat`
+  String get icons_tags_chat {
+    return Intl.message('Chat', name: 'icons_tags_chat', desc: '', args: []);
+  }
+
+  /// `Message`
+  String get icons_tags_message {
+    return Intl.message(
+      'Message',
+      name: 'icons_tags_message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cloud`
+  String get icons_tags_cloud {
+    return Intl.message('Cloud', name: 'icons_tags_cloud', desc: '', args: []);
+  }
+
+  /// `Weather`
+  String get icons_tags_weather {
+    return Intl.message(
+      'Weather',
+      name: 'icons_tags_weather',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Computer`
+  String get icons_tags_computer {
+    return Intl.message(
+      'Computer',
+      name: 'icons_tags_computer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Laptop`
+  String get icons_tags_laptop {
+    return Intl.message(
+      'Laptop',
+      name: 'icons_tags_laptop',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Construction`
+  String get icons_tags_construction {
+    return Intl.message(
+      'Construction',
+      name: 'icons_tags_construction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tools`
+  String get icons_tags_tools {
+    return Intl.message('Tools', name: 'icons_tags_tools', desc: '', args: []);
+  }
+
+  /// `Bike`
+  String get icons_tags_bike {
+    return Intl.message('Bike', name: 'icons_tags_bike', desc: '', args: []);
+  }
+
+  /// `Cycling`
+  String get icons_tags_cycling {
+    return Intl.message(
+      'Cycling',
+      name: 'icons_tags_cycling',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Water`
+  String get icons_tags_water {
+    return Intl.message('Water', name: 'icons_tags_water', desc: '', args: []);
+  }
+
+  /// `Bus`
+  String get icons_tags_bus {
+    return Intl.message('Bus', name: 'icons_tags_bus', desc: '', args: []);
+  }
+
+  /// `Public transport`
+  String get icons_tags_public_transport {
+    return Intl.message(
+      'Public transport',
+      name: 'icons_tags_public_transport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vehicle`
+  String get icons_tags_vehicle {
+    return Intl.message(
+      'Vehicle',
+      name: 'icons_tags_vehicle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Train`
+  String get icons_tags_train {
+    return Intl.message('Train', name: 'icons_tags_train', desc: '', args: []);
+  }
+
+  /// `Rail`
+  String get icons_tags_rail {
+    return Intl.message('Rail', name: 'icons_tags_rail', desc: '', args: []);
+  }
+
+  /// `Running`
+  String get icons_tags_running {
+    return Intl.message(
+      'Running',
+      name: 'icons_tags_running',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exercise`
+  String get icons_tags_exercise {
+    return Intl.message(
+      'Exercise',
+      name: 'icons_tags_exercise',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Subway`
+  String get icons_tags_subway {
+    return Intl.message(
+      'Subway',
+      name: 'icons_tags_subway',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Metro`
+  String get icons_tags_metro {
+    return Intl.message('Metro', name: 'icons_tags_metro', desc: '', args: []);
+  }
+
+  /// `Walking`
+  String get icons_tags_walking {
+    return Intl.message(
+      'Walking',
+      name: 'icons_tags_walking',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hiking`
+  String get icons_tags_hiking {
+    return Intl.message(
+      'Hiking',
+      name: 'icons_tags_hiking',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get icons_tags_email {
+    return Intl.message('Email', name: 'icons_tags_email', desc: '', args: []);
+  }
+
+  /// `Fast food`
+  String get icons_tags_fast_food {
+    return Intl.message(
+      'Fast food',
+      name: 'icons_tags_fast_food',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Meal`
+  String get icons_tags_meal {
+    return Intl.message('Meal', name: 'icons_tags_meal', desc: '', args: []);
+  }
+
+  /// `Like`
+  String get icons_tags_like {
+    return Intl.message('Like', name: 'icons_tags_like', desc: '', args: []);
+  }
+
+  /// `Heart`
+  String get icons_tags_heart {
+    return Intl.message('Heart', name: 'icons_tags_heart', desc: '', args: []);
+  }
+
+  /// `Flight`
+  String get icons_tags_flight {
+    return Intl.message(
+      'Flight',
+      name: 'icons_tags_flight',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Travel`
+  String get icons_tags_travel {
+    return Intl.message(
+      'Travel',
+      name: 'icons_tags_travel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forum`
+  String get icons_tags_forum {
+    return Intl.message('Forum', name: 'icons_tags_forum', desc: '', args: []);
+  }
+
+  /// `Discussion`
+  String get icons_tags_discussion {
+    return Intl.message(
+      'Discussion',
+      name: 'icons_tags_discussion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Games`
+  String get icons_tags_games {
+    return Intl.message('Games', name: 'icons_tags_games', desc: '', args: []);
+  }
+
+  /// `Play`
+  String get icons_tags_play {
+    return Intl.message('Play', name: 'icons_tags_play', desc: '', args: []);
+  }
+
+  /// `Headphones`
+  String get icons_tags_headphones {
+    return Intl.message(
+      'Headphones',
+      name: 'icons_tags_headphones',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Audio`
+  String get icons_tags_audio {
+    return Intl.message('Audio', name: 'icons_tags_audio', desc: '', args: []);
+  }
+
+  /// `Home`
+  String get icons_tags_home {
+    return Intl.message('Home', name: 'icons_tags_home', desc: '', args: []);
+  }
+
+  /// `House`
+  String get icons_tags_house {
+    return Intl.message('House', name: 'icons_tags_house', desc: '', args: []);
+  }
+
+  /// `Hotel`
+  String get icons_tags_hotel {
+    return Intl.message('Hotel', name: 'icons_tags_hotel', desc: '', args: []);
+  }
+
+  /// `Stay`
+  String get icons_tags_stay {
+    return Intl.message('Stay', name: 'icons_tags_stay', desc: '', args: []);
+  }
+
+  /// `Image`
+  String get icons_tags_image {
+    return Intl.message('Image', name: 'icons_tags_image', desc: '', args: []);
+  }
+
+  /// `Keyboard`
+  String get icons_tags_keyboard {
+    return Intl.message(
+      'Keyboard',
+      name: 'icons_tags_keyboard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input`
+  String get icons_tags_input {
+    return Intl.message('Input', name: 'icons_tags_input', desc: '', args: []);
+  }
+
+  /// `Kitchen`
+  String get icons_tags_kitchen {
+    return Intl.message(
+      'Kitchen',
+      name: 'icons_tags_kitchen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cooking`
+  String get icons_tags_cooking {
+    return Intl.message(
+      'Cooking',
+      name: 'icons_tags_cooking',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Light`
+  String get icons_tags_light {
+    return Intl.message('Light', name: 'icons_tags_light', desc: '', args: []);
+  }
+
+  /// `Idea`
+  String get icons_tags_idea {
+    return Intl.message('Idea', name: 'icons_tags_idea', desc: '', args: []);
+  }
+
+  /// `Cafe`
+  String get icons_tags_cafe {
+    return Intl.message('Cafe', name: 'icons_tags_cafe', desc: '', args: []);
+  }
+
+  /// `Coffee`
+  String get icons_tags_coffee {
+    return Intl.message(
+      'Coffee',
+      name: 'icons_tags_coffee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dining`
+  String get icons_tags_dining {
+    return Intl.message(
+      'Dining',
+      name: 'icons_tags_dining',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restaurant`
+  String get icons_tags_restaurant {
+    return Intl.message(
+      'Restaurant',
+      name: 'icons_tags_restaurant',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Florist`
+  String get icons_tags_florist {
+    return Intl.message(
+      'Florist',
+      name: 'icons_tags_florist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flowers`
+  String get icons_tags_flowers {
+    return Intl.message(
+      'Flowers',
+      name: 'icons_tags_flowers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lock`
+  String get icons_tags_lock {
+    return Intl.message('Lock', name: 'icons_tags_lock', desc: '', args: []);
+  }
+
+  /// `Security`
+  String get icons_tags_security {
+    return Intl.message(
+      'Security',
+      name: 'icons_tags_security',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Map`
+  String get icons_tags_map {
+    return Intl.message('Map', name: 'icons_tags_map', desc: '', args: []);
+  }
+
+  /// `Location`
+  String get icons_tags_location {
+    return Intl.message(
+      'Location',
+      name: 'icons_tags_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Microphone`
+  String get icons_tags_microphone {
+    return Intl.message(
+      'Microphone',
+      name: 'icons_tags_microphone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Motorcycle`
+  String get icons_tags_motorcycle {
+    return Intl.message(
+      'Motorcycle',
+      name: 'icons_tags_motorcycle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Music`
+  String get icons_tags_music {
+    return Intl.message('Music', name: 'icons_tags_music', desc: '', args: []);
+  }
+
+  /// `Note`
+  String get icons_tags_note {
+    return Intl.message('Note', name: 'icons_tags_note', desc: '', args: []);
+  }
+
+  /// `Nature`
+  String get icons_tags_nature {
+    return Intl.message(
+      'Nature',
+      name: 'icons_tags_nature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Outdoors`
+  String get icons_tags_outdoors {
+    return Intl.message(
+      'Outdoors',
+      name: 'icons_tags_outdoors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Navigation`
+  String get icons_tags_navigation {
+    return Intl.message(
+      'Navigation',
+      name: 'icons_tags_navigation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Directions`
+  String get icons_tags_directions {
+    return Intl.message(
+      'Directions',
+      name: 'icons_tags_directions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wifi`
+  String get icons_tags_wifi {
+    return Intl.message('Wifi', name: 'icons_tags_wifi', desc: '', args: []);
+  }
+
+  /// `Internet`
+  String get icons_tags_internet {
+    return Intl.message(
+      'Internet',
+      name: 'icons_tags_internet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone`
+  String get icons_tags_phone {
+    return Intl.message('Phone', name: 'icons_tags_phone', desc: '', args: []);
+  }
+
+  /// `Call`
+  String get icons_tags_call {
+    return Intl.message('Call', name: 'icons_tags_call', desc: '', args: []);
+  }
+
+  /// `Place`
+  String get icons_tags_place {
+    return Intl.message('Place', name: 'icons_tags_place', desc: '', args: []);
+  }
+
+  /// `Printer`
+  String get icons_tags_printer {
+    return Intl.message(
+      'Printer',
+      name: 'icons_tags_printer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Print`
+  String get icons_tags_print {
+    return Intl.message('Print', name: 'icons_tags_print', desc: '', args: []);
+  }
+
+  /// `Public`
+  String get icons_tags_public {
+    return Intl.message(
+      'Public',
+      name: 'icons_tags_public',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Router`
+  String get icons_tags_router {
+    return Intl.message(
+      'Router',
+      name: 'icons_tags_router',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Network`
+  String get icons_tags_network {
+    return Intl.message(
+      'Network',
+      name: 'icons_tags_network',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rowing`
+  String get icons_tags_rowing {
+    return Intl.message(
+      'Rowing',
+      name: 'icons_tags_rowing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get icons_tags_save {
+    return Intl.message('Save', name: 'icons_tags_save', desc: '', args: []);
+  }
+
+  /// `File`
+  String get icons_tags_file {
+    return Intl.message('File', name: 'icons_tags_file', desc: '', args: []);
+  }
+
+  /// `School`
+  String get icons_tags_school {
+    return Intl.message(
+      'School',
+      name: 'icons_tags_school',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Learning`
+  String get icons_tags_learning {
+    return Intl.message(
+      'Learning',
+      name: 'icons_tags_learning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send`
+  String get icons_tags_send {
+    return Intl.message('Send', name: 'icons_tags_send', desc: '', args: []);
+  }
+
+  /// `Settings`
+  String get icons_tags_settings {
+    return Intl.message(
+      'Settings',
+      name: 'icons_tags_settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preferences`
+  String get icons_tags_preferences {
+    return Intl.message(
+      'Preferences',
+      name: 'icons_tags_preferences',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Share`
+  String get icons_tags_share {
+    return Intl.message('Share', name: 'icons_tags_share', desc: '', args: []);
+  }
+
+  /// `Social`
+  String get icons_tags_social {
+    return Intl.message(
+      'Social',
+      name: 'icons_tags_social',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shopping`
+  String get icons_tags_shopping {
+    return Intl.message(
+      'Shopping',
+      name: 'icons_tags_shopping',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cart`
+  String get icons_tags_cart {
+    return Intl.message('Cart', name: 'icons_tags_cart', desc: '', args: []);
+  }
+
+  /// `Smartphone`
+  String get icons_tags_smartphone {
+    return Intl.message(
+      'Smartphone',
+      name: 'icons_tags_smartphone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mobile`
+  String get icons_tags_mobile {
+    return Intl.message(
+      'Mobile',
+      name: 'icons_tags_mobile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Snowboarding`
+  String get icons_tags_snowboarding {
+    return Intl.message(
+      'Snowboarding',
+      name: 'icons_tags_snowboarding',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sports`
+  String get icons_tags_sports {
+    return Intl.message(
+      'Sports',
+      name: 'icons_tags_sports',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Spa`
+  String get icons_tags_spa {
+    return Intl.message('Spa', name: 'icons_tags_spa', desc: '', args: []);
+  }
+
+  /// `Relaxation`
+  String get icons_tags_relaxation {
+    return Intl.message(
+      'Relaxation',
+      name: 'icons_tags_relaxation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Speaker`
+  String get icons_tags_speaker {
+    return Intl.message(
+      'Speaker',
+      name: 'icons_tags_speaker',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Star`
+  String get icons_tags_star {
+    return Intl.message('Star', name: 'icons_tags_star', desc: '', args: []);
+  }
+
+  /// `Favorite`
+  String get icons_tags_favorite {
+    return Intl.message(
+      'Favorite',
+      name: 'icons_tags_favorite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store`
+  String get icons_tags_store {
+    return Intl.message('Store', name: 'icons_tags_store', desc: '', args: []);
+  }
+
+  /// `Sunny`
+  String get icons_tags_sunny {
+    return Intl.message('Sunny', name: 'icons_tags_sunny', desc: '', args: []);
+  }
+
+  /// `Support`
+  String get icons_tags_support {
+    return Intl.message(
+      'Support',
+      name: 'icons_tags_support',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Help`
+  String get icons_tags_help {
+    return Intl.message('Help', name: 'icons_tags_help', desc: '', args: []);
+  }
+
+  /// `Terrain`
+  String get icons_tags_terrain {
+    return Intl.message(
+      'Terrain',
+      name: 'icons_tags_terrain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Landscape`
+  String get icons_tags_landscape {
+    return Intl.message(
+      'Landscape',
+      name: 'icons_tags_landscape',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thermostat`
+  String get icons_tags_thermostat {
+    return Intl.message(
+      'Thermostat',
+      name: 'icons_tags_thermostat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Temperature`
+  String get icons_tags_temperature {
+    return Intl.message(
+      'Temperature',
+      name: 'icons_tags_temperature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thumb`
+  String get icons_tags_thumb {
+    return Intl.message('Thumb', name: 'icons_tags_thumb', desc: '', args: []);
+  }
+
+  /// `Transport`
+  String get icons_tags_transport {
+    return Intl.message(
+      'Transport',
+      name: 'icons_tags_transport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Traffic`
+  String get icons_tags_traffic {
+    return Intl.message(
+      'Traffic',
+      name: 'icons_tags_traffic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Road`
+  String get icons_tags_road {
+    return Intl.message('Road', name: 'icons_tags_road', desc: '', args: []);
+  }
+
+  /// `Transit`
+  String get icons_tags_transit {
+    return Intl.message(
+      'Transit',
+      name: 'icons_tags_transit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `TV`
+  String get icons_tags_tv {
+    return Intl.message('TV', name: 'icons_tags_tv', desc: '', args: []);
+  }
+
+  /// `Television`
+  String get icons_tags_television {
+    return Intl.message(
+      'Television',
+      name: 'icons_tags_television',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Umbrella`
+  String get icons_tags_umbrella {
+    return Intl.message(
+      'Umbrella',
+      name: 'icons_tags_umbrella',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rain`
+  String get icons_tags_rain {
+    return Intl.message('Rain', name: 'icons_tags_rain', desc: '', args: []);
+  }
+
+  /// `USB`
+  String get icons_tags_usb {
+    return Intl.message('USB', name: 'icons_tags_usb', desc: '', args: []);
+  }
+
+  /// `Connection`
+  String get icons_tags_connection {
+    return Intl.message(
+      'Connection',
+      name: 'icons_tags_connection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Video`
+  String get icons_tags_video {
+    return Intl.message('Video', name: 'icons_tags_video', desc: '', args: []);
+  }
+
+  /// `Volume`
+  String get icons_tags_volume {
+    return Intl.message(
+      'Volume',
+      name: 'icons_tags_volume',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sound`
+  String get icons_tags_sound {
+    return Intl.message('Sound', name: 'icons_tags_sound', desc: '', args: []);
+  }
+
+  /// `Watch`
+  String get icons_tags_watch {
+    return Intl.message('Watch', name: 'icons_tags_watch', desc: '', args: []);
+  }
+
+  /// `Waves`
+  String get icons_tags_waves {
+    return Intl.message('Waves', name: 'icons_tags_waves', desc: '', args: []);
+  }
+
+  /// `Cloudy`
+  String get icons_tags_cloudy {
+    return Intl.message(
+      'Cloudy',
+      name: 'icons_tags_cloudy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Web`
+  String get icons_tags_web {
+    return Intl.message('Web', name: 'icons_tags_web', desc: '', args: []);
+  }
+
+  /// `Work`
+  String get icons_tags_work {
+    return Intl.message('Work', name: 'icons_tags_work', desc: '', args: []);
+  }
+
+  /// `Job`
+  String get icons_tags_job {
+    return Intl.message('Job', name: 'icons_tags_job', desc: '', args: []);
+  }
+
+  /// `Yard`
+  String get icons_tags_yard {
+    return Intl.message('Yard', name: 'icons_tags_yard', desc: '', args: []);
+  }
+
+  /// `Outdoor`
+  String get icons_tags_outdoor {
+    return Intl.message(
+      'Outdoor',
+      name: 'icons_tags_outdoor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Zoom`
+  String get icons_tags_zoom {
+    return Intl.message('Zoom', name: 'icons_tags_zoom', desc: '', args: []);
+  }
+
+  /// `Magnify`
+  String get icons_tags_magnify {
+    return Intl.message(
+      'Magnify',
+      name: 'icons_tags_magnify',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reduce`
+  String get icons_tags_reduce {
+    return Intl.message(
+      'Reduce',
+      name: 'icons_tags_reduce',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get icons_tags_add {
+    return Intl.message('Add', name: 'icons_tags_add', desc: '', args: []);
+  }
+
+  /// `Plus`
+  String get icons_tags_plus {
+    return Intl.message('Plus', name: 'icons_tags_plus', desc: '', args: []);
+  }
+
+  /// `Delete`
+  String get icons_tags_delete {
+    return Intl.message(
+      'Delete',
+      name: 'icons_tags_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove`
+  String get icons_tags_remove {
+    return Intl.message(
+      'Remove',
+      name: 'icons_tags_remove',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get icons_tags_edit {
+    return Intl.message('Edit', name: 'icons_tags_edit', desc: '', args: []);
+  }
+
+  /// `Modify`
+  String get icons_tags_modify {
+    return Intl.message(
+      'Modify',
+      name: 'icons_tags_modify',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check`
+  String get icons_tags_check {
+    return Intl.message('Check', name: 'icons_tags_check', desc: '', args: []);
+  }
+
+  /// `Confirm`
+  String get icons_tags_confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'icons_tags_confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close`
+  String get icons_tags_close {
+    return Intl.message('Close', name: 'icons_tags_close', desc: '', args: []);
+  }
+
+  /// `Cancel`
+  String get icons_tags_cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'icons_tags_cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Menu`
+  String get icons_tags_menu {
+    return Intl.message('Menu', name: 'icons_tags_menu', desc: '', args: []);
+  }
+
+  /// `More`
+  String get icons_tags_more {
+    return Intl.message('More', name: 'icons_tags_more', desc: '', args: []);
+  }
+
+  /// `Options`
+  String get icons_tags_options {
+    return Intl.message(
+      'Options',
+      name: 'icons_tags_options',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wheelchair`
+  String get icons_tags_wheelchair {
+    return Intl.message(
+      'Wheelchair',
+      name: 'icons_tags_wheelchair',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get icons_tags_account {
+    return Intl.message(
+      'Account',
+      name: 'icons_tags_account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Balance`
+  String get icons_tags_balance {
+    return Intl.message(
+      'Balance',
+      name: 'icons_tags_balance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bank`
+  String get icons_tags_bank {
+    return Intl.message('Bank', name: 'icons_tags_bank', desc: '', args: []);
+  }
+
+  /// `Profile`
+  String get icons_tags_profile {
+    return Intl.message(
+      'Profile',
+      name: 'icons_tags_profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User`
+  String get icons_tags_user {
+    return Intl.message('User', name: 'icons_tags_user', desc: '', args: []);
+  }
+
+  /// `New`
+  String get icons_tags_new {
+    return Intl.message('New', name: 'icons_tags_new', desc: '', args: []);
+  }
+
+  /// `Control`
+  String get icons_tags_control {
+    return Intl.message(
+      'Control',
+      name: 'icons_tags_control',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Screen`
+  String get icons_tags_screen {
+    return Intl.message(
+      'Screen',
+      name: 'icons_tags_screen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Farm`
+  String get icons_tags_farm {
+    return Intl.message('Farm', name: 'icons_tags_farm', desc: '', args: []);
+  }
+
+  /// `Air`
+  String get icons_tags_air {
+    return Intl.message('Air', name: 'icons_tags_air', desc: '', args: []);
+  }
+
+  /// `Airline`
+  String get icons_tags_airline {
+    return Intl.message(
+      'Airline',
+      name: 'icons_tags_airline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Seat`
+  String get icons_tags_seat {
+    return Intl.message('Seat', name: 'icons_tags_seat', desc: '', args: []);
+  }
+
+  /// `Individual`
+  String get icons_tags_individual {
+    return Intl.message(
+      'Individual',
+      name: 'icons_tags_individual',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Suite`
+  String get icons_tags_suite {
+    return Intl.message('Suite', name: 'icons_tags_suite', desc: '', args: []);
+  }
+
+  /// `Legroom`
+  String get icons_tags_legroom {
+    return Intl.message(
+      'Legroom',
+      name: 'icons_tags_legroom',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recline`
+  String get icons_tags_recline {
+    return Intl.message(
+      'Recline',
+      name: 'icons_tags_recline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Off`
+  String get icons_tags_off {
+    return Intl.message('Off', name: 'icons_tags_off', desc: '', args: []);
+  }
+
+  /// `On`
+  String get icons_tags_on {
+    return Intl.message('On', name: 'icons_tags_on', desc: '', args: []);
+  }
+
+  /// `All`
+  String get icons_tags_all {
+    return Intl.message('All', name: 'icons_tags_all', desc: '', args: []);
+  }
+
+  /// `Inbox`
+  String get icons_tags_inbox {
+    return Intl.message('Inbox', name: 'icons_tags_inbox', desc: '', args: []);
+  }
+
+  /// `Out`
+  String get icons_tags_out {
+    return Intl.message('Out', name: 'icons_tags_out', desc: '', args: []);
+  }
+
+  /// `Arrow`
+  String get icons_tags_arrow {
+    return Intl.message('Arrow', name: 'icons_tags_arrow', desc: '', args: []);
+  }
+
+  /// `iOS`
+  String get icons_tags_ios {
+    return Intl.message('iOS', name: 'icons_tags_ios', desc: '', args: []);
+  }
+
+  /// `Circle`
+  String get icons_tags_circle {
+    return Intl.message(
+      'Circle',
+      name: 'icons_tags_circle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Down`
+  String get icons_tags_down {
+    return Intl.message('Down', name: 'icons_tags_down', desc: '', args: []);
+  }
+
+  /// `Up`
+  String get icons_tags_up {
+    return Intl.message('Up', name: 'icons_tags_up', desc: '', args: []);
+  }
+
+  /// `Forward`
+  String get icons_tags_forward {
+    return Intl.message(
+      'Forward',
+      name: 'icons_tags_forward',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Right`
+  String get icons_tags_right {
+    return Intl.message('Right', name: 'icons_tags_right', desc: '', args: []);
+  }
+
+  /// `Alt`
+  String get icons_tags_alt {
+    return Intl.message('Alt', name: 'icons_tags_alt', desc: '', args: []);
+  }
+
+  /// `Upward`
+  String get icons_tags_upward {
+    return Intl.message(
+      'Upward',
+      name: 'icons_tags_upward',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Article`
+  String get icons_tags_article {
+    return Intl.message(
+      'Article',
+      name: 'icons_tags_article',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Document`
+  String get icons_tags_document {
+    return Intl.message(
+      'Document',
+      name: 'icons_tags_document',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Aspect`
+  String get icons_tags_aspect {
+    return Intl.message(
+      'Aspect',
+      name: 'icons_tags_aspect',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ratio`
+  String get icons_tags_ratio {
+    return Intl.message('Ratio', name: 'icons_tags_ratio', desc: '', args: []);
+  }
+
+  /// `Assessment`
+  String get icons_tags_assessment {
+    return Intl.message(
+      'Assessment',
+      name: 'icons_tags_assessment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Report`
+  String get icons_tags_report {
+    return Intl.message(
+      'Report',
+      name: 'icons_tags_report',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assignment`
+  String get icons_tags_assignment {
+    return Intl.message(
+      'Assignment',
+      name: 'icons_tags_assignment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Task`
+  String get icons_tags_task {
+    return Intl.message('Task', name: 'icons_tags_task', desc: '', args: []);
+  }
+
+  /// `Turned`
+  String get icons_tags_turned {
+    return Intl.message(
+      'Turned',
+      name: 'icons_tags_turned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `In`
+  String get icons_tags_in {
+    return Intl.message('In', name: 'icons_tags_in', desc: '', args: []);
+  }
+
+  /// `Assistant`
+  String get icons_tags_assistant {
+    return Intl.message(
+      'Assistant',
+      name: 'icons_tags_assistant',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Direction`
+  String get icons_tags_direction {
+    return Intl.message(
+      'Direction',
+      name: 'icons_tags_direction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Attribution`
+  String get icons_tags_attribution {
+    return Intl.message(
+      'Attribution',
+      name: 'icons_tags_attribution',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Credit`
+  String get icons_tags_credit {
+    return Intl.message(
+      'Credit',
+      name: 'icons_tags_credit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auto`
+  String get icons_tags_auto {
+    return Intl.message('Auto', name: 'icons_tags_auto', desc: '', args: []);
+  }
+
+  /// `Awesome`
+  String get icons_tags_awesome {
+    return Intl.message(
+      'Awesome',
+      name: 'icons_tags_awesome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mosaic`
+  String get icons_tags_mosaic {
+    return Intl.message(
+      'Mosaic',
+      name: 'icons_tags_mosaic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Motion`
+  String get icons_tags_motion {
+    return Intl.message(
+      'Motion',
+      name: 'icons_tags_motion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Renew`
+  String get icons_tags_renew {
+    return Intl.message('Renew', name: 'icons_tags_renew', desc: '', args: []);
+  }
+
+  /// `AV`
+  String get icons_tags_av {
+    return Intl.message('AV', name: 'icons_tags_av', desc: '', args: []);
+  }
+
+  /// `Timer`
+  String get icons_tags_timer {
+    return Intl.message('Timer', name: 'icons_tags_timer', desc: '', args: []);
+  }
+
+  /// `Back`
+  String get icons_tags_back {
+    return Intl.message('Back', name: 'icons_tags_back', desc: '', args: []);
+  }
+
+  /// `Hand`
+  String get icons_tags_hand {
+    return Intl.message('Hand', name: 'icons_tags_hand', desc: '', args: []);
+  }
+
+  /// `Backpack`
+  String get icons_tags_backpack {
+    return Intl.message(
+      'Backpack',
+      name: 'icons_tags_backpack',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Backspace`
+  String get icons_tags_backspace {
+    return Intl.message(
+      'Backspace',
+      name: 'icons_tags_backspace',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bakery`
+  String get icons_tags_bakery {
+    return Intl.message(
+      'Bakery',
+      name: 'icons_tags_bakery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Balcony`
+  String get icons_tags_balcony {
+    return Intl.message(
+      'Balcony',
+      name: 'icons_tags_balcony',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bathtub`
+  String get icons_tags_bathtub {
+    return Intl.message(
+      'Bathtub',
+      name: 'icons_tags_bathtub',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Relax`
+  String get icons_tags_relax {
+    return Intl.message('Relax', name: 'icons_tags_relax', desc: '', args: []);
+  }
+
+  /// `Full`
+  String get icons_tags_full {
+    return Intl.message('Full', name: 'icons_tags_full', desc: '', args: []);
+  }
+
+  /// `Standard`
+  String get icons_tags_standard {
+    return Intl.message(
+      'Standard',
+      name: 'icons_tags_standard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown`
+  String get icons_tags_unknown {
+    return Intl.message(
+      'Unknown',
+      name: 'icons_tags_unknown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bed`
+  String get icons_tags_bed {
+    return Intl.message('Bed', name: 'icons_tags_bed', desc: '', args: []);
+  }
+
+  /// `Sleep`
+  String get icons_tags_sleep {
+    return Intl.message('Sleep', name: 'icons_tags_sleep', desc: '', args: []);
+  }
+
+  /// `Bedtime`
+  String get icons_tags_bedtime {
+    return Intl.message(
+      'Bedtime',
+      name: 'icons_tags_bedtime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bento`
+  String get icons_tags_bento {
+    return Intl.message('Bento', name: 'icons_tags_bento', desc: '', args: []);
+  }
+
+  /// `Biotech`
+  String get icons_tags_biotech {
+    return Intl.message(
+      'Biotech',
+      name: 'icons_tags_biotech',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Science`
+  String get icons_tags_science {
+    return Intl.message(
+      'Science',
+      name: 'icons_tags_science',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Blender`
+  String get icons_tags_blender {
+    return Intl.message(
+      'Blender',
+      name: 'icons_tags_blender',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Block`
+  String get icons_tags_block {
+    return Intl.message('Block', name: 'icons_tags_block', desc: '', args: []);
+  }
+
+  /// `Stop`
+  String get icons_tags_stop {
+    return Intl.message('Stop', name: 'icons_tags_stop', desc: '', args: []);
+  }
+
+  /// `Blood`
+  String get icons_tags_blood {
+    return Intl.message('Blood', name: 'icons_tags_blood', desc: '', args: []);
+  }
+
+  /// `Type`
+  String get icons_tags_type {
+    return Intl.message('Type', name: 'icons_tags_type', desc: '', args: []);
+  }
+
+  /// `Connected`
+  String get icons_tags_connected {
+    return Intl.message(
+      'Connected',
+      name: 'icons_tags_connected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disabled`
+  String get icons_tags_disabled {
+    return Intl.message(
+      'Disabled',
+      name: 'icons_tags_disabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Searching`
+  String get icons_tags_searching {
+    return Intl.message(
+      'Searching',
+      name: 'icons_tags_searching',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Blur`
+  String get icons_tags_blur {
+    return Intl.message('Blur', name: 'icons_tags_blur', desc: '', args: []);
+  }
+
+  /// `Circular`
+  String get icons_tags_circular {
+    return Intl.message(
+      'Circular',
+      name: 'icons_tags_circular',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Linear`
+  String get icons_tags_linear {
+    return Intl.message(
+      'Linear',
+      name: 'icons_tags_linear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bookmark`
+  String get icons_tags_bookmark {
+    return Intl.message(
+      'Bookmark',
+      name: 'icons_tags_bookmark',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bookmarks`
+  String get icons_tags_bookmarks {
+    return Intl.message(
+      'Bookmarks',
+      name: 'icons_tags_bookmarks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `List`
+  String get icons_tags_list {
+    return Intl.message('List', name: 'icons_tags_list', desc: '', args: []);
+  }
+
+  /// `Broken`
+  String get icons_tags_broken {
+    return Intl.message(
+      'Broken',
+      name: 'icons_tags_broken',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Browse`
+  String get icons_tags_browse {
+    return Intl.message(
+      'Browse',
+      name: 'icons_tags_browse',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gallery`
+  String get icons_tags_gallery {
+    return Intl.message(
+      'Gallery',
+      name: 'icons_tags_gallery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bubble`
+  String get icons_tags_bubble {
+    return Intl.message(
+      'Bubble',
+      name: 'icons_tags_bubble',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chart`
+  String get icons_tags_chart {
+    return Intl.message('Chart', name: 'icons_tags_chart', desc: '', args: []);
+  }
+
+  /// `Build`
+  String get icons_tags_build {
+    return Intl.message('Build', name: 'icons_tags_build', desc: '', args: []);
+  }
+
+  /// `Center`
+  String get icons_tags_center {
+    return Intl.message(
+      'Center',
+      name: 'icons_tags_center',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cabin`
+  String get icons_tags_cabin {
+    return Intl.message('Cabin', name: 'icons_tags_cabin', desc: '', args: []);
+  }
+
+  /// `Cable`
+  String get icons_tags_cable {
+    return Intl.message('Cable', name: 'icons_tags_cable', desc: '', args: []);
+  }
+
+  /// `Calendar`
+  String get icons_tags_calendar {
+    return Intl.message(
+      'Calendar',
+      name: 'icons_tags_calendar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today`
+  String get icons_tags_today {
+    return Intl.message('Today', name: 'icons_tags_today', desc: '', args: []);
+  }
+
+  /// `View`
+  String get icons_tags_view {
+    return Intl.message('View', name: 'icons_tags_view', desc: '', args: []);
+  }
+
+  /// `Day`
+  String get icons_tags_day {
+    return Intl.message('Day', name: 'icons_tags_day', desc: '', args: []);
+  }
+
+  /// `End`
+  String get icons_tags_end {
+    return Intl.message('End', name: 'icons_tags_end', desc: '', args: []);
+  }
+
+  /// `Made`
+  String get icons_tags_made {
+    return Intl.message('Made', name: 'icons_tags_made', desc: '', args: []);
+  }
+
+  /// `Merge`
+  String get icons_tags_merge {
+    return Intl.message('Merge', name: 'icons_tags_merge', desc: '', args: []);
+  }
+
+  /// `Missed`
+  String get icons_tags_missed {
+    return Intl.message(
+      'Missed',
+      name: 'icons_tags_missed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Received`
+  String get icons_tags_received {
+    return Intl.message(
+      'Received',
+      name: 'icons_tags_received',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Split`
+  String get icons_tags_split {
+    return Intl.message('Split', name: 'icons_tags_split', desc: '', args: []);
+  }
+
+  /// `Enhance`
+  String get icons_tags_enhance {
+    return Intl.message(
+      'Enhance',
+      name: 'icons_tags_enhance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Front`
+  String get icons_tags_front {
+    return Intl.message('Front', name: 'icons_tags_front', desc: '', args: []);
+  }
+
+  /// `Rear`
+  String get icons_tags_rear {
+    return Intl.message('Rear', name: 'icons_tags_rear', desc: '', args: []);
   }
 }
 

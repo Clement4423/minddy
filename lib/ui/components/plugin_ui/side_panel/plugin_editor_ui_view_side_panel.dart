@@ -4,16 +4,24 @@ import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interfaces/plugin_ui_components_interface.dart';
 import 'package:minddy/system/plugin_ui_components/plugin_ui_component_column.dart';
 import 'package:minddy/system/plugin_ui_components/plugin_ui_component_container.dart';
+import 'package:minddy/system/plugin_ui_components/plugin_ui_component_icon.dart';
+import 'package:minddy/system/plugin_ui_components/plugin_ui_component_padding.dart';
 import 'package:minddy/system/plugin_ui_components/plugin_ui_component_row.dart';
+import 'package:minddy/system/plugin_ui_components/plugin_ui_component_text.dart';
 import 'package:minddy/system/plugin_ui_components/plugn_ui_components_add_menu_models.dart';
 import 'package:minddy/ui/components/menus/sub_menus/plugin_editor_show_ui_component_add_menu.dart';
 import 'package:minddy/ui/components/plugin_ui/plugin_editor_ui_view_controller.dart';
 import 'package:minddy/ui/components/plugin_ui/plugin_editor_ui_view_side_panel_layer_element.dart';
 import 'package:minddy/ui/components/plugin_ui/side_panel/get_properties/get_column_properties.dart';
 import 'package:minddy/ui/components/plugin_ui/side_panel/get_properties/get_container_propeties.dart';
+import 'package:minddy/ui/components/plugin_ui/side_panel/get_properties/get_icon_properties.dart';
+import 'package:minddy/ui/components/plugin_ui/side_panel/get_properties/get_padding_properties.dart';
+import 'package:minddy/ui/components/plugin_ui/side_panel/get_properties/get_row_properties.dart';
+import 'package:minddy/ui/components/plugin_ui/side_panel/get_properties/get_text_properties.dart';
 import 'package:minddy/ui/theme/theme.dart';
 
 final PageStorageBucket _propetiesPageStorageBucket = PageStorageBucket();
+final PageStorageBucket _layersPageStorageBucket = PageStorageBucket();
 
 class PluginEditorUiViewSidePanelPropertiesElementList {
   String groupName;
@@ -77,7 +85,13 @@ class _PluginEditorUiViewSidePanelState
       case PluginUiComponentColumn():
         list = getColumnProperties(selectedComponent!.properties as PluginUiComponentColumnProperties, widget.theme, context, widget.controller.componentViewUpdater.update, () {setState(() {});});
       case PluginUiComponentRow():
-        list = getColumnProperties(selectedComponent!.properties as PluginUiComponentColumnProperties, widget.theme, context, widget.controller.componentViewUpdater.update, () {setState(() {});});
+        list = getRowProperties(selectedComponent!.properties as PluginUiComponentColumnProperties, widget.theme, context, widget.controller.componentViewUpdater.update, () {setState(() {});});
+      case PluginUiComponentText():
+        list = getTextProperties(selectedComponent!.properties as PluginUiComponentTextProperties, widget.theme, context, widget.controller.componentViewUpdater.update, () {setState(() {});});
+      case PluginUiComponentPadding():
+        list = getPaddingProperties(selectedComponent!.properties as PluginUiComponentPaddingProperties, widget.theme, context, widget.controller.componentViewUpdater.update, () {setState(() {});});
+      case PluginUiComponentIcon():
+        list = getIconPropeties(selectedComponent!.properties as PluginUiComponentIconProperties, widget.theme, context, widget.controller.componentViewUpdater.update, () {setState(() {});});
     }
 
     return list;
@@ -303,48 +317,54 @@ class _PluginEditorUiViewSidePanelState
                                         child: SizedBox(
                                           width: 280,
                                           height: (widget.height / 2) - 2.5 - 40 - 8,
-                                          child: ListView(
-                                            children: [
-                                              if (widget.controller.components.isNotEmpty)
-                                                PluginEditorUiViewSidePanelLayerElement(
-                                                  key: UniqueKey(),
-                                                  theme: widget.theme, 
-                                                  component: widget.controller.components.first, 
-                                                  width: 280, 
-                                                  selectedComponentId: widget.controller.selectedComponentId,
-                                                  setSelectedComponent: widget.controller.setSelectedComponent,
-                                                  deleteComponent: widget.controller.deleteComponent, 
-                                                  addChild: widget.controller.addChild
-                                                )
-                                              else 
-                                                SizedBox(
-                                                  width: 280,
-                                                  height: 40,
-                                                  child: IconButton(
-                                                    tooltip: S.of(context).plugin_editor_ui_side_panel_layers_add_button,
-                                                    style: ButtonThemes.primaryButtonStyle(context),
-                                                    onPressed: () {
-                                                      showUiComponentAddMenu(
-                                                        context,
-                                                        PlugnUiComponentsAddMenuModels.asList,
-                                                        widget.theme,
-                                                        (component) {
-                                                          if (component != null) {
-                                                            widget.controller.addComponent(component);
-                                                          }
-                                                        },
-                                                        true,
-                                                        700,
-                                                        420
-                                                      );
-                                                    }, 
-                                                    icon: Icon(
-                                                      Icons.add_rounded,
-                                                      color: widget.theme.onSecondary
-                                                    )
-                                                  ),
-                                                )
-                                            ],
+                                          child: PageStorage(
+                                            bucket: _layersPageStorageBucket,
+                                            child: ListView(
+                                              key: const PageStorageKey("layers_page_storage_bucket_key"),
+                                              children: [
+                                                if (widget.controller.components.isNotEmpty)
+                                                  PluginEditorUiViewSidePanelLayerElement(
+                                                    key: UniqueKey(),
+                                                    theme: widget.theme, 
+                                                    component: widget.controller.components.first, 
+                                                    width: 280, 
+                                                    selectedComponentId: widget.controller.selectedComponentId,
+                                                    setSelectedComponent: widget.controller.setSelectedComponent,
+                                                    controller: widget.controller,
+                                                    updateModule: widget.controller.componentViewUpdater.update,
+                                                    data: widget.controller.layersDataList.where((data) => data.componentid == widget.controller.components.first.id).first,
+                                                    elementsDataList: widget.controller.layersDataList
+                                                  )
+                                                else 
+                                                  SizedBox(
+                                                    width: 280,
+                                                    height: 40,
+                                                    child: IconButton(
+                                                      tooltip: S.of(context).plugin_editor_ui_side_panel_layers_add_button,
+                                                      style: ButtonThemes.primaryButtonStyle(context),
+                                                      onPressed: () {
+                                                        showUiComponentAddMenu(
+                                                          context,
+                                                          PlugnUiComponentsAddMenuModels.asList,
+                                                          widget.theme,
+                                                          (component) {
+                                                            if (component != null) {
+                                                              widget.controller.addComponent(component);
+                                                            }
+                                                          },
+                                                          true,
+                                                          700,
+                                                          420
+                                                        );
+                                                      }, 
+                                                      icon: Icon(
+                                                        Icons.add_rounded,
+                                                        color: widget.theme.onSecondary
+                                                      )
+                                                    ),
+                                                  )
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -374,9 +394,9 @@ String getSelectedBorderAlignmentTitle(List<int> sides, Map<int, String> map) {
   } else if (sides.length == 1) {
     return map[sides.first]!;
   } else if (sides.length == 4) {
-    return 'All';
-  } else { // TODO : Traduire
-    return 'Multiples';
+    return S.current.plugin_editor_ui_side_panel_properties_style_alignment_all;
+  } else {
+    return S.current.plugin_editor_ui_side_panel_properties_style_alignment_multiples;
   }
 }
 

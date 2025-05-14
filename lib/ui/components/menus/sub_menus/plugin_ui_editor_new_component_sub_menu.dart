@@ -38,10 +38,10 @@ class _PluginUiEditorNewComponentSubMenuState extends State<PluginUiEditorNewCom
     if (transformedQuery.isEmpty) {
       componentsList = widget.componentsToShow;
     } else {
-      componentsList = widget.componentsToShow.where((Component) {
-        String transformedName = SearchTextFormatter.format(Component.name);
-        String transformedDescription = SearchTextFormatter.format(Component.description);
-        String transformedCategory = SearchTextFormatter.format(_getPluginUiComponentTypeName(Component.category));
+      componentsList = widget.componentsToShow.where((component) {
+        String transformedName = SearchTextFormatter.format(component.name);
+        String transformedDescription = SearchTextFormatter.format(component.description);
+        String transformedCategory = SearchTextFormatter.format(_getPluginUiComponentTypeName(component.category));
 
         return transformedName.contains(transformedQuery) 
           || transformedCategory.contains(transformedQuery)
@@ -544,6 +544,7 @@ class PlugnUiComponentsAddMenuModel {
   bool canCreatePreview;
   double previewWidth;
   double previewHeight;
+  bool canHaveChildren;
 
   PlugnUiComponentsAddMenuModel({
     required this.name, 
@@ -552,6 +553,7 @@ class PlugnUiComponentsAddMenuModel {
     required this.canCreatePreview,
     required this.previewWidth,
     required this.previewHeight,
+    required this.canHaveChildren,
     required this.category
   });
 }

@@ -28,8 +28,11 @@ abstract class IPluginUiComponentProperties {
     Map<String, Color> map = {
       'pr': Theme.of(context).colorScheme.primary,
       'prc': Theme.of(context).colorScheme.primaryContainer,
+      'onpr': Theme.of(context).colorScheme.onPrimary,
       'se': Theme.of(context).colorScheme.secondary,
-      'su': Theme.of(context).colorScheme.surface // TODO : Fill the list
+      'onse': Theme.of(context).colorScheme.onSecondary,
+      'su': Theme.of(context).colorScheme.surface, // TODO : Fill the list
+      'onsu': Theme.of(context).colorScheme.onSurface,
     };
 
     return map[text] ?? Colors.amber;

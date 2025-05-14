@@ -408,8 +408,10 @@ List<CustomTableCalculationModel> getCalculationsMenuItems(StylesGetters theme, 
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['sum'] ?? 'Sum',
         labelStyle: getStyle('sum'),
-        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_sum_example,
-        tooltip: S.current.projects_module_spreadsheet_number_operation_sum_message,
+        tooltip: CustomSelectionMenuItemTooltip(
+          title: S.current.projects_module_spreadsheet_number_operation_sum_example,
+          text: S.current.projects_module_spreadsheet_number_operation_sum_message,
+        ),
         icon: null,
         onTap: () {
           // Handle the tap logic for 'sum'
@@ -421,8 +423,10 @@ List<CustomTableCalculationModel> getCalculationsMenuItems(StylesGetters theme, 
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['average'] ?? 'Average',
         labelStyle: getStyle('average'),
-        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_average_example,
-        tooltip: S.current.projects_module_spreadsheet_number_operation_average_message,
+        tooltip: CustomSelectionMenuItemTooltip(
+          title: S.current.projects_module_spreadsheet_number_operation_average_example,
+          text: S.current.projects_module_spreadsheet_number_operation_average_message,
+        ),
         icon: null,
         onTap: () {
           // Handle the tap logic for 'average'
@@ -434,8 +438,10 @@ List<CustomTableCalculationModel> getCalculationsMenuItems(StylesGetters theme, 
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['maximum'] ?? 'Maximum',
         labelStyle: getStyle('maximum'),
-        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_maximum_example,
-        tooltip: S.current.projects_module_spreadsheet_number_operation_maximum_message,
+        tooltip: CustomSelectionMenuItemTooltip(
+          title: S.current.projects_module_spreadsheet_number_operation_maximum_example,
+          text: S.current.projects_module_spreadsheet_number_operation_maximum_message,
+        ),
         icon: null,
         onTap: () {
           // Handle the tap logic for 'maximum'
@@ -447,8 +453,10 @@ List<CustomTableCalculationModel> getCalculationsMenuItems(StylesGetters theme, 
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['minimum'] ?? 'Minimum',
         labelStyle: getStyle('minimum'),
-        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_minimum_example,
-        tooltip: S.current.projects_module_spreadsheet_number_operation_minimum_message,
+        tooltip: CustomSelectionMenuItemTooltip(
+          title: S.current.projects_module_spreadsheet_number_operation_minimum_example,
+          text: S.current.projects_module_spreadsheet_number_operation_minimum_message,
+        ),
         icon: null,
         onTap: () {
           // Handle the tap logic for 'minimum'
@@ -460,8 +468,10 @@ List<CustomTableCalculationModel> getCalculationsMenuItems(StylesGetters theme, 
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['interval'] ?? 'Interval',
         labelStyle: getStyle('interval'),
-        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_interval_example,
-        tooltip: S.current.projects_module_spreadsheet_number_operation_interval_message,
+        tooltip: CustomSelectionMenuItemTooltip(
+          title: S.current.projects_module_spreadsheet_number_operation_interval_example,
+          text: S.current.projects_module_spreadsheet_number_operation_interval_message,
+        ),
         icon: null,
         onTap: () {
           // Handle the tap logic for 'interval'
@@ -473,8 +483,10 @@ List<CustomTableCalculationModel> getCalculationsMenuItems(StylesGetters theme, 
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['median'] ?? 'Median',
         labelStyle: getStyle('median'),
-        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_median_example,
-        tooltip: S.current.projects_module_spreadsheet_number_operation_median_message,
+        tooltip: CustomSelectionMenuItemTooltip(
+          title: S.current.projects_module_spreadsheet_number_operation_median_example,
+          text: S.current.projects_module_spreadsheet_number_operation_median_message,
+        ),
         icon: null,
         onTap: () {
           // Handle the tap logic for 'median'
@@ -486,8 +498,10 @@ List<CustomTableCalculationModel> getCalculationsMenuItems(StylesGetters theme, 
       menuItem: CustomSelectionMenuItem(
         label: calculationsOperationsTitles['standardDeviation'] ?? 'Standard deviation',
         labelStyle: getStyle('standardDeviation'),
-        tooltipTitle: S.current.projects_module_spreadsheet_number_operation_standardDeviation_example,
-        tooltip: S.current.projects_module_spreadsheet_number_operation_standardDeviation_message,
+        tooltip: CustomSelectionMenuItemTooltip(
+          title: S.current.projects_module_spreadsheet_number_operation_standardDeviation_example,
+          text: S.current.projects_module_spreadsheet_number_operation_standardDeviation_message,
+        ),
         icon: null,
         onTap: () {
           // Handle the tap logic for 'standardDeviation'

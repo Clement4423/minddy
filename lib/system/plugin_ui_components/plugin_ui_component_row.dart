@@ -78,14 +78,14 @@ class PluginUiComponentRow implements IPluginUiComponent {
     });
   }
 
-  static PluginUiComponentColumn? fromJson(String string) {
+  static PluginUiComponentRow? fromJson(String string) {
     try {
       Map<String, dynamic> map = jsonDecode(string);
 
       PluginUiComponentColumnProperties? properties = PluginUiComponentColumnProperties.fromJson(map['properties']);
 
       if (properties != null) {
-        return PluginUiComponentColumn(properties: properties)
+        return PluginUiComponentRow(properties: properties)
           ..id = map['id']
           ..name = map['name']
           ..child = (map['child'] as List).map((c) {
