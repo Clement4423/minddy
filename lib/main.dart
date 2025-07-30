@@ -1,3 +1,21 @@
+/*
+ * minddy - Free project management
+ * Copyright (C) 2025 mangué
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import 'dart:async';
 import 'dart:io';
 
@@ -40,35 +58,36 @@ Future<bool> initializeState() async {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
-  // TODO : Documenter tout le code
-  // TODO : Faire les tests
-  // TODO : Commencer le site web de lancement
-  // TODO : Ajouter un menu activé au double clic droit sur les task
-  // TODO : Tools note rapide ?
-  // TODO : Ajouter tous les articles de base
-  // TODO : Faire les articles 'aide' pour les modules
-  // TODO : Implémenter une fonctionnalitée de recherche à l'interieur d'un article pour chercher un mot clé
-  // TODO : Refaire le systeme des articles
-  // TODO : Faire l'écran d'erreur au lancement
-  // TODO : Faire thème high contrast et l'ajouter au main
-  // TODO : Terminer les paramètres
-  // TODO : Terminer la page des projets
-  // TODO : Pouvoir changer l'icone des categories de notes
-  // TODO : Ajouter une fonction pour sauvagarder le projet avant de fermer l'app
-  // TODO : Ajouter le repositionement des pages, ainsi que le déplacement des modules
-  // TODO : Faire le menu d'ajout de module plus propre
-  // TODO : AJouter les légendes en dessous des graphiques sur le module tableau + Corriger les bugs
-  // TODO : Faire un onglet 'notifications' pour voir les notifications récentes.
-  // TODO : Trouver un remplacant à l'addon FilePicker
-  // TODO : Remettre l'encryption sur les addons
-  // TODO : Voir les dates sur le DatePickerInput qui ne s'affichent pas
-  // TODO : Terminer le système d'addon
-  // TODO : Changer le lieu de sauvegarde des variables
-  // TODO : Faire les noeuds concernant les listes
-  // TODO : Ajouter une protection sur le premier component ui qui ne peux qu'être un container
-  // TODO : Faire tous les PluginUiComponent
-  // TODO : Faire le menu pour les traductions de texte
-  // TODO : Traduire tous les textes
+// TODO: Document all code
+// TODO: Run tests
+// TODO: Start the launch website
+// TODO: Add a double-right-click enabled menu on tasks
+// TODO: Tools, quick note?
+// TODO: Add all basic articles
+// TODO: Create 'help' articles for modules
+// TODO: Implement a search feature within an article to search for a keyword
+// TODO: Redesign the article system
+// TODO: Create the error screen on launch
+// TODO: Create a high-contrast theme and add it to main
+// TODO: Complete the settings
+// TODO: Complete the projects page
+// TODO: Be able to change the icon for note categories
+// TODO: Add a function to save the project before closing the app
+// TODO: Add page repositioning and module movement
+// TODO: Make the module add menu cleaner
+// TODO: Add legends below the graphs on the table module + Fix bugs
+// TODO: Create a 'notifications' tab to see recent notifications.
+// TODO: Find a replacement for the FilePicker addon
+// TODO: Restore encryption on addons
+// TODO: See which dates on the DatePickerInput aren't displaying
+// TODO: Complete the addon system
+// TODO: Change the variable save location
+// TODO: Tie the nodes for lists
+// TODO: Add protection to the first UI component, which can only be a container
+// TODO: Create all the PluginUIComponents
+// TODO: Create the menu for text translations
+// TODO: Translate all texts
+
 
   @override
   Widget build(BuildContext context) {

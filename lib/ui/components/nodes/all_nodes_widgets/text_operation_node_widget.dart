@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:minddy/generated/l10n.dart';
 import 'package:minddy/system/interfaces/node_widget_interface.dart';
@@ -132,7 +133,14 @@ class _TextOperationNodeWidgetState extends State<TextOperationNodeWidget> {
 
     for (NodeConnection connection in connections) {
       if (connection.endNode == widget) {
-        connection.startNode.node.targets.removeWhere((target) => target.node.id == widget.node.id && (target.inputIndex + 1 > widget.node.inputsTypes.length || connection.startNode.node.outputsTypes[connection.startOutputIndex] != widget.node.inputsTypes[target.inputIndex]));
+        try {
+          connection.startNode.node.targets.removeWhere((target) => target.node.id == widget.node.id && (target.inputIndex + 1 > widget.node.inputsTypes.length || connection.startNode.node.outputsTypes[connection.startOutputIndex] != widget.node.inputsTypes[target.inputIndex]));  
+        } catch (e) {
+          if (kDebugMode) {
+            print(e);
+          }
+        }
+        
       }
     }
 

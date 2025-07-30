@@ -33,9 +33,9 @@ class NodesAddMenuModels {
   List<NodeEditorNewNodeSubMenuNodeModel> filterList(List<NodeEditorNewNodeSubMenuNodeModel> list, NodePortType portType, NodeDataType type) {
     switch (portType) {
       case NodePortType.input:
-        return list.where((e) => e.outputsTypes.contains(type)).toList();
+        return list.where((e) => e.outputsTypes.contains(type) || e.outputsTypes.contains(NodeDataType.any)).toList();
       case NodePortType.output:
-        return list.where((e) => e.inputsTypes.contains(type)).toList();
+        return list.where((e) => e.inputsTypes.contains(type) || e.inputsTypes.contains(NodeDataType.any)).toList();
     }
   }
 
